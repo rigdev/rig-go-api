@@ -45,8 +45,6 @@ const (
 	ServiceUpdateProcedure = "/api.v1.capsule.Service/Update"
 	// ServiceListProcedure is the fully-qualified name of the Service's List RPC.
 	ServiceListProcedure = "/api.v1.capsule.Service/List"
-	// ServiceGetByNameProcedure is the fully-qualified name of the Service's GetByName RPC.
-	ServiceGetByNameProcedure = "/api.v1.capsule.Service/GetByName"
 	// ServiceCreateBuildProcedure is the fully-qualified name of the Service's CreateBuild RPC.
 	ServiceCreateBuildProcedure = "/api.v1.capsule.Service/CreateBuild"
 	// ServiceListBuildsProcedure is the fully-qualified name of the Service's ListBuilds RPC.
@@ -85,8 +83,6 @@ type ServiceClient interface {
 	Update(context.Context, *connect_go.Request[capsule.UpdateRequest]) (*connect_go.Response[capsule.UpdateResponse], error)
 	// Lists all capsules for current project.
 	List(context.Context, *connect_go.Request[capsule.ListRequest]) (*connect_go.Response[capsule.ListResponse], error)
-	// Get a capsule by name.
-	GetByName(context.Context, *connect_go.Request[capsule.GetByNameRequest]) (*connect_go.Response[capsule.GetByNameResponse], error)
 	// Create a new build.
 	// Builds are immutable and cannot change. Create a new build to make
 	// changes from an existing one.
@@ -155,11 +151,6 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceListProcedure,
 			opts...,
 		),
-		getByName: connect_go.NewClient[capsule.GetByNameRequest, capsule.GetByNameResponse](
-			httpClient,
-			baseURL+ServiceGetByNameProcedure,
-			opts...,
-		),
 		createBuild: connect_go.NewClient[capsule.CreateBuildRequest, capsule.CreateBuildResponse](
 			httpClient,
 			baseURL+ServiceCreateBuildProcedure,
@@ -226,7 +217,6 @@ type serviceClient struct {
 	logs            *connect_go.Client[capsule.LogsRequest, capsule.LogsResponse]
 	update          *connect_go.Client[capsule.UpdateRequest, capsule.UpdateResponse]
 	list            *connect_go.Client[capsule.ListRequest, capsule.ListResponse]
-	getByName       *connect_go.Client[capsule.GetByNameRequest, capsule.GetByNameResponse]
 	createBuild     *connect_go.Client[capsule.CreateBuildRequest, capsule.CreateBuildResponse]
 	listBuilds      *connect_go.Client[capsule.ListBuildsRequest, capsule.ListBuildsResponse]
 	deleteBuild     *connect_go.Client[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse]
@@ -268,11 +258,6 @@ func (c *serviceClient) Update(ctx context.Context, req *connect_go.Request[caps
 // List calls api.v1.capsule.Service.List.
 func (c *serviceClient) List(ctx context.Context, req *connect_go.Request[capsule.ListRequest]) (*connect_go.Response[capsule.ListResponse], error) {
 	return c.list.CallUnary(ctx, req)
-}
-
-// GetByName calls api.v1.capsule.Service.GetByName.
-func (c *serviceClient) GetByName(ctx context.Context, req *connect_go.Request[capsule.GetByNameRequest]) (*connect_go.Response[capsule.GetByNameResponse], error) {
-	return c.getByName.CallUnary(ctx, req)
 }
 
 // CreateBuild calls api.v1.capsule.Service.CreateBuild.
@@ -344,8 +329,6 @@ type ServiceHandler interface {
 	Update(context.Context, *connect_go.Request[capsule.UpdateRequest]) (*connect_go.Response[capsule.UpdateResponse], error)
 	// Lists all capsules for current project.
 	List(context.Context, *connect_go.Request[capsule.ListRequest]) (*connect_go.Response[capsule.ListResponse], error)
-	// Get a capsule by name.
-	GetByName(context.Context, *connect_go.Request[capsule.GetByNameRequest]) (*connect_go.Response[capsule.GetByNameResponse], error)
 	// Create a new build.
 	// Builds are immutable and cannot change. Create a new build to make
 	// changes from an existing one.
@@ -408,11 +391,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 	serviceListHandler := connect_go.NewUnaryHandler(
 		ServiceListProcedure,
 		svc.List,
-		opts...,
-	)
-	serviceGetByNameHandler := connect_go.NewUnaryHandler(
-		ServiceGetByNameProcedure,
-		svc.GetByName,
 		opts...,
 	)
 	serviceCreateBuildHandler := connect_go.NewUnaryHandler(
@@ -484,8 +462,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			serviceUpdateHandler.ServeHTTP(w, r)
 		case ServiceListProcedure:
 			serviceListHandler.ServeHTTP(w, r)
-		case ServiceGetByNameProcedure:
-			serviceGetByNameHandler.ServeHTTP(w, r)
 		case ServiceCreateBuildProcedure:
 			serviceCreateBuildHandler.ServeHTTP(w, r)
 		case ServiceListBuildsProcedure:
@@ -539,10 +515,6 @@ func (UnimplementedServiceHandler) Update(context.Context, *connect_go.Request[c
 
 func (UnimplementedServiceHandler) List(context.Context, *connect_go.Request[capsule.ListRequest]) (*connect_go.Response[capsule.ListResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.List is not implemented"))
-}
-
-func (UnimplementedServiceHandler) GetByName(context.Context, *connect_go.Request[capsule.GetByNameRequest]) (*connect_go.Response[capsule.GetByNameResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetByName is not implemented"))
 }
 
 func (UnimplementedServiceHandler) CreateBuild(context.Context, *connect_go.Request[capsule.CreateBuildRequest]) (*connect_go.Response[capsule.CreateBuildResponse], error) {

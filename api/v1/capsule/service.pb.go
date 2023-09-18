@@ -619,101 +619,6 @@ func (x *ListResponse) GetTotal() uint64 {
 	return 0
 }
 
-type GetByNameRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	// The capsule to get.
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-}
-
-func (x *GetByNameRequest) Reset() {
-	*x = GetByNameRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[12]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *GetByNameRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetByNameRequest) ProtoMessage() {}
-
-func (x *GetByNameRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[12]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetByNameRequest.ProtoReflect.Descriptor instead.
-func (*GetByNameRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{12}
-}
-
-func (x *GetByNameRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-type GetByNameResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Capsule *Capsule `protobuf:"bytes,1,opt,name=capsule,proto3" json:"capsule,omitempty"`
-}
-
-func (x *GetByNameResponse) Reset() {
-	*x = GetByNameResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[13]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *GetByNameResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetByNameResponse) ProtoMessage() {}
-
-func (x *GetByNameResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[13]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetByNameResponse.ProtoReflect.Descriptor instead.
-func (*GetByNameResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{13}
-}
-
-func (x *GetByNameResponse) GetCapsule() *Capsule {
-	if x != nil {
-		return x.Capsule
-	}
-	return nil
-}
-
 type CreateBuildRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -730,7 +635,7 @@ type CreateBuildRequest struct {
 func (x *CreateBuildRequest) Reset() {
 	*x = CreateBuildRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[14]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -743,7 +648,7 @@ func (x *CreateBuildRequest) String() string {
 func (*CreateBuildRequest) ProtoMessage() {}
 
 func (x *CreateBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[14]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -756,7 +661,7 @@ func (x *CreateBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateBuildRequest.ProtoReflect.Descriptor instead.
 func (*CreateBuildRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{14}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateBuildRequest) GetCapsuleId() string {
@@ -812,7 +717,7 @@ type CreateBuildResponse struct {
 func (x *CreateBuildResponse) Reset() {
 	*x = CreateBuildResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[15]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -825,7 +730,7 @@ func (x *CreateBuildResponse) String() string {
 func (*CreateBuildResponse) ProtoMessage() {}
 
 func (x *CreateBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[15]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -838,7 +743,7 @@ func (x *CreateBuildResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateBuildResponse.ProtoReflect.Descriptor instead.
 func (*CreateBuildResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{15}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *CreateBuildResponse) GetBuildId() string {
@@ -860,7 +765,7 @@ type ListBuildsRequest struct {
 func (x *ListBuildsRequest) Reset() {
 	*x = ListBuildsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[16]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -873,7 +778,7 @@ func (x *ListBuildsRequest) String() string {
 func (*ListBuildsRequest) ProtoMessage() {}
 
 func (x *ListBuildsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[16]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -886,7 +791,7 @@ func (x *ListBuildsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBuildsRequest.ProtoReflect.Descriptor instead.
 func (*ListBuildsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{16}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListBuildsRequest) GetCapsuleId() string {
@@ -915,7 +820,7 @@ type ListBuildsResponse struct {
 func (x *ListBuildsResponse) Reset() {
 	*x = ListBuildsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[17]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -928,7 +833,7 @@ func (x *ListBuildsResponse) String() string {
 func (*ListBuildsResponse) ProtoMessage() {}
 
 func (x *ListBuildsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[17]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -941,7 +846,7 @@ func (x *ListBuildsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBuildsResponse.ProtoReflect.Descriptor instead.
 func (*ListBuildsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{17}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ListBuildsResponse) GetBuilds() []*Build {
@@ -970,7 +875,7 @@ type DeleteBuildRequest struct {
 func (x *DeleteBuildRequest) Reset() {
 	*x = DeleteBuildRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[18]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -983,7 +888,7 @@ func (x *DeleteBuildRequest) String() string {
 func (*DeleteBuildRequest) ProtoMessage() {}
 
 func (x *DeleteBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[18]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -996,7 +901,7 @@ func (x *DeleteBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteBuildRequest.ProtoReflect.Descriptor instead.
 func (*DeleteBuildRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{18}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DeleteBuildRequest) GetCapsuleId() string {
@@ -1022,7 +927,7 @@ type DeleteBuildResponse struct {
 func (x *DeleteBuildResponse) Reset() {
 	*x = DeleteBuildResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[19]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1035,7 +940,7 @@ func (x *DeleteBuildResponse) String() string {
 func (*DeleteBuildResponse) ProtoMessage() {}
 
 func (x *DeleteBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[19]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1048,7 +953,7 @@ func (x *DeleteBuildResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteBuildResponse.ProtoReflect.Descriptor instead.
 func (*DeleteBuildResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{19}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{17}
 }
 
 type DeployRequest struct {
@@ -1064,7 +969,7 @@ type DeployRequest struct {
 func (x *DeployRequest) Reset() {
 	*x = DeployRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[20]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1077,7 +982,7 @@ func (x *DeployRequest) String() string {
 func (*DeployRequest) ProtoMessage() {}
 
 func (x *DeployRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[20]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1090,7 +995,7 @@ func (x *DeployRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeployRequest.ProtoReflect.Descriptor instead.
 func (*DeployRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{20}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *DeployRequest) GetCapsuleId() string {
@@ -1118,7 +1023,7 @@ type DeployResponse struct {
 func (x *DeployResponse) Reset() {
 	*x = DeployResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[21]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1131,7 +1036,7 @@ func (x *DeployResponse) String() string {
 func (*DeployResponse) ProtoMessage() {}
 
 func (x *DeployResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[21]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1144,7 +1049,7 @@ func (x *DeployResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeployResponse.ProtoReflect.Descriptor instead.
 func (*DeployResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{21}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *DeployResponse) GetRolloutId() uint64 {
@@ -1166,7 +1071,7 @@ type ListInstancesRequest struct {
 func (x *ListInstancesRequest) Reset() {
 	*x = ListInstancesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[22]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1179,7 +1084,7 @@ func (x *ListInstancesRequest) String() string {
 func (*ListInstancesRequest) ProtoMessage() {}
 
 func (x *ListInstancesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[22]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1192,7 +1097,7 @@ func (x *ListInstancesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInstancesRequest.ProtoReflect.Descriptor instead.
 func (*ListInstancesRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{22}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListInstancesRequest) GetCapsuleId() string {
@@ -1221,7 +1126,7 @@ type ListInstancesResponse struct {
 func (x *ListInstancesResponse) Reset() {
 	*x = ListInstancesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[23]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1234,7 +1139,7 @@ func (x *ListInstancesResponse) String() string {
 func (*ListInstancesResponse) ProtoMessage() {}
 
 func (x *ListInstancesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[23]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1247,7 +1152,7 @@ func (x *ListInstancesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInstancesResponse.ProtoReflect.Descriptor instead.
 func (*ListInstancesResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{23}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ListInstancesResponse) GetInstances() []*Instance {
@@ -1276,7 +1181,7 @@ type RestartInstanceRequest struct {
 func (x *RestartInstanceRequest) Reset() {
 	*x = RestartInstanceRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[24]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1289,7 +1194,7 @@ func (x *RestartInstanceRequest) String() string {
 func (*RestartInstanceRequest) ProtoMessage() {}
 
 func (x *RestartInstanceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[24]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1302,7 +1207,7 @@ func (x *RestartInstanceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestartInstanceRequest.ProtoReflect.Descriptor instead.
 func (*RestartInstanceRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{24}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *RestartInstanceRequest) GetCapsuleId() string {
@@ -1328,7 +1233,7 @@ type RestartInstanceResponse struct {
 func (x *RestartInstanceResponse) Reset() {
 	*x = RestartInstanceResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[25]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1341,7 +1246,7 @@ func (x *RestartInstanceResponse) String() string {
 func (*RestartInstanceResponse) ProtoMessage() {}
 
 func (x *RestartInstanceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[25]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1354,7 +1259,7 @@ func (x *RestartInstanceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestartInstanceResponse.ProtoReflect.Descriptor instead.
 func (*RestartInstanceResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{25}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{23}
 }
 
 type ListRolloutsRequest struct {
@@ -1369,7 +1274,7 @@ type ListRolloutsRequest struct {
 func (x *ListRolloutsRequest) Reset() {
 	*x = ListRolloutsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[26]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1382,7 +1287,7 @@ func (x *ListRolloutsRequest) String() string {
 func (*ListRolloutsRequest) ProtoMessage() {}
 
 func (x *ListRolloutsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[26]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1395,7 +1300,7 @@ func (x *ListRolloutsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRolloutsRequest.ProtoReflect.Descriptor instead.
 func (*ListRolloutsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{26}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *ListRolloutsRequest) GetCapsuleId() string {
@@ -1424,7 +1329,7 @@ type ListRolloutsResponse struct {
 func (x *ListRolloutsResponse) Reset() {
 	*x = ListRolloutsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[27]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1437,7 +1342,7 @@ func (x *ListRolloutsResponse) String() string {
 func (*ListRolloutsResponse) ProtoMessage() {}
 
 func (x *ListRolloutsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[27]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1450,7 +1355,7 @@ func (x *ListRolloutsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRolloutsResponse.ProtoReflect.Descriptor instead.
 func (*ListRolloutsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{27}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *ListRolloutsResponse) GetRollouts() []*Rollout {
@@ -1479,7 +1384,7 @@ type GetRolloutRequest struct {
 func (x *GetRolloutRequest) Reset() {
 	*x = GetRolloutRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[28]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1492,7 +1397,7 @@ func (x *GetRolloutRequest) String() string {
 func (*GetRolloutRequest) ProtoMessage() {}
 
 func (x *GetRolloutRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[28]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1505,7 +1410,7 @@ func (x *GetRolloutRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRolloutRequest.ProtoReflect.Descriptor instead.
 func (*GetRolloutRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{28}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *GetRolloutRequest) GetCapsuleId() string {
@@ -1533,7 +1438,7 @@ type GetRolloutResponse struct {
 func (x *GetRolloutResponse) Reset() {
 	*x = GetRolloutResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[29]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1546,7 +1451,7 @@ func (x *GetRolloutResponse) String() string {
 func (*GetRolloutResponse) ProtoMessage() {}
 
 func (x *GetRolloutResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[29]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1559,7 +1464,7 @@ func (x *GetRolloutResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRolloutResponse.ProtoReflect.Descriptor instead.
 func (*GetRolloutResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{29}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *GetRolloutResponse) GetRollout() *Rollout {
@@ -1581,7 +1486,7 @@ type AbortRolloutRequest struct {
 func (x *AbortRolloutRequest) Reset() {
 	*x = AbortRolloutRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[30]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1594,7 +1499,7 @@ func (x *AbortRolloutRequest) String() string {
 func (*AbortRolloutRequest) ProtoMessage() {}
 
 func (x *AbortRolloutRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[30]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1607,7 +1512,7 @@ func (x *AbortRolloutRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AbortRolloutRequest.ProtoReflect.Descriptor instead.
 func (*AbortRolloutRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{30}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *AbortRolloutRequest) GetCapsuleId() string {
@@ -1633,7 +1538,7 @@ type AbortRolloutResponse struct {
 func (x *AbortRolloutResponse) Reset() {
 	*x = AbortRolloutResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[31]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1646,7 +1551,7 @@ func (x *AbortRolloutResponse) String() string {
 func (*AbortRolloutResponse) ProtoMessage() {}
 
 func (x *AbortRolloutResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[31]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1659,7 +1564,7 @@ func (x *AbortRolloutResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AbortRolloutResponse.ProtoReflect.Descriptor instead.
 func (*AbortRolloutResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{31}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{29}
 }
 
 type ListEventsRequest struct {
@@ -1675,7 +1580,7 @@ type ListEventsRequest struct {
 func (x *ListEventsRequest) Reset() {
 	*x = ListEventsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[32]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1688,7 +1593,7 @@ func (x *ListEventsRequest) String() string {
 func (*ListEventsRequest) ProtoMessage() {}
 
 func (x *ListEventsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[32]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1701,7 +1606,7 @@ func (x *ListEventsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEventsRequest.ProtoReflect.Descriptor instead.
 func (*ListEventsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{32}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ListEventsRequest) GetCapsuleId() string {
@@ -1737,7 +1642,7 @@ type ListEventsResponse struct {
 func (x *ListEventsResponse) Reset() {
 	*x = ListEventsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[33]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[31]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1750,7 +1655,7 @@ func (x *ListEventsResponse) String() string {
 func (*ListEventsResponse) ProtoMessage() {}
 
 func (x *ListEventsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[33]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1763,7 +1668,7 @@ func (x *ListEventsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEventsResponse.ProtoReflect.Descriptor instead.
 func (*ListEventsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{33}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ListEventsResponse) GetEvents() []*Event {
@@ -1794,7 +1699,7 @@ type CapsuleMetricsRequest struct {
 func (x *CapsuleMetricsRequest) Reset() {
 	*x = CapsuleMetricsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[34]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[32]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1807,7 +1712,7 @@ func (x *CapsuleMetricsRequest) String() string {
 func (*CapsuleMetricsRequest) ProtoMessage() {}
 
 func (x *CapsuleMetricsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[34]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[32]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1820,7 +1725,7 @@ func (x *CapsuleMetricsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CapsuleMetricsRequest.ProtoReflect.Descriptor instead.
 func (*CapsuleMetricsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{34}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *CapsuleMetricsRequest) GetCapsuleId() string {
@@ -1855,7 +1760,7 @@ type CapsuleMetricsResponse struct {
 func (x *CapsuleMetricsResponse) Reset() {
 	*x = CapsuleMetricsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[35]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[33]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1868,7 +1773,7 @@ func (x *CapsuleMetricsResponse) String() string {
 func (*CapsuleMetricsResponse) ProtoMessage() {}
 
 func (x *CapsuleMetricsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[35]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[33]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1881,7 +1786,7 @@ func (x *CapsuleMetricsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CapsuleMetricsResponse.ProtoReflect.Descriptor instead.
 func (*CapsuleMetricsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{35}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *CapsuleMetricsResponse) GetInstanceMetrics() []*InstanceMetrics {
@@ -1958,13 +1863,6 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x52,
 	0x08, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x74,
 	0x61, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x22,
-	0x26, 0x0a, 0x10, 0x47, 0x65, 0x74, 0x42, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x46, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x42, 0x79,
-	0x4e, 0x61, 0x6d, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x31, 0x0a, 0x07,
-	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e,
-	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43,
-	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x52, 0x07, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x22,
 	0xbe, 0x02, 0x0a, 0x12, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c,
 	0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x61, 0x70, 0x73,
@@ -2094,7 +1992,7 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x61,
 	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x49, 0x6e,
 	0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x52, 0x0f, 0x69,
-	0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x32, 0xf3,
+	0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x32, 0x9f,
 	0x0b, 0x0a, 0x07, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x49, 0x0a, 0x06, 0x43, 0x72,
 	0x65, 0x61, 0x74, 0x65, 0x12, 0x1d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61,
 	0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75,
@@ -2122,86 +2020,81 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69,
 	0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x61, 0x70, 0x69, 0x2e,
 	0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x52, 0x0a, 0x09, 0x47, 0x65, 0x74,
-	0x42, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x20, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
-	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x42, 0x79, 0x4e, 0x61, 0x6d,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
-	0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x42, 0x79, 0x4e,
-	0x61, 0x6d, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x58, 0x0a,
-	0x0b, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x12, 0x22, 0x2e, 0x61,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x58, 0x0a, 0x0b, 0x43, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x12, 0x22, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
+	0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x42, 0x75, 0x69, 0x6c, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x23, 0x2e, 0x61,
 	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x72,
-	0x65, 0x61, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x23, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c,
-	0x65, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x55, 0x0a, 0x0a, 0x4c, 0x69, 0x73, 0x74, 0x42,
-	0x75, 0x69, 0x6c, 0x64, 0x73, 0x12, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63,
-	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x75, 0x69, 0x6c, 0x64,
-	0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
-	0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x75,
-	0x69, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x58,
-	0x0a, 0x0b, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x12, 0x22, 0x2e,
+	0x65, 0x61, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x00, 0x12, 0x55, 0x0a, 0x0a, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x75, 0x69, 0x6c, 0x64,
+	0x73, 0x12, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75,
+	0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61,
+	0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x73,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x58, 0x0a, 0x0b, 0x44, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x12, 0x22, 0x2e, 0x61, 0x70, 0x69, 0x2e,
+	0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74,
+	0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x23, 0x2e,
 	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44,
-	0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x23, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75,
-	0x6c, 0x65, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x49, 0x0a, 0x06, 0x44, 0x65, 0x70, 0x6c,
-	0x6f, 0x79, 0x12, 0x1d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73,
-	0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x1e, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75,
-	0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x00, 0x12, 0x5e, 0x0a, 0x0d, 0x4c, 0x69, 0x73, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x61,
-	0x6e, 0x63, 0x65, 0x73, 0x12, 0x24, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61,
-	0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x61, 0x6e,
-	0x63, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x25, 0x2e, 0x61, 0x70, 0x69,
-	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74,
-	0x49, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x00, 0x12, 0x64, 0x0a, 0x0f, 0x52, 0x65, 0x73, 0x74, 0x61, 0x72, 0x74, 0x49, 0x6e,
-	0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x12, 0x26, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
-	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x74, 0x61, 0x72, 0x74, 0x49,
-	0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x27,
+	0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0x00, 0x12, 0x49, 0x0a, 0x06, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x12, 0x1d,
 	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e,
-	0x52, 0x65, 0x73, 0x74, 0x61, 0x72, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x55, 0x0a, 0x0a, 0x47, 0x65, 0x74,
-	0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x12, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31,
-	0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x6c, 0x6c,
-	0x6f, 0x75, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x61, 0x70, 0x69,
-	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x52,
-	0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
-	0x12, 0x5b, 0x0a, 0x0c, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x73,
-	0x12, 0x23, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c,
-	0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x73, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x24, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63,
-	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f,
-	0x75, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5b, 0x0a,
-	0x0c, 0x41, 0x62, 0x6f, 0x72, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x12, 0x23, 0x2e,
-	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x41,
-	0x62, 0x6f, 0x72, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x24, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73,
-	0x75, 0x6c, 0x65, 0x2e, 0x41, 0x62, 0x6f, 0x72, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x55, 0x0a, 0x0a, 0x4c, 0x69,
-	0x73, 0x74, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x73, 0x12, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
-	0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x76,
-	0x65, 0x6e, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x61, 0x70,
-	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73,
-	0x74, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x00, 0x12, 0x61, 0x0a, 0x0e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x4d, 0x65, 0x74, 0x72,
-	0x69, 0x63, 0x73, 0x12, 0x25, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70,
-	0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x4d, 0x65, 0x74, 0x72,
-	0x69, 0x63, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x61, 0x70, 0x69,
-	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x61, 0x70, 0x73,
-	0x75, 0x6c, 0x65, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x22, 0x00, 0x42, 0xa9, 0x01, 0x0a, 0x12, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x70, 0x69,
-	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x42, 0x0c, 0x53, 0x65, 0x72,
-	0x76, 0x69, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2b, 0x67, 0x69, 0x74,
-	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x69, 0x67, 0x64, 0x65, 0x76, 0x2f, 0x72,
-	0x69, 0x67, 0x2d, 0x67, 0x6f, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31,
-	0x2f, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xa2, 0x02, 0x03, 0x41, 0x56, 0x43, 0xaa, 0x02,
-	0x0e, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xca,
-	0x02, 0x0e, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
-	0xe2, 0x02, 0x1a, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c,
-	0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10,
-	0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0x3a, 0x3a, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e,
+	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44,
+	0x65, 0x70, 0x6c, 0x6f, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12,
+	0x5e, 0x0a, 0x0d, 0x4c, 0x69, 0x73, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x73,
+	0x12, 0x24, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c,
+	0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x73, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x25, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
+	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x49, 0x6e, 0x73, 0x74,
+	0x61, 0x6e, 0x63, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12,
+	0x64, 0x0a, 0x0f, 0x52, 0x65, 0x73, 0x74, 0x61, 0x72, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x61, 0x6e,
+	0x63, 0x65, 0x12, 0x26, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73,
+	0x75, 0x6c, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x74, 0x61, 0x72, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x61,
+	0x6e, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x27, 0x2e, 0x61, 0x70, 0x69,
+	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x74,
+	0x61, 0x72, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x55, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x6c, 0x6c,
+	0x6f, 0x75, 0x74, 0x12, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70,
+	0x73, 0x75, 0x6c, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
+	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f,
+	0x75, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5b, 0x0a, 0x0c,
+	0x4c, 0x69, 0x73, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x73, 0x12, 0x23, 0x2e, 0x61,
+	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69,
+	0x73, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x24, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75,
+	0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x73, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5b, 0x0a, 0x0c, 0x41, 0x62, 0x6f,
+	0x72, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x12, 0x23, 0x2e, 0x61, 0x70, 0x69, 0x2e,
+	0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x41, 0x62, 0x6f, 0x72, 0x74,
+	0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x24,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e,
+	0x41, 0x62, 0x6f, 0x72, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x55, 0x0a, 0x0a, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x76,
+	0x65, 0x6e, 0x74, 0x73, 0x12, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61,
+	0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x73,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31,
+	0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x76, 0x65,
+	0x6e, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x61, 0x0a,
+	0x0e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x12,
+	0x25, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
+	0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
+	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x4d,
+	0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
+	0x42, 0xa9, 0x01, 0x0a, 0x12, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
+	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x42, 0x0c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
+	0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x69, 0x67, 0x64, 0x65, 0x76, 0x2f, 0x72, 0x69, 0x67, 0x2d, 0x67,
+	0x6f, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x61, 0x70,
+	0x73, 0x75, 0x6c, 0x65, 0xa2, 0x02, 0x03, 0x41, 0x56, 0x43, 0xaa, 0x02, 0x0e, 0x41, 0x70, 0x69,
+	0x2e, 0x56, 0x31, 0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xca, 0x02, 0x0e, 0x41, 0x70,
+	0x69, 0x5c, 0x56, 0x31, 0x5c, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xe2, 0x02, 0x1a, 0x41,
+	0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x5c, 0x47, 0x50,
+	0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x41, 0x70, 0x69, 0x3a,
+	0x3a, 0x56, 0x31, 0x3a, 0x3a, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2216,7 +2109,7 @@ func file_api_v1_capsule_service_proto_rawDescGZIP() []byte {
 	return file_api_v1_capsule_service_proto_rawDescData
 }
 
-var file_api_v1_capsule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
+var file_api_v1_capsule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
 var file_api_v1_capsule_service_proto_goTypes = []interface{}{
 	(*CreateRequest)(nil),           // 0: api.v1.capsule.CreateRequest
 	(*CreateResponse)(nil),          // 1: api.v1.capsule.CreateResponse
@@ -2230,106 +2123,101 @@ var file_api_v1_capsule_service_proto_goTypes = []interface{}{
 	(*UpdateResponse)(nil),          // 9: api.v1.capsule.UpdateResponse
 	(*ListRequest)(nil),             // 10: api.v1.capsule.ListRequest
 	(*ListResponse)(nil),            // 11: api.v1.capsule.ListResponse
-	(*GetByNameRequest)(nil),        // 12: api.v1.capsule.GetByNameRequest
-	(*GetByNameResponse)(nil),       // 13: api.v1.capsule.GetByNameResponse
-	(*CreateBuildRequest)(nil),      // 14: api.v1.capsule.CreateBuildRequest
-	(*CreateBuildResponse)(nil),     // 15: api.v1.capsule.CreateBuildResponse
-	(*ListBuildsRequest)(nil),       // 16: api.v1.capsule.ListBuildsRequest
-	(*ListBuildsResponse)(nil),      // 17: api.v1.capsule.ListBuildsResponse
-	(*DeleteBuildRequest)(nil),      // 18: api.v1.capsule.DeleteBuildRequest
-	(*DeleteBuildResponse)(nil),     // 19: api.v1.capsule.DeleteBuildResponse
-	(*DeployRequest)(nil),           // 20: api.v1.capsule.DeployRequest
-	(*DeployResponse)(nil),          // 21: api.v1.capsule.DeployResponse
-	(*ListInstancesRequest)(nil),    // 22: api.v1.capsule.ListInstancesRequest
-	(*ListInstancesResponse)(nil),   // 23: api.v1.capsule.ListInstancesResponse
-	(*RestartInstanceRequest)(nil),  // 24: api.v1.capsule.RestartInstanceRequest
-	(*RestartInstanceResponse)(nil), // 25: api.v1.capsule.RestartInstanceResponse
-	(*ListRolloutsRequest)(nil),     // 26: api.v1.capsule.ListRolloutsRequest
-	(*ListRolloutsResponse)(nil),    // 27: api.v1.capsule.ListRolloutsResponse
-	(*GetRolloutRequest)(nil),       // 28: api.v1.capsule.GetRolloutRequest
-	(*GetRolloutResponse)(nil),      // 29: api.v1.capsule.GetRolloutResponse
-	(*AbortRolloutRequest)(nil),     // 30: api.v1.capsule.AbortRolloutRequest
-	(*AbortRolloutResponse)(nil),    // 31: api.v1.capsule.AbortRolloutResponse
-	(*ListEventsRequest)(nil),       // 32: api.v1.capsule.ListEventsRequest
-	(*ListEventsResponse)(nil),      // 33: api.v1.capsule.ListEventsResponse
-	(*CapsuleMetricsRequest)(nil),   // 34: api.v1.capsule.CapsuleMetricsRequest
-	(*CapsuleMetricsResponse)(nil),  // 35: api.v1.capsule.CapsuleMetricsResponse
-	nil,                             // 36: api.v1.capsule.CreateBuildRequest.LabelsEntry
-	(*Update)(nil),                  // 37: api.v1.capsule.Update
-	(*Capsule)(nil),                 // 38: api.v1.capsule.Capsule
-	(*Log)(nil),                     // 39: api.v1.capsule.Log
-	(*model.Pagination)(nil),        // 40: model.Pagination
-	(*Origin)(nil),                  // 41: api.v1.capsule.Origin
-	(*Build)(nil),                   // 42: api.v1.capsule.Build
-	(*Change)(nil),                  // 43: api.v1.capsule.Change
-	(*Instance)(nil),                // 44: api.v1.capsule.Instance
-	(*Rollout)(nil),                 // 45: api.v1.capsule.Rollout
-	(*Event)(nil),                   // 46: api.v1.capsule.Event
-	(*InstanceMetrics)(nil),         // 47: api.v1.capsule.InstanceMetrics
+	(*CreateBuildRequest)(nil),      // 12: api.v1.capsule.CreateBuildRequest
+	(*CreateBuildResponse)(nil),     // 13: api.v1.capsule.CreateBuildResponse
+	(*ListBuildsRequest)(nil),       // 14: api.v1.capsule.ListBuildsRequest
+	(*ListBuildsResponse)(nil),      // 15: api.v1.capsule.ListBuildsResponse
+	(*DeleteBuildRequest)(nil),      // 16: api.v1.capsule.DeleteBuildRequest
+	(*DeleteBuildResponse)(nil),     // 17: api.v1.capsule.DeleteBuildResponse
+	(*DeployRequest)(nil),           // 18: api.v1.capsule.DeployRequest
+	(*DeployResponse)(nil),          // 19: api.v1.capsule.DeployResponse
+	(*ListInstancesRequest)(nil),    // 20: api.v1.capsule.ListInstancesRequest
+	(*ListInstancesResponse)(nil),   // 21: api.v1.capsule.ListInstancesResponse
+	(*RestartInstanceRequest)(nil),  // 22: api.v1.capsule.RestartInstanceRequest
+	(*RestartInstanceResponse)(nil), // 23: api.v1.capsule.RestartInstanceResponse
+	(*ListRolloutsRequest)(nil),     // 24: api.v1.capsule.ListRolloutsRequest
+	(*ListRolloutsResponse)(nil),    // 25: api.v1.capsule.ListRolloutsResponse
+	(*GetRolloutRequest)(nil),       // 26: api.v1.capsule.GetRolloutRequest
+	(*GetRolloutResponse)(nil),      // 27: api.v1.capsule.GetRolloutResponse
+	(*AbortRolloutRequest)(nil),     // 28: api.v1.capsule.AbortRolloutRequest
+	(*AbortRolloutResponse)(nil),    // 29: api.v1.capsule.AbortRolloutResponse
+	(*ListEventsRequest)(nil),       // 30: api.v1.capsule.ListEventsRequest
+	(*ListEventsResponse)(nil),      // 31: api.v1.capsule.ListEventsResponse
+	(*CapsuleMetricsRequest)(nil),   // 32: api.v1.capsule.CapsuleMetricsRequest
+	(*CapsuleMetricsResponse)(nil),  // 33: api.v1.capsule.CapsuleMetricsResponse
+	nil,                             // 34: api.v1.capsule.CreateBuildRequest.LabelsEntry
+	(*Update)(nil),                  // 35: api.v1.capsule.Update
+	(*Capsule)(nil),                 // 36: api.v1.capsule.Capsule
+	(*Log)(nil),                     // 37: api.v1.capsule.Log
+	(*model.Pagination)(nil),        // 38: model.Pagination
+	(*Origin)(nil),                  // 39: api.v1.capsule.Origin
+	(*Build)(nil),                   // 40: api.v1.capsule.Build
+	(*Change)(nil),                  // 41: api.v1.capsule.Change
+	(*Instance)(nil),                // 42: api.v1.capsule.Instance
+	(*Rollout)(nil),                 // 43: api.v1.capsule.Rollout
+	(*Event)(nil),                   // 44: api.v1.capsule.Event
+	(*InstanceMetrics)(nil),         // 45: api.v1.capsule.InstanceMetrics
 }
 var file_api_v1_capsule_service_proto_depIdxs = []int32{
-	37, // 0: api.v1.capsule.CreateRequest.initializers:type_name -> api.v1.capsule.Update
-	38, // 1: api.v1.capsule.GetResponse.capsule:type_name -> api.v1.capsule.Capsule
-	39, // 2: api.v1.capsule.LogsResponse.log:type_name -> api.v1.capsule.Log
-	37, // 3: api.v1.capsule.UpdateRequest.updates:type_name -> api.v1.capsule.Update
-	40, // 4: api.v1.capsule.ListRequest.pagination:type_name -> model.Pagination
-	38, // 5: api.v1.capsule.ListResponse.capsules:type_name -> api.v1.capsule.Capsule
-	38, // 6: api.v1.capsule.GetByNameResponse.capsule:type_name -> api.v1.capsule.Capsule
-	41, // 7: api.v1.capsule.CreateBuildRequest.origin:type_name -> api.v1.capsule.Origin
-	36, // 8: api.v1.capsule.CreateBuildRequest.labels:type_name -> api.v1.capsule.CreateBuildRequest.LabelsEntry
-	40, // 9: api.v1.capsule.ListBuildsRequest.pagination:type_name -> model.Pagination
-	42, // 10: api.v1.capsule.ListBuildsResponse.builds:type_name -> api.v1.capsule.Build
-	43, // 11: api.v1.capsule.DeployRequest.changes:type_name -> api.v1.capsule.Change
-	40, // 12: api.v1.capsule.ListInstancesRequest.pagination:type_name -> model.Pagination
-	44, // 13: api.v1.capsule.ListInstancesResponse.instances:type_name -> api.v1.capsule.Instance
-	40, // 14: api.v1.capsule.ListRolloutsRequest.pagination:type_name -> model.Pagination
-	45, // 15: api.v1.capsule.ListRolloutsResponse.rollouts:type_name -> api.v1.capsule.Rollout
-	45, // 16: api.v1.capsule.GetRolloutResponse.rollout:type_name -> api.v1.capsule.Rollout
-	40, // 17: api.v1.capsule.ListEventsRequest.pagination:type_name -> model.Pagination
-	46, // 18: api.v1.capsule.ListEventsResponse.events:type_name -> api.v1.capsule.Event
-	40, // 19: api.v1.capsule.CapsuleMetricsRequest.pagination:type_name -> model.Pagination
-	47, // 20: api.v1.capsule.CapsuleMetricsResponse.instance_metrics:type_name -> api.v1.capsule.InstanceMetrics
-	0,  // 21: api.v1.capsule.Service.Create:input_type -> api.v1.capsule.CreateRequest
-	2,  // 22: api.v1.capsule.Service.Get:input_type -> api.v1.capsule.GetRequest
-	4,  // 23: api.v1.capsule.Service.Delete:input_type -> api.v1.capsule.DeleteRequest
-	6,  // 24: api.v1.capsule.Service.Logs:input_type -> api.v1.capsule.LogsRequest
-	8,  // 25: api.v1.capsule.Service.Update:input_type -> api.v1.capsule.UpdateRequest
-	10, // 26: api.v1.capsule.Service.List:input_type -> api.v1.capsule.ListRequest
-	12, // 27: api.v1.capsule.Service.GetByName:input_type -> api.v1.capsule.GetByNameRequest
-	14, // 28: api.v1.capsule.Service.CreateBuild:input_type -> api.v1.capsule.CreateBuildRequest
-	16, // 29: api.v1.capsule.Service.ListBuilds:input_type -> api.v1.capsule.ListBuildsRequest
-	18, // 30: api.v1.capsule.Service.DeleteBuild:input_type -> api.v1.capsule.DeleteBuildRequest
-	20, // 31: api.v1.capsule.Service.Deploy:input_type -> api.v1.capsule.DeployRequest
-	22, // 32: api.v1.capsule.Service.ListInstances:input_type -> api.v1.capsule.ListInstancesRequest
-	24, // 33: api.v1.capsule.Service.RestartInstance:input_type -> api.v1.capsule.RestartInstanceRequest
-	28, // 34: api.v1.capsule.Service.GetRollout:input_type -> api.v1.capsule.GetRolloutRequest
-	26, // 35: api.v1.capsule.Service.ListRollouts:input_type -> api.v1.capsule.ListRolloutsRequest
-	30, // 36: api.v1.capsule.Service.AbortRollout:input_type -> api.v1.capsule.AbortRolloutRequest
-	32, // 37: api.v1.capsule.Service.ListEvents:input_type -> api.v1.capsule.ListEventsRequest
-	34, // 38: api.v1.capsule.Service.CapsuleMetrics:input_type -> api.v1.capsule.CapsuleMetricsRequest
-	1,  // 39: api.v1.capsule.Service.Create:output_type -> api.v1.capsule.CreateResponse
-	3,  // 40: api.v1.capsule.Service.Get:output_type -> api.v1.capsule.GetResponse
-	5,  // 41: api.v1.capsule.Service.Delete:output_type -> api.v1.capsule.DeleteResponse
-	7,  // 42: api.v1.capsule.Service.Logs:output_type -> api.v1.capsule.LogsResponse
-	9,  // 43: api.v1.capsule.Service.Update:output_type -> api.v1.capsule.UpdateResponse
-	11, // 44: api.v1.capsule.Service.List:output_type -> api.v1.capsule.ListResponse
-	13, // 45: api.v1.capsule.Service.GetByName:output_type -> api.v1.capsule.GetByNameResponse
-	15, // 46: api.v1.capsule.Service.CreateBuild:output_type -> api.v1.capsule.CreateBuildResponse
-	17, // 47: api.v1.capsule.Service.ListBuilds:output_type -> api.v1.capsule.ListBuildsResponse
-	19, // 48: api.v1.capsule.Service.DeleteBuild:output_type -> api.v1.capsule.DeleteBuildResponse
-	21, // 49: api.v1.capsule.Service.Deploy:output_type -> api.v1.capsule.DeployResponse
-	23, // 50: api.v1.capsule.Service.ListInstances:output_type -> api.v1.capsule.ListInstancesResponse
-	25, // 51: api.v1.capsule.Service.RestartInstance:output_type -> api.v1.capsule.RestartInstanceResponse
-	29, // 52: api.v1.capsule.Service.GetRollout:output_type -> api.v1.capsule.GetRolloutResponse
-	27, // 53: api.v1.capsule.Service.ListRollouts:output_type -> api.v1.capsule.ListRolloutsResponse
-	31, // 54: api.v1.capsule.Service.AbortRollout:output_type -> api.v1.capsule.AbortRolloutResponse
-	33, // 55: api.v1.capsule.Service.ListEvents:output_type -> api.v1.capsule.ListEventsResponse
-	35, // 56: api.v1.capsule.Service.CapsuleMetrics:output_type -> api.v1.capsule.CapsuleMetricsResponse
-	39, // [39:57] is the sub-list for method output_type
-	21, // [21:39] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	35, // 0: api.v1.capsule.CreateRequest.initializers:type_name -> api.v1.capsule.Update
+	36, // 1: api.v1.capsule.GetResponse.capsule:type_name -> api.v1.capsule.Capsule
+	37, // 2: api.v1.capsule.LogsResponse.log:type_name -> api.v1.capsule.Log
+	35, // 3: api.v1.capsule.UpdateRequest.updates:type_name -> api.v1.capsule.Update
+	38, // 4: api.v1.capsule.ListRequest.pagination:type_name -> model.Pagination
+	36, // 5: api.v1.capsule.ListResponse.capsules:type_name -> api.v1.capsule.Capsule
+	39, // 6: api.v1.capsule.CreateBuildRequest.origin:type_name -> api.v1.capsule.Origin
+	34, // 7: api.v1.capsule.CreateBuildRequest.labels:type_name -> api.v1.capsule.CreateBuildRequest.LabelsEntry
+	38, // 8: api.v1.capsule.ListBuildsRequest.pagination:type_name -> model.Pagination
+	40, // 9: api.v1.capsule.ListBuildsResponse.builds:type_name -> api.v1.capsule.Build
+	41, // 10: api.v1.capsule.DeployRequest.changes:type_name -> api.v1.capsule.Change
+	38, // 11: api.v1.capsule.ListInstancesRequest.pagination:type_name -> model.Pagination
+	42, // 12: api.v1.capsule.ListInstancesResponse.instances:type_name -> api.v1.capsule.Instance
+	38, // 13: api.v1.capsule.ListRolloutsRequest.pagination:type_name -> model.Pagination
+	43, // 14: api.v1.capsule.ListRolloutsResponse.rollouts:type_name -> api.v1.capsule.Rollout
+	43, // 15: api.v1.capsule.GetRolloutResponse.rollout:type_name -> api.v1.capsule.Rollout
+	38, // 16: api.v1.capsule.ListEventsRequest.pagination:type_name -> model.Pagination
+	44, // 17: api.v1.capsule.ListEventsResponse.events:type_name -> api.v1.capsule.Event
+	38, // 18: api.v1.capsule.CapsuleMetricsRequest.pagination:type_name -> model.Pagination
+	45, // 19: api.v1.capsule.CapsuleMetricsResponse.instance_metrics:type_name -> api.v1.capsule.InstanceMetrics
+	0,  // 20: api.v1.capsule.Service.Create:input_type -> api.v1.capsule.CreateRequest
+	2,  // 21: api.v1.capsule.Service.Get:input_type -> api.v1.capsule.GetRequest
+	4,  // 22: api.v1.capsule.Service.Delete:input_type -> api.v1.capsule.DeleteRequest
+	6,  // 23: api.v1.capsule.Service.Logs:input_type -> api.v1.capsule.LogsRequest
+	8,  // 24: api.v1.capsule.Service.Update:input_type -> api.v1.capsule.UpdateRequest
+	10, // 25: api.v1.capsule.Service.List:input_type -> api.v1.capsule.ListRequest
+	12, // 26: api.v1.capsule.Service.CreateBuild:input_type -> api.v1.capsule.CreateBuildRequest
+	14, // 27: api.v1.capsule.Service.ListBuilds:input_type -> api.v1.capsule.ListBuildsRequest
+	16, // 28: api.v1.capsule.Service.DeleteBuild:input_type -> api.v1.capsule.DeleteBuildRequest
+	18, // 29: api.v1.capsule.Service.Deploy:input_type -> api.v1.capsule.DeployRequest
+	20, // 30: api.v1.capsule.Service.ListInstances:input_type -> api.v1.capsule.ListInstancesRequest
+	22, // 31: api.v1.capsule.Service.RestartInstance:input_type -> api.v1.capsule.RestartInstanceRequest
+	26, // 32: api.v1.capsule.Service.GetRollout:input_type -> api.v1.capsule.GetRolloutRequest
+	24, // 33: api.v1.capsule.Service.ListRollouts:input_type -> api.v1.capsule.ListRolloutsRequest
+	28, // 34: api.v1.capsule.Service.AbortRollout:input_type -> api.v1.capsule.AbortRolloutRequest
+	30, // 35: api.v1.capsule.Service.ListEvents:input_type -> api.v1.capsule.ListEventsRequest
+	32, // 36: api.v1.capsule.Service.CapsuleMetrics:input_type -> api.v1.capsule.CapsuleMetricsRequest
+	1,  // 37: api.v1.capsule.Service.Create:output_type -> api.v1.capsule.CreateResponse
+	3,  // 38: api.v1.capsule.Service.Get:output_type -> api.v1.capsule.GetResponse
+	5,  // 39: api.v1.capsule.Service.Delete:output_type -> api.v1.capsule.DeleteResponse
+	7,  // 40: api.v1.capsule.Service.Logs:output_type -> api.v1.capsule.LogsResponse
+	9,  // 41: api.v1.capsule.Service.Update:output_type -> api.v1.capsule.UpdateResponse
+	11, // 42: api.v1.capsule.Service.List:output_type -> api.v1.capsule.ListResponse
+	13, // 43: api.v1.capsule.Service.CreateBuild:output_type -> api.v1.capsule.CreateBuildResponse
+	15, // 44: api.v1.capsule.Service.ListBuilds:output_type -> api.v1.capsule.ListBuildsResponse
+	17, // 45: api.v1.capsule.Service.DeleteBuild:output_type -> api.v1.capsule.DeleteBuildResponse
+	19, // 46: api.v1.capsule.Service.Deploy:output_type -> api.v1.capsule.DeployResponse
+	21, // 47: api.v1.capsule.Service.ListInstances:output_type -> api.v1.capsule.ListInstancesResponse
+	23, // 48: api.v1.capsule.Service.RestartInstance:output_type -> api.v1.capsule.RestartInstanceResponse
+	27, // 49: api.v1.capsule.Service.GetRollout:output_type -> api.v1.capsule.GetRolloutResponse
+	25, // 50: api.v1.capsule.Service.ListRollouts:output_type -> api.v1.capsule.ListRolloutsResponse
+	29, // 51: api.v1.capsule.Service.AbortRollout:output_type -> api.v1.capsule.AbortRolloutResponse
+	31, // 52: api.v1.capsule.Service.ListEvents:output_type -> api.v1.capsule.ListEventsResponse
+	33, // 53: api.v1.capsule.Service.CapsuleMetrics:output_type -> api.v1.capsule.CapsuleMetricsResponse
+	37, // [37:54] is the sub-list for method output_type
+	20, // [20:37] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_api_v1_capsule_service_proto_init() }
@@ -2490,30 +2378,6 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetByNameRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_api_v1_capsule_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetByNameResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_api_v1_capsule_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateBuildRequest); i {
 			case 0:
 				return &v.state
@@ -2525,7 +2389,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateBuildResponse); i {
 			case 0:
 				return &v.state
@@ -2537,7 +2401,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListBuildsRequest); i {
 			case 0:
 				return &v.state
@@ -2549,7 +2413,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListBuildsResponse); i {
 			case 0:
 				return &v.state
@@ -2561,7 +2425,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteBuildRequest); i {
 			case 0:
 				return &v.state
@@ -2573,7 +2437,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteBuildResponse); i {
 			case 0:
 				return &v.state
@@ -2585,7 +2449,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeployRequest); i {
 			case 0:
 				return &v.state
@@ -2597,7 +2461,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeployResponse); i {
 			case 0:
 				return &v.state
@@ -2609,7 +2473,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListInstancesRequest); i {
 			case 0:
 				return &v.state
@@ -2621,7 +2485,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListInstancesResponse); i {
 			case 0:
 				return &v.state
@@ -2633,7 +2497,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RestartInstanceRequest); i {
 			case 0:
 				return &v.state
@@ -2645,7 +2509,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RestartInstanceResponse); i {
 			case 0:
 				return &v.state
@@ -2657,7 +2521,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListRolloutsRequest); i {
 			case 0:
 				return &v.state
@@ -2669,7 +2533,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListRolloutsResponse); i {
 			case 0:
 				return &v.state
@@ -2681,7 +2545,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetRolloutRequest); i {
 			case 0:
 				return &v.state
@@ -2693,7 +2557,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetRolloutResponse); i {
 			case 0:
 				return &v.state
@@ -2705,7 +2569,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AbortRolloutRequest); i {
 			case 0:
 				return &v.state
@@ -2717,7 +2581,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AbortRolloutResponse); i {
 			case 0:
 				return &v.state
@@ -2729,7 +2593,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListEventsRequest); i {
 			case 0:
 				return &v.state
@@ -2741,7 +2605,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListEventsResponse); i {
 			case 0:
 				return &v.state
@@ -2753,7 +2617,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CapsuleMetricsRequest); i {
 			case 0:
 				return &v.state
@@ -2765,7 +2629,7 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_capsule_service_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_capsule_service_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CapsuleMetricsResponse); i {
 			case 0:
 				return &v.state
@@ -2784,7 +2648,7 @@ func file_api_v1_capsule_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_capsule_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   37,
+			NumMessages:   35,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
