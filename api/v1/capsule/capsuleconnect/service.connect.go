@@ -67,8 +67,6 @@ const (
 	ServiceListEventsProcedure = "/api.v1.capsule.Service/ListEvents"
 	// ServiceCapsuleMetricsProcedure is the fully-qualified name of the Service's CapsuleMetrics RPC.
 	ServiceCapsuleMetricsProcedure = "/api.v1.capsule.Service/CapsuleMetrics"
-	// ServiceRollbackProcedure is the fully-qualified name of the Service's Rollback RPC.
-	ServiceRollbackProcedure = "/api.v1.capsule.Service/Rollback"
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -111,8 +109,6 @@ type ServiceClient interface {
 	ListEvents(context.Context, *connect_go.Request[capsule.ListEventsRequest]) (*connect_go.Response[capsule.ListEventsResponse], error)
 	// Get metrics for a capsule
 	CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error)
-	// Rolls the capsule back to a previous rollout
-	Rollback(context.Context, *connect_go.Request[capsule.RollbackRequest]) (*connect_go.Response[capsule.RollbackResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -210,11 +206,6 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceCapsuleMetricsProcedure,
 			opts...,
 		),
-		rollback: connect_go.NewClient[capsule.RollbackRequest, capsule.RollbackResponse](
-			httpClient,
-			baseURL+ServiceRollbackProcedure,
-			opts...,
-		),
 	}
 }
 
@@ -237,7 +228,6 @@ type serviceClient struct {
 	abortRollout    *connect_go.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
 	listEvents      *connect_go.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
 	capsuleMetrics  *connect_go.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
-	rollback        *connect_go.Client[capsule.RollbackRequest, capsule.RollbackResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -325,11 +315,6 @@ func (c *serviceClient) CapsuleMetrics(ctx context.Context, req *connect_go.Requ
 	return c.capsuleMetrics.CallUnary(ctx, req)
 }
 
-// Rollback calls api.v1.capsule.Service.Rollback.
-func (c *serviceClient) Rollback(ctx context.Context, req *connect_go.Request[capsule.RollbackRequest]) (*connect_go.Response[capsule.RollbackResponse], error) {
-	return c.rollback.CallUnary(ctx, req)
-}
-
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -370,8 +355,6 @@ type ServiceHandler interface {
 	ListEvents(context.Context, *connect_go.Request[capsule.ListEventsRequest]) (*connect_go.Response[capsule.ListEventsResponse], error)
 	// Get metrics for a capsule
 	CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error)
-	// Rolls the capsule back to a previous rollout
-	Rollback(context.Context, *connect_go.Request[capsule.RollbackRequest]) (*connect_go.Response[capsule.RollbackResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -465,11 +448,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.CapsuleMetrics,
 		opts...,
 	)
-	serviceRollbackHandler := connect_go.NewUnaryHandler(
-		ServiceRollbackProcedure,
-		svc.Rollback,
-		opts...,
-	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -506,8 +484,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			serviceListEventsHandler.ServeHTTP(w, r)
 		case ServiceCapsuleMetricsProcedure:
 			serviceCapsuleMetricsHandler.ServeHTTP(w, r)
-		case ServiceRollbackProcedure:
-			serviceRollbackHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -583,8 +559,4 @@ func (UnimplementedServiceHandler) ListEvents(context.Context, *connect_go.Reque
 
 func (UnimplementedServiceHandler) CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.CapsuleMetrics is not implemented"))
-}
-
-func (UnimplementedServiceHandler) Rollback(context.Context, *connect_go.Request[capsule.RollbackRequest]) (*connect_go.Response[capsule.RollbackResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.Rollback is not implemented"))
 }
