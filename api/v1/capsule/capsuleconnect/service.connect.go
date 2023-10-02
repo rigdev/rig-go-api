@@ -113,7 +113,7 @@ type ServiceClient interface {
 	// Get metrics for a capsule
 	CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error)
 	// Lists all instance statuses for the capsule.
-	ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstancesRequest]) (*connect_go.Response[capsule.ListInstancesResponse], error)
+	ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -211,7 +211,7 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceCapsuleMetricsProcedure,
 			opts...,
 		),
-		listInstanceStatuses: connect_go.NewClient[capsule.ListInstancesRequest, capsule.ListInstancesResponse](
+		listInstanceStatuses: connect_go.NewClient[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse](
 			httpClient,
 			baseURL+ServiceListInstanceStatusesProcedure,
 			opts...,
@@ -238,7 +238,7 @@ type serviceClient struct {
 	abortRollout         *connect_go.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
 	listEvents           *connect_go.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
 	capsuleMetrics       *connect_go.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
-	listInstanceStatuses *connect_go.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
+	listInstanceStatuses *connect_go.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -327,7 +327,7 @@ func (c *serviceClient) CapsuleMetrics(ctx context.Context, req *connect_go.Requ
 }
 
 // ListInstanceStatuses calls api.v1.capsule.Service.ListInstanceStatuses.
-func (c *serviceClient) ListInstanceStatuses(ctx context.Context, req *connect_go.Request[capsule.ListInstancesRequest]) (*connect_go.Response[capsule.ListInstancesResponse], error) {
+func (c *serviceClient) ListInstanceStatuses(ctx context.Context, req *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error) {
 	return c.listInstanceStatuses.CallUnary(ctx, req)
 }
 
@@ -372,7 +372,7 @@ type ServiceHandler interface {
 	// Get metrics for a capsule
 	CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error)
 	// Lists all instance statuses for the capsule.
-	ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstancesRequest]) (*connect_go.Response[capsule.ListInstancesResponse], error)
+	ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -586,6 +586,6 @@ func (UnimplementedServiceHandler) CapsuleMetrics(context.Context, *connect_go.R
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.CapsuleMetrics is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstancesRequest]) (*connect_go.Response[capsule.ListInstancesResponse], error) {
+func (UnimplementedServiceHandler) ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListInstanceStatuses is not implemented"))
 }
