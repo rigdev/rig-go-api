@@ -21,6 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// StateStatus is used to indicate the status of States and StateMachines.
+//
+// A State can be
+//   - Failed: If it is a leaf-state representing a failure or a complex state with at least one failing sub-statemachine
+//   - Ongoing: If it is a leaf-state representing an ongoing operation or a complex state with no failing sub-statemachines and at least one ongoing one
+//   - Done: If it is a leaf-state representing a done operation or a complex state with only done sub-statemachines
+//
+// A StateMachine can be
+//   - Failed: If at least one of its states are failed
+//   - Ongoing: If none one of its states are failed and at least one is ongoing
+//   - Done: If all its states are done
 type StateStatus int32
 
 const (
@@ -73,6 +84,8 @@ func (StateStatus) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_instance_status_proto_rawDescGZIP(), []int{0}
 }
 
+// StateID uniquely qualifes a State. That is, all states have a StateID and at most
+// one State can have a specific StateID at a time.
 type StateID int32
 
 const (
@@ -152,6 +165,8 @@ func (StateID) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_instance_status_proto_rawDescGZIP(), []int{1}
 }
 
+// StateMachineID uniquely qualifes a StateMachine. That is, all statemachines have a StateMachineID and at most
+// one StateMachine can have a specific StateMachineID at a time.
 type StateMachineID int32
 
 const (
@@ -207,6 +222,7 @@ func (StateMachineID) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_instance_status_proto_rawDescGZIP(), []int{2}
 }
 
+// Status is a reprsentation of the current state of an instance
 type Status struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -270,6 +286,11 @@ func (x *Status) GetData() *Data {
 	return nil
 }
 
+// A State is a part of a StateMachine representing where in its lifecycle an instance is at the moment.
+// Within the entire tree-structure of the Status, there is at most one state with a given StateID
+// A State can represent fairly complicated parts of an instance lifecycle, thus they can in turn
+// contain several sub-statemachines. Each sub-statemachine will run in parallel.
+// States with no sub-statemachines are called leaf states. States with sub-statemachines are called complex States
 type State struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -349,6 +370,11 @@ func (x *State) GetSubStateMachines() []*StateMachine {
 	return nil
 }
 
+// A StateMachine represents a set of States the instance cycles through.
+// At any point in time a StateMachine is only actively in one state.
+// The 'states' usually only contain a single State (the current state of the StateMachine),
+// but in some cases contains previous states visited by the Machine.
+// Thus the linear order of 'states' is an incomplete historical view of the StateMachine's execution
 type StateMachine struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -475,13 +501,17 @@ func (x *Timestamps) GetExited() *timestamppb.Timestamp {
 	return nil
 }
 
+// Extra data which is not common among all states.
+// Each field is a set of data associated to one specific state
 type Data struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	TopLevel         *TopLevelData         `protobuf:"bytes,1,opt,name=top_level,json=topLevel,proto3" json:"top_level,omitempty"`
-	Running          *RunningData          `protobuf:"bytes,2,opt,name=running,proto3" json:"running,omitempty"`
+	TopLevel *TopLevelData `protobuf:"bytes,1,opt,name=top_level,json=topLevel,proto3" json:"top_level,omitempty"`
+	// RunningData is associated to the RUNNING StateID
+	Running *RunningData `protobuf:"bytes,2,opt,name=running,proto3" json:"running,omitempty"`
+	// CrashLoopBackOffData is associated to the CRASH_LOOP_BACK_OFF StateID
 	CrashLoopBackOff *CrashLoopBackOffData `protobuf:"bytes,3,opt,name=crash_loop_back_off,json=crashLoopBackOff,proto3" json:"crash_loop_back_off,omitempty"`
 }
 
