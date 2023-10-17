@@ -67,9 +67,6 @@ const (
 	ServiceListEventsProcedure = "/api.v1.capsule.Service/ListEvents"
 	// ServiceCapsuleMetricsProcedure is the fully-qualified name of the Service's CapsuleMetrics RPC.
 	ServiceCapsuleMetricsProcedure = "/api.v1.capsule.Service/CapsuleMetrics"
-	// ServiceListAllCurrentInstanceStatusesProcedure is the fully-qualified name of the Service's
-	// ListAllCurrentInstanceStatuses RPC.
-	ServiceListAllCurrentInstanceStatusesProcedure = "/api.v1.capsule.Service/ListAllCurrentInstanceStatuses"
 	// ServiceGetInstanceStatusProcedure is the fully-qualified name of the Service's GetInstanceStatus
 	// RPC.
 	ServiceGetInstanceStatusProcedure = "/api.v1.capsule.Service/GetInstanceStatus"
@@ -118,11 +115,9 @@ type ServiceClient interface {
 	ListEvents(context.Context, *connect_go.Request[capsule.ListEventsRequest]) (*connect_go.Response[capsule.ListEventsResponse], error)
 	// Get metrics for a capsule
 	CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error)
-	// Lists the current instance status for each instance of the capsule.
-	ListAllCurrentInstanceStatuses(context.Context, *connect_go.Request[capsule.ListAllCurrentInstanceStatusesRequest]) (*connect_go.Response[capsule.ListAllCurrentInstanceStatusesResponse], error)
 	// GetInstanceStatus returns the current status for the given instance
 	GetInstanceStatus(context.Context, *connect_go.Request[capsule.GetInstanceStatusRequest]) (*connect_go.Response[capsule.GetInstanceStatusResponse], error)
-	// ListInstanceStatuses lists all the historical statuses for the instance
+	// ListInstanceStatuses lists the status of all instances.
 	ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error)
 }
 
@@ -221,11 +216,6 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceCapsuleMetricsProcedure,
 			opts...,
 		),
-		listAllCurrentInstanceStatuses: connect_go.NewClient[capsule.ListAllCurrentInstanceStatusesRequest, capsule.ListAllCurrentInstanceStatusesResponse](
-			httpClient,
-			baseURL+ServiceListAllCurrentInstanceStatusesProcedure,
-			opts...,
-		),
 		getInstanceStatus: connect_go.NewClient[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse](
 			httpClient,
 			baseURL+ServiceGetInstanceStatusProcedure,
@@ -241,26 +231,25 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create                         *connect_go.Client[capsule.CreateRequest, capsule.CreateResponse]
-	get                            *connect_go.Client[capsule.GetRequest, capsule.GetResponse]
-	delete                         *connect_go.Client[capsule.DeleteRequest, capsule.DeleteResponse]
-	logs                           *connect_go.Client[capsule.LogsRequest, capsule.LogsResponse]
-	update                         *connect_go.Client[capsule.UpdateRequest, capsule.UpdateResponse]
-	list                           *connect_go.Client[capsule.ListRequest, capsule.ListResponse]
-	createBuild                    *connect_go.Client[capsule.CreateBuildRequest, capsule.CreateBuildResponse]
-	listBuilds                     *connect_go.Client[capsule.ListBuildsRequest, capsule.ListBuildsResponse]
-	deleteBuild                    *connect_go.Client[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse]
-	deploy                         *connect_go.Client[capsule.DeployRequest, capsule.DeployResponse]
-	listInstances                  *connect_go.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
-	restartInstance                *connect_go.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
-	getRollout                     *connect_go.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
-	listRollouts                   *connect_go.Client[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse]
-	abortRollout                   *connect_go.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
-	listEvents                     *connect_go.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
-	capsuleMetrics                 *connect_go.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
-	listAllCurrentInstanceStatuses *connect_go.Client[capsule.ListAllCurrentInstanceStatusesRequest, capsule.ListAllCurrentInstanceStatusesResponse]
-	getInstanceStatus              *connect_go.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
-	listInstanceStatuses           *connect_go.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
+	create               *connect_go.Client[capsule.CreateRequest, capsule.CreateResponse]
+	get                  *connect_go.Client[capsule.GetRequest, capsule.GetResponse]
+	delete               *connect_go.Client[capsule.DeleteRequest, capsule.DeleteResponse]
+	logs                 *connect_go.Client[capsule.LogsRequest, capsule.LogsResponse]
+	update               *connect_go.Client[capsule.UpdateRequest, capsule.UpdateResponse]
+	list                 *connect_go.Client[capsule.ListRequest, capsule.ListResponse]
+	createBuild          *connect_go.Client[capsule.CreateBuildRequest, capsule.CreateBuildResponse]
+	listBuilds           *connect_go.Client[capsule.ListBuildsRequest, capsule.ListBuildsResponse]
+	deleteBuild          *connect_go.Client[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse]
+	deploy               *connect_go.Client[capsule.DeployRequest, capsule.DeployResponse]
+	listInstances        *connect_go.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
+	restartInstance      *connect_go.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
+	getRollout           *connect_go.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
+	listRollouts         *connect_go.Client[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse]
+	abortRollout         *connect_go.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
+	listEvents           *connect_go.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
+	capsuleMetrics       *connect_go.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
+	getInstanceStatus    *connect_go.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
+	listInstanceStatuses *connect_go.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -348,11 +337,6 @@ func (c *serviceClient) CapsuleMetrics(ctx context.Context, req *connect_go.Requ
 	return c.capsuleMetrics.CallUnary(ctx, req)
 }
 
-// ListAllCurrentInstanceStatuses calls api.v1.capsule.Service.ListAllCurrentInstanceStatuses.
-func (c *serviceClient) ListAllCurrentInstanceStatuses(ctx context.Context, req *connect_go.Request[capsule.ListAllCurrentInstanceStatusesRequest]) (*connect_go.Response[capsule.ListAllCurrentInstanceStatusesResponse], error) {
-	return c.listAllCurrentInstanceStatuses.CallUnary(ctx, req)
-}
-
 // GetInstanceStatus calls api.v1.capsule.Service.GetInstanceStatus.
 func (c *serviceClient) GetInstanceStatus(ctx context.Context, req *connect_go.Request[capsule.GetInstanceStatusRequest]) (*connect_go.Response[capsule.GetInstanceStatusResponse], error) {
 	return c.getInstanceStatus.CallUnary(ctx, req)
@@ -403,11 +387,9 @@ type ServiceHandler interface {
 	ListEvents(context.Context, *connect_go.Request[capsule.ListEventsRequest]) (*connect_go.Response[capsule.ListEventsResponse], error)
 	// Get metrics for a capsule
 	CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error)
-	// Lists the current instance status for each instance of the capsule.
-	ListAllCurrentInstanceStatuses(context.Context, *connect_go.Request[capsule.ListAllCurrentInstanceStatusesRequest]) (*connect_go.Response[capsule.ListAllCurrentInstanceStatusesResponse], error)
 	// GetInstanceStatus returns the current status for the given instance
 	GetInstanceStatus(context.Context, *connect_go.Request[capsule.GetInstanceStatusRequest]) (*connect_go.Response[capsule.GetInstanceStatusResponse], error)
-	// ListInstanceStatuses lists all the historical statuses for the instance
+	// ListInstanceStatuses lists the status of all instances.
 	ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error)
 }
 
@@ -502,11 +484,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.CapsuleMetrics,
 		opts...,
 	)
-	serviceListAllCurrentInstanceStatusesHandler := connect_go.NewUnaryHandler(
-		ServiceListAllCurrentInstanceStatusesProcedure,
-		svc.ListAllCurrentInstanceStatuses,
-		opts...,
-	)
 	serviceGetInstanceStatusHandler := connect_go.NewUnaryHandler(
 		ServiceGetInstanceStatusProcedure,
 		svc.GetInstanceStatus,
@@ -553,8 +530,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			serviceListEventsHandler.ServeHTTP(w, r)
 		case ServiceCapsuleMetricsProcedure:
 			serviceCapsuleMetricsHandler.ServeHTTP(w, r)
-		case ServiceListAllCurrentInstanceStatusesProcedure:
-			serviceListAllCurrentInstanceStatusesHandler.ServeHTTP(w, r)
 		case ServiceGetInstanceStatusProcedure:
 			serviceGetInstanceStatusHandler.ServeHTTP(w, r)
 		case ServiceListInstanceStatusesProcedure:
@@ -634,10 +609,6 @@ func (UnimplementedServiceHandler) ListEvents(context.Context, *connect_go.Reque
 
 func (UnimplementedServiceHandler) CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.CapsuleMetrics is not implemented"))
-}
-
-func (UnimplementedServiceHandler) ListAllCurrentInstanceStatuses(context.Context, *connect_go.Request[capsule.ListAllCurrentInstanceStatusesRequest]) (*connect_go.Response[capsule.ListAllCurrentInstanceStatusesResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListAllCurrentInstanceStatuses is not implemented"))
 }
 
 func (UnimplementedServiceHandler) GetInstanceStatus(context.Context, *connect_go.Request[capsule.GetInstanceStatusRequest]) (*connect_go.Response[capsule.GetInstanceStatusResponse], error) {
