@@ -47,6 +47,8 @@ const (
 	ServicePublicKeyProcedure = "/api.v1.project.Service/PublicKey"
 	// ServiceUseProcedure is the fully-qualified name of the Service's Use RPC.
 	ServiceUseProcedure = "/api.v1.project.Service/Use"
+	// ServiceGetLicenseInfoProcedure is the fully-qualified name of the Service's GetLicenseInfo RPC.
+	ServiceGetLicenseInfoProcedure = "/api.v1.project.Service/GetLicenseInfo"
 )
 
 // ServiceClient is a client for the api.v1.project.Service service.
@@ -66,6 +68,8 @@ type ServiceClient interface {
 	// Use generates a project token for editing the project as the current
 	// user.
 	Use(context.Context, *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error)
+	// Get License Information
+	GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.project.Service service. By default, it uses
@@ -113,18 +117,24 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceUseProcedure,
 			opts...,
 		),
+		getLicenseInfo: connect_go.NewClient[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse](
+			httpClient,
+			baseURL+ServiceGetLicenseInfoProcedure,
+			opts...,
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create    *connect_go.Client[project.CreateRequest, project.CreateResponse]
-	delete    *connect_go.Client[project.DeleteRequest, project.DeleteResponse]
-	get       *connect_go.Client[project.GetRequest, project.GetResponse]
-	list      *connect_go.Client[project.ListRequest, project.ListResponse]
-	update    *connect_go.Client[project.UpdateRequest, project.UpdateResponse]
-	publicKey *connect_go.Client[project.PublicKeyRequest, project.PublicKeyResponse]
-	use       *connect_go.Client[project.UseRequest, project.UseResponse]
+	create         *connect_go.Client[project.CreateRequest, project.CreateResponse]
+	delete         *connect_go.Client[project.DeleteRequest, project.DeleteResponse]
+	get            *connect_go.Client[project.GetRequest, project.GetResponse]
+	list           *connect_go.Client[project.ListRequest, project.ListResponse]
+	update         *connect_go.Client[project.UpdateRequest, project.UpdateResponse]
+	publicKey      *connect_go.Client[project.PublicKeyRequest, project.PublicKeyResponse]
+	use            *connect_go.Client[project.UseRequest, project.UseResponse]
+	getLicenseInfo *connect_go.Client[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse]
 }
 
 // Create calls api.v1.project.Service.Create.
@@ -162,6 +172,11 @@ func (c *serviceClient) Use(ctx context.Context, req *connect_go.Request[project
 	return c.use.CallUnary(ctx, req)
 }
 
+// GetLicenseInfo calls api.v1.project.Service.GetLicenseInfo.
+func (c *serviceClient) GetLicenseInfo(ctx context.Context, req *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error) {
+	return c.getLicenseInfo.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.project.Service service.
 type ServiceHandler interface {
 	// Create project
@@ -179,6 +194,8 @@ type ServiceHandler interface {
 	// Use generates a project token for editing the project as the current
 	// user.
 	Use(context.Context, *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error)
+	// Get License Information
+	GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -222,6 +239,11 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.Use,
 		opts...,
 	)
+	serviceGetLicenseInfoHandler := connect_go.NewUnaryHandler(
+		ServiceGetLicenseInfoProcedure,
+		svc.GetLicenseInfo,
+		opts...,
+	)
 	return "/api.v1.project.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -238,6 +260,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			servicePublicKeyHandler.ServeHTTP(w, r)
 		case ServiceUseProcedure:
 			serviceUseHandler.ServeHTTP(w, r)
+		case ServiceGetLicenseInfoProcedure:
+			serviceGetLicenseInfoHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -273,4 +297,8 @@ func (UnimplementedServiceHandler) PublicKey(context.Context, *connect_go.Reques
 
 func (UnimplementedServiceHandler) Use(context.Context, *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.Use is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.GetLicenseInfo is not implemented"))
 }
