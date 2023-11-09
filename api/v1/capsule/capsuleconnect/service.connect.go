@@ -73,6 +73,8 @@ const (
 	// ServiceListInstanceStatusesProcedure is the fully-qualified name of the Service's
 	// ListInstanceStatuses RPC.
 	ServiceListInstanceStatusesProcedure = "/api.v1.capsule.Service/ListInstanceStatuses"
+	// ServiceExecuteProcedure is the fully-qualified name of the Service's Execute RPC.
+	ServiceExecuteProcedure = "/api.v1.capsule.Service/Execute"
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -119,6 +121,9 @@ type ServiceClient interface {
 	GetInstanceStatus(context.Context, *connect_go.Request[capsule.GetInstanceStatusRequest]) (*connect_go.Response[capsule.GetInstanceStatusResponse], error)
 	// ListInstanceStatuses lists the status of all instances.
 	ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error)
+	// Execute executes a command in a given in instance,
+	// and returns the output along with an exit code.
+	Execute(context.Context) *connect_go.BidiStreamForClient[capsule.ExecuteRequest, capsule.ExecuteResponse]
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -226,6 +231,11 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceListInstanceStatusesProcedure,
 			opts...,
 		),
+		execute: connect_go.NewClient[capsule.ExecuteRequest, capsule.ExecuteResponse](
+			httpClient,
+			baseURL+ServiceExecuteProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -250,6 +260,7 @@ type serviceClient struct {
 	capsuleMetrics       *connect_go.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
 	getInstanceStatus    *connect_go.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
 	listInstanceStatuses *connect_go.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
+	execute              *connect_go.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -347,6 +358,11 @@ func (c *serviceClient) ListInstanceStatuses(ctx context.Context, req *connect_g
 	return c.listInstanceStatuses.CallUnary(ctx, req)
 }
 
+// Execute calls api.v1.capsule.Service.Execute.
+func (c *serviceClient) Execute(ctx context.Context) *connect_go.BidiStreamForClient[capsule.ExecuteRequest, capsule.ExecuteResponse] {
+	return c.execute.CallBidiStream(ctx)
+}
+
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -391,6 +407,9 @@ type ServiceHandler interface {
 	GetInstanceStatus(context.Context, *connect_go.Request[capsule.GetInstanceStatusRequest]) (*connect_go.Response[capsule.GetInstanceStatusResponse], error)
 	// ListInstanceStatuses lists the status of all instances.
 	ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error)
+	// Execute executes a command in a given in instance,
+	// and returns the output along with an exit code.
+	Execute(context.Context, *connect_go.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -494,6 +513,11 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.ListInstanceStatuses,
 		opts...,
 	)
+	serviceExecuteHandler := connect_go.NewBidiStreamHandler(
+		ServiceExecuteProcedure,
+		svc.Execute,
+		opts...,
+	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -534,6 +558,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			serviceGetInstanceStatusHandler.ServeHTTP(w, r)
 		case ServiceListInstanceStatusesProcedure:
 			serviceListInstanceStatusesHandler.ServeHTTP(w, r)
+		case ServiceExecuteProcedure:
+			serviceExecuteHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -617,4 +643,8 @@ func (UnimplementedServiceHandler) GetInstanceStatus(context.Context, *connect_g
 
 func (UnimplementedServiceHandler) ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListInstanceStatuses is not implemented"))
+}
+
+func (UnimplementedServiceHandler) Execute(context.Context, *connect_go.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error {
+	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.Execute is not implemented"))
 }
