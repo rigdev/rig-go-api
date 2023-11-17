@@ -87,6 +87,7 @@ type ExecuteRequest struct {
 	//
 	//	*ExecuteRequest_Start_
 	//	*ExecuteRequest_Stdin
+	//	*ExecuteRequest_Resize_
 	Request isExecuteRequest_Request `protobuf_oneof:"request"`
 }
 
@@ -143,6 +144,13 @@ func (x *ExecuteRequest) GetStdin() *StreamData {
 	return nil
 }
 
+func (x *ExecuteRequest) GetResize() *ExecuteRequest_Resize {
+	if x, ok := x.GetRequest().(*ExecuteRequest_Resize_); ok {
+		return x.Resize
+	}
+	return nil
+}
+
 type isExecuteRequest_Request interface {
 	isExecuteRequest_Request()
 }
@@ -155,9 +163,15 @@ type ExecuteRequest_Stdin struct {
 	Stdin *StreamData `protobuf:"bytes,2,opt,name=stdin,proto3,oneof"`
 }
 
+type ExecuteRequest_Resize_ struct {
+	Resize *ExecuteRequest_Resize `protobuf:"bytes,3,opt,name=resize,proto3,oneof"`
+}
+
 func (*ExecuteRequest_Start_) isExecuteRequest_Request() {}
 
 func (*ExecuteRequest_Stdin) isExecuteRequest_Request() {}
+
+func (*ExecuteRequest_Resize_) isExecuteRequest_Request() {}
 
 type ExecuteResponse struct {
 	state         protoimpl.MessageState
@@ -2263,12 +2277,12 @@ type ExecuteRequest_Start struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId   string   `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
-	InstanceId  string   `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
-	Command     string   `protobuf:"bytes,3,opt,name=command,proto3" json:"command,omitempty"`
-	Arguments   []string `protobuf:"bytes,4,rep,name=arguments,proto3" json:"arguments,omitempty"`
-	Tty         bool     `protobuf:"varint,5,opt,name=tty,proto3" json:"tty,omitempty"`
-	Interactive bool     `protobuf:"varint,6,opt,name=interactive,proto3" json:"interactive,omitempty"`
+	CapsuleId   string                 `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	InstanceId  string                 `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	Command     string                 `protobuf:"bytes,3,opt,name=command,proto3" json:"command,omitempty"`
+	Arguments   []string               `protobuf:"bytes,4,rep,name=arguments,proto3" json:"arguments,omitempty"`
+	Tty         *ExecuteRequest_Resize `protobuf:"bytes,5,opt,name=tty,proto3" json:"tty,omitempty"`
+	Interactive bool                   `protobuf:"varint,6,opt,name=interactive,proto3" json:"interactive,omitempty"`
 }
 
 func (x *ExecuteRequest_Start) Reset() {
@@ -2331,11 +2345,11 @@ func (x *ExecuteRequest_Start) GetArguments() []string {
 	return nil
 }
 
-func (x *ExecuteRequest_Start) GetTty() bool {
+func (x *ExecuteRequest_Start) GetTty() *ExecuteRequest_Resize {
 	if x != nil {
 		return x.Tty
 	}
-	return false
+	return nil
 }
 
 func (x *ExecuteRequest_Start) GetInteractive() bool {
@@ -2343,6 +2357,61 @@ func (x *ExecuteRequest_Start) GetInteractive() bool {
 		return x.Interactive
 	}
 	return false
+}
+
+type ExecuteRequest_Resize struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Height uint32 `protobuf:"varint,1,opt,name=height,proto3" json:"height,omitempty"`
+	Width  uint32 `protobuf:"varint,2,opt,name=width,proto3" json:"width,omitempty"`
+}
+
+func (x *ExecuteRequest_Resize) Reset() {
+	*x = ExecuteRequest_Resize{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_capsule_service_proto_msgTypes[42]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ExecuteRequest_Resize) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExecuteRequest_Resize) ProtoMessage() {}
+
+func (x *ExecuteRequest_Resize) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_capsule_service_proto_msgTypes[42]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExecuteRequest_Resize.ProtoReflect.Descriptor instead.
+func (*ExecuteRequest_Resize) Descriptor() ([]byte, []int) {
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{1, 1}
+}
+
+func (x *ExecuteRequest_Resize) GetHeight() uint32 {
+	if x != nil {
+		return x.Height
+	}
+	return 0
+}
+
+func (x *ExecuteRequest_Resize) GetWidth() uint32 {
+	if x != nil {
+		return x.Width
+	}
+	return 0
 }
 
 var File_api_v1_capsule_service_proto protoreflect.FileDescriptor
@@ -2372,7 +2441,7 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x6f, 0x74, 0x6f, 0x22, 0x38, 0x0a, 0x0a, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x44, 0x61, 0x74,
 	0x61, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52,
 	0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x16, 0x0a, 0x06, 0x63, 0x6c, 0x6f, 0x73, 0x65, 0x64, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x63, 0x6c, 0x6f, 0x73, 0x65, 0x64, 0x22, 0xc3, 0x02,
+	0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x63, 0x6c, 0x6f, 0x73, 0x65, 0x64, 0x22, 0xe3, 0x03,
 	0x0a, 0x0e, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x12, 0x3c, 0x0a, 0x05, 0x73, 0x74, 0x61, 0x72, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
 	0x24, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
@@ -2381,18 +2450,28 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x0a, 0x05, 0x73, 0x74, 0x64, 0x69, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e,
 	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x53,
 	0x74, 0x72, 0x65, 0x61, 0x6d, 0x44, 0x61, 0x74, 0x61, 0x48, 0x00, 0x52, 0x05, 0x73, 0x74, 0x64,
-	0x69, 0x6e, 0x1a, 0xb3, 0x01, 0x0a, 0x05, 0x53, 0x74, 0x61, 0x72, 0x74, 0x12, 0x1d, 0x0a, 0x0a,
-	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x09, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x1f, 0x0a, 0x0b, 0x69,
-	0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07,
-	0x63, 0x6f, 0x6d, 0x6d, 0x61, 0x6e, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63,
-	0x6f, 0x6d, 0x6d, 0x61, 0x6e, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x61, 0x72, 0x67, 0x75, 0x6d, 0x65,
-	0x6e, 0x74, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x61, 0x72, 0x67, 0x75, 0x6d,
-	0x65, 0x6e, 0x74, 0x73, 0x12, 0x10, 0x0a, 0x03, 0x74, 0x74, 0x79, 0x18, 0x05, 0x20, 0x01, 0x28,
-	0x08, 0x52, 0x03, 0x74, 0x74, 0x79, 0x12, 0x20, 0x0a, 0x0b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x61,
-	0x63, 0x74, 0x69, 0x76, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0b, 0x69, 0x6e, 0x74,
-	0x65, 0x72, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x42, 0x09, 0x0a, 0x07, 0x72, 0x65, 0x71, 0x75,
+	0x69, 0x6e, 0x12, 0x3f, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x69, 0x7a, 0x65, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x25, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73,
+	0x75, 0x6c, 0x65, 0x2e, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x2e, 0x52, 0x65, 0x73, 0x69, 0x7a, 0x65, 0x48, 0x00, 0x52, 0x06, 0x72, 0x65, 0x73,
+	0x69, 0x7a, 0x65, 0x1a, 0xda, 0x01, 0x0a, 0x05, 0x53, 0x74, 0x61, 0x72, 0x74, 0x12, 0x1d, 0x0a,
+	0x0a, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x09, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x1f, 0x0a, 0x0b,
+	0x69, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x49, 0x64, 0x12, 0x18, 0x0a,
+	0x07, 0x63, 0x6f, 0x6d, 0x6d, 0x61, 0x6e, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x63, 0x6f, 0x6d, 0x6d, 0x61, 0x6e, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x61, 0x72, 0x67, 0x75, 0x6d,
+	0x65, 0x6e, 0x74, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x61, 0x72, 0x67, 0x75,
+	0x6d, 0x65, 0x6e, 0x74, 0x73, 0x12, 0x37, 0x0a, 0x03, 0x74, 0x74, 0x79, 0x18, 0x05, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x25, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73,
+	0x75, 0x6c, 0x65, 0x2e, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x2e, 0x52, 0x65, 0x73, 0x69, 0x7a, 0x65, 0x52, 0x03, 0x74, 0x74, 0x79, 0x12, 0x20,
+	0x0a, 0x0b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x18, 0x06, 0x20,
+	0x01, 0x28, 0x08, 0x52, 0x0b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65,
+	0x1a, 0x36, 0x0a, 0x06, 0x52, 0x65, 0x73, 0x69, 0x7a, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x68, 0x65,
+	0x69, 0x67, 0x68, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x06, 0x68, 0x65, 0x69, 0x67,
+	0x68, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x77, 0x69, 0x64, 0x74, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x0d, 0x52, 0x05, 0x77, 0x69, 0x64, 0x74, 0x68, 0x42, 0x09, 0x0a, 0x07, 0x72, 0x65, 0x71, 0x75,
 	0x65, 0x73, 0x74, 0x22, 0xa8, 0x01, 0x0a, 0x0f, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x65, 0x52,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x34, 0x0a, 0x06, 0x73, 0x74, 0x64, 0x6f, 0x75,
 	0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31,
@@ -2747,7 +2826,7 @@ func file_api_v1_capsule_service_proto_rawDescGZIP() []byte {
 	return file_api_v1_capsule_service_proto_rawDescData
 }
 
-var file_api_v1_capsule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 43)
+var file_api_v1_capsule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
 var file_api_v1_capsule_service_proto_goTypes = []interface{}{
 	(*StreamData)(nil),                   // 0: api.v1.capsule.StreamData
 	(*ExecuteRequest)(nil),               // 1: api.v1.capsule.ExecuteRequest
@@ -2791,95 +2870,98 @@ var file_api_v1_capsule_service_proto_goTypes = []interface{}{
 	(*CapsuleMetricsRequest)(nil),        // 39: api.v1.capsule.CapsuleMetricsRequest
 	(*CapsuleMetricsResponse)(nil),       // 40: api.v1.capsule.CapsuleMetricsResponse
 	(*ExecuteRequest_Start)(nil),         // 41: api.v1.capsule.ExecuteRequest.Start
-	nil,                                  // 42: api.v1.capsule.CreateBuildRequest.LabelsEntry
-	(*Update)(nil),                       // 43: api.v1.capsule.Update
-	(*Capsule)(nil),                      // 44: api.v1.capsule.Capsule
-	(*durationpb.Duration)(nil),          // 45: google.protobuf.Duration
-	(*Log)(nil),                          // 46: api.v1.capsule.Log
-	(*model.Pagination)(nil),             // 47: model.Pagination
-	(*Origin)(nil),                       // 48: api.v1.capsule.Origin
-	(*Build)(nil),                        // 49: api.v1.capsule.Build
-	(*Change)(nil),                       // 50: api.v1.capsule.Change
-	(*Instance)(nil),                     // 51: api.v1.capsule.Instance
-	(*instance.Status)(nil),              // 52: api.v1.capsule.instance.Status
-	(*Rollout)(nil),                      // 53: api.v1.capsule.Rollout
-	(*Event)(nil),                        // 54: api.v1.capsule.Event
-	(*InstanceMetrics)(nil),              // 55: api.v1.capsule.InstanceMetrics
+	(*ExecuteRequest_Resize)(nil),        // 42: api.v1.capsule.ExecuteRequest.Resize
+	nil,                                  // 43: api.v1.capsule.CreateBuildRequest.LabelsEntry
+	(*Update)(nil),                       // 44: api.v1.capsule.Update
+	(*Capsule)(nil),                      // 45: api.v1.capsule.Capsule
+	(*durationpb.Duration)(nil),          // 46: google.protobuf.Duration
+	(*Log)(nil),                          // 47: api.v1.capsule.Log
+	(*model.Pagination)(nil),             // 48: model.Pagination
+	(*Origin)(nil),                       // 49: api.v1.capsule.Origin
+	(*Build)(nil),                        // 50: api.v1.capsule.Build
+	(*Change)(nil),                       // 51: api.v1.capsule.Change
+	(*Instance)(nil),                     // 52: api.v1.capsule.Instance
+	(*instance.Status)(nil),              // 53: api.v1.capsule.instance.Status
+	(*Rollout)(nil),                      // 54: api.v1.capsule.Rollout
+	(*Event)(nil),                        // 55: api.v1.capsule.Event
+	(*InstanceMetrics)(nil),              // 56: api.v1.capsule.InstanceMetrics
 }
 var file_api_v1_capsule_service_proto_depIdxs = []int32{
 	41, // 0: api.v1.capsule.ExecuteRequest.start:type_name -> api.v1.capsule.ExecuteRequest.Start
 	0,  // 1: api.v1.capsule.ExecuteRequest.stdin:type_name -> api.v1.capsule.StreamData
-	0,  // 2: api.v1.capsule.ExecuteResponse.stdout:type_name -> api.v1.capsule.StreamData
-	0,  // 3: api.v1.capsule.ExecuteResponse.stderr:type_name -> api.v1.capsule.StreamData
-	43, // 4: api.v1.capsule.CreateRequest.initializers:type_name -> api.v1.capsule.Update
-	44, // 5: api.v1.capsule.GetResponse.capsule:type_name -> api.v1.capsule.Capsule
-	45, // 6: api.v1.capsule.LogsRequest.since:type_name -> google.protobuf.Duration
-	46, // 7: api.v1.capsule.LogsResponse.log:type_name -> api.v1.capsule.Log
-	43, // 8: api.v1.capsule.UpdateRequest.updates:type_name -> api.v1.capsule.Update
-	47, // 9: api.v1.capsule.ListRequest.pagination:type_name -> model.Pagination
-	44, // 10: api.v1.capsule.ListResponse.capsules:type_name -> api.v1.capsule.Capsule
-	48, // 11: api.v1.capsule.CreateBuildRequest.origin:type_name -> api.v1.capsule.Origin
-	42, // 12: api.v1.capsule.CreateBuildRequest.labels:type_name -> api.v1.capsule.CreateBuildRequest.LabelsEntry
-	47, // 13: api.v1.capsule.ListBuildsRequest.pagination:type_name -> model.Pagination
-	49, // 14: api.v1.capsule.ListBuildsResponse.builds:type_name -> api.v1.capsule.Build
-	50, // 15: api.v1.capsule.DeployRequest.changes:type_name -> api.v1.capsule.Change
-	47, // 16: api.v1.capsule.ListInstancesRequest.pagination:type_name -> model.Pagination
-	51, // 17: api.v1.capsule.ListInstancesResponse.instances:type_name -> api.v1.capsule.Instance
-	52, // 18: api.v1.capsule.GetInstanceStatusResponse.status:type_name -> api.v1.capsule.instance.Status
-	47, // 19: api.v1.capsule.ListInstanceStatusesRequest.pagination:type_name -> model.Pagination
-	52, // 20: api.v1.capsule.ListInstanceStatusesResponse.instances:type_name -> api.v1.capsule.instance.Status
-	47, // 21: api.v1.capsule.ListRolloutsRequest.pagination:type_name -> model.Pagination
-	53, // 22: api.v1.capsule.ListRolloutsResponse.rollouts:type_name -> api.v1.capsule.Rollout
-	53, // 23: api.v1.capsule.GetRolloutResponse.rollout:type_name -> api.v1.capsule.Rollout
-	47, // 24: api.v1.capsule.ListEventsRequest.pagination:type_name -> model.Pagination
-	54, // 25: api.v1.capsule.ListEventsResponse.events:type_name -> api.v1.capsule.Event
-	47, // 26: api.v1.capsule.CapsuleMetricsRequest.pagination:type_name -> model.Pagination
-	55, // 27: api.v1.capsule.CapsuleMetricsResponse.instance_metrics:type_name -> api.v1.capsule.InstanceMetrics
-	3,  // 28: api.v1.capsule.Service.Create:input_type -> api.v1.capsule.CreateRequest
-	5,  // 29: api.v1.capsule.Service.Get:input_type -> api.v1.capsule.GetRequest
-	7,  // 30: api.v1.capsule.Service.Delete:input_type -> api.v1.capsule.DeleteRequest
-	9,  // 31: api.v1.capsule.Service.Logs:input_type -> api.v1.capsule.LogsRequest
-	11, // 32: api.v1.capsule.Service.Update:input_type -> api.v1.capsule.UpdateRequest
-	13, // 33: api.v1.capsule.Service.List:input_type -> api.v1.capsule.ListRequest
-	15, // 34: api.v1.capsule.Service.CreateBuild:input_type -> api.v1.capsule.CreateBuildRequest
-	17, // 35: api.v1.capsule.Service.ListBuilds:input_type -> api.v1.capsule.ListBuildsRequest
-	19, // 36: api.v1.capsule.Service.DeleteBuild:input_type -> api.v1.capsule.DeleteBuildRequest
-	21, // 37: api.v1.capsule.Service.Deploy:input_type -> api.v1.capsule.DeployRequest
-	23, // 38: api.v1.capsule.Service.ListInstances:input_type -> api.v1.capsule.ListInstancesRequest
-	29, // 39: api.v1.capsule.Service.RestartInstance:input_type -> api.v1.capsule.RestartInstanceRequest
-	33, // 40: api.v1.capsule.Service.GetRollout:input_type -> api.v1.capsule.GetRolloutRequest
-	31, // 41: api.v1.capsule.Service.ListRollouts:input_type -> api.v1.capsule.ListRolloutsRequest
-	35, // 42: api.v1.capsule.Service.AbortRollout:input_type -> api.v1.capsule.AbortRolloutRequest
-	37, // 43: api.v1.capsule.Service.ListEvents:input_type -> api.v1.capsule.ListEventsRequest
-	39, // 44: api.v1.capsule.Service.CapsuleMetrics:input_type -> api.v1.capsule.CapsuleMetricsRequest
-	25, // 45: api.v1.capsule.Service.GetInstanceStatus:input_type -> api.v1.capsule.GetInstanceStatusRequest
-	27, // 46: api.v1.capsule.Service.ListInstanceStatuses:input_type -> api.v1.capsule.ListInstanceStatusesRequest
-	1,  // 47: api.v1.capsule.Service.Execute:input_type -> api.v1.capsule.ExecuteRequest
-	4,  // 48: api.v1.capsule.Service.Create:output_type -> api.v1.capsule.CreateResponse
-	6,  // 49: api.v1.capsule.Service.Get:output_type -> api.v1.capsule.GetResponse
-	8,  // 50: api.v1.capsule.Service.Delete:output_type -> api.v1.capsule.DeleteResponse
-	10, // 51: api.v1.capsule.Service.Logs:output_type -> api.v1.capsule.LogsResponse
-	12, // 52: api.v1.capsule.Service.Update:output_type -> api.v1.capsule.UpdateResponse
-	14, // 53: api.v1.capsule.Service.List:output_type -> api.v1.capsule.ListResponse
-	16, // 54: api.v1.capsule.Service.CreateBuild:output_type -> api.v1.capsule.CreateBuildResponse
-	18, // 55: api.v1.capsule.Service.ListBuilds:output_type -> api.v1.capsule.ListBuildsResponse
-	20, // 56: api.v1.capsule.Service.DeleteBuild:output_type -> api.v1.capsule.DeleteBuildResponse
-	22, // 57: api.v1.capsule.Service.Deploy:output_type -> api.v1.capsule.DeployResponse
-	24, // 58: api.v1.capsule.Service.ListInstances:output_type -> api.v1.capsule.ListInstancesResponse
-	30, // 59: api.v1.capsule.Service.RestartInstance:output_type -> api.v1.capsule.RestartInstanceResponse
-	34, // 60: api.v1.capsule.Service.GetRollout:output_type -> api.v1.capsule.GetRolloutResponse
-	32, // 61: api.v1.capsule.Service.ListRollouts:output_type -> api.v1.capsule.ListRolloutsResponse
-	36, // 62: api.v1.capsule.Service.AbortRollout:output_type -> api.v1.capsule.AbortRolloutResponse
-	38, // 63: api.v1.capsule.Service.ListEvents:output_type -> api.v1.capsule.ListEventsResponse
-	40, // 64: api.v1.capsule.Service.CapsuleMetrics:output_type -> api.v1.capsule.CapsuleMetricsResponse
-	26, // 65: api.v1.capsule.Service.GetInstanceStatus:output_type -> api.v1.capsule.GetInstanceStatusResponse
-	28, // 66: api.v1.capsule.Service.ListInstanceStatuses:output_type -> api.v1.capsule.ListInstanceStatusesResponse
-	2,  // 67: api.v1.capsule.Service.Execute:output_type -> api.v1.capsule.ExecuteResponse
-	48, // [48:68] is the sub-list for method output_type
-	28, // [28:48] is the sub-list for method input_type
-	28, // [28:28] is the sub-list for extension type_name
-	28, // [28:28] is the sub-list for extension extendee
-	0,  // [0:28] is the sub-list for field type_name
+	42, // 2: api.v1.capsule.ExecuteRequest.resize:type_name -> api.v1.capsule.ExecuteRequest.Resize
+	0,  // 3: api.v1.capsule.ExecuteResponse.stdout:type_name -> api.v1.capsule.StreamData
+	0,  // 4: api.v1.capsule.ExecuteResponse.stderr:type_name -> api.v1.capsule.StreamData
+	44, // 5: api.v1.capsule.CreateRequest.initializers:type_name -> api.v1.capsule.Update
+	45, // 6: api.v1.capsule.GetResponse.capsule:type_name -> api.v1.capsule.Capsule
+	46, // 7: api.v1.capsule.LogsRequest.since:type_name -> google.protobuf.Duration
+	47, // 8: api.v1.capsule.LogsResponse.log:type_name -> api.v1.capsule.Log
+	44, // 9: api.v1.capsule.UpdateRequest.updates:type_name -> api.v1.capsule.Update
+	48, // 10: api.v1.capsule.ListRequest.pagination:type_name -> model.Pagination
+	45, // 11: api.v1.capsule.ListResponse.capsules:type_name -> api.v1.capsule.Capsule
+	49, // 12: api.v1.capsule.CreateBuildRequest.origin:type_name -> api.v1.capsule.Origin
+	43, // 13: api.v1.capsule.CreateBuildRequest.labels:type_name -> api.v1.capsule.CreateBuildRequest.LabelsEntry
+	48, // 14: api.v1.capsule.ListBuildsRequest.pagination:type_name -> model.Pagination
+	50, // 15: api.v1.capsule.ListBuildsResponse.builds:type_name -> api.v1.capsule.Build
+	51, // 16: api.v1.capsule.DeployRequest.changes:type_name -> api.v1.capsule.Change
+	48, // 17: api.v1.capsule.ListInstancesRequest.pagination:type_name -> model.Pagination
+	52, // 18: api.v1.capsule.ListInstancesResponse.instances:type_name -> api.v1.capsule.Instance
+	53, // 19: api.v1.capsule.GetInstanceStatusResponse.status:type_name -> api.v1.capsule.instance.Status
+	48, // 20: api.v1.capsule.ListInstanceStatusesRequest.pagination:type_name -> model.Pagination
+	53, // 21: api.v1.capsule.ListInstanceStatusesResponse.instances:type_name -> api.v1.capsule.instance.Status
+	48, // 22: api.v1.capsule.ListRolloutsRequest.pagination:type_name -> model.Pagination
+	54, // 23: api.v1.capsule.ListRolloutsResponse.rollouts:type_name -> api.v1.capsule.Rollout
+	54, // 24: api.v1.capsule.GetRolloutResponse.rollout:type_name -> api.v1.capsule.Rollout
+	48, // 25: api.v1.capsule.ListEventsRequest.pagination:type_name -> model.Pagination
+	55, // 26: api.v1.capsule.ListEventsResponse.events:type_name -> api.v1.capsule.Event
+	48, // 27: api.v1.capsule.CapsuleMetricsRequest.pagination:type_name -> model.Pagination
+	56, // 28: api.v1.capsule.CapsuleMetricsResponse.instance_metrics:type_name -> api.v1.capsule.InstanceMetrics
+	42, // 29: api.v1.capsule.ExecuteRequest.Start.tty:type_name -> api.v1.capsule.ExecuteRequest.Resize
+	3,  // 30: api.v1.capsule.Service.Create:input_type -> api.v1.capsule.CreateRequest
+	5,  // 31: api.v1.capsule.Service.Get:input_type -> api.v1.capsule.GetRequest
+	7,  // 32: api.v1.capsule.Service.Delete:input_type -> api.v1.capsule.DeleteRequest
+	9,  // 33: api.v1.capsule.Service.Logs:input_type -> api.v1.capsule.LogsRequest
+	11, // 34: api.v1.capsule.Service.Update:input_type -> api.v1.capsule.UpdateRequest
+	13, // 35: api.v1.capsule.Service.List:input_type -> api.v1.capsule.ListRequest
+	15, // 36: api.v1.capsule.Service.CreateBuild:input_type -> api.v1.capsule.CreateBuildRequest
+	17, // 37: api.v1.capsule.Service.ListBuilds:input_type -> api.v1.capsule.ListBuildsRequest
+	19, // 38: api.v1.capsule.Service.DeleteBuild:input_type -> api.v1.capsule.DeleteBuildRequest
+	21, // 39: api.v1.capsule.Service.Deploy:input_type -> api.v1.capsule.DeployRequest
+	23, // 40: api.v1.capsule.Service.ListInstances:input_type -> api.v1.capsule.ListInstancesRequest
+	29, // 41: api.v1.capsule.Service.RestartInstance:input_type -> api.v1.capsule.RestartInstanceRequest
+	33, // 42: api.v1.capsule.Service.GetRollout:input_type -> api.v1.capsule.GetRolloutRequest
+	31, // 43: api.v1.capsule.Service.ListRollouts:input_type -> api.v1.capsule.ListRolloutsRequest
+	35, // 44: api.v1.capsule.Service.AbortRollout:input_type -> api.v1.capsule.AbortRolloutRequest
+	37, // 45: api.v1.capsule.Service.ListEvents:input_type -> api.v1.capsule.ListEventsRequest
+	39, // 46: api.v1.capsule.Service.CapsuleMetrics:input_type -> api.v1.capsule.CapsuleMetricsRequest
+	25, // 47: api.v1.capsule.Service.GetInstanceStatus:input_type -> api.v1.capsule.GetInstanceStatusRequest
+	27, // 48: api.v1.capsule.Service.ListInstanceStatuses:input_type -> api.v1.capsule.ListInstanceStatusesRequest
+	1,  // 49: api.v1.capsule.Service.Execute:input_type -> api.v1.capsule.ExecuteRequest
+	4,  // 50: api.v1.capsule.Service.Create:output_type -> api.v1.capsule.CreateResponse
+	6,  // 51: api.v1.capsule.Service.Get:output_type -> api.v1.capsule.GetResponse
+	8,  // 52: api.v1.capsule.Service.Delete:output_type -> api.v1.capsule.DeleteResponse
+	10, // 53: api.v1.capsule.Service.Logs:output_type -> api.v1.capsule.LogsResponse
+	12, // 54: api.v1.capsule.Service.Update:output_type -> api.v1.capsule.UpdateResponse
+	14, // 55: api.v1.capsule.Service.List:output_type -> api.v1.capsule.ListResponse
+	16, // 56: api.v1.capsule.Service.CreateBuild:output_type -> api.v1.capsule.CreateBuildResponse
+	18, // 57: api.v1.capsule.Service.ListBuilds:output_type -> api.v1.capsule.ListBuildsResponse
+	20, // 58: api.v1.capsule.Service.DeleteBuild:output_type -> api.v1.capsule.DeleteBuildResponse
+	22, // 59: api.v1.capsule.Service.Deploy:output_type -> api.v1.capsule.DeployResponse
+	24, // 60: api.v1.capsule.Service.ListInstances:output_type -> api.v1.capsule.ListInstancesResponse
+	30, // 61: api.v1.capsule.Service.RestartInstance:output_type -> api.v1.capsule.RestartInstanceResponse
+	34, // 62: api.v1.capsule.Service.GetRollout:output_type -> api.v1.capsule.GetRolloutResponse
+	32, // 63: api.v1.capsule.Service.ListRollouts:output_type -> api.v1.capsule.ListRolloutsResponse
+	36, // 64: api.v1.capsule.Service.AbortRollout:output_type -> api.v1.capsule.AbortRolloutResponse
+	38, // 65: api.v1.capsule.Service.ListEvents:output_type -> api.v1.capsule.ListEventsResponse
+	40, // 66: api.v1.capsule.Service.CapsuleMetrics:output_type -> api.v1.capsule.CapsuleMetricsResponse
+	26, // 67: api.v1.capsule.Service.GetInstanceStatus:output_type -> api.v1.capsule.GetInstanceStatusResponse
+	28, // 68: api.v1.capsule.Service.ListInstanceStatuses:output_type -> api.v1.capsule.ListInstanceStatusesResponse
+	2,  // 69: api.v1.capsule.Service.Execute:output_type -> api.v1.capsule.ExecuteResponse
+	50, // [50:70] is the sub-list for method output_type
+	30, // [30:50] is the sub-list for method input_type
+	30, // [30:30] is the sub-list for extension type_name
+	30, // [30:30] is the sub-list for extension extendee
+	0,  // [0:30] is the sub-list for field type_name
 }
 
 func init() { file_api_v1_capsule_service_proto_init() }
@@ -3399,10 +3481,23 @@ func file_api_v1_capsule_service_proto_init() {
 				return nil
 			}
 		}
+		file_api_v1_capsule_service_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ExecuteRequest_Resize); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_api_v1_capsule_service_proto_msgTypes[1].OneofWrappers = []interface{}{
 		(*ExecuteRequest_Start_)(nil),
 		(*ExecuteRequest_Stdin)(nil),
+		(*ExecuteRequest_Resize_)(nil),
 	}
 	file_api_v1_capsule_service_proto_msgTypes[2].OneofWrappers = []interface{}{
 		(*ExecuteResponse_Stdout)(nil),
@@ -3415,7 +3510,7 @@ func file_api_v1_capsule_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_capsule_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   43,
+			NumMessages:   44,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
