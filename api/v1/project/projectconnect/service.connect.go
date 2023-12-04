@@ -49,6 +49,9 @@ const (
 	ServiceUseProcedure = "/api.v1.project.Service/Use"
 	// ServiceGetLicenseInfoProcedure is the fully-qualified name of the Service's GetLicenseInfo RPC.
 	ServiceGetLicenseInfoProcedure = "/api.v1.project.Service/GetLicenseInfo"
+	// ServiceGetCustomMetricsProcedure is the fully-qualified name of the Service's GetCustomMetrics
+	// RPC.
+	ServiceGetCustomMetricsProcedure = "/api.v1.project.Service/GetCustomMetrics"
 )
 
 // ServiceClient is a client for the api.v1.project.Service service.
@@ -70,6 +73,7 @@ type ServiceClient interface {
 	Use(context.Context, *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error)
 	// Get License Information
 	GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error)
+	GetCustomMetrics(context.Context, *connect_go.Request[project.GetCustomMetricsRequest]) (*connect_go.Response[project.GetCustomMetricsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.project.Service service. By default, it uses
@@ -122,19 +126,25 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceGetLicenseInfoProcedure,
 			opts...,
 		),
+		getCustomMetrics: connect_go.NewClient[project.GetCustomMetricsRequest, project.GetCustomMetricsResponse](
+			httpClient,
+			baseURL+ServiceGetCustomMetricsProcedure,
+			opts...,
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create         *connect_go.Client[project.CreateRequest, project.CreateResponse]
-	delete         *connect_go.Client[project.DeleteRequest, project.DeleteResponse]
-	get            *connect_go.Client[project.GetRequest, project.GetResponse]
-	list           *connect_go.Client[project.ListRequest, project.ListResponse]
-	update         *connect_go.Client[project.UpdateRequest, project.UpdateResponse]
-	publicKey      *connect_go.Client[project.PublicKeyRequest, project.PublicKeyResponse]
-	use            *connect_go.Client[project.UseRequest, project.UseResponse]
-	getLicenseInfo *connect_go.Client[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse]
+	create           *connect_go.Client[project.CreateRequest, project.CreateResponse]
+	delete           *connect_go.Client[project.DeleteRequest, project.DeleteResponse]
+	get              *connect_go.Client[project.GetRequest, project.GetResponse]
+	list             *connect_go.Client[project.ListRequest, project.ListResponse]
+	update           *connect_go.Client[project.UpdateRequest, project.UpdateResponse]
+	publicKey        *connect_go.Client[project.PublicKeyRequest, project.PublicKeyResponse]
+	use              *connect_go.Client[project.UseRequest, project.UseResponse]
+	getLicenseInfo   *connect_go.Client[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse]
+	getCustomMetrics *connect_go.Client[project.GetCustomMetricsRequest, project.GetCustomMetricsResponse]
 }
 
 // Create calls api.v1.project.Service.Create.
@@ -177,6 +187,11 @@ func (c *serviceClient) GetLicenseInfo(ctx context.Context, req *connect_go.Requ
 	return c.getLicenseInfo.CallUnary(ctx, req)
 }
 
+// GetCustomMetrics calls api.v1.project.Service.GetCustomMetrics.
+func (c *serviceClient) GetCustomMetrics(ctx context.Context, req *connect_go.Request[project.GetCustomMetricsRequest]) (*connect_go.Response[project.GetCustomMetricsResponse], error) {
+	return c.getCustomMetrics.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.project.Service service.
 type ServiceHandler interface {
 	// Create project
@@ -196,6 +211,7 @@ type ServiceHandler interface {
 	Use(context.Context, *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error)
 	// Get License Information
 	GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error)
+	GetCustomMetrics(context.Context, *connect_go.Request[project.GetCustomMetricsRequest]) (*connect_go.Response[project.GetCustomMetricsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -244,6 +260,11 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.GetLicenseInfo,
 		opts...,
 	)
+	serviceGetCustomMetricsHandler := connect_go.NewUnaryHandler(
+		ServiceGetCustomMetricsProcedure,
+		svc.GetCustomMetrics,
+		opts...,
+	)
 	return "/api.v1.project.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -262,6 +283,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			serviceUseHandler.ServeHTTP(w, r)
 		case ServiceGetLicenseInfoProcedure:
 			serviceGetLicenseInfoHandler.ServeHTTP(w, r)
+		case ServiceGetCustomMetricsProcedure:
+			serviceGetCustomMetricsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -301,4 +324,8 @@ func (UnimplementedServiceHandler) Use(context.Context, *connect_go.Request[proj
 
 func (UnimplementedServiceHandler) GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.GetLicenseInfo is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetCustomMetrics(context.Context, *connect_go.Request[project.GetCustomMetricsRequest]) (*connect_go.Response[project.GetCustomMetricsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.GetCustomMetrics is not implemented"))
 }

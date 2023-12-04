@@ -75,6 +75,9 @@ const (
 	ServiceListInstanceStatusesProcedure = "/api.v1.capsule.Service/ListInstanceStatuses"
 	// ServiceExecuteProcedure is the fully-qualified name of the Service's Execute RPC.
 	ServiceExecuteProcedure = "/api.v1.capsule.Service/Execute"
+	// ServiceGetCustomInstanceMetricsProcedure is the fully-qualified name of the Service's
+	// GetCustomInstanceMetrics RPC.
+	ServiceGetCustomInstanceMetricsProcedure = "/api.v1.capsule.Service/GetCustomInstanceMetrics"
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -124,6 +127,7 @@ type ServiceClient interface {
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
 	Execute(context.Context) *connect_go.BidiStreamForClient[capsule.ExecuteRequest, capsule.ExecuteResponse]
+	GetCustomInstanceMetrics(context.Context, *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -236,31 +240,37 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceExecuteProcedure,
 			opts...,
 		),
+		getCustomInstanceMetrics: connect_go.NewClient[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse](
+			httpClient,
+			baseURL+ServiceGetCustomInstanceMetricsProcedure,
+			opts...,
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create               *connect_go.Client[capsule.CreateRequest, capsule.CreateResponse]
-	get                  *connect_go.Client[capsule.GetRequest, capsule.GetResponse]
-	delete               *connect_go.Client[capsule.DeleteRequest, capsule.DeleteResponse]
-	logs                 *connect_go.Client[capsule.LogsRequest, capsule.LogsResponse]
-	update               *connect_go.Client[capsule.UpdateRequest, capsule.UpdateResponse]
-	list                 *connect_go.Client[capsule.ListRequest, capsule.ListResponse]
-	createBuild          *connect_go.Client[capsule.CreateBuildRequest, capsule.CreateBuildResponse]
-	listBuilds           *connect_go.Client[capsule.ListBuildsRequest, capsule.ListBuildsResponse]
-	deleteBuild          *connect_go.Client[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse]
-	deploy               *connect_go.Client[capsule.DeployRequest, capsule.DeployResponse]
-	listInstances        *connect_go.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
-	restartInstance      *connect_go.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
-	getRollout           *connect_go.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
-	listRollouts         *connect_go.Client[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse]
-	abortRollout         *connect_go.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
-	listEvents           *connect_go.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
-	capsuleMetrics       *connect_go.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
-	getInstanceStatus    *connect_go.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
-	listInstanceStatuses *connect_go.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
-	execute              *connect_go.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
+	create                   *connect_go.Client[capsule.CreateRequest, capsule.CreateResponse]
+	get                      *connect_go.Client[capsule.GetRequest, capsule.GetResponse]
+	delete                   *connect_go.Client[capsule.DeleteRequest, capsule.DeleteResponse]
+	logs                     *connect_go.Client[capsule.LogsRequest, capsule.LogsResponse]
+	update                   *connect_go.Client[capsule.UpdateRequest, capsule.UpdateResponse]
+	list                     *connect_go.Client[capsule.ListRequest, capsule.ListResponse]
+	createBuild              *connect_go.Client[capsule.CreateBuildRequest, capsule.CreateBuildResponse]
+	listBuilds               *connect_go.Client[capsule.ListBuildsRequest, capsule.ListBuildsResponse]
+	deleteBuild              *connect_go.Client[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse]
+	deploy                   *connect_go.Client[capsule.DeployRequest, capsule.DeployResponse]
+	listInstances            *connect_go.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
+	restartInstance          *connect_go.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
+	getRollout               *connect_go.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
+	listRollouts             *connect_go.Client[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse]
+	abortRollout             *connect_go.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
+	listEvents               *connect_go.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
+	capsuleMetrics           *connect_go.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
+	getInstanceStatus        *connect_go.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
+	listInstanceStatuses     *connect_go.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
+	execute                  *connect_go.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
+	getCustomInstanceMetrics *connect_go.Client[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -363,6 +373,11 @@ func (c *serviceClient) Execute(ctx context.Context) *connect_go.BidiStreamForCl
 	return c.execute.CallBidiStream(ctx)
 }
 
+// GetCustomInstanceMetrics calls api.v1.capsule.Service.GetCustomInstanceMetrics.
+func (c *serviceClient) GetCustomInstanceMetrics(ctx context.Context, req *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error) {
+	return c.getCustomInstanceMetrics.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -410,6 +425,7 @@ type ServiceHandler interface {
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
 	Execute(context.Context, *connect_go.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error
+	GetCustomInstanceMetrics(context.Context, *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -518,6 +534,11 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.Execute,
 		opts...,
 	)
+	serviceGetCustomInstanceMetricsHandler := connect_go.NewUnaryHandler(
+		ServiceGetCustomInstanceMetricsProcedure,
+		svc.GetCustomInstanceMetrics,
+		opts...,
+	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -560,6 +581,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			serviceListInstanceStatusesHandler.ServeHTTP(w, r)
 		case ServiceExecuteProcedure:
 			serviceExecuteHandler.ServeHTTP(w, r)
+		case ServiceGetCustomInstanceMetricsProcedure:
+			serviceGetCustomInstanceMetricsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -647,4 +670,8 @@ func (UnimplementedServiceHandler) ListInstanceStatuses(context.Context, *connec
 
 func (UnimplementedServiceHandler) Execute(context.Context, *connect_go.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error {
 	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.Execute is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetCustomInstanceMetrics(context.Context, *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetCustomInstanceMetrics is not implemented"))
 }

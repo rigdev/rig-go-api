@@ -136,6 +136,61 @@ func (EventType) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_rollout_proto_rawDescGZIP(), []int{1}
 }
 
+type LabelSelectorOperator int32
+
+const (
+	LabelSelectorOperator_OPERATOR_UNSPECIFIED    LabelSelectorOperator = 0
+	LabelSelectorOperator_OPERATOR_IN             LabelSelectorOperator = 1
+	LabelSelectorOperator_OPERATOR_NOT_IN         LabelSelectorOperator = 2
+	LabelSelectorOperator_OPERATOR_EXISTS         LabelSelectorOperator = 3
+	LabelSelectorOperator_OPERATOR_DOES_NOT_EXIST LabelSelectorOperator = 4
+)
+
+// Enum value maps for LabelSelectorOperator.
+var (
+	LabelSelectorOperator_name = map[int32]string{
+		0: "OPERATOR_UNSPECIFIED",
+		1: "OPERATOR_IN",
+		2: "OPERATOR_NOT_IN",
+		3: "OPERATOR_EXISTS",
+		4: "OPERATOR_DOES_NOT_EXIST",
+	}
+	LabelSelectorOperator_value = map[string]int32{
+		"OPERATOR_UNSPECIFIED":    0,
+		"OPERATOR_IN":             1,
+		"OPERATOR_NOT_IN":         2,
+		"OPERATOR_EXISTS":         3,
+		"OPERATOR_DOES_NOT_EXIST": 4,
+	}
+)
+
+func (x LabelSelectorOperator) Enum() *LabelSelectorOperator {
+	p := new(LabelSelectorOperator)
+	*p = x
+	return p
+}
+
+func (x LabelSelectorOperator) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LabelSelectorOperator) Descriptor() protoreflect.EnumDescriptor {
+	return file_api_v1_capsule_rollout_proto_enumTypes[2].Descriptor()
+}
+
+func (LabelSelectorOperator) Type() protoreflect.EnumType {
+	return &file_api_v1_capsule_rollout_proto_enumTypes[2]
+}
+
+func (x LabelSelectorOperator) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LabelSelectorOperator.Descriptor instead.
+func (LabelSelectorOperator) EnumDescriptor() ([]byte, []int) {
+	return file_api_v1_capsule_rollout_proto_rawDescGZIP(), []int{2}
+}
+
 type EnvironmentSource_Kind int32
 
 const (
@@ -169,11 +224,11 @@ func (x EnvironmentSource_Kind) String() string {
 }
 
 func (EnvironmentSource_Kind) Descriptor() protoreflect.EnumDescriptor {
-	return file_api_v1_capsule_rollout_proto_enumTypes[2].Descriptor()
+	return file_api_v1_capsule_rollout_proto_enumTypes[3].Descriptor()
 }
 
 func (EnvironmentSource_Kind) Type() protoreflect.EnumType {
-	return &file_api_v1_capsule_rollout_proto_enumTypes[2]
+	return &file_api_v1_capsule_rollout_proto_enumTypes[3]
 }
 
 func (x EnvironmentSource_Kind) Number() protoreflect.EnumNumber {
@@ -1894,9 +1949,10 @@ type HorizontalScale struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	MaxReplicas uint32     `protobuf:"varint,1,opt,name=max_replicas,json=maxReplicas,proto3" json:"max_replicas,omitempty"`
-	MinReplicas uint32     `protobuf:"varint,2,opt,name=min_replicas,json=minReplicas,proto3" json:"min_replicas,omitempty"`
-	CpuTarget   *CPUTarget `protobuf:"bytes,3,opt,name=cpu_target,json=cpuTarget,proto3" json:"cpu_target,omitempty"`
+	MaxReplicas   uint32          `protobuf:"varint,1,opt,name=max_replicas,json=maxReplicas,proto3" json:"max_replicas,omitempty"`
+	MinReplicas   uint32          `protobuf:"varint,2,opt,name=min_replicas,json=minReplicas,proto3" json:"min_replicas,omitempty"`
+	CpuTarget     *CPUTarget      `protobuf:"bytes,3,opt,name=cpu_target,json=cpuTarget,proto3" json:"cpu_target,omitempty"`
+	CustomMetrics []*CustomMetric `protobuf:"bytes,4,rep,name=custom_metrics,json=customMetrics,proto3" json:"custom_metrics,omitempty"`
 }
 
 func (x *HorizontalScale) Reset() {
@@ -1948,6 +2004,13 @@ func (x *HorizontalScale) GetMinReplicas() uint32 {
 func (x *HorizontalScale) GetCpuTarget() *CPUTarget {
 	if x != nil {
 		return x.CpuTarget
+	}
+	return nil
+}
+
+func (x *HorizontalScale) GetCustomMetrics() []*CustomMetric {
+	if x != nil {
+		return x.CustomMetrics
 	}
 	return nil
 }
@@ -2046,6 +2109,292 @@ func (x *Rollback) GetRollbackId() uint64 {
 	return 0
 }
 
+type CustomMetric struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Metric:
+	//
+	//	*CustomMetric_Instance
+	//	*CustomMetric_Object
+	Metric isCustomMetric_Metric `protobuf_oneof:"metric"`
+}
+
+func (x *CustomMetric) Reset() {
+	*x = CustomMetric{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CustomMetric) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CustomMetric) ProtoMessage() {}
+
+func (x *CustomMetric) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CustomMetric.ProtoReflect.Descriptor instead.
+func (*CustomMetric) Descriptor() ([]byte, []int) {
+	return file_api_v1_capsule_rollout_proto_rawDescGZIP(), []int{26}
+}
+
+func (m *CustomMetric) GetMetric() isCustomMetric_Metric {
+	if m != nil {
+		return m.Metric
+	}
+	return nil
+}
+
+func (x *CustomMetric) GetInstance() *InstanceMetric {
+	if x, ok := x.GetMetric().(*CustomMetric_Instance); ok {
+		return x.Instance
+	}
+	return nil
+}
+
+func (x *CustomMetric) GetObject() *ObjectMetric {
+	if x, ok := x.GetMetric().(*CustomMetric_Object); ok {
+		return x.Object
+	}
+	return nil
+}
+
+type isCustomMetric_Metric interface {
+	isCustomMetric_Metric()
+}
+
+type CustomMetric_Instance struct {
+	Instance *InstanceMetric `protobuf:"bytes,1,opt,name=instance,proto3,oneof"`
+}
+
+type CustomMetric_Object struct {
+	Object *ObjectMetric `protobuf:"bytes,2,opt,name=object,proto3,oneof"`
+}
+
+func (*CustomMetric_Instance) isCustomMetric_Metric() {}
+
+func (*CustomMetric_Object) isCustomMetric_Metric() {}
+
+type InstanceMetric struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MetricName   string            `protobuf:"bytes,1,opt,name=metric_name,json=metricName,proto3" json:"metric_name,omitempty"`
+	MatchLabels  map[string]string `protobuf:"bytes,2,rep,name=match_labels,json=matchLabels,proto3" json:"match_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	AverageValue string            `protobuf:"bytes,3,opt,name=average_value,json=averageValue,proto3" json:"average_value,omitempty"`
+}
+
+func (x *InstanceMetric) Reset() {
+	*x = InstanceMetric{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[27]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *InstanceMetric) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InstanceMetric) ProtoMessage() {}
+
+func (x *InstanceMetric) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[27]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InstanceMetric.ProtoReflect.Descriptor instead.
+func (*InstanceMetric) Descriptor() ([]byte, []int) {
+	return file_api_v1_capsule_rollout_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *InstanceMetric) GetMetricName() string {
+	if x != nil {
+		return x.MetricName
+	}
+	return ""
+}
+
+func (x *InstanceMetric) GetMatchLabels() map[string]string {
+	if x != nil {
+		return x.MatchLabels
+	}
+	return nil
+}
+
+func (x *InstanceMetric) GetAverageValue() string {
+	if x != nil {
+		return x.AverageValue
+	}
+	return ""
+}
+
+type ObjectMetric struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MetricName      string            `protobuf:"bytes,1,opt,name=metric_name,json=metricName,proto3" json:"metric_name,omitempty"`
+	MatchLabels     map[string]string `protobuf:"bytes,2,rep,name=match_labels,json=matchLabels,proto3" json:"match_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	AverageValue    string            `protobuf:"bytes,3,opt,name=average_value,json=averageValue,proto3" json:"average_value,omitempty"`
+	Value           string            `protobuf:"bytes,4,opt,name=value,proto3" json:"value,omitempty"`
+	ObjectReference *ObjectReference  `protobuf:"bytes,5,opt,name=object_reference,json=objectReference,proto3" json:"object_reference,omitempty"`
+}
+
+func (x *ObjectMetric) Reset() {
+	*x = ObjectMetric{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[28]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ObjectMetric) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ObjectMetric) ProtoMessage() {}
+
+func (x *ObjectMetric) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[28]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ObjectMetric.ProtoReflect.Descriptor instead.
+func (*ObjectMetric) Descriptor() ([]byte, []int) {
+	return file_api_v1_capsule_rollout_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *ObjectMetric) GetMetricName() string {
+	if x != nil {
+		return x.MetricName
+	}
+	return ""
+}
+
+func (x *ObjectMetric) GetMatchLabels() map[string]string {
+	if x != nil {
+		return x.MatchLabels
+	}
+	return nil
+}
+
+func (x *ObjectMetric) GetAverageValue() string {
+	if x != nil {
+		return x.AverageValue
+	}
+	return ""
+}
+
+func (x *ObjectMetric) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+func (x *ObjectMetric) GetObjectReference() *ObjectReference {
+	if x != nil {
+		return x.ObjectReference
+	}
+	return nil
+}
+
+type ObjectReference struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Kind       string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
+	Name       string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	ApiVersion string `protobuf:"bytes,3,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
+}
+
+func (x *ObjectReference) Reset() {
+	*x = ObjectReference{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[29]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ObjectReference) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ObjectReference) ProtoMessage() {}
+
+func (x *ObjectReference) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[29]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ObjectReference.ProtoReflect.Descriptor instead.
+func (*ObjectReference) Descriptor() ([]byte, []int) {
+	return file_api_v1_capsule_rollout_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *ObjectReference) GetKind() string {
+	if x != nil {
+		return x.Kind
+	}
+	return ""
+}
+
+func (x *ObjectReference) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ObjectReference) GetApiVersion() string {
+	if x != nil {
+		return x.ApiVersion
+	}
+	return ""
+}
+
 type Change_ConfigFile struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2059,7 +2408,7 @@ type Change_ConfigFile struct {
 func (x *Change_ConfigFile) Reset() {
 	*x = Change_ConfigFile{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_rollout_proto_msgTypes[26]
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2072,7 +2421,7 @@ func (x *Change_ConfigFile) String() string {
 func (*Change_ConfigFile) ProtoMessage() {}
 
 func (x *Change_ConfigFile) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_rollout_proto_msgTypes[26]
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2120,7 +2469,7 @@ type InterfaceProbe_HTTP struct {
 func (x *InterfaceProbe_HTTP) Reset() {
 	*x = InterfaceProbe_HTTP{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_rollout_proto_msgTypes[28]
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[32]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2133,7 +2482,7 @@ func (x *InterfaceProbe_HTTP) String() string {
 func (*InterfaceProbe_HTTP) ProtoMessage() {}
 
 func (x *InterfaceProbe_HTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_rollout_proto_msgTypes[28]
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[32]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2165,7 +2514,7 @@ type InterfaceProbe_TCP struct {
 func (x *InterfaceProbe_TCP) Reset() {
 	*x = InterfaceProbe_TCP{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_rollout_proto_msgTypes[29]
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[33]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2178,7 +2527,7 @@ func (x *InterfaceProbe_TCP) String() string {
 func (*InterfaceProbe_TCP) ProtoMessage() {}
 
 func (x *InterfaceProbe_TCP) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_rollout_proto_msgTypes[29]
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[33]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2205,7 +2554,7 @@ type InterfaceProbe_GRPC struct {
 func (x *InterfaceProbe_GRPC) Reset() {
 	*x = InterfaceProbe_GRPC{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_rollout_proto_msgTypes[30]
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[34]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2218,7 +2567,7 @@ func (x *InterfaceProbe_GRPC) String() string {
 func (*InterfaceProbe_GRPC) ProtoMessage() {}
 
 func (x *InterfaceProbe_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_rollout_proto_msgTypes[30]
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[34]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2253,7 +2602,7 @@ type RoutingMethod_LoadBalancer struct {
 func (x *RoutingMethod_LoadBalancer) Reset() {
 	*x = RoutingMethod_LoadBalancer{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_rollout_proto_msgTypes[31]
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[35]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2266,7 +2615,7 @@ func (x *RoutingMethod_LoadBalancer) String() string {
 func (*RoutingMethod_LoadBalancer) ProtoMessage() {}
 
 func (x *RoutingMethod_LoadBalancer) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_rollout_proto_msgTypes[31]
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2309,7 +2658,7 @@ type RoutingMethod_Ingress struct {
 func (x *RoutingMethod_Ingress) Reset() {
 	*x = RoutingMethod_Ingress{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_rollout_proto_msgTypes[32]
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[36]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2322,7 +2671,7 @@ func (x *RoutingMethod_Ingress) String() string {
 func (*RoutingMethod_Ingress) ProtoMessage() {}
 
 func (x *RoutingMethod_Ingress) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_rollout_proto_msgTypes[32]
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[36]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2368,7 +2717,7 @@ type Auth_AllowAny struct {
 func (x *Auth_AllowAny) Reset() {
 	*x = Auth_AllowAny{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_rollout_proto_msgTypes[35]
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[39]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2381,7 +2730,7 @@ func (x *Auth_AllowAny) String() string {
 func (*Auth_AllowAny) ProtoMessage() {}
 
 func (x *Auth_AllowAny) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_rollout_proto_msgTypes[35]
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[39]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2408,7 +2757,7 @@ type Auth_AllowAuthorized struct {
 func (x *Auth_AllowAuthorized) Reset() {
 	*x = Auth_AllowAuthorized{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_rollout_proto_msgTypes[36]
+		mi := &file_api_v1_capsule_rollout_proto_msgTypes[40]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2421,7 +2770,7 @@ func (x *Auth_AllowAuthorized) String() string {
 func (*Auth_AllowAuthorized) ProtoMessage() {}
 
 func (x *Auth_AllowAuthorized) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_rollout_proto_msgTypes[36]
+	mi := &file_api_v1_capsule_rollout_proto_msgTypes[40]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2773,7 +3122,7 @@ var file_api_v1_capsule_rollout_proto_rawDesc = []byte{
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76,
 	0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75,
 	0x65, 0x3a, 0x02, 0x38, 0x01, 0x42, 0x08, 0x0a, 0x06, 0x6d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x22,
-	0x91, 0x01, 0x0a, 0x0f, 0x48, 0x6f, 0x72, 0x69, 0x7a, 0x6f, 0x6e, 0x74, 0x61, 0x6c, 0x53, 0x63,
+	0xd6, 0x01, 0x0a, 0x0f, 0x48, 0x6f, 0x72, 0x69, 0x7a, 0x6f, 0x6e, 0x74, 0x61, 0x6c, 0x53, 0x63,
 	0x61, 0x6c, 0x65, 0x12, 0x21, 0x0a, 0x0c, 0x6d, 0x61, 0x78, 0x5f, 0x72, 0x65, 0x70, 0x6c, 0x69,
 	0x63, 0x61, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x0b, 0x6d, 0x61, 0x78, 0x52, 0x65,
 	0x70, 0x6c, 0x69, 0x63, 0x61, 0x73, 0x12, 0x21, 0x0a, 0x0c, 0x6d, 0x69, 0x6e, 0x5f, 0x72, 0x65,
@@ -2782,48 +3131,111 @@ var file_api_v1_capsule_rollout_proto_rawDesc = []byte{
 	0x5f, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e,
 	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43,
 	0x50, 0x55, 0x54, 0x61, 0x72, 0x67, 0x65, 0x74, 0x52, 0x09, 0x63, 0x70, 0x75, 0x54, 0x61, 0x72,
-	0x67, 0x65, 0x74, 0x22, 0x51, 0x0a, 0x09, 0x43, 0x50, 0x55, 0x54, 0x61, 0x72, 0x67, 0x65, 0x74,
-	0x12, 0x44, 0x0a, 0x1e, 0x61, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x5f, 0x75, 0x74, 0x69, 0x6c,
-	0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x70, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61,
-	0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x1c, 0x61, 0x76, 0x65, 0x72, 0x61, 0x67,
-	0x65, 0x55, 0x74, 0x69, 0x6c, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x65, 0x72, 0x63,
-	0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x22, 0x2b, 0x0a, 0x08, 0x52, 0x6f, 0x6c, 0x6c, 0x62, 0x61,
-	0x63, 0x6b, 0x12, 0x1f, 0x0a, 0x0b, 0x72, 0x6f, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x5f, 0x69,
-	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x72, 0x6f, 0x6c, 0x6c, 0x62, 0x61, 0x63,
-	0x6b, 0x49, 0x64, 0x2a, 0x98, 0x02, 0x0a, 0x0c, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x53,
-	0x74, 0x61, 0x74, 0x65, 0x12, 0x1d, 0x0a, 0x19, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f,
-	0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45,
-	0x44, 0x10, 0x00, 0x12, 0x19, 0x0a, 0x15, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53,
-	0x54, 0x41, 0x54, 0x45, 0x5f, 0x50, 0x45, 0x4e, 0x44, 0x49, 0x4e, 0x47, 0x10, 0x01, 0x12, 0x1b,
-	0x0a, 0x17, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f,
-	0x50, 0x52, 0x45, 0x50, 0x41, 0x52, 0x49, 0x4e, 0x47, 0x10, 0x06, 0x12, 0x1a, 0x0a, 0x16, 0x52,
-	0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x41, 0x50, 0x50,
-	0x4c, 0x59, 0x49, 0x4e, 0x47, 0x10, 0x02, 0x12, 0x23, 0x0a, 0x1f, 0x52, 0x4f, 0x4c, 0x4c, 0x4f,
-	0x55, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x52, 0x45, 0x53, 0x4f, 0x55, 0x52, 0x43,
-	0x45, 0x5f, 0x43, 0x52, 0x45, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x10, 0x08, 0x12, 0x23, 0x0a, 0x1f,
-	0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x49, 0x4e,
-	0x53, 0x54, 0x41, 0x4e, 0x43, 0x45, 0x5f, 0x52, 0x4f, 0x4c, 0x4c, 0x5f, 0x4f, 0x55, 0x54, 0x10,
-	0x07, 0x12, 0x16, 0x0a, 0x12, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41,
-	0x54, 0x45, 0x5f, 0x44, 0x4f, 0x4e, 0x45, 0x10, 0x03, 0x12, 0x19, 0x0a, 0x15, 0x52, 0x4f, 0x4c,
-	0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x41, 0x42, 0x4f, 0x52, 0x54,
-	0x45, 0x44, 0x10, 0x04, 0x12, 0x18, 0x0a, 0x14, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f,
-	0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x46, 0x41, 0x49, 0x4c, 0x45, 0x44, 0x10, 0x05, 0x2a, 0x3d,
-	0x0a, 0x09, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x54, 0x79, 0x70, 0x65, 0x12, 0x1a, 0x0a, 0x16, 0x45,
-	0x56, 0x45, 0x4e, 0x54, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43,
-	0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x14, 0x0a, 0x10, 0x45, 0x56, 0x45, 0x4e, 0x54,
-	0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x41, 0x42, 0x4f, 0x52, 0x54, 0x10, 0x01, 0x42, 0xa9, 0x01,
-	0x0a, 0x12, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70,
-	0x73, 0x75, 0x6c, 0x65, 0x42, 0x0c, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x50, 0x72, 0x6f,
-	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x72, 0x69, 0x67, 0x64, 0x65, 0x76, 0x2f, 0x72, 0x69, 0x67, 0x2d, 0x67, 0x6f, 0x2d, 0x61,
-	0x70, 0x69, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c,
-	0x65, 0xa2, 0x02, 0x03, 0x41, 0x56, 0x43, 0xaa, 0x02, 0x0e, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31,
-	0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xca, 0x02, 0x0e, 0x41, 0x70, 0x69, 0x5c, 0x56,
-	0x31, 0x5c, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xe2, 0x02, 0x1a, 0x41, 0x70, 0x69, 0x5c,
-	0x56, 0x31, 0x5c, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65,
-	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31,
-	0x3a, 0x3a, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x67, 0x65, 0x74, 0x12, 0x43, 0x0a, 0x0e, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x5f, 0x6d, 0x65,
+	0x74, 0x72, 0x69, 0x63, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x75, 0x73,
+	0x74, 0x6f, 0x6d, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x52, 0x0d, 0x63, 0x75, 0x73, 0x74, 0x6f,
+	0x6d, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x22, 0x51, 0x0a, 0x09, 0x43, 0x50, 0x55, 0x54,
+	0x61, 0x72, 0x67, 0x65, 0x74, 0x12, 0x44, 0x0a, 0x1e, 0x61, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65,
+	0x5f, 0x75, 0x74, 0x69, 0x6c, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x70, 0x65, 0x72,
+	0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x1c, 0x61,
+	0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x55, 0x74, 0x69, 0x6c, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x22, 0x2b, 0x0a, 0x08, 0x52,
+	0x6f, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x12, 0x1f, 0x0a, 0x0b, 0x72, 0x6f, 0x6c, 0x6c, 0x62,
+	0x61, 0x63, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x72, 0x6f,
+	0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x49, 0x64, 0x22, 0x8e, 0x01, 0x0a, 0x0c, 0x43, 0x75, 0x73,
+	0x74, 0x6f, 0x6d, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x12, 0x3c, 0x0a, 0x08, 0x69, 0x6e, 0x73,
+	0x74, 0x61, 0x6e, 0x63, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x49, 0x6e, 0x73,
+	0x74, 0x61, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x48, 0x00, 0x52, 0x08, 0x69,
+	0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x12, 0x36, 0x0a, 0x06, 0x6f, 0x62, 0x6a, 0x65, 0x63,
+	0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31,
+	0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x4d,
+	0x65, 0x74, 0x72, 0x69, 0x63, 0x48, 0x00, 0x52, 0x06, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x42,
+	0x08, 0x0a, 0x06, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x22, 0xea, 0x01, 0x0a, 0x0e, 0x49, 0x6e,
+	0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x12, 0x1f, 0x0a, 0x0b,
+	0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0a, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x52, 0x0a,
+	0x0c, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x5f, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x18, 0x02, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x2f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70,
+	0x73, 0x75, 0x6c, 0x65, 0x2e, 0x49, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x74,
+	0x72, 0x69, 0x63, 0x2e, 0x4d, 0x61, 0x74, 0x63, 0x68, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x45,
+	0x6e, 0x74, 0x72, 0x79, 0x52, 0x0b, 0x6d, 0x61, 0x74, 0x63, 0x68, 0x4c, 0x61, 0x62, 0x65, 0x6c,
+	0x73, 0x12, 0x23, 0x0a, 0x0d, 0x61, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x5f, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x61, 0x76, 0x65, 0x72, 0x61, 0x67,
+	0x65, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x1a, 0x3e, 0x0a, 0x10, 0x4d, 0x61, 0x74, 0x63, 0x68, 0x4c,
+	0x61, 0x62, 0x65, 0x6c, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65,
+	0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xc8, 0x02, 0x0a, 0x0c, 0x4f, 0x62, 0x6a, 0x65, 0x63,
+	0x74, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x12, 0x1f, 0x0a, 0x0b, 0x6d, 0x65, 0x74, 0x72, 0x69,
+	0x63, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x6d, 0x65,
+	0x74, 0x72, 0x69, 0x63, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x50, 0x0a, 0x0c, 0x6d, 0x61, 0x74, 0x63,
+	0x68, 0x5f, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2d,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e,
+	0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x2e, 0x4d, 0x61, 0x74,
+	0x63, 0x68, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x0b, 0x6d,
+	0x61, 0x74, 0x63, 0x68, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x12, 0x23, 0x0a, 0x0d, 0x61, 0x76,
+	0x65, 0x72, 0x61, 0x67, 0x65, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0c, 0x61, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12,
+	0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x4a, 0x0a, 0x10, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f,
+	0x72, 0x65, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x1f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
+	0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65,
+	0x52, 0x0f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63,
+	0x65, 0x1a, 0x3e, 0x0a, 0x10, 0x4d, 0x61, 0x74, 0x63, 0x68, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73,
+	0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38,
+	0x01, 0x22, 0x5a, 0x0a, 0x0f, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x66, 0x65, 0x72,
+	0x65, 0x6e, 0x63, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1f, 0x0a, 0x0b,
+	0x61, 0x70, 0x69, 0x5f, 0x76, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0a, 0x61, 0x70, 0x69, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x2a, 0x98, 0x02,
+	0x0a, 0x0c, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x1d,
+	0x0a, 0x19, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f,
+	0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x19, 0x0a,
+	0x15, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x50,
+	0x45, 0x4e, 0x44, 0x49, 0x4e, 0x47, 0x10, 0x01, 0x12, 0x1b, 0x0a, 0x17, 0x52, 0x4f, 0x4c, 0x4c,
+	0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x50, 0x52, 0x45, 0x50, 0x41, 0x52,
+	0x49, 0x4e, 0x47, 0x10, 0x06, 0x12, 0x1a, 0x0a, 0x16, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54,
+	0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x41, 0x50, 0x50, 0x4c, 0x59, 0x49, 0x4e, 0x47, 0x10,
+	0x02, 0x12, 0x23, 0x0a, 0x1f, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41,
+	0x54, 0x45, 0x5f, 0x52, 0x45, 0x53, 0x4f, 0x55, 0x52, 0x43, 0x45, 0x5f, 0x43, 0x52, 0x45, 0x41,
+	0x54, 0x49, 0x4f, 0x4e, 0x10, 0x08, 0x12, 0x23, 0x0a, 0x1f, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55,
+	0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x49, 0x4e, 0x53, 0x54, 0x41, 0x4e, 0x43, 0x45,
+	0x5f, 0x52, 0x4f, 0x4c, 0x4c, 0x5f, 0x4f, 0x55, 0x54, 0x10, 0x07, 0x12, 0x16, 0x0a, 0x12, 0x52,
+	0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x44, 0x4f, 0x4e,
+	0x45, 0x10, 0x03, 0x12, 0x19, 0x0a, 0x15, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53,
+	0x54, 0x41, 0x54, 0x45, 0x5f, 0x41, 0x42, 0x4f, 0x52, 0x54, 0x45, 0x44, 0x10, 0x04, 0x12, 0x18,
+	0x0a, 0x14, 0x52, 0x4f, 0x4c, 0x4c, 0x4f, 0x55, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f,
+	0x46, 0x41, 0x49, 0x4c, 0x45, 0x44, 0x10, 0x05, 0x2a, 0x3d, 0x0a, 0x09, 0x45, 0x76, 0x65, 0x6e,
+	0x74, 0x54, 0x79, 0x70, 0x65, 0x12, 0x1a, 0x0a, 0x16, 0x45, 0x56, 0x45, 0x4e, 0x54, 0x5f, 0x54,
+	0x59, 0x50, 0x45, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10,
+	0x00, 0x12, 0x14, 0x0a, 0x10, 0x45, 0x56, 0x45, 0x4e, 0x54, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f,
+	0x41, 0x42, 0x4f, 0x52, 0x54, 0x10, 0x01, 0x2a, 0x89, 0x01, 0x0a, 0x15, 0x4c, 0x61, 0x62, 0x65,
+	0x6c, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x6f, 0x72, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f,
+	0x72, 0x12, 0x18, 0x0a, 0x14, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x4f, 0x52, 0x5f, 0x55, 0x4e,
+	0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x0f, 0x0a, 0x0b, 0x4f,
+	0x50, 0x45, 0x52, 0x41, 0x54, 0x4f, 0x52, 0x5f, 0x49, 0x4e, 0x10, 0x01, 0x12, 0x13, 0x0a, 0x0f,
+	0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x4f, 0x52, 0x5f, 0x4e, 0x4f, 0x54, 0x5f, 0x49, 0x4e, 0x10,
+	0x02, 0x12, 0x13, 0x0a, 0x0f, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x4f, 0x52, 0x5f, 0x45, 0x58,
+	0x49, 0x53, 0x54, 0x53, 0x10, 0x03, 0x12, 0x1b, 0x0a, 0x17, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54,
+	0x4f, 0x52, 0x5f, 0x44, 0x4f, 0x45, 0x53, 0x5f, 0x4e, 0x4f, 0x54, 0x5f, 0x45, 0x58, 0x49, 0x53,
+	0x54, 0x10, 0x04, 0x42, 0xa9, 0x01, 0x0a, 0x12, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x70, 0x69, 0x2e,
+	0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x42, 0x0c, 0x52, 0x6f, 0x6c, 0x6c,
+	0x6f, 0x75, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2b, 0x67, 0x69, 0x74, 0x68,
+	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x69, 0x67, 0x64, 0x65, 0x76, 0x2f, 0x72, 0x69,
+	0x67, 0x2d, 0x67, 0x6f, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f,
+	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xa2, 0x02, 0x03, 0x41, 0x56, 0x43, 0xaa, 0x02, 0x0e,
+	0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xca, 0x02,
+	0x0e, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xe2,
+	0x02, 0x1a, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
+	0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x41,
+	0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0x3a, 0x3a, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2838,115 +3250,128 @@ func file_api_v1_capsule_rollout_proto_rawDescGZIP() []byte {
 	return file_api_v1_capsule_rollout_proto_rawDescData
 }
 
-var file_api_v1_capsule_rollout_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_api_v1_capsule_rollout_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
+var file_api_v1_capsule_rollout_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_api_v1_capsule_rollout_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
 var file_api_v1_capsule_rollout_proto_goTypes = []interface{}{
 	(RolloutState)(0),                  // 0: api.v1.capsule.RolloutState
 	(EventType)(0),                     // 1: api.v1.capsule.EventType
-	(EnvironmentSource_Kind)(0),        // 2: api.v1.capsule.EnvironmentSource.Kind
-	(*Change)(nil),                     // 3: api.v1.capsule.Change
-	(*Rollout)(nil),                    // 4: api.v1.capsule.Rollout
-	(*RolloutConfig)(nil),              // 5: api.v1.capsule.RolloutConfig
-	(*ConfigFile)(nil),                 // 6: api.v1.capsule.ConfigFile
-	(*RolloutStatus)(nil),              // 7: api.v1.capsule.RolloutStatus
-	(*ContainerSettings)(nil),          // 8: api.v1.capsule.ContainerSettings
-	(*EnvironmentSource)(nil),          // 9: api.v1.capsule.EnvironmentSource
-	(*Resources)(nil),                  // 10: api.v1.capsule.Resources
-	(*ResourceList)(nil),               // 11: api.v1.capsule.ResourceList
-	(*GpuLimits)(nil),                  // 12: api.v1.capsule.GpuLimits
-	(*Network)(nil),                    // 13: api.v1.capsule.Network
-	(*Interface)(nil),                  // 14: api.v1.capsule.Interface
-	(*InterfaceProbe)(nil),             // 15: api.v1.capsule.InterfaceProbe
-	(*PublicInterface)(nil),            // 16: api.v1.capsule.PublicInterface
-	(*RoutingMethod)(nil),              // 17: api.v1.capsule.RoutingMethod
-	(*Middleware)(nil),                 // 18: api.v1.capsule.Middleware
-	(*Logging)(nil),                    // 19: api.v1.capsule.Logging
-	(*Authentication)(nil),             // 20: api.v1.capsule.Authentication
-	(*HttpAuth)(nil),                   // 21: api.v1.capsule.HttpAuth
-	(*GRPC)(nil),                       // 22: api.v1.capsule.GRPC
-	(*GRPCService)(nil),                // 23: api.v1.capsule.GRPCService
-	(*GRPCMethod)(nil),                 // 24: api.v1.capsule.GRPCMethod
-	(*Auth)(nil),                       // 25: api.v1.capsule.Auth
-	(*HorizontalScale)(nil),            // 26: api.v1.capsule.HorizontalScale
-	(*CPUTarget)(nil),                  // 27: api.v1.capsule.CPUTarget
-	(*Rollback)(nil),                   // 28: api.v1.capsule.Rollback
-	(*Change_ConfigFile)(nil),          // 29: api.v1.capsule.Change.ConfigFile
-	nil,                                // 30: api.v1.capsule.ContainerSettings.EnvironmentVariablesEntry
-	(*InterfaceProbe_HTTP)(nil),        // 31: api.v1.capsule.InterfaceProbe.HTTP
-	(*InterfaceProbe_TCP)(nil),         // 32: api.v1.capsule.InterfaceProbe.TCP
-	(*InterfaceProbe_GRPC)(nil),        // 33: api.v1.capsule.InterfaceProbe.GRPC
-	(*RoutingMethod_LoadBalancer)(nil), // 34: api.v1.capsule.RoutingMethod.LoadBalancer
-	(*RoutingMethod_Ingress)(nil),      // 35: api.v1.capsule.RoutingMethod.Ingress
-	nil,                                // 36: api.v1.capsule.GRPC.ServicesEntry
-	nil,                                // 37: api.v1.capsule.GRPCService.MethodsEntry
-	(*Auth_AllowAny)(nil),              // 38: api.v1.capsule.Auth.AllowAny
-	(*Auth_AllowAuthorized)(nil),       // 39: api.v1.capsule.Auth.AllowAuthorized
-	nil,                                // 40: api.v1.capsule.Auth.AllowAuthorized.ClaimsEntry
-	(*rollout.Status)(nil),             // 41: api.v1.capsule.rollout.Status
-	(*model.Author)(nil),               // 42: model.Author
-	(*timestamppb.Timestamp)(nil),      // 43: google.protobuf.Timestamp
+	(LabelSelectorOperator)(0),         // 2: api.v1.capsule.LabelSelectorOperator
+	(EnvironmentSource_Kind)(0),        // 3: api.v1.capsule.EnvironmentSource.Kind
+	(*Change)(nil),                     // 4: api.v1.capsule.Change
+	(*Rollout)(nil),                    // 5: api.v1.capsule.Rollout
+	(*RolloutConfig)(nil),              // 6: api.v1.capsule.RolloutConfig
+	(*ConfigFile)(nil),                 // 7: api.v1.capsule.ConfigFile
+	(*RolloutStatus)(nil),              // 8: api.v1.capsule.RolloutStatus
+	(*ContainerSettings)(nil),          // 9: api.v1.capsule.ContainerSettings
+	(*EnvironmentSource)(nil),          // 10: api.v1.capsule.EnvironmentSource
+	(*Resources)(nil),                  // 11: api.v1.capsule.Resources
+	(*ResourceList)(nil),               // 12: api.v1.capsule.ResourceList
+	(*GpuLimits)(nil),                  // 13: api.v1.capsule.GpuLimits
+	(*Network)(nil),                    // 14: api.v1.capsule.Network
+	(*Interface)(nil),                  // 15: api.v1.capsule.Interface
+	(*InterfaceProbe)(nil),             // 16: api.v1.capsule.InterfaceProbe
+	(*PublicInterface)(nil),            // 17: api.v1.capsule.PublicInterface
+	(*RoutingMethod)(nil),              // 18: api.v1.capsule.RoutingMethod
+	(*Middleware)(nil),                 // 19: api.v1.capsule.Middleware
+	(*Logging)(nil),                    // 20: api.v1.capsule.Logging
+	(*Authentication)(nil),             // 21: api.v1.capsule.Authentication
+	(*HttpAuth)(nil),                   // 22: api.v1.capsule.HttpAuth
+	(*GRPC)(nil),                       // 23: api.v1.capsule.GRPC
+	(*GRPCService)(nil),                // 24: api.v1.capsule.GRPCService
+	(*GRPCMethod)(nil),                 // 25: api.v1.capsule.GRPCMethod
+	(*Auth)(nil),                       // 26: api.v1.capsule.Auth
+	(*HorizontalScale)(nil),            // 27: api.v1.capsule.HorizontalScale
+	(*CPUTarget)(nil),                  // 28: api.v1.capsule.CPUTarget
+	(*Rollback)(nil),                   // 29: api.v1.capsule.Rollback
+	(*CustomMetric)(nil),               // 30: api.v1.capsule.CustomMetric
+	(*InstanceMetric)(nil),             // 31: api.v1.capsule.InstanceMetric
+	(*ObjectMetric)(nil),               // 32: api.v1.capsule.ObjectMetric
+	(*ObjectReference)(nil),            // 33: api.v1.capsule.ObjectReference
+	(*Change_ConfigFile)(nil),          // 34: api.v1.capsule.Change.ConfigFile
+	nil,                                // 35: api.v1.capsule.ContainerSettings.EnvironmentVariablesEntry
+	(*InterfaceProbe_HTTP)(nil),        // 36: api.v1.capsule.InterfaceProbe.HTTP
+	(*InterfaceProbe_TCP)(nil),         // 37: api.v1.capsule.InterfaceProbe.TCP
+	(*InterfaceProbe_GRPC)(nil),        // 38: api.v1.capsule.InterfaceProbe.GRPC
+	(*RoutingMethod_LoadBalancer)(nil), // 39: api.v1.capsule.RoutingMethod.LoadBalancer
+	(*RoutingMethod_Ingress)(nil),      // 40: api.v1.capsule.RoutingMethod.Ingress
+	nil,                                // 41: api.v1.capsule.GRPC.ServicesEntry
+	nil,                                // 42: api.v1.capsule.GRPCService.MethodsEntry
+	(*Auth_AllowAny)(nil),              // 43: api.v1.capsule.Auth.AllowAny
+	(*Auth_AllowAuthorized)(nil),       // 44: api.v1.capsule.Auth.AllowAuthorized
+	nil,                                // 45: api.v1.capsule.Auth.AllowAuthorized.ClaimsEntry
+	nil,                                // 46: api.v1.capsule.InstanceMetric.MatchLabelsEntry
+	nil,                                // 47: api.v1.capsule.ObjectMetric.MatchLabelsEntry
+	(*rollout.Status)(nil),             // 48: api.v1.capsule.rollout.Status
+	(*model.Author)(nil),               // 49: model.Author
+	(*timestamppb.Timestamp)(nil),      // 50: google.protobuf.Timestamp
 }
 var file_api_v1_capsule_rollout_proto_depIdxs = []int32{
-	13, // 0: api.v1.capsule.Change.network:type_name -> api.v1.capsule.Network
-	8,  // 1: api.v1.capsule.Change.container_settings:type_name -> api.v1.capsule.ContainerSettings
-	29, // 2: api.v1.capsule.Change.set_config_file:type_name -> api.v1.capsule.Change.ConfigFile
-	26, // 3: api.v1.capsule.Change.horizontal_scale:type_name -> api.v1.capsule.HorizontalScale
-	28, // 4: api.v1.capsule.Change.rollback:type_name -> api.v1.capsule.Rollback
-	5,  // 5: api.v1.capsule.Rollout.config:type_name -> api.v1.capsule.RolloutConfig
-	7,  // 6: api.v1.capsule.Rollout.status:type_name -> api.v1.capsule.RolloutStatus
-	41, // 7: api.v1.capsule.Rollout.rollout_status:type_name -> api.v1.capsule.rollout.Status
-	42, // 8: api.v1.capsule.RolloutConfig.created_by:type_name -> model.Author
-	43, // 9: api.v1.capsule.RolloutConfig.created_at:type_name -> google.protobuf.Timestamp
-	3,  // 10: api.v1.capsule.RolloutConfig.changes:type_name -> api.v1.capsule.Change
-	13, // 11: api.v1.capsule.RolloutConfig.network:type_name -> api.v1.capsule.Network
-	8,  // 12: api.v1.capsule.RolloutConfig.container_settings:type_name -> api.v1.capsule.ContainerSettings
-	6,  // 13: api.v1.capsule.RolloutConfig.config_files:type_name -> api.v1.capsule.ConfigFile
-	26, // 14: api.v1.capsule.RolloutConfig.horizontal_scale:type_name -> api.v1.capsule.HorizontalScale
-	42, // 15: api.v1.capsule.ConfigFile.updated_by:type_name -> model.Author
-	43, // 16: api.v1.capsule.ConfigFile.updated_at:type_name -> google.protobuf.Timestamp
+	14, // 0: api.v1.capsule.Change.network:type_name -> api.v1.capsule.Network
+	9,  // 1: api.v1.capsule.Change.container_settings:type_name -> api.v1.capsule.ContainerSettings
+	34, // 2: api.v1.capsule.Change.set_config_file:type_name -> api.v1.capsule.Change.ConfigFile
+	27, // 3: api.v1.capsule.Change.horizontal_scale:type_name -> api.v1.capsule.HorizontalScale
+	29, // 4: api.v1.capsule.Change.rollback:type_name -> api.v1.capsule.Rollback
+	6,  // 5: api.v1.capsule.Rollout.config:type_name -> api.v1.capsule.RolloutConfig
+	8,  // 6: api.v1.capsule.Rollout.status:type_name -> api.v1.capsule.RolloutStatus
+	48, // 7: api.v1.capsule.Rollout.rollout_status:type_name -> api.v1.capsule.rollout.Status
+	49, // 8: api.v1.capsule.RolloutConfig.created_by:type_name -> model.Author
+	50, // 9: api.v1.capsule.RolloutConfig.created_at:type_name -> google.protobuf.Timestamp
+	4,  // 10: api.v1.capsule.RolloutConfig.changes:type_name -> api.v1.capsule.Change
+	14, // 11: api.v1.capsule.RolloutConfig.network:type_name -> api.v1.capsule.Network
+	9,  // 12: api.v1.capsule.RolloutConfig.container_settings:type_name -> api.v1.capsule.ContainerSettings
+	7,  // 13: api.v1.capsule.RolloutConfig.config_files:type_name -> api.v1.capsule.ConfigFile
+	27, // 14: api.v1.capsule.RolloutConfig.horizontal_scale:type_name -> api.v1.capsule.HorizontalScale
+	49, // 15: api.v1.capsule.ConfigFile.updated_by:type_name -> model.Author
+	50, // 16: api.v1.capsule.ConfigFile.updated_at:type_name -> google.protobuf.Timestamp
 	0,  // 17: api.v1.capsule.RolloutStatus.state:type_name -> api.v1.capsule.RolloutState
-	43, // 18: api.v1.capsule.RolloutStatus.updated_at:type_name -> google.protobuf.Timestamp
-	30, // 19: api.v1.capsule.ContainerSettings.environment_variables:type_name -> api.v1.capsule.ContainerSettings.EnvironmentVariablesEntry
-	10, // 20: api.v1.capsule.ContainerSettings.resources:type_name -> api.v1.capsule.Resources
-	9,  // 21: api.v1.capsule.ContainerSettings.environment_sources:type_name -> api.v1.capsule.EnvironmentSource
-	2,  // 22: api.v1.capsule.EnvironmentSource.kind:type_name -> api.v1.capsule.EnvironmentSource.Kind
-	11, // 23: api.v1.capsule.Resources.requests:type_name -> api.v1.capsule.ResourceList
-	11, // 24: api.v1.capsule.Resources.limits:type_name -> api.v1.capsule.ResourceList
-	12, // 25: api.v1.capsule.Resources.gpu_limits:type_name -> api.v1.capsule.GpuLimits
-	14, // 26: api.v1.capsule.Network.interfaces:type_name -> api.v1.capsule.Interface
-	16, // 27: api.v1.capsule.Interface.public:type_name -> api.v1.capsule.PublicInterface
-	19, // 28: api.v1.capsule.Interface.logging:type_name -> api.v1.capsule.Logging
-	20, // 29: api.v1.capsule.Interface.authentication:type_name -> api.v1.capsule.Authentication
-	15, // 30: api.v1.capsule.Interface.liveness:type_name -> api.v1.capsule.InterfaceProbe
-	15, // 31: api.v1.capsule.Interface.readiness:type_name -> api.v1.capsule.InterfaceProbe
-	31, // 32: api.v1.capsule.InterfaceProbe.http:type_name -> api.v1.capsule.InterfaceProbe.HTTP
-	32, // 33: api.v1.capsule.InterfaceProbe.tcp:type_name -> api.v1.capsule.InterfaceProbe.TCP
-	33, // 34: api.v1.capsule.InterfaceProbe.grpc:type_name -> api.v1.capsule.InterfaceProbe.GRPC
-	17, // 35: api.v1.capsule.PublicInterface.method:type_name -> api.v1.capsule.RoutingMethod
-	34, // 36: api.v1.capsule.RoutingMethod.load_balancer:type_name -> api.v1.capsule.RoutingMethod.LoadBalancer
-	35, // 37: api.v1.capsule.RoutingMethod.ingress:type_name -> api.v1.capsule.RoutingMethod.Ingress
-	19, // 38: api.v1.capsule.Middleware.logging:type_name -> api.v1.capsule.Logging
-	20, // 39: api.v1.capsule.Middleware.authentication:type_name -> api.v1.capsule.Authentication
-	25, // 40: api.v1.capsule.Authentication.default:type_name -> api.v1.capsule.Auth
-	21, // 41: api.v1.capsule.Authentication.http:type_name -> api.v1.capsule.HttpAuth
-	22, // 42: api.v1.capsule.Authentication.grpc:type_name -> api.v1.capsule.GRPC
-	25, // 43: api.v1.capsule.HttpAuth.auth:type_name -> api.v1.capsule.Auth
-	25, // 44: api.v1.capsule.GRPC.auth:type_name -> api.v1.capsule.Auth
-	36, // 45: api.v1.capsule.GRPC.services:type_name -> api.v1.capsule.GRPC.ServicesEntry
-	25, // 46: api.v1.capsule.GRPCService.auth:type_name -> api.v1.capsule.Auth
-	37, // 47: api.v1.capsule.GRPCService.methods:type_name -> api.v1.capsule.GRPCService.MethodsEntry
-	25, // 48: api.v1.capsule.GRPCMethod.auth:type_name -> api.v1.capsule.Auth
-	38, // 49: api.v1.capsule.Auth.allow_any:type_name -> api.v1.capsule.Auth.AllowAny
-	39, // 50: api.v1.capsule.Auth.allow_authorized:type_name -> api.v1.capsule.Auth.AllowAuthorized
-	27, // 51: api.v1.capsule.HorizontalScale.cpu_target:type_name -> api.v1.capsule.CPUTarget
-	23, // 52: api.v1.capsule.GRPC.ServicesEntry.value:type_name -> api.v1.capsule.GRPCService
-	24, // 53: api.v1.capsule.GRPCService.MethodsEntry.value:type_name -> api.v1.capsule.GRPCMethod
-	40, // 54: api.v1.capsule.Auth.AllowAuthorized.claims:type_name -> api.v1.capsule.Auth.AllowAuthorized.ClaimsEntry
-	55, // [55:55] is the sub-list for method output_type
-	55, // [55:55] is the sub-list for method input_type
-	55, // [55:55] is the sub-list for extension type_name
-	55, // [55:55] is the sub-list for extension extendee
-	0,  // [0:55] is the sub-list for field type_name
+	50, // 18: api.v1.capsule.RolloutStatus.updated_at:type_name -> google.protobuf.Timestamp
+	35, // 19: api.v1.capsule.ContainerSettings.environment_variables:type_name -> api.v1.capsule.ContainerSettings.EnvironmentVariablesEntry
+	11, // 20: api.v1.capsule.ContainerSettings.resources:type_name -> api.v1.capsule.Resources
+	10, // 21: api.v1.capsule.ContainerSettings.environment_sources:type_name -> api.v1.capsule.EnvironmentSource
+	3,  // 22: api.v1.capsule.EnvironmentSource.kind:type_name -> api.v1.capsule.EnvironmentSource.Kind
+	12, // 23: api.v1.capsule.Resources.requests:type_name -> api.v1.capsule.ResourceList
+	12, // 24: api.v1.capsule.Resources.limits:type_name -> api.v1.capsule.ResourceList
+	13, // 25: api.v1.capsule.Resources.gpu_limits:type_name -> api.v1.capsule.GpuLimits
+	15, // 26: api.v1.capsule.Network.interfaces:type_name -> api.v1.capsule.Interface
+	17, // 27: api.v1.capsule.Interface.public:type_name -> api.v1.capsule.PublicInterface
+	20, // 28: api.v1.capsule.Interface.logging:type_name -> api.v1.capsule.Logging
+	21, // 29: api.v1.capsule.Interface.authentication:type_name -> api.v1.capsule.Authentication
+	16, // 30: api.v1.capsule.Interface.liveness:type_name -> api.v1.capsule.InterfaceProbe
+	16, // 31: api.v1.capsule.Interface.readiness:type_name -> api.v1.capsule.InterfaceProbe
+	36, // 32: api.v1.capsule.InterfaceProbe.http:type_name -> api.v1.capsule.InterfaceProbe.HTTP
+	37, // 33: api.v1.capsule.InterfaceProbe.tcp:type_name -> api.v1.capsule.InterfaceProbe.TCP
+	38, // 34: api.v1.capsule.InterfaceProbe.grpc:type_name -> api.v1.capsule.InterfaceProbe.GRPC
+	18, // 35: api.v1.capsule.PublicInterface.method:type_name -> api.v1.capsule.RoutingMethod
+	39, // 36: api.v1.capsule.RoutingMethod.load_balancer:type_name -> api.v1.capsule.RoutingMethod.LoadBalancer
+	40, // 37: api.v1.capsule.RoutingMethod.ingress:type_name -> api.v1.capsule.RoutingMethod.Ingress
+	20, // 38: api.v1.capsule.Middleware.logging:type_name -> api.v1.capsule.Logging
+	21, // 39: api.v1.capsule.Middleware.authentication:type_name -> api.v1.capsule.Authentication
+	26, // 40: api.v1.capsule.Authentication.default:type_name -> api.v1.capsule.Auth
+	22, // 41: api.v1.capsule.Authentication.http:type_name -> api.v1.capsule.HttpAuth
+	23, // 42: api.v1.capsule.Authentication.grpc:type_name -> api.v1.capsule.GRPC
+	26, // 43: api.v1.capsule.HttpAuth.auth:type_name -> api.v1.capsule.Auth
+	26, // 44: api.v1.capsule.GRPC.auth:type_name -> api.v1.capsule.Auth
+	41, // 45: api.v1.capsule.GRPC.services:type_name -> api.v1.capsule.GRPC.ServicesEntry
+	26, // 46: api.v1.capsule.GRPCService.auth:type_name -> api.v1.capsule.Auth
+	42, // 47: api.v1.capsule.GRPCService.methods:type_name -> api.v1.capsule.GRPCService.MethodsEntry
+	26, // 48: api.v1.capsule.GRPCMethod.auth:type_name -> api.v1.capsule.Auth
+	43, // 49: api.v1.capsule.Auth.allow_any:type_name -> api.v1.capsule.Auth.AllowAny
+	44, // 50: api.v1.capsule.Auth.allow_authorized:type_name -> api.v1.capsule.Auth.AllowAuthorized
+	28, // 51: api.v1.capsule.HorizontalScale.cpu_target:type_name -> api.v1.capsule.CPUTarget
+	30, // 52: api.v1.capsule.HorizontalScale.custom_metrics:type_name -> api.v1.capsule.CustomMetric
+	31, // 53: api.v1.capsule.CustomMetric.instance:type_name -> api.v1.capsule.InstanceMetric
+	32, // 54: api.v1.capsule.CustomMetric.object:type_name -> api.v1.capsule.ObjectMetric
+	46, // 55: api.v1.capsule.InstanceMetric.match_labels:type_name -> api.v1.capsule.InstanceMetric.MatchLabelsEntry
+	47, // 56: api.v1.capsule.ObjectMetric.match_labels:type_name -> api.v1.capsule.ObjectMetric.MatchLabelsEntry
+	33, // 57: api.v1.capsule.ObjectMetric.object_reference:type_name -> api.v1.capsule.ObjectReference
+	24, // 58: api.v1.capsule.GRPC.ServicesEntry.value:type_name -> api.v1.capsule.GRPCService
+	25, // 59: api.v1.capsule.GRPCService.MethodsEntry.value:type_name -> api.v1.capsule.GRPCMethod
+	45, // 60: api.v1.capsule.Auth.AllowAuthorized.claims:type_name -> api.v1.capsule.Auth.AllowAuthorized.ClaimsEntry
+	61, // [61:61] is the sub-list for method output_type
+	61, // [61:61] is the sub-list for method input_type
+	61, // [61:61] is the sub-list for extension type_name
+	61, // [61:61] is the sub-list for extension extendee
+	0,  // [0:61] is the sub-list for field type_name
 }
 
 func init() { file_api_v1_capsule_rollout_proto_init() }
@@ -3268,7 +3693,19 @@ func file_api_v1_capsule_rollout_proto_init() {
 			}
 		}
 		file_api_v1_capsule_rollout_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Change_ConfigFile); i {
+			switch v := v.(*CustomMetric); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_capsule_rollout_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*InstanceMetric); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3280,7 +3717,7 @@ func file_api_v1_capsule_rollout_proto_init() {
 			}
 		}
 		file_api_v1_capsule_rollout_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InterfaceProbe_HTTP); i {
+			switch v := v.(*ObjectMetric); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3292,7 +3729,7 @@ func file_api_v1_capsule_rollout_proto_init() {
 			}
 		}
 		file_api_v1_capsule_rollout_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InterfaceProbe_TCP); i {
+			switch v := v.(*ObjectReference); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3304,19 +3741,7 @@ func file_api_v1_capsule_rollout_proto_init() {
 			}
 		}
 		file_api_v1_capsule_rollout_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InterfaceProbe_GRPC); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_api_v1_capsule_rollout_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoutingMethod_LoadBalancer); i {
+			switch v := v.(*Change_ConfigFile); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3328,7 +3753,31 @@ func file_api_v1_capsule_rollout_proto_init() {
 			}
 		}
 		file_api_v1_capsule_rollout_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoutingMethod_Ingress); i {
+			switch v := v.(*InterfaceProbe_HTTP); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_capsule_rollout_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*InterfaceProbe_TCP); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_capsule_rollout_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*InterfaceProbe_GRPC); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3340,7 +3789,7 @@ func file_api_v1_capsule_rollout_proto_init() {
 			}
 		}
 		file_api_v1_capsule_rollout_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Auth_AllowAny); i {
+			switch v := v.(*RoutingMethod_LoadBalancer); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3352,6 +3801,30 @@ func file_api_v1_capsule_rollout_proto_init() {
 			}
 		}
 		file_api_v1_capsule_rollout_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RoutingMethod_Ingress); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_capsule_rollout_proto_msgTypes[39].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Auth_AllowAny); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_capsule_rollout_proto_msgTypes[40].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Auth_AllowAuthorized); i {
 			case 0:
 				return &v.state
@@ -3392,13 +3865,17 @@ func file_api_v1_capsule_rollout_proto_init() {
 		(*Auth_AllowAny_)(nil),
 		(*Auth_AllowAuthorized_)(nil),
 	}
+	file_api_v1_capsule_rollout_proto_msgTypes[26].OneofWrappers = []interface{}{
+		(*CustomMetric_Instance)(nil),
+		(*CustomMetric_Object)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_capsule_rollout_proto_rawDesc,
-			NumEnums:      3,
-			NumMessages:   38,
+			NumEnums:      4,
+			NumMessages:   44,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
