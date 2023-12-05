@@ -136,61 +136,6 @@ func (EventType) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_rollout_proto_rawDescGZIP(), []int{1}
 }
 
-type LabelSelectorOperator int32
-
-const (
-	LabelSelectorOperator_OPERATOR_UNSPECIFIED    LabelSelectorOperator = 0
-	LabelSelectorOperator_OPERATOR_IN             LabelSelectorOperator = 1
-	LabelSelectorOperator_OPERATOR_NOT_IN         LabelSelectorOperator = 2
-	LabelSelectorOperator_OPERATOR_EXISTS         LabelSelectorOperator = 3
-	LabelSelectorOperator_OPERATOR_DOES_NOT_EXIST LabelSelectorOperator = 4
-)
-
-// Enum value maps for LabelSelectorOperator.
-var (
-	LabelSelectorOperator_name = map[int32]string{
-		0: "OPERATOR_UNSPECIFIED",
-		1: "OPERATOR_IN",
-		2: "OPERATOR_NOT_IN",
-		3: "OPERATOR_EXISTS",
-		4: "OPERATOR_DOES_NOT_EXIST",
-	}
-	LabelSelectorOperator_value = map[string]int32{
-		"OPERATOR_UNSPECIFIED":    0,
-		"OPERATOR_IN":             1,
-		"OPERATOR_NOT_IN":         2,
-		"OPERATOR_EXISTS":         3,
-		"OPERATOR_DOES_NOT_EXIST": 4,
-	}
-)
-
-func (x LabelSelectorOperator) Enum() *LabelSelectorOperator {
-	p := new(LabelSelectorOperator)
-	*p = x
-	return p
-}
-
-func (x LabelSelectorOperator) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (LabelSelectorOperator) Descriptor() protoreflect.EnumDescriptor {
-	return file_api_v1_capsule_rollout_proto_enumTypes[2].Descriptor()
-}
-
-func (LabelSelectorOperator) Type() protoreflect.EnumType {
-	return &file_api_v1_capsule_rollout_proto_enumTypes[2]
-}
-
-func (x LabelSelectorOperator) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use LabelSelectorOperator.Descriptor instead.
-func (LabelSelectorOperator) EnumDescriptor() ([]byte, []int) {
-	return file_api_v1_capsule_rollout_proto_rawDescGZIP(), []int{2}
-}
-
 type EnvironmentSource_Kind int32
 
 const (
@@ -224,11 +169,11 @@ func (x EnvironmentSource_Kind) String() string {
 }
 
 func (EnvironmentSource_Kind) Descriptor() protoreflect.EnumDescriptor {
-	return file_api_v1_capsule_rollout_proto_enumTypes[3].Descriptor()
+	return file_api_v1_capsule_rollout_proto_enumTypes[2].Descriptor()
 }
 
 func (EnvironmentSource_Kind) Type() protoreflect.EnumType {
-	return &file_api_v1_capsule_rollout_proto_enumTypes[3]
+	return &file_api_v1_capsule_rollout_proto_enumTypes[2]
 }
 
 func (x EnvironmentSource_Kind) Number() protoreflect.EnumNumber {
@@ -3215,27 +3160,18 @@ var file_api_v1_capsule_rollout_proto_rawDesc = []byte{
 	0x74, 0x54, 0x79, 0x70, 0x65, 0x12, 0x1a, 0x0a, 0x16, 0x45, 0x56, 0x45, 0x4e, 0x54, 0x5f, 0x54,
 	0x59, 0x50, 0x45, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10,
 	0x00, 0x12, 0x14, 0x0a, 0x10, 0x45, 0x56, 0x45, 0x4e, 0x54, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f,
-	0x41, 0x42, 0x4f, 0x52, 0x54, 0x10, 0x01, 0x2a, 0x89, 0x01, 0x0a, 0x15, 0x4c, 0x61, 0x62, 0x65,
-	0x6c, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x6f, 0x72, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f,
-	0x72, 0x12, 0x18, 0x0a, 0x14, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x4f, 0x52, 0x5f, 0x55, 0x4e,
-	0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x0f, 0x0a, 0x0b, 0x4f,
-	0x50, 0x45, 0x52, 0x41, 0x54, 0x4f, 0x52, 0x5f, 0x49, 0x4e, 0x10, 0x01, 0x12, 0x13, 0x0a, 0x0f,
-	0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x4f, 0x52, 0x5f, 0x4e, 0x4f, 0x54, 0x5f, 0x49, 0x4e, 0x10,
-	0x02, 0x12, 0x13, 0x0a, 0x0f, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x4f, 0x52, 0x5f, 0x45, 0x58,
-	0x49, 0x53, 0x54, 0x53, 0x10, 0x03, 0x12, 0x1b, 0x0a, 0x17, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54,
-	0x4f, 0x52, 0x5f, 0x44, 0x4f, 0x45, 0x53, 0x5f, 0x4e, 0x4f, 0x54, 0x5f, 0x45, 0x58, 0x49, 0x53,
-	0x54, 0x10, 0x04, 0x42, 0xa9, 0x01, 0x0a, 0x12, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x70, 0x69, 0x2e,
-	0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x42, 0x0c, 0x52, 0x6f, 0x6c, 0x6c,
-	0x6f, 0x75, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2b, 0x67, 0x69, 0x74, 0x68,
-	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x69, 0x67, 0x64, 0x65, 0x76, 0x2f, 0x72, 0x69,
-	0x67, 0x2d, 0x67, 0x6f, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f,
-	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xa2, 0x02, 0x03, 0x41, 0x56, 0x43, 0xaa, 0x02, 0x0e,
-	0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xca, 0x02,
-	0x0e, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xe2,
-	0x02, 0x1a, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
-	0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x41,
-	0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0x3a, 0x3a, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x41, 0x42, 0x4f, 0x52, 0x54, 0x10, 0x01, 0x42, 0xa9, 0x01, 0x0a, 0x12, 0x63, 0x6f, 0x6d, 0x2e,
+	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x42, 0x0c,
+	0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2b,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x69, 0x67, 0x64, 0x65,
+	0x76, 0x2f, 0x72, 0x69, 0x67, 0x2d, 0x67, 0x6f, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x70, 0x69,
+	0x2f, 0x76, 0x31, 0x2f, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0xa2, 0x02, 0x03, 0x41, 0x56,
+	0x43, 0xaa, 0x02, 0x0e, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0x2e, 0x43, 0x61, 0x70, 0x73, 0x75,
+	0x6c, 0x65, 0xca, 0x02, 0x0e, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x43, 0x61, 0x70, 0x73,
+	0x75, 0x6c, 0x65, 0xe2, 0x02, 0x1a, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x43, 0x61, 0x70,
+	0x73, 0x75, 0x6c, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61,
+	0xea, 0x02, 0x10, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0x3a, 0x3a, 0x43, 0x61, 0x70, 0x73,
+	0x75, 0x6c, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -3250,123 +3186,122 @@ func file_api_v1_capsule_rollout_proto_rawDescGZIP() []byte {
 	return file_api_v1_capsule_rollout_proto_rawDescData
 }
 
-var file_api_v1_capsule_rollout_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_api_v1_capsule_rollout_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_api_v1_capsule_rollout_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
 var file_api_v1_capsule_rollout_proto_goTypes = []interface{}{
 	(RolloutState)(0),                  // 0: api.v1.capsule.RolloutState
 	(EventType)(0),                     // 1: api.v1.capsule.EventType
-	(LabelSelectorOperator)(0),         // 2: api.v1.capsule.LabelSelectorOperator
-	(EnvironmentSource_Kind)(0),        // 3: api.v1.capsule.EnvironmentSource.Kind
-	(*Change)(nil),                     // 4: api.v1.capsule.Change
-	(*Rollout)(nil),                    // 5: api.v1.capsule.Rollout
-	(*RolloutConfig)(nil),              // 6: api.v1.capsule.RolloutConfig
-	(*ConfigFile)(nil),                 // 7: api.v1.capsule.ConfigFile
-	(*RolloutStatus)(nil),              // 8: api.v1.capsule.RolloutStatus
-	(*ContainerSettings)(nil),          // 9: api.v1.capsule.ContainerSettings
-	(*EnvironmentSource)(nil),          // 10: api.v1.capsule.EnvironmentSource
-	(*Resources)(nil),                  // 11: api.v1.capsule.Resources
-	(*ResourceList)(nil),               // 12: api.v1.capsule.ResourceList
-	(*GpuLimits)(nil),                  // 13: api.v1.capsule.GpuLimits
-	(*Network)(nil),                    // 14: api.v1.capsule.Network
-	(*Interface)(nil),                  // 15: api.v1.capsule.Interface
-	(*InterfaceProbe)(nil),             // 16: api.v1.capsule.InterfaceProbe
-	(*PublicInterface)(nil),            // 17: api.v1.capsule.PublicInterface
-	(*RoutingMethod)(nil),              // 18: api.v1.capsule.RoutingMethod
-	(*Middleware)(nil),                 // 19: api.v1.capsule.Middleware
-	(*Logging)(nil),                    // 20: api.v1.capsule.Logging
-	(*Authentication)(nil),             // 21: api.v1.capsule.Authentication
-	(*HttpAuth)(nil),                   // 22: api.v1.capsule.HttpAuth
-	(*GRPC)(nil),                       // 23: api.v1.capsule.GRPC
-	(*GRPCService)(nil),                // 24: api.v1.capsule.GRPCService
-	(*GRPCMethod)(nil),                 // 25: api.v1.capsule.GRPCMethod
-	(*Auth)(nil),                       // 26: api.v1.capsule.Auth
-	(*HorizontalScale)(nil),            // 27: api.v1.capsule.HorizontalScale
-	(*CPUTarget)(nil),                  // 28: api.v1.capsule.CPUTarget
-	(*Rollback)(nil),                   // 29: api.v1.capsule.Rollback
-	(*CustomMetric)(nil),               // 30: api.v1.capsule.CustomMetric
-	(*InstanceMetric)(nil),             // 31: api.v1.capsule.InstanceMetric
-	(*ObjectMetric)(nil),               // 32: api.v1.capsule.ObjectMetric
-	(*ObjectReference)(nil),            // 33: api.v1.capsule.ObjectReference
-	(*Change_ConfigFile)(nil),          // 34: api.v1.capsule.Change.ConfigFile
-	nil,                                // 35: api.v1.capsule.ContainerSettings.EnvironmentVariablesEntry
-	(*InterfaceProbe_HTTP)(nil),        // 36: api.v1.capsule.InterfaceProbe.HTTP
-	(*InterfaceProbe_TCP)(nil),         // 37: api.v1.capsule.InterfaceProbe.TCP
-	(*InterfaceProbe_GRPC)(nil),        // 38: api.v1.capsule.InterfaceProbe.GRPC
-	(*RoutingMethod_LoadBalancer)(nil), // 39: api.v1.capsule.RoutingMethod.LoadBalancer
-	(*RoutingMethod_Ingress)(nil),      // 40: api.v1.capsule.RoutingMethod.Ingress
-	nil,                                // 41: api.v1.capsule.GRPC.ServicesEntry
-	nil,                                // 42: api.v1.capsule.GRPCService.MethodsEntry
-	(*Auth_AllowAny)(nil),              // 43: api.v1.capsule.Auth.AllowAny
-	(*Auth_AllowAuthorized)(nil),       // 44: api.v1.capsule.Auth.AllowAuthorized
-	nil,                                // 45: api.v1.capsule.Auth.AllowAuthorized.ClaimsEntry
-	nil,                                // 46: api.v1.capsule.InstanceMetric.MatchLabelsEntry
-	nil,                                // 47: api.v1.capsule.ObjectMetric.MatchLabelsEntry
-	(*rollout.Status)(nil),             // 48: api.v1.capsule.rollout.Status
-	(*model.Author)(nil),               // 49: model.Author
-	(*timestamppb.Timestamp)(nil),      // 50: google.protobuf.Timestamp
+	(EnvironmentSource_Kind)(0),        // 2: api.v1.capsule.EnvironmentSource.Kind
+	(*Change)(nil),                     // 3: api.v1.capsule.Change
+	(*Rollout)(nil),                    // 4: api.v1.capsule.Rollout
+	(*RolloutConfig)(nil),              // 5: api.v1.capsule.RolloutConfig
+	(*ConfigFile)(nil),                 // 6: api.v1.capsule.ConfigFile
+	(*RolloutStatus)(nil),              // 7: api.v1.capsule.RolloutStatus
+	(*ContainerSettings)(nil),          // 8: api.v1.capsule.ContainerSettings
+	(*EnvironmentSource)(nil),          // 9: api.v1.capsule.EnvironmentSource
+	(*Resources)(nil),                  // 10: api.v1.capsule.Resources
+	(*ResourceList)(nil),               // 11: api.v1.capsule.ResourceList
+	(*GpuLimits)(nil),                  // 12: api.v1.capsule.GpuLimits
+	(*Network)(nil),                    // 13: api.v1.capsule.Network
+	(*Interface)(nil),                  // 14: api.v1.capsule.Interface
+	(*InterfaceProbe)(nil),             // 15: api.v1.capsule.InterfaceProbe
+	(*PublicInterface)(nil),            // 16: api.v1.capsule.PublicInterface
+	(*RoutingMethod)(nil),              // 17: api.v1.capsule.RoutingMethod
+	(*Middleware)(nil),                 // 18: api.v1.capsule.Middleware
+	(*Logging)(nil),                    // 19: api.v1.capsule.Logging
+	(*Authentication)(nil),             // 20: api.v1.capsule.Authentication
+	(*HttpAuth)(nil),                   // 21: api.v1.capsule.HttpAuth
+	(*GRPC)(nil),                       // 22: api.v1.capsule.GRPC
+	(*GRPCService)(nil),                // 23: api.v1.capsule.GRPCService
+	(*GRPCMethod)(nil),                 // 24: api.v1.capsule.GRPCMethod
+	(*Auth)(nil),                       // 25: api.v1.capsule.Auth
+	(*HorizontalScale)(nil),            // 26: api.v1.capsule.HorizontalScale
+	(*CPUTarget)(nil),                  // 27: api.v1.capsule.CPUTarget
+	(*Rollback)(nil),                   // 28: api.v1.capsule.Rollback
+	(*CustomMetric)(nil),               // 29: api.v1.capsule.CustomMetric
+	(*InstanceMetric)(nil),             // 30: api.v1.capsule.InstanceMetric
+	(*ObjectMetric)(nil),               // 31: api.v1.capsule.ObjectMetric
+	(*ObjectReference)(nil),            // 32: api.v1.capsule.ObjectReference
+	(*Change_ConfigFile)(nil),          // 33: api.v1.capsule.Change.ConfigFile
+	nil,                                // 34: api.v1.capsule.ContainerSettings.EnvironmentVariablesEntry
+	(*InterfaceProbe_HTTP)(nil),        // 35: api.v1.capsule.InterfaceProbe.HTTP
+	(*InterfaceProbe_TCP)(nil),         // 36: api.v1.capsule.InterfaceProbe.TCP
+	(*InterfaceProbe_GRPC)(nil),        // 37: api.v1.capsule.InterfaceProbe.GRPC
+	(*RoutingMethod_LoadBalancer)(nil), // 38: api.v1.capsule.RoutingMethod.LoadBalancer
+	(*RoutingMethod_Ingress)(nil),      // 39: api.v1.capsule.RoutingMethod.Ingress
+	nil,                                // 40: api.v1.capsule.GRPC.ServicesEntry
+	nil,                                // 41: api.v1.capsule.GRPCService.MethodsEntry
+	(*Auth_AllowAny)(nil),              // 42: api.v1.capsule.Auth.AllowAny
+	(*Auth_AllowAuthorized)(nil),       // 43: api.v1.capsule.Auth.AllowAuthorized
+	nil,                                // 44: api.v1.capsule.Auth.AllowAuthorized.ClaimsEntry
+	nil,                                // 45: api.v1.capsule.InstanceMetric.MatchLabelsEntry
+	nil,                                // 46: api.v1.capsule.ObjectMetric.MatchLabelsEntry
+	(*rollout.Status)(nil),             // 47: api.v1.capsule.rollout.Status
+	(*model.Author)(nil),               // 48: model.Author
+	(*timestamppb.Timestamp)(nil),      // 49: google.protobuf.Timestamp
 }
 var file_api_v1_capsule_rollout_proto_depIdxs = []int32{
-	14, // 0: api.v1.capsule.Change.network:type_name -> api.v1.capsule.Network
-	9,  // 1: api.v1.capsule.Change.container_settings:type_name -> api.v1.capsule.ContainerSettings
-	34, // 2: api.v1.capsule.Change.set_config_file:type_name -> api.v1.capsule.Change.ConfigFile
-	27, // 3: api.v1.capsule.Change.horizontal_scale:type_name -> api.v1.capsule.HorizontalScale
-	29, // 4: api.v1.capsule.Change.rollback:type_name -> api.v1.capsule.Rollback
-	6,  // 5: api.v1.capsule.Rollout.config:type_name -> api.v1.capsule.RolloutConfig
-	8,  // 6: api.v1.capsule.Rollout.status:type_name -> api.v1.capsule.RolloutStatus
-	48, // 7: api.v1.capsule.Rollout.rollout_status:type_name -> api.v1.capsule.rollout.Status
-	49, // 8: api.v1.capsule.RolloutConfig.created_by:type_name -> model.Author
-	50, // 9: api.v1.capsule.RolloutConfig.created_at:type_name -> google.protobuf.Timestamp
-	4,  // 10: api.v1.capsule.RolloutConfig.changes:type_name -> api.v1.capsule.Change
-	14, // 11: api.v1.capsule.RolloutConfig.network:type_name -> api.v1.capsule.Network
-	9,  // 12: api.v1.capsule.RolloutConfig.container_settings:type_name -> api.v1.capsule.ContainerSettings
-	7,  // 13: api.v1.capsule.RolloutConfig.config_files:type_name -> api.v1.capsule.ConfigFile
-	27, // 14: api.v1.capsule.RolloutConfig.horizontal_scale:type_name -> api.v1.capsule.HorizontalScale
-	49, // 15: api.v1.capsule.ConfigFile.updated_by:type_name -> model.Author
-	50, // 16: api.v1.capsule.ConfigFile.updated_at:type_name -> google.protobuf.Timestamp
+	13, // 0: api.v1.capsule.Change.network:type_name -> api.v1.capsule.Network
+	8,  // 1: api.v1.capsule.Change.container_settings:type_name -> api.v1.capsule.ContainerSettings
+	33, // 2: api.v1.capsule.Change.set_config_file:type_name -> api.v1.capsule.Change.ConfigFile
+	26, // 3: api.v1.capsule.Change.horizontal_scale:type_name -> api.v1.capsule.HorizontalScale
+	28, // 4: api.v1.capsule.Change.rollback:type_name -> api.v1.capsule.Rollback
+	5,  // 5: api.v1.capsule.Rollout.config:type_name -> api.v1.capsule.RolloutConfig
+	7,  // 6: api.v1.capsule.Rollout.status:type_name -> api.v1.capsule.RolloutStatus
+	47, // 7: api.v1.capsule.Rollout.rollout_status:type_name -> api.v1.capsule.rollout.Status
+	48, // 8: api.v1.capsule.RolloutConfig.created_by:type_name -> model.Author
+	49, // 9: api.v1.capsule.RolloutConfig.created_at:type_name -> google.protobuf.Timestamp
+	3,  // 10: api.v1.capsule.RolloutConfig.changes:type_name -> api.v1.capsule.Change
+	13, // 11: api.v1.capsule.RolloutConfig.network:type_name -> api.v1.capsule.Network
+	8,  // 12: api.v1.capsule.RolloutConfig.container_settings:type_name -> api.v1.capsule.ContainerSettings
+	6,  // 13: api.v1.capsule.RolloutConfig.config_files:type_name -> api.v1.capsule.ConfigFile
+	26, // 14: api.v1.capsule.RolloutConfig.horizontal_scale:type_name -> api.v1.capsule.HorizontalScale
+	48, // 15: api.v1.capsule.ConfigFile.updated_by:type_name -> model.Author
+	49, // 16: api.v1.capsule.ConfigFile.updated_at:type_name -> google.protobuf.Timestamp
 	0,  // 17: api.v1.capsule.RolloutStatus.state:type_name -> api.v1.capsule.RolloutState
-	50, // 18: api.v1.capsule.RolloutStatus.updated_at:type_name -> google.protobuf.Timestamp
-	35, // 19: api.v1.capsule.ContainerSettings.environment_variables:type_name -> api.v1.capsule.ContainerSettings.EnvironmentVariablesEntry
-	11, // 20: api.v1.capsule.ContainerSettings.resources:type_name -> api.v1.capsule.Resources
-	10, // 21: api.v1.capsule.ContainerSettings.environment_sources:type_name -> api.v1.capsule.EnvironmentSource
-	3,  // 22: api.v1.capsule.EnvironmentSource.kind:type_name -> api.v1.capsule.EnvironmentSource.Kind
-	12, // 23: api.v1.capsule.Resources.requests:type_name -> api.v1.capsule.ResourceList
-	12, // 24: api.v1.capsule.Resources.limits:type_name -> api.v1.capsule.ResourceList
-	13, // 25: api.v1.capsule.Resources.gpu_limits:type_name -> api.v1.capsule.GpuLimits
-	15, // 26: api.v1.capsule.Network.interfaces:type_name -> api.v1.capsule.Interface
-	17, // 27: api.v1.capsule.Interface.public:type_name -> api.v1.capsule.PublicInterface
-	20, // 28: api.v1.capsule.Interface.logging:type_name -> api.v1.capsule.Logging
-	21, // 29: api.v1.capsule.Interface.authentication:type_name -> api.v1.capsule.Authentication
-	16, // 30: api.v1.capsule.Interface.liveness:type_name -> api.v1.capsule.InterfaceProbe
-	16, // 31: api.v1.capsule.Interface.readiness:type_name -> api.v1.capsule.InterfaceProbe
-	36, // 32: api.v1.capsule.InterfaceProbe.http:type_name -> api.v1.capsule.InterfaceProbe.HTTP
-	37, // 33: api.v1.capsule.InterfaceProbe.tcp:type_name -> api.v1.capsule.InterfaceProbe.TCP
-	38, // 34: api.v1.capsule.InterfaceProbe.grpc:type_name -> api.v1.capsule.InterfaceProbe.GRPC
-	18, // 35: api.v1.capsule.PublicInterface.method:type_name -> api.v1.capsule.RoutingMethod
-	39, // 36: api.v1.capsule.RoutingMethod.load_balancer:type_name -> api.v1.capsule.RoutingMethod.LoadBalancer
-	40, // 37: api.v1.capsule.RoutingMethod.ingress:type_name -> api.v1.capsule.RoutingMethod.Ingress
-	20, // 38: api.v1.capsule.Middleware.logging:type_name -> api.v1.capsule.Logging
-	21, // 39: api.v1.capsule.Middleware.authentication:type_name -> api.v1.capsule.Authentication
-	26, // 40: api.v1.capsule.Authentication.default:type_name -> api.v1.capsule.Auth
-	22, // 41: api.v1.capsule.Authentication.http:type_name -> api.v1.capsule.HttpAuth
-	23, // 42: api.v1.capsule.Authentication.grpc:type_name -> api.v1.capsule.GRPC
-	26, // 43: api.v1.capsule.HttpAuth.auth:type_name -> api.v1.capsule.Auth
-	26, // 44: api.v1.capsule.GRPC.auth:type_name -> api.v1.capsule.Auth
-	41, // 45: api.v1.capsule.GRPC.services:type_name -> api.v1.capsule.GRPC.ServicesEntry
-	26, // 46: api.v1.capsule.GRPCService.auth:type_name -> api.v1.capsule.Auth
-	42, // 47: api.v1.capsule.GRPCService.methods:type_name -> api.v1.capsule.GRPCService.MethodsEntry
-	26, // 48: api.v1.capsule.GRPCMethod.auth:type_name -> api.v1.capsule.Auth
-	43, // 49: api.v1.capsule.Auth.allow_any:type_name -> api.v1.capsule.Auth.AllowAny
-	44, // 50: api.v1.capsule.Auth.allow_authorized:type_name -> api.v1.capsule.Auth.AllowAuthorized
-	28, // 51: api.v1.capsule.HorizontalScale.cpu_target:type_name -> api.v1.capsule.CPUTarget
-	30, // 52: api.v1.capsule.HorizontalScale.custom_metrics:type_name -> api.v1.capsule.CustomMetric
-	31, // 53: api.v1.capsule.CustomMetric.instance:type_name -> api.v1.capsule.InstanceMetric
-	32, // 54: api.v1.capsule.CustomMetric.object:type_name -> api.v1.capsule.ObjectMetric
-	46, // 55: api.v1.capsule.InstanceMetric.match_labels:type_name -> api.v1.capsule.InstanceMetric.MatchLabelsEntry
-	47, // 56: api.v1.capsule.ObjectMetric.match_labels:type_name -> api.v1.capsule.ObjectMetric.MatchLabelsEntry
-	33, // 57: api.v1.capsule.ObjectMetric.object_reference:type_name -> api.v1.capsule.ObjectReference
-	24, // 58: api.v1.capsule.GRPC.ServicesEntry.value:type_name -> api.v1.capsule.GRPCService
-	25, // 59: api.v1.capsule.GRPCService.MethodsEntry.value:type_name -> api.v1.capsule.GRPCMethod
-	45, // 60: api.v1.capsule.Auth.AllowAuthorized.claims:type_name -> api.v1.capsule.Auth.AllowAuthorized.ClaimsEntry
+	49, // 18: api.v1.capsule.RolloutStatus.updated_at:type_name -> google.protobuf.Timestamp
+	34, // 19: api.v1.capsule.ContainerSettings.environment_variables:type_name -> api.v1.capsule.ContainerSettings.EnvironmentVariablesEntry
+	10, // 20: api.v1.capsule.ContainerSettings.resources:type_name -> api.v1.capsule.Resources
+	9,  // 21: api.v1.capsule.ContainerSettings.environment_sources:type_name -> api.v1.capsule.EnvironmentSource
+	2,  // 22: api.v1.capsule.EnvironmentSource.kind:type_name -> api.v1.capsule.EnvironmentSource.Kind
+	11, // 23: api.v1.capsule.Resources.requests:type_name -> api.v1.capsule.ResourceList
+	11, // 24: api.v1.capsule.Resources.limits:type_name -> api.v1.capsule.ResourceList
+	12, // 25: api.v1.capsule.Resources.gpu_limits:type_name -> api.v1.capsule.GpuLimits
+	14, // 26: api.v1.capsule.Network.interfaces:type_name -> api.v1.capsule.Interface
+	16, // 27: api.v1.capsule.Interface.public:type_name -> api.v1.capsule.PublicInterface
+	19, // 28: api.v1.capsule.Interface.logging:type_name -> api.v1.capsule.Logging
+	20, // 29: api.v1.capsule.Interface.authentication:type_name -> api.v1.capsule.Authentication
+	15, // 30: api.v1.capsule.Interface.liveness:type_name -> api.v1.capsule.InterfaceProbe
+	15, // 31: api.v1.capsule.Interface.readiness:type_name -> api.v1.capsule.InterfaceProbe
+	35, // 32: api.v1.capsule.InterfaceProbe.http:type_name -> api.v1.capsule.InterfaceProbe.HTTP
+	36, // 33: api.v1.capsule.InterfaceProbe.tcp:type_name -> api.v1.capsule.InterfaceProbe.TCP
+	37, // 34: api.v1.capsule.InterfaceProbe.grpc:type_name -> api.v1.capsule.InterfaceProbe.GRPC
+	17, // 35: api.v1.capsule.PublicInterface.method:type_name -> api.v1.capsule.RoutingMethod
+	38, // 36: api.v1.capsule.RoutingMethod.load_balancer:type_name -> api.v1.capsule.RoutingMethod.LoadBalancer
+	39, // 37: api.v1.capsule.RoutingMethod.ingress:type_name -> api.v1.capsule.RoutingMethod.Ingress
+	19, // 38: api.v1.capsule.Middleware.logging:type_name -> api.v1.capsule.Logging
+	20, // 39: api.v1.capsule.Middleware.authentication:type_name -> api.v1.capsule.Authentication
+	25, // 40: api.v1.capsule.Authentication.default:type_name -> api.v1.capsule.Auth
+	21, // 41: api.v1.capsule.Authentication.http:type_name -> api.v1.capsule.HttpAuth
+	22, // 42: api.v1.capsule.Authentication.grpc:type_name -> api.v1.capsule.GRPC
+	25, // 43: api.v1.capsule.HttpAuth.auth:type_name -> api.v1.capsule.Auth
+	25, // 44: api.v1.capsule.GRPC.auth:type_name -> api.v1.capsule.Auth
+	40, // 45: api.v1.capsule.GRPC.services:type_name -> api.v1.capsule.GRPC.ServicesEntry
+	25, // 46: api.v1.capsule.GRPCService.auth:type_name -> api.v1.capsule.Auth
+	41, // 47: api.v1.capsule.GRPCService.methods:type_name -> api.v1.capsule.GRPCService.MethodsEntry
+	25, // 48: api.v1.capsule.GRPCMethod.auth:type_name -> api.v1.capsule.Auth
+	42, // 49: api.v1.capsule.Auth.allow_any:type_name -> api.v1.capsule.Auth.AllowAny
+	43, // 50: api.v1.capsule.Auth.allow_authorized:type_name -> api.v1.capsule.Auth.AllowAuthorized
+	27, // 51: api.v1.capsule.HorizontalScale.cpu_target:type_name -> api.v1.capsule.CPUTarget
+	29, // 52: api.v1.capsule.HorizontalScale.custom_metrics:type_name -> api.v1.capsule.CustomMetric
+	30, // 53: api.v1.capsule.CustomMetric.instance:type_name -> api.v1.capsule.InstanceMetric
+	31, // 54: api.v1.capsule.CustomMetric.object:type_name -> api.v1.capsule.ObjectMetric
+	45, // 55: api.v1.capsule.InstanceMetric.match_labels:type_name -> api.v1.capsule.InstanceMetric.MatchLabelsEntry
+	46, // 56: api.v1.capsule.ObjectMetric.match_labels:type_name -> api.v1.capsule.ObjectMetric.MatchLabelsEntry
+	32, // 57: api.v1.capsule.ObjectMetric.object_reference:type_name -> api.v1.capsule.ObjectReference
+	23, // 58: api.v1.capsule.GRPC.ServicesEntry.value:type_name -> api.v1.capsule.GRPCService
+	24, // 59: api.v1.capsule.GRPCService.MethodsEntry.value:type_name -> api.v1.capsule.GRPCMethod
+	44, // 60: api.v1.capsule.Auth.AllowAuthorized.claims:type_name -> api.v1.capsule.Auth.AllowAuthorized.ClaimsEntry
 	61, // [61:61] is the sub-list for method output_type
 	61, // [61:61] is the sub-list for method input_type
 	61, // [61:61] is the sub-list for extension type_name
@@ -3874,7 +3809,7 @@ func file_api_v1_capsule_rollout_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_capsule_rollout_proto_rawDesc,
-			NumEnums:      4,
+			NumEnums:      3,
 			NumMessages:   44,
 			NumExtensions: 0,
 			NumServices:   0,
