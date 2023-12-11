@@ -49,9 +49,12 @@ const (
 	ServiceUseProcedure = "/api.v1.project.Service/Use"
 	// ServiceGetLicenseInfoProcedure is the fully-qualified name of the Service's GetLicenseInfo RPC.
 	ServiceGetLicenseInfoProcedure = "/api.v1.project.Service/GetLicenseInfo"
-	// ServiceGetCustomMetricsProcedure is the fully-qualified name of the Service's GetCustomMetrics
+	// ServiceGetObjectsByKindProcedure is the fully-qualified name of the Service's GetObjectsByKind
 	// RPC.
-	ServiceGetCustomMetricsProcedure = "/api.v1.project.Service/GetCustomMetrics"
+	ServiceGetObjectsByKindProcedure = "/api.v1.project.Service/GetObjectsByKind"
+	// ServiceGetCustomObjectMetricsProcedure is the fully-qualified name of the Service's
+	// GetCustomObjectMetrics RPC.
+	ServiceGetCustomObjectMetricsProcedure = "/api.v1.project.Service/GetCustomObjectMetrics"
 )
 
 // ServiceClient is a client for the api.v1.project.Service service.
@@ -73,7 +76,8 @@ type ServiceClient interface {
 	Use(context.Context, *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error)
 	// Get License Information
 	GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error)
-	GetCustomMetrics(context.Context, *connect_go.Request[project.GetCustomMetricsRequest]) (*connect_go.Response[project.GetCustomMetricsResponse], error)
+	GetObjectsByKind(context.Context, *connect_go.Request[project.GetObjectsByKindRequest]) (*connect_go.Response[project.GetObjectsByKindResponse], error)
+	GetCustomObjectMetrics(context.Context, *connect_go.Request[project.GetCustomObjectMetricsRequest]) (*connect_go.Response[project.GetCustomObjectMetricsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.project.Service service. By default, it uses
@@ -126,9 +130,14 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceGetLicenseInfoProcedure,
 			opts...,
 		),
-		getCustomMetrics: connect_go.NewClient[project.GetCustomMetricsRequest, project.GetCustomMetricsResponse](
+		getObjectsByKind: connect_go.NewClient[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse](
 			httpClient,
-			baseURL+ServiceGetCustomMetricsProcedure,
+			baseURL+ServiceGetObjectsByKindProcedure,
+			opts...,
+		),
+		getCustomObjectMetrics: connect_go.NewClient[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse](
+			httpClient,
+			baseURL+ServiceGetCustomObjectMetricsProcedure,
 			opts...,
 		),
 	}
@@ -136,15 +145,16 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create           *connect_go.Client[project.CreateRequest, project.CreateResponse]
-	delete           *connect_go.Client[project.DeleteRequest, project.DeleteResponse]
-	get              *connect_go.Client[project.GetRequest, project.GetResponse]
-	list             *connect_go.Client[project.ListRequest, project.ListResponse]
-	update           *connect_go.Client[project.UpdateRequest, project.UpdateResponse]
-	publicKey        *connect_go.Client[project.PublicKeyRequest, project.PublicKeyResponse]
-	use              *connect_go.Client[project.UseRequest, project.UseResponse]
-	getLicenseInfo   *connect_go.Client[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse]
-	getCustomMetrics *connect_go.Client[project.GetCustomMetricsRequest, project.GetCustomMetricsResponse]
+	create                 *connect_go.Client[project.CreateRequest, project.CreateResponse]
+	delete                 *connect_go.Client[project.DeleteRequest, project.DeleteResponse]
+	get                    *connect_go.Client[project.GetRequest, project.GetResponse]
+	list                   *connect_go.Client[project.ListRequest, project.ListResponse]
+	update                 *connect_go.Client[project.UpdateRequest, project.UpdateResponse]
+	publicKey              *connect_go.Client[project.PublicKeyRequest, project.PublicKeyResponse]
+	use                    *connect_go.Client[project.UseRequest, project.UseResponse]
+	getLicenseInfo         *connect_go.Client[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse]
+	getObjectsByKind       *connect_go.Client[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse]
+	getCustomObjectMetrics *connect_go.Client[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse]
 }
 
 // Create calls api.v1.project.Service.Create.
@@ -187,9 +197,14 @@ func (c *serviceClient) GetLicenseInfo(ctx context.Context, req *connect_go.Requ
 	return c.getLicenseInfo.CallUnary(ctx, req)
 }
 
-// GetCustomMetrics calls api.v1.project.Service.GetCustomMetrics.
-func (c *serviceClient) GetCustomMetrics(ctx context.Context, req *connect_go.Request[project.GetCustomMetricsRequest]) (*connect_go.Response[project.GetCustomMetricsResponse], error) {
-	return c.getCustomMetrics.CallUnary(ctx, req)
+// GetObjectsByKind calls api.v1.project.Service.GetObjectsByKind.
+func (c *serviceClient) GetObjectsByKind(ctx context.Context, req *connect_go.Request[project.GetObjectsByKindRequest]) (*connect_go.Response[project.GetObjectsByKindResponse], error) {
+	return c.getObjectsByKind.CallUnary(ctx, req)
+}
+
+// GetCustomObjectMetrics calls api.v1.project.Service.GetCustomObjectMetrics.
+func (c *serviceClient) GetCustomObjectMetrics(ctx context.Context, req *connect_go.Request[project.GetCustomObjectMetricsRequest]) (*connect_go.Response[project.GetCustomObjectMetricsResponse], error) {
+	return c.getCustomObjectMetrics.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.project.Service service.
@@ -211,7 +226,8 @@ type ServiceHandler interface {
 	Use(context.Context, *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error)
 	// Get License Information
 	GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error)
-	GetCustomMetrics(context.Context, *connect_go.Request[project.GetCustomMetricsRequest]) (*connect_go.Response[project.GetCustomMetricsResponse], error)
+	GetObjectsByKind(context.Context, *connect_go.Request[project.GetObjectsByKindRequest]) (*connect_go.Response[project.GetObjectsByKindResponse], error)
+	GetCustomObjectMetrics(context.Context, *connect_go.Request[project.GetCustomObjectMetricsRequest]) (*connect_go.Response[project.GetCustomObjectMetricsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -260,9 +276,14 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.GetLicenseInfo,
 		opts...,
 	)
-	serviceGetCustomMetricsHandler := connect_go.NewUnaryHandler(
-		ServiceGetCustomMetricsProcedure,
-		svc.GetCustomMetrics,
+	serviceGetObjectsByKindHandler := connect_go.NewUnaryHandler(
+		ServiceGetObjectsByKindProcedure,
+		svc.GetObjectsByKind,
+		opts...,
+	)
+	serviceGetCustomObjectMetricsHandler := connect_go.NewUnaryHandler(
+		ServiceGetCustomObjectMetricsProcedure,
+		svc.GetCustomObjectMetrics,
 		opts...,
 	)
 	return "/api.v1.project.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -283,8 +304,10 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			serviceUseHandler.ServeHTTP(w, r)
 		case ServiceGetLicenseInfoProcedure:
 			serviceGetLicenseInfoHandler.ServeHTTP(w, r)
-		case ServiceGetCustomMetricsProcedure:
-			serviceGetCustomMetricsHandler.ServeHTTP(w, r)
+		case ServiceGetObjectsByKindProcedure:
+			serviceGetObjectsByKindHandler.ServeHTTP(w, r)
+		case ServiceGetCustomObjectMetricsProcedure:
+			serviceGetCustomObjectMetricsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -326,6 +349,10 @@ func (UnimplementedServiceHandler) GetLicenseInfo(context.Context, *connect_go.R
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.GetLicenseInfo is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetCustomMetrics(context.Context, *connect_go.Request[project.GetCustomMetricsRequest]) (*connect_go.Response[project.GetCustomMetricsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.GetCustomMetrics is not implemented"))
+func (UnimplementedServiceHandler) GetObjectsByKind(context.Context, *connect_go.Request[project.GetObjectsByKindRequest]) (*connect_go.Response[project.GetObjectsByKindResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.GetObjectsByKind is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetCustomObjectMetrics(context.Context, *connect_go.Request[project.GetCustomObjectMetricsRequest]) (*connect_go.Response[project.GetCustomObjectMetricsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.GetCustomObjectMetrics is not implemented"))
 }
