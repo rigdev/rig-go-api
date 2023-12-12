@@ -78,6 +78,9 @@ const (
 	// ServiceGetCustomInstanceMetricsProcedure is the fully-qualified name of the Service's
 	// GetCustomInstanceMetrics RPC.
 	ServiceGetCustomInstanceMetricsProcedure = "/api.v1.capsule.Service/GetCustomInstanceMetrics"
+	// ServiceGetJobExecutionsProcedure is the fully-qualified name of the Service's GetJobExecutions
+	// RPC.
+	ServiceGetJobExecutionsProcedure = "/api.v1.capsule.Service/GetJobExecutions"
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -128,6 +131,7 @@ type ServiceClient interface {
 	// and returns the output along with an exit code.
 	Execute(context.Context) *connect_go.BidiStreamForClient[capsule.ExecuteRequest, capsule.ExecuteResponse]
 	GetCustomInstanceMetrics(context.Context, *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error)
+	GetJobExecutions(context.Context, *connect_go.Request[capsule.GetJobExecutionsRequest]) (*connect_go.Response[capsule.GetJobExecutionsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -245,6 +249,11 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceGetCustomInstanceMetricsProcedure,
 			opts...,
 		),
+		getJobExecutions: connect_go.NewClient[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse](
+			httpClient,
+			baseURL+ServiceGetJobExecutionsProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -271,6 +280,7 @@ type serviceClient struct {
 	listInstanceStatuses     *connect_go.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
 	execute                  *connect_go.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
 	getCustomInstanceMetrics *connect_go.Client[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse]
+	getJobExecutions         *connect_go.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -378,6 +388,11 @@ func (c *serviceClient) GetCustomInstanceMetrics(ctx context.Context, req *conne
 	return c.getCustomInstanceMetrics.CallUnary(ctx, req)
 }
 
+// GetJobExecutions calls api.v1.capsule.Service.GetJobExecutions.
+func (c *serviceClient) GetJobExecutions(ctx context.Context, req *connect_go.Request[capsule.GetJobExecutionsRequest]) (*connect_go.Response[capsule.GetJobExecutionsResponse], error) {
+	return c.getJobExecutions.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -426,6 +441,7 @@ type ServiceHandler interface {
 	// and returns the output along with an exit code.
 	Execute(context.Context, *connect_go.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error
 	GetCustomInstanceMetrics(context.Context, *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error)
+	GetJobExecutions(context.Context, *connect_go.Request[capsule.GetJobExecutionsRequest]) (*connect_go.Response[capsule.GetJobExecutionsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -539,6 +555,11 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.GetCustomInstanceMetrics,
 		opts...,
 	)
+	serviceGetJobExecutionsHandler := connect_go.NewUnaryHandler(
+		ServiceGetJobExecutionsProcedure,
+		svc.GetJobExecutions,
+		opts...,
+	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -583,6 +604,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			serviceExecuteHandler.ServeHTTP(w, r)
 		case ServiceGetCustomInstanceMetricsProcedure:
 			serviceGetCustomInstanceMetricsHandler.ServeHTTP(w, r)
+		case ServiceGetJobExecutionsProcedure:
+			serviceGetJobExecutionsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -674,4 +697,8 @@ func (UnimplementedServiceHandler) Execute(context.Context, *connect_go.BidiStre
 
 func (UnimplementedServiceHandler) GetCustomInstanceMetrics(context.Context, *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetCustomInstanceMetrics is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetJobExecutions(context.Context, *connect_go.Request[capsule.GetJobExecutionsRequest]) (*connect_go.Response[capsule.GetJobExecutionsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetJobExecutions is not implemented"))
 }
