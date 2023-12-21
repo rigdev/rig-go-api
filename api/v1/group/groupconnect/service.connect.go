@@ -43,17 +43,15 @@ const (
 	ServiceUpdateProcedure = "/api.v1.group.Service/Update"
 	// ServiceGetProcedure is the fully-qualified name of the Service's Get RPC.
 	ServiceGetProcedure = "/api.v1.group.Service/Get"
-	// ServiceGetByNameProcedure is the fully-qualified name of the Service's GetByName RPC.
-	ServiceGetByNameProcedure = "/api.v1.group.Service/GetByName"
 	// ServiceAddMemberProcedure is the fully-qualified name of the Service's AddMember RPC.
 	ServiceAddMemberProcedure = "/api.v1.group.Service/AddMember"
 	// ServiceRemoveMemberProcedure is the fully-qualified name of the Service's RemoveMember RPC.
 	ServiceRemoveMemberProcedure = "/api.v1.group.Service/RemoveMember"
 	// ServiceListMembersProcedure is the fully-qualified name of the Service's ListMembers RPC.
 	ServiceListMembersProcedure = "/api.v1.group.Service/ListMembers"
-	// ServiceListGroupsForUserProcedure is the fully-qualified name of the Service's ListGroupsForUser
-	// RPC.
-	ServiceListGroupsForUserProcedure = "/api.v1.group.Service/ListGroupsForUser"
+	// ServiceListGroupsForMemberProcedure is the fully-qualified name of the Service's
+	// ListGroupsForMember RPC.
+	ServiceListGroupsForMemberProcedure = "/api.v1.group.Service/ListGroupsForMember"
 )
 
 // ServiceClient is a client for the api.v1.group.Service service.
@@ -68,16 +66,14 @@ type ServiceClient interface {
 	Update(context.Context, *connect_go.Request[group.UpdateRequest]) (*connect_go.Response[group.UpdateResponse], error)
 	// Get group
 	Get(context.Context, *connect_go.Request[group.GetRequest]) (*connect_go.Response[group.GetResponse], error)
-	// Get a group by name
-	GetByName(context.Context, *connect_go.Request[group.GetByNameRequest]) (*connect_go.Response[group.GetByNameResponse], error)
-	// Add User to Group
+	// Add a member to a group
 	AddMember(context.Context, *connect_go.Request[group.AddMemberRequest]) (*connect_go.Response[group.AddMemberResponse], error)
-	// Remove User from Group
+	// Remove member from Group
 	RemoveMember(context.Context, *connect_go.Request[group.RemoveMemberRequest]) (*connect_go.Response[group.RemoveMemberResponse], error)
 	// Get Group Members
 	ListMembers(context.Context, *connect_go.Request[group.ListMembersRequest]) (*connect_go.Response[group.ListMembersResponse], error)
 	// Get Groups
-	ListGroupsForUser(context.Context, *connect_go.Request[group.ListGroupsForUserRequest]) (*connect_go.Response[group.ListGroupsForUserResponse], error)
+	ListGroupsForMember(context.Context, *connect_go.Request[group.ListGroupsForMemberRequest]) (*connect_go.Response[group.ListGroupsForMemberResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.group.Service service. By default, it uses
@@ -115,11 +111,6 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceGetProcedure,
 			opts...,
 		),
-		getByName: connect_go.NewClient[group.GetByNameRequest, group.GetByNameResponse](
-			httpClient,
-			baseURL+ServiceGetByNameProcedure,
-			opts...,
-		),
 		addMember: connect_go.NewClient[group.AddMemberRequest, group.AddMemberResponse](
 			httpClient,
 			baseURL+ServiceAddMemberProcedure,
@@ -135,9 +126,9 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceListMembersProcedure,
 			opts...,
 		),
-		listGroupsForUser: connect_go.NewClient[group.ListGroupsForUserRequest, group.ListGroupsForUserResponse](
+		listGroupsForMember: connect_go.NewClient[group.ListGroupsForMemberRequest, group.ListGroupsForMemberResponse](
 			httpClient,
-			baseURL+ServiceListGroupsForUserProcedure,
+			baseURL+ServiceListGroupsForMemberProcedure,
 			opts...,
 		),
 	}
@@ -145,16 +136,15 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create            *connect_go.Client[group.CreateRequest, group.CreateResponse]
-	delete            *connect_go.Client[group.DeleteRequest, group.DeleteResponse]
-	list              *connect_go.Client[group.ListRequest, group.ListResponse]
-	update            *connect_go.Client[group.UpdateRequest, group.UpdateResponse]
-	get               *connect_go.Client[group.GetRequest, group.GetResponse]
-	getByName         *connect_go.Client[group.GetByNameRequest, group.GetByNameResponse]
-	addMember         *connect_go.Client[group.AddMemberRequest, group.AddMemberResponse]
-	removeMember      *connect_go.Client[group.RemoveMemberRequest, group.RemoveMemberResponse]
-	listMembers       *connect_go.Client[group.ListMembersRequest, group.ListMembersResponse]
-	listGroupsForUser *connect_go.Client[group.ListGroupsForUserRequest, group.ListGroupsForUserResponse]
+	create              *connect_go.Client[group.CreateRequest, group.CreateResponse]
+	delete              *connect_go.Client[group.DeleteRequest, group.DeleteResponse]
+	list                *connect_go.Client[group.ListRequest, group.ListResponse]
+	update              *connect_go.Client[group.UpdateRequest, group.UpdateResponse]
+	get                 *connect_go.Client[group.GetRequest, group.GetResponse]
+	addMember           *connect_go.Client[group.AddMemberRequest, group.AddMemberResponse]
+	removeMember        *connect_go.Client[group.RemoveMemberRequest, group.RemoveMemberResponse]
+	listMembers         *connect_go.Client[group.ListMembersRequest, group.ListMembersResponse]
+	listGroupsForMember *connect_go.Client[group.ListGroupsForMemberRequest, group.ListGroupsForMemberResponse]
 }
 
 // Create calls api.v1.group.Service.Create.
@@ -182,11 +172,6 @@ func (c *serviceClient) Get(ctx context.Context, req *connect_go.Request[group.G
 	return c.get.CallUnary(ctx, req)
 }
 
-// GetByName calls api.v1.group.Service.GetByName.
-func (c *serviceClient) GetByName(ctx context.Context, req *connect_go.Request[group.GetByNameRequest]) (*connect_go.Response[group.GetByNameResponse], error) {
-	return c.getByName.CallUnary(ctx, req)
-}
-
 // AddMember calls api.v1.group.Service.AddMember.
 func (c *serviceClient) AddMember(ctx context.Context, req *connect_go.Request[group.AddMemberRequest]) (*connect_go.Response[group.AddMemberResponse], error) {
 	return c.addMember.CallUnary(ctx, req)
@@ -202,9 +187,9 @@ func (c *serviceClient) ListMembers(ctx context.Context, req *connect_go.Request
 	return c.listMembers.CallUnary(ctx, req)
 }
 
-// ListGroupsForUser calls api.v1.group.Service.ListGroupsForUser.
-func (c *serviceClient) ListGroupsForUser(ctx context.Context, req *connect_go.Request[group.ListGroupsForUserRequest]) (*connect_go.Response[group.ListGroupsForUserResponse], error) {
-	return c.listGroupsForUser.CallUnary(ctx, req)
+// ListGroupsForMember calls api.v1.group.Service.ListGroupsForMember.
+func (c *serviceClient) ListGroupsForMember(ctx context.Context, req *connect_go.Request[group.ListGroupsForMemberRequest]) (*connect_go.Response[group.ListGroupsForMemberResponse], error) {
+	return c.listGroupsForMember.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.group.Service service.
@@ -219,16 +204,14 @@ type ServiceHandler interface {
 	Update(context.Context, *connect_go.Request[group.UpdateRequest]) (*connect_go.Response[group.UpdateResponse], error)
 	// Get group
 	Get(context.Context, *connect_go.Request[group.GetRequest]) (*connect_go.Response[group.GetResponse], error)
-	// Get a group by name
-	GetByName(context.Context, *connect_go.Request[group.GetByNameRequest]) (*connect_go.Response[group.GetByNameResponse], error)
-	// Add User to Group
+	// Add a member to a group
 	AddMember(context.Context, *connect_go.Request[group.AddMemberRequest]) (*connect_go.Response[group.AddMemberResponse], error)
-	// Remove User from Group
+	// Remove member from Group
 	RemoveMember(context.Context, *connect_go.Request[group.RemoveMemberRequest]) (*connect_go.Response[group.RemoveMemberResponse], error)
 	// Get Group Members
 	ListMembers(context.Context, *connect_go.Request[group.ListMembersRequest]) (*connect_go.Response[group.ListMembersResponse], error)
 	// Get Groups
-	ListGroupsForUser(context.Context, *connect_go.Request[group.ListGroupsForUserRequest]) (*connect_go.Response[group.ListGroupsForUserResponse], error)
+	ListGroupsForMember(context.Context, *connect_go.Request[group.ListGroupsForMemberRequest]) (*connect_go.Response[group.ListGroupsForMemberResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -262,11 +245,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.Get,
 		opts...,
 	)
-	serviceGetByNameHandler := connect_go.NewUnaryHandler(
-		ServiceGetByNameProcedure,
-		svc.GetByName,
-		opts...,
-	)
 	serviceAddMemberHandler := connect_go.NewUnaryHandler(
 		ServiceAddMemberProcedure,
 		svc.AddMember,
@@ -282,9 +260,9 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.ListMembers,
 		opts...,
 	)
-	serviceListGroupsForUserHandler := connect_go.NewUnaryHandler(
-		ServiceListGroupsForUserProcedure,
-		svc.ListGroupsForUser,
+	serviceListGroupsForMemberHandler := connect_go.NewUnaryHandler(
+		ServiceListGroupsForMemberProcedure,
+		svc.ListGroupsForMember,
 		opts...,
 	)
 	return "/api.v1.group.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -299,16 +277,14 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			serviceUpdateHandler.ServeHTTP(w, r)
 		case ServiceGetProcedure:
 			serviceGetHandler.ServeHTTP(w, r)
-		case ServiceGetByNameProcedure:
-			serviceGetByNameHandler.ServeHTTP(w, r)
 		case ServiceAddMemberProcedure:
 			serviceAddMemberHandler.ServeHTTP(w, r)
 		case ServiceRemoveMemberProcedure:
 			serviceRemoveMemberHandler.ServeHTTP(w, r)
 		case ServiceListMembersProcedure:
 			serviceListMembersHandler.ServeHTTP(w, r)
-		case ServiceListGroupsForUserProcedure:
-			serviceListGroupsForUserHandler.ServeHTTP(w, r)
+		case ServiceListGroupsForMemberProcedure:
+			serviceListGroupsForMemberHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -338,10 +314,6 @@ func (UnimplementedServiceHandler) Get(context.Context, *connect_go.Request[grou
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.group.Service.Get is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetByName(context.Context, *connect_go.Request[group.GetByNameRequest]) (*connect_go.Response[group.GetByNameResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.group.Service.GetByName is not implemented"))
-}
-
 func (UnimplementedServiceHandler) AddMember(context.Context, *connect_go.Request[group.AddMemberRequest]) (*connect_go.Response[group.AddMemberResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.group.Service.AddMember is not implemented"))
 }
@@ -354,6 +326,6 @@ func (UnimplementedServiceHandler) ListMembers(context.Context, *connect_go.Requ
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.group.Service.ListMembers is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ListGroupsForUser(context.Context, *connect_go.Request[group.ListGroupsForUserRequest]) (*connect_go.Response[group.ListGroupsForUserResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.group.Service.ListGroupsForUser is not implemented"))
+func (UnimplementedServiceHandler) ListGroupsForMember(context.Context, *connect_go.Request[group.ListGroupsForMemberRequest]) (*connect_go.Response[group.ListGroupsForMemberResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.group.Service.ListGroupsForMember is not implemented"))
 }

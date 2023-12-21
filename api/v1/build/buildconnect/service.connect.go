@@ -38,29 +38,29 @@ const (
 	// ServiceGetRepositoryInfoProcedure is the fully-qualified name of the Service's GetRepositoryInfo
 	// RPC.
 	ServiceGetRepositoryInfoProcedure = "/api.v1.build.Service/GetRepositoryInfo"
-	// ServiceGetBuildProcedure is the fully-qualified name of the Service's GetBuild RPC.
-	ServiceGetBuildProcedure = "/api.v1.build.Service/GetBuild"
-	// ServiceCreateBuildProcedure is the fully-qualified name of the Service's CreateBuild RPC.
-	ServiceCreateBuildProcedure = "/api.v1.build.Service/CreateBuild"
-	// ServiceListBuildsProcedure is the fully-qualified name of the Service's ListBuilds RPC.
-	ServiceListBuildsProcedure = "/api.v1.build.Service/ListBuilds"
-	// ServiceDeleteBuildProcedure is the fully-qualified name of the Service's DeleteBuild RPC.
-	ServiceDeleteBuildProcedure = "/api.v1.build.Service/DeleteBuild"
+	// ServiceGetProcedure is the fully-qualified name of the Service's Get RPC.
+	ServiceGetProcedure = "/api.v1.build.Service/Get"
+	// ServiceCreateProcedure is the fully-qualified name of the Service's Create RPC.
+	ServiceCreateProcedure = "/api.v1.build.Service/Create"
+	// ServiceListProcedure is the fully-qualified name of the Service's List RPC.
+	ServiceListProcedure = "/api.v1.build.Service/List"
+	// ServiceDeleteProcedure is the fully-qualified name of the Service's Delete RPC.
+	ServiceDeleteProcedure = "/api.v1.build.Service/Delete"
 )
 
 // ServiceClient is a client for the api.v1.build.Service service.
 type ServiceClient interface {
 	GetImageInfo(context.Context, *connect_go.Request[build.GetImageInfoRequest]) (*connect_go.Response[build.GetImageInfoResponse], error)
 	GetRepositoryInfo(context.Context, *connect_go.Request[build.GetRepositoryInfoRequest]) (*connect_go.Response[build.GetRepositoryInfoResponse], error)
-	GetBuild(context.Context, *connect_go.Request[build.GetBuildRequest]) (*connect_go.Response[build.GetBuildResponse], error)
+	Get(context.Context, *connect_go.Request[build.GetRequest]) (*connect_go.Response[build.GetResponse], error)
 	// Create a new build.
 	// Builds are immutable and cannot change. Create a new build to make
 	// changes from an existing one.
-	CreateBuild(context.Context, *connect_go.Request[build.CreateBuildRequest]) (*connect_go.Response[build.CreateBuildResponse], error)
+	Create(context.Context, *connect_go.Request[build.CreateRequest]) (*connect_go.Response[build.CreateResponse], error)
 	// List builds for a capsule.
-	ListBuilds(context.Context, *connect_go.Request[build.ListBuildsRequest]) (*connect_go.Response[build.ListBuildsResponse], error)
+	List(context.Context, *connect_go.Request[build.ListRequest]) (*connect_go.Response[build.ListResponse], error)
 	// Delete a build.
-	DeleteBuild(context.Context, *connect_go.Request[build.DeleteBuildRequest]) (*connect_go.Response[build.DeleteBuildResponse], error)
+	Delete(context.Context, *connect_go.Request[build.DeleteRequest]) (*connect_go.Response[build.DeleteResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.build.Service service. By default, it uses
@@ -83,24 +83,24 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 			baseURL+ServiceGetRepositoryInfoProcedure,
 			opts...,
 		),
-		getBuild: connect_go.NewClient[build.GetBuildRequest, build.GetBuildResponse](
+		get: connect_go.NewClient[build.GetRequest, build.GetResponse](
 			httpClient,
-			baseURL+ServiceGetBuildProcedure,
+			baseURL+ServiceGetProcedure,
 			opts...,
 		),
-		createBuild: connect_go.NewClient[build.CreateBuildRequest, build.CreateBuildResponse](
+		create: connect_go.NewClient[build.CreateRequest, build.CreateResponse](
 			httpClient,
-			baseURL+ServiceCreateBuildProcedure,
+			baseURL+ServiceCreateProcedure,
 			opts...,
 		),
-		listBuilds: connect_go.NewClient[build.ListBuildsRequest, build.ListBuildsResponse](
+		list: connect_go.NewClient[build.ListRequest, build.ListResponse](
 			httpClient,
-			baseURL+ServiceListBuildsProcedure,
+			baseURL+ServiceListProcedure,
 			opts...,
 		),
-		deleteBuild: connect_go.NewClient[build.DeleteBuildRequest, build.DeleteBuildResponse](
+		delete: connect_go.NewClient[build.DeleteRequest, build.DeleteResponse](
 			httpClient,
-			baseURL+ServiceDeleteBuildProcedure,
+			baseURL+ServiceDeleteProcedure,
 			opts...,
 		),
 	}
@@ -110,10 +110,10 @@ func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...
 type serviceClient struct {
 	getImageInfo      *connect_go.Client[build.GetImageInfoRequest, build.GetImageInfoResponse]
 	getRepositoryInfo *connect_go.Client[build.GetRepositoryInfoRequest, build.GetRepositoryInfoResponse]
-	getBuild          *connect_go.Client[build.GetBuildRequest, build.GetBuildResponse]
-	createBuild       *connect_go.Client[build.CreateBuildRequest, build.CreateBuildResponse]
-	listBuilds        *connect_go.Client[build.ListBuildsRequest, build.ListBuildsResponse]
-	deleteBuild       *connect_go.Client[build.DeleteBuildRequest, build.DeleteBuildResponse]
+	get               *connect_go.Client[build.GetRequest, build.GetResponse]
+	create            *connect_go.Client[build.CreateRequest, build.CreateResponse]
+	list              *connect_go.Client[build.ListRequest, build.ListResponse]
+	delete            *connect_go.Client[build.DeleteRequest, build.DeleteResponse]
 }
 
 // GetImageInfo calls api.v1.build.Service.GetImageInfo.
@@ -126,39 +126,39 @@ func (c *serviceClient) GetRepositoryInfo(ctx context.Context, req *connect_go.R
 	return c.getRepositoryInfo.CallUnary(ctx, req)
 }
 
-// GetBuild calls api.v1.build.Service.GetBuild.
-func (c *serviceClient) GetBuild(ctx context.Context, req *connect_go.Request[build.GetBuildRequest]) (*connect_go.Response[build.GetBuildResponse], error) {
-	return c.getBuild.CallUnary(ctx, req)
+// Get calls api.v1.build.Service.Get.
+func (c *serviceClient) Get(ctx context.Context, req *connect_go.Request[build.GetRequest]) (*connect_go.Response[build.GetResponse], error) {
+	return c.get.CallUnary(ctx, req)
 }
 
-// CreateBuild calls api.v1.build.Service.CreateBuild.
-func (c *serviceClient) CreateBuild(ctx context.Context, req *connect_go.Request[build.CreateBuildRequest]) (*connect_go.Response[build.CreateBuildResponse], error) {
-	return c.createBuild.CallUnary(ctx, req)
+// Create calls api.v1.build.Service.Create.
+func (c *serviceClient) Create(ctx context.Context, req *connect_go.Request[build.CreateRequest]) (*connect_go.Response[build.CreateResponse], error) {
+	return c.create.CallUnary(ctx, req)
 }
 
-// ListBuilds calls api.v1.build.Service.ListBuilds.
-func (c *serviceClient) ListBuilds(ctx context.Context, req *connect_go.Request[build.ListBuildsRequest]) (*connect_go.Response[build.ListBuildsResponse], error) {
-	return c.listBuilds.CallUnary(ctx, req)
+// List calls api.v1.build.Service.List.
+func (c *serviceClient) List(ctx context.Context, req *connect_go.Request[build.ListRequest]) (*connect_go.Response[build.ListResponse], error) {
+	return c.list.CallUnary(ctx, req)
 }
 
-// DeleteBuild calls api.v1.build.Service.DeleteBuild.
-func (c *serviceClient) DeleteBuild(ctx context.Context, req *connect_go.Request[build.DeleteBuildRequest]) (*connect_go.Response[build.DeleteBuildResponse], error) {
-	return c.deleteBuild.CallUnary(ctx, req)
+// Delete calls api.v1.build.Service.Delete.
+func (c *serviceClient) Delete(ctx context.Context, req *connect_go.Request[build.DeleteRequest]) (*connect_go.Response[build.DeleteResponse], error) {
+	return c.delete.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.build.Service service.
 type ServiceHandler interface {
 	GetImageInfo(context.Context, *connect_go.Request[build.GetImageInfoRequest]) (*connect_go.Response[build.GetImageInfoResponse], error)
 	GetRepositoryInfo(context.Context, *connect_go.Request[build.GetRepositoryInfoRequest]) (*connect_go.Response[build.GetRepositoryInfoResponse], error)
-	GetBuild(context.Context, *connect_go.Request[build.GetBuildRequest]) (*connect_go.Response[build.GetBuildResponse], error)
+	Get(context.Context, *connect_go.Request[build.GetRequest]) (*connect_go.Response[build.GetResponse], error)
 	// Create a new build.
 	// Builds are immutable and cannot change. Create a new build to make
 	// changes from an existing one.
-	CreateBuild(context.Context, *connect_go.Request[build.CreateBuildRequest]) (*connect_go.Response[build.CreateBuildResponse], error)
+	Create(context.Context, *connect_go.Request[build.CreateRequest]) (*connect_go.Response[build.CreateResponse], error)
 	// List builds for a capsule.
-	ListBuilds(context.Context, *connect_go.Request[build.ListBuildsRequest]) (*connect_go.Response[build.ListBuildsResponse], error)
+	List(context.Context, *connect_go.Request[build.ListRequest]) (*connect_go.Response[build.ListResponse], error)
 	// Delete a build.
-	DeleteBuild(context.Context, *connect_go.Request[build.DeleteBuildRequest]) (*connect_go.Response[build.DeleteBuildResponse], error)
+	Delete(context.Context, *connect_go.Request[build.DeleteRequest]) (*connect_go.Response[build.DeleteResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -177,24 +177,24 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 		svc.GetRepositoryInfo,
 		opts...,
 	)
-	serviceGetBuildHandler := connect_go.NewUnaryHandler(
-		ServiceGetBuildProcedure,
-		svc.GetBuild,
+	serviceGetHandler := connect_go.NewUnaryHandler(
+		ServiceGetProcedure,
+		svc.Get,
 		opts...,
 	)
-	serviceCreateBuildHandler := connect_go.NewUnaryHandler(
-		ServiceCreateBuildProcedure,
-		svc.CreateBuild,
+	serviceCreateHandler := connect_go.NewUnaryHandler(
+		ServiceCreateProcedure,
+		svc.Create,
 		opts...,
 	)
-	serviceListBuildsHandler := connect_go.NewUnaryHandler(
-		ServiceListBuildsProcedure,
-		svc.ListBuilds,
+	serviceListHandler := connect_go.NewUnaryHandler(
+		ServiceListProcedure,
+		svc.List,
 		opts...,
 	)
-	serviceDeleteBuildHandler := connect_go.NewUnaryHandler(
-		ServiceDeleteBuildProcedure,
-		svc.DeleteBuild,
+	serviceDeleteHandler := connect_go.NewUnaryHandler(
+		ServiceDeleteProcedure,
+		svc.Delete,
 		opts...,
 	)
 	return "/api.v1.build.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -203,14 +203,14 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 			serviceGetImageInfoHandler.ServeHTTP(w, r)
 		case ServiceGetRepositoryInfoProcedure:
 			serviceGetRepositoryInfoHandler.ServeHTTP(w, r)
-		case ServiceGetBuildProcedure:
-			serviceGetBuildHandler.ServeHTTP(w, r)
-		case ServiceCreateBuildProcedure:
-			serviceCreateBuildHandler.ServeHTTP(w, r)
-		case ServiceListBuildsProcedure:
-			serviceListBuildsHandler.ServeHTTP(w, r)
-		case ServiceDeleteBuildProcedure:
-			serviceDeleteBuildHandler.ServeHTTP(w, r)
+		case ServiceGetProcedure:
+			serviceGetHandler.ServeHTTP(w, r)
+		case ServiceCreateProcedure:
+			serviceCreateHandler.ServeHTTP(w, r)
+		case ServiceListProcedure:
+			serviceListHandler.ServeHTTP(w, r)
+		case ServiceDeleteProcedure:
+			serviceDeleteHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -228,18 +228,18 @@ func (UnimplementedServiceHandler) GetRepositoryInfo(context.Context, *connect_g
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.GetRepositoryInfo is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetBuild(context.Context, *connect_go.Request[build.GetBuildRequest]) (*connect_go.Response[build.GetBuildResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.GetBuild is not implemented"))
+func (UnimplementedServiceHandler) Get(context.Context, *connect_go.Request[build.GetRequest]) (*connect_go.Response[build.GetResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.Get is not implemented"))
 }
 
-func (UnimplementedServiceHandler) CreateBuild(context.Context, *connect_go.Request[build.CreateBuildRequest]) (*connect_go.Response[build.CreateBuildResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.CreateBuild is not implemented"))
+func (UnimplementedServiceHandler) Create(context.Context, *connect_go.Request[build.CreateRequest]) (*connect_go.Response[build.CreateResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.Create is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ListBuilds(context.Context, *connect_go.Request[build.ListBuildsRequest]) (*connect_go.Response[build.ListBuildsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.ListBuilds is not implemented"))
+func (UnimplementedServiceHandler) List(context.Context, *connect_go.Request[build.ListRequest]) (*connect_go.Response[build.ListResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.List is not implemented"))
 }
 
-func (UnimplementedServiceHandler) DeleteBuild(context.Context, *connect_go.Request[build.DeleteBuildRequest]) (*connect_go.Response[build.DeleteBuildResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.DeleteBuild is not implemented"))
+func (UnimplementedServiceHandler) Delete(context.Context, *connect_go.Request[build.DeleteRequest]) (*connect_go.Response[build.DeleteResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.Delete is not implemented"))
 }
