@@ -5,9 +5,9 @@
 package clusterconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	cluster "github.com/rigdev/rig-go-api/api/v1/cluster"
 	http "net/http"
 	strings "strings"
@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// ServiceName is the fully-qualified name of the Service service.
@@ -37,10 +37,16 @@ const (
 	ServiceGetConfigProcedure = "/api.v1.cluster.Service/GetConfig"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	serviceServiceDescriptor         = cluster.File_api_v1_cluster_service_proto.Services().ByName("Service")
+	serviceGetConfigMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetConfig")
+)
+
 // ServiceClient is a client for the api.v1.cluster.Service service.
 type ServiceClient interface {
 	// GetConfig returns the config for the cluster
-	GetConfig(context.Context, *connect_go.Request[cluster.GetConfigRequest]) (*connect_go.Response[cluster.GetConfigResponse], error)
+	GetConfig(context.Context, *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.cluster.Service service. By default, it uses
@@ -50,31 +56,32 @@ type ServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ServiceClient {
+func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		getConfig: connect_go.NewClient[cluster.GetConfigRequest, cluster.GetConfigResponse](
+		getConfig: connect.NewClient[cluster.GetConfigRequest, cluster.GetConfigResponse](
 			httpClient,
 			baseURL+ServiceGetConfigProcedure,
-			opts...,
+			connect.WithSchema(serviceGetConfigMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	getConfig *connect_go.Client[cluster.GetConfigRequest, cluster.GetConfigResponse]
+	getConfig *connect.Client[cluster.GetConfigRequest, cluster.GetConfigResponse]
 }
 
 // GetConfig calls api.v1.cluster.Service.GetConfig.
-func (c *serviceClient) GetConfig(ctx context.Context, req *connect_go.Request[cluster.GetConfigRequest]) (*connect_go.Response[cluster.GetConfigResponse], error) {
+func (c *serviceClient) GetConfig(ctx context.Context, req *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error) {
 	return c.getConfig.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.cluster.Service service.
 type ServiceHandler interface {
 	// GetConfig returns the config for the cluster
-	GetConfig(context.Context, *connect_go.Request[cluster.GetConfigRequest]) (*connect_go.Response[cluster.GetConfigResponse], error)
+	GetConfig(context.Context, *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -82,11 +89,12 @@ type ServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	serviceGetConfigHandler := connect_go.NewUnaryHandler(
+func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceGetConfigHandler := connect.NewUnaryHandler(
 		ServiceGetConfigProcedure,
 		svc.GetConfig,
-		opts...,
+		connect.WithSchema(serviceGetConfigMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v1.cluster.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -101,6 +109,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) GetConfig(context.Context, *connect_go.Request[cluster.GetConfigRequest]) (*connect_go.Response[cluster.GetConfigResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.cluster.Service.GetConfig is not implemented"))
+func (UnimplementedServiceHandler) GetConfig(context.Context, *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.cluster.Service.GetConfig is not implemented"))
 }

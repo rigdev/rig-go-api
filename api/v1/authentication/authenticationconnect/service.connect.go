@@ -5,9 +5,9 @@
 package authenticationconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	authentication "github.com/rigdev/rig-go-api/api/v1/authentication"
 	http "net/http"
 	strings "strings"
@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// ServiceName is the fully-qualified name of the Service service.
@@ -59,30 +59,46 @@ const (
 	ServiceVerifyPhoneNumberProcedure = "/api.v1.authentication.Service/VerifyPhoneNumber"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	serviceServiceDescriptor                 = authentication.File_api_v1_authentication_service_proto.Services().ByName("Service")
+	serviceLoginMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("Login")
+	serviceLogoutMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("Logout")
+	serviceGetMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceRegisterMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("Register")
+	serviceSendPasswordResetMethodDescriptor = serviceServiceDescriptor.Methods().ByName("SendPasswordReset")
+	serviceResetPasswordMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("ResetPassword")
+	serviceDeleteMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("Delete")
+	serviceRefreshTokenMethodDescriptor      = serviceServiceDescriptor.Methods().ByName("RefreshToken")
+	serviceGetAuthConfigMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("GetAuthConfig")
+	serviceVerifyEmailMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("VerifyEmail")
+	serviceVerifyPhoneNumberMethodDescriptor = serviceServiceDescriptor.Methods().ByName("VerifyPhoneNumber")
+)
+
 // ServiceClient is a client for the api.v1.authentication.Service service.
 type ServiceClient interface {
 	// Login authenticats a user and returns a access/refresh token
-	Login(context.Context, *connect_go.Request[authentication.LoginRequest]) (*connect_go.Response[authentication.LoginResponse], error)
+	Login(context.Context, *connect.Request[authentication.LoginRequest]) (*connect.Response[authentication.LoginResponse], error)
 	// Logout validates the access token and blocks it afterwards
-	Logout(context.Context, *connect_go.Request[authentication.LogoutRequest]) (*connect_go.Response[authentication.LogoutResponse], error)
+	Logout(context.Context, *connect.Request[authentication.LogoutRequest]) (*connect.Response[authentication.LogoutResponse], error)
 	// Get the logged in user
-	Get(context.Context, *connect_go.Request[authentication.GetRequest]) (*connect_go.Response[authentication.GetResponse], error)
+	Get(context.Context, *connect.Request[authentication.GetRequest]) (*connect.Response[authentication.GetResponse], error)
 	// Register creates a new user
-	Register(context.Context, *connect_go.Request[authentication.RegisterRequest]) (*connect_go.Response[authentication.RegisterResponse], error)
+	Register(context.Context, *connect.Request[authentication.RegisterRequest]) (*connect.Response[authentication.RegisterResponse], error)
 	// Send reset password email to the user
-	SendPasswordReset(context.Context, *connect_go.Request[authentication.SendPasswordResetRequest]) (*connect_go.Response[authentication.SendPasswordResetResponse], error)
+	SendPasswordReset(context.Context, *connect.Request[authentication.SendPasswordResetRequest]) (*connect.Response[authentication.SendPasswordResetResponse], error)
 	// Reset password of the user
-	ResetPassword(context.Context, *connect_go.Request[authentication.ResetPasswordRequest]) (*connect_go.Response[authentication.ResetPasswordResponse], error)
+	ResetPassword(context.Context, *connect.Request[authentication.ResetPasswordRequest]) (*connect.Response[authentication.ResetPasswordResponse], error)
 	// Delete logged in user
-	Delete(context.Context, *connect_go.Request[authentication.DeleteRequest]) (*connect_go.Response[authentication.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[authentication.DeleteRequest]) (*connect.Response[authentication.DeleteResponse], error)
 	// Refresh logged in token pair
-	RefreshToken(context.Context, *connect_go.Request[authentication.RefreshTokenRequest]) (*connect_go.Response[authentication.RefreshTokenResponse], error)
+	RefreshToken(context.Context, *connect.Request[authentication.RefreshTokenRequest]) (*connect.Response[authentication.RefreshTokenResponse], error)
 	// Get auth config for how available login methods
-	GetAuthConfig(context.Context, *connect_go.Request[authentication.GetAuthConfigRequest]) (*connect_go.Response[authentication.GetAuthConfigResponse], error)
+	GetAuthConfig(context.Context, *connect.Request[authentication.GetAuthConfigRequest]) (*connect.Response[authentication.GetAuthConfigResponse], error)
 	// Verify email
-	VerifyEmail(context.Context, *connect_go.Request[authentication.VerifyEmailRequest]) (*connect_go.Response[authentication.VerifyEmailResponse], error)
+	VerifyEmail(context.Context, *connect.Request[authentication.VerifyEmailRequest]) (*connect.Response[authentication.VerifyEmailResponse], error)
 	// Verify phone number
-	VerifyPhoneNumber(context.Context, *connect_go.Request[authentication.VerifyPhoneNumberRequest]) (*connect_go.Response[authentication.VerifyPhoneNumberResponse], error)
+	VerifyPhoneNumber(context.Context, *connect.Request[authentication.VerifyPhoneNumberRequest]) (*connect.Response[authentication.VerifyPhoneNumberResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.authentication.Service service. By default,
@@ -92,161 +108,172 @@ type ServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ServiceClient {
+func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		login: connect_go.NewClient[authentication.LoginRequest, authentication.LoginResponse](
+		login: connect.NewClient[authentication.LoginRequest, authentication.LoginResponse](
 			httpClient,
 			baseURL+ServiceLoginProcedure,
-			opts...,
+			connect.WithSchema(serviceLoginMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		logout: connect_go.NewClient[authentication.LogoutRequest, authentication.LogoutResponse](
+		logout: connect.NewClient[authentication.LogoutRequest, authentication.LogoutResponse](
 			httpClient,
 			baseURL+ServiceLogoutProcedure,
-			opts...,
+			connect.WithSchema(serviceLogoutMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		get: connect_go.NewClient[authentication.GetRequest, authentication.GetResponse](
+		get: connect.NewClient[authentication.GetRequest, authentication.GetResponse](
 			httpClient,
 			baseURL+ServiceGetProcedure,
-			opts...,
+			connect.WithSchema(serviceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		register: connect_go.NewClient[authentication.RegisterRequest, authentication.RegisterResponse](
+		register: connect.NewClient[authentication.RegisterRequest, authentication.RegisterResponse](
 			httpClient,
 			baseURL+ServiceRegisterProcedure,
-			opts...,
+			connect.WithSchema(serviceRegisterMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		sendPasswordReset: connect_go.NewClient[authentication.SendPasswordResetRequest, authentication.SendPasswordResetResponse](
+		sendPasswordReset: connect.NewClient[authentication.SendPasswordResetRequest, authentication.SendPasswordResetResponse](
 			httpClient,
 			baseURL+ServiceSendPasswordResetProcedure,
-			opts...,
+			connect.WithSchema(serviceSendPasswordResetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		resetPassword: connect_go.NewClient[authentication.ResetPasswordRequest, authentication.ResetPasswordResponse](
+		resetPassword: connect.NewClient[authentication.ResetPasswordRequest, authentication.ResetPasswordResponse](
 			httpClient,
 			baseURL+ServiceResetPasswordProcedure,
-			opts...,
+			connect.WithSchema(serviceResetPasswordMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		delete: connect_go.NewClient[authentication.DeleteRequest, authentication.DeleteResponse](
+		delete: connect.NewClient[authentication.DeleteRequest, authentication.DeleteResponse](
 			httpClient,
 			baseURL+ServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(serviceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		refreshToken: connect_go.NewClient[authentication.RefreshTokenRequest, authentication.RefreshTokenResponse](
+		refreshToken: connect.NewClient[authentication.RefreshTokenRequest, authentication.RefreshTokenResponse](
 			httpClient,
 			baseURL+ServiceRefreshTokenProcedure,
-			opts...,
+			connect.WithSchema(serviceRefreshTokenMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		getAuthConfig: connect_go.NewClient[authentication.GetAuthConfigRequest, authentication.GetAuthConfigResponse](
+		getAuthConfig: connect.NewClient[authentication.GetAuthConfigRequest, authentication.GetAuthConfigResponse](
 			httpClient,
 			baseURL+ServiceGetAuthConfigProcedure,
-			opts...,
+			connect.WithSchema(serviceGetAuthConfigMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		verifyEmail: connect_go.NewClient[authentication.VerifyEmailRequest, authentication.VerifyEmailResponse](
+		verifyEmail: connect.NewClient[authentication.VerifyEmailRequest, authentication.VerifyEmailResponse](
 			httpClient,
 			baseURL+ServiceVerifyEmailProcedure,
-			opts...,
+			connect.WithSchema(serviceVerifyEmailMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		verifyPhoneNumber: connect_go.NewClient[authentication.VerifyPhoneNumberRequest, authentication.VerifyPhoneNumberResponse](
+		verifyPhoneNumber: connect.NewClient[authentication.VerifyPhoneNumberRequest, authentication.VerifyPhoneNumberResponse](
 			httpClient,
 			baseURL+ServiceVerifyPhoneNumberProcedure,
-			opts...,
+			connect.WithSchema(serviceVerifyPhoneNumberMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	login             *connect_go.Client[authentication.LoginRequest, authentication.LoginResponse]
-	logout            *connect_go.Client[authentication.LogoutRequest, authentication.LogoutResponse]
-	get               *connect_go.Client[authentication.GetRequest, authentication.GetResponse]
-	register          *connect_go.Client[authentication.RegisterRequest, authentication.RegisterResponse]
-	sendPasswordReset *connect_go.Client[authentication.SendPasswordResetRequest, authentication.SendPasswordResetResponse]
-	resetPassword     *connect_go.Client[authentication.ResetPasswordRequest, authentication.ResetPasswordResponse]
-	delete            *connect_go.Client[authentication.DeleteRequest, authentication.DeleteResponse]
-	refreshToken      *connect_go.Client[authentication.RefreshTokenRequest, authentication.RefreshTokenResponse]
-	getAuthConfig     *connect_go.Client[authentication.GetAuthConfigRequest, authentication.GetAuthConfigResponse]
-	verifyEmail       *connect_go.Client[authentication.VerifyEmailRequest, authentication.VerifyEmailResponse]
-	verifyPhoneNumber *connect_go.Client[authentication.VerifyPhoneNumberRequest, authentication.VerifyPhoneNumberResponse]
+	login             *connect.Client[authentication.LoginRequest, authentication.LoginResponse]
+	logout            *connect.Client[authentication.LogoutRequest, authentication.LogoutResponse]
+	get               *connect.Client[authentication.GetRequest, authentication.GetResponse]
+	register          *connect.Client[authentication.RegisterRequest, authentication.RegisterResponse]
+	sendPasswordReset *connect.Client[authentication.SendPasswordResetRequest, authentication.SendPasswordResetResponse]
+	resetPassword     *connect.Client[authentication.ResetPasswordRequest, authentication.ResetPasswordResponse]
+	delete            *connect.Client[authentication.DeleteRequest, authentication.DeleteResponse]
+	refreshToken      *connect.Client[authentication.RefreshTokenRequest, authentication.RefreshTokenResponse]
+	getAuthConfig     *connect.Client[authentication.GetAuthConfigRequest, authentication.GetAuthConfigResponse]
+	verifyEmail       *connect.Client[authentication.VerifyEmailRequest, authentication.VerifyEmailResponse]
+	verifyPhoneNumber *connect.Client[authentication.VerifyPhoneNumberRequest, authentication.VerifyPhoneNumberResponse]
 }
 
 // Login calls api.v1.authentication.Service.Login.
-func (c *serviceClient) Login(ctx context.Context, req *connect_go.Request[authentication.LoginRequest]) (*connect_go.Response[authentication.LoginResponse], error) {
+func (c *serviceClient) Login(ctx context.Context, req *connect.Request[authentication.LoginRequest]) (*connect.Response[authentication.LoginResponse], error) {
 	return c.login.CallUnary(ctx, req)
 }
 
 // Logout calls api.v1.authentication.Service.Logout.
-func (c *serviceClient) Logout(ctx context.Context, req *connect_go.Request[authentication.LogoutRequest]) (*connect_go.Response[authentication.LogoutResponse], error) {
+func (c *serviceClient) Logout(ctx context.Context, req *connect.Request[authentication.LogoutRequest]) (*connect.Response[authentication.LogoutResponse], error) {
 	return c.logout.CallUnary(ctx, req)
 }
 
 // Get calls api.v1.authentication.Service.Get.
-func (c *serviceClient) Get(ctx context.Context, req *connect_go.Request[authentication.GetRequest]) (*connect_go.Response[authentication.GetResponse], error) {
+func (c *serviceClient) Get(ctx context.Context, req *connect.Request[authentication.GetRequest]) (*connect.Response[authentication.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // Register calls api.v1.authentication.Service.Register.
-func (c *serviceClient) Register(ctx context.Context, req *connect_go.Request[authentication.RegisterRequest]) (*connect_go.Response[authentication.RegisterResponse], error) {
+func (c *serviceClient) Register(ctx context.Context, req *connect.Request[authentication.RegisterRequest]) (*connect.Response[authentication.RegisterResponse], error) {
 	return c.register.CallUnary(ctx, req)
 }
 
 // SendPasswordReset calls api.v1.authentication.Service.SendPasswordReset.
-func (c *serviceClient) SendPasswordReset(ctx context.Context, req *connect_go.Request[authentication.SendPasswordResetRequest]) (*connect_go.Response[authentication.SendPasswordResetResponse], error) {
+func (c *serviceClient) SendPasswordReset(ctx context.Context, req *connect.Request[authentication.SendPasswordResetRequest]) (*connect.Response[authentication.SendPasswordResetResponse], error) {
 	return c.sendPasswordReset.CallUnary(ctx, req)
 }
 
 // ResetPassword calls api.v1.authentication.Service.ResetPassword.
-func (c *serviceClient) ResetPassword(ctx context.Context, req *connect_go.Request[authentication.ResetPasswordRequest]) (*connect_go.Response[authentication.ResetPasswordResponse], error) {
+func (c *serviceClient) ResetPassword(ctx context.Context, req *connect.Request[authentication.ResetPasswordRequest]) (*connect.Response[authentication.ResetPasswordResponse], error) {
 	return c.resetPassword.CallUnary(ctx, req)
 }
 
 // Delete calls api.v1.authentication.Service.Delete.
-func (c *serviceClient) Delete(ctx context.Context, req *connect_go.Request[authentication.DeleteRequest]) (*connect_go.Response[authentication.DeleteResponse], error) {
+func (c *serviceClient) Delete(ctx context.Context, req *connect.Request[authentication.DeleteRequest]) (*connect.Response[authentication.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // RefreshToken calls api.v1.authentication.Service.RefreshToken.
-func (c *serviceClient) RefreshToken(ctx context.Context, req *connect_go.Request[authentication.RefreshTokenRequest]) (*connect_go.Response[authentication.RefreshTokenResponse], error) {
+func (c *serviceClient) RefreshToken(ctx context.Context, req *connect.Request[authentication.RefreshTokenRequest]) (*connect.Response[authentication.RefreshTokenResponse], error) {
 	return c.refreshToken.CallUnary(ctx, req)
 }
 
 // GetAuthConfig calls api.v1.authentication.Service.GetAuthConfig.
-func (c *serviceClient) GetAuthConfig(ctx context.Context, req *connect_go.Request[authentication.GetAuthConfigRequest]) (*connect_go.Response[authentication.GetAuthConfigResponse], error) {
+func (c *serviceClient) GetAuthConfig(ctx context.Context, req *connect.Request[authentication.GetAuthConfigRequest]) (*connect.Response[authentication.GetAuthConfigResponse], error) {
 	return c.getAuthConfig.CallUnary(ctx, req)
 }
 
 // VerifyEmail calls api.v1.authentication.Service.VerifyEmail.
-func (c *serviceClient) VerifyEmail(ctx context.Context, req *connect_go.Request[authentication.VerifyEmailRequest]) (*connect_go.Response[authentication.VerifyEmailResponse], error) {
+func (c *serviceClient) VerifyEmail(ctx context.Context, req *connect.Request[authentication.VerifyEmailRequest]) (*connect.Response[authentication.VerifyEmailResponse], error) {
 	return c.verifyEmail.CallUnary(ctx, req)
 }
 
 // VerifyPhoneNumber calls api.v1.authentication.Service.VerifyPhoneNumber.
-func (c *serviceClient) VerifyPhoneNumber(ctx context.Context, req *connect_go.Request[authentication.VerifyPhoneNumberRequest]) (*connect_go.Response[authentication.VerifyPhoneNumberResponse], error) {
+func (c *serviceClient) VerifyPhoneNumber(ctx context.Context, req *connect.Request[authentication.VerifyPhoneNumberRequest]) (*connect.Response[authentication.VerifyPhoneNumberResponse], error) {
 	return c.verifyPhoneNumber.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.authentication.Service service.
 type ServiceHandler interface {
 	// Login authenticats a user and returns a access/refresh token
-	Login(context.Context, *connect_go.Request[authentication.LoginRequest]) (*connect_go.Response[authentication.LoginResponse], error)
+	Login(context.Context, *connect.Request[authentication.LoginRequest]) (*connect.Response[authentication.LoginResponse], error)
 	// Logout validates the access token and blocks it afterwards
-	Logout(context.Context, *connect_go.Request[authentication.LogoutRequest]) (*connect_go.Response[authentication.LogoutResponse], error)
+	Logout(context.Context, *connect.Request[authentication.LogoutRequest]) (*connect.Response[authentication.LogoutResponse], error)
 	// Get the logged in user
-	Get(context.Context, *connect_go.Request[authentication.GetRequest]) (*connect_go.Response[authentication.GetResponse], error)
+	Get(context.Context, *connect.Request[authentication.GetRequest]) (*connect.Response[authentication.GetResponse], error)
 	// Register creates a new user
-	Register(context.Context, *connect_go.Request[authentication.RegisterRequest]) (*connect_go.Response[authentication.RegisterResponse], error)
+	Register(context.Context, *connect.Request[authentication.RegisterRequest]) (*connect.Response[authentication.RegisterResponse], error)
 	// Send reset password email to the user
-	SendPasswordReset(context.Context, *connect_go.Request[authentication.SendPasswordResetRequest]) (*connect_go.Response[authentication.SendPasswordResetResponse], error)
+	SendPasswordReset(context.Context, *connect.Request[authentication.SendPasswordResetRequest]) (*connect.Response[authentication.SendPasswordResetResponse], error)
 	// Reset password of the user
-	ResetPassword(context.Context, *connect_go.Request[authentication.ResetPasswordRequest]) (*connect_go.Response[authentication.ResetPasswordResponse], error)
+	ResetPassword(context.Context, *connect.Request[authentication.ResetPasswordRequest]) (*connect.Response[authentication.ResetPasswordResponse], error)
 	// Delete logged in user
-	Delete(context.Context, *connect_go.Request[authentication.DeleteRequest]) (*connect_go.Response[authentication.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[authentication.DeleteRequest]) (*connect.Response[authentication.DeleteResponse], error)
 	// Refresh logged in token pair
-	RefreshToken(context.Context, *connect_go.Request[authentication.RefreshTokenRequest]) (*connect_go.Response[authentication.RefreshTokenResponse], error)
+	RefreshToken(context.Context, *connect.Request[authentication.RefreshTokenRequest]) (*connect.Response[authentication.RefreshTokenResponse], error)
 	// Get auth config for how available login methods
-	GetAuthConfig(context.Context, *connect_go.Request[authentication.GetAuthConfigRequest]) (*connect_go.Response[authentication.GetAuthConfigResponse], error)
+	GetAuthConfig(context.Context, *connect.Request[authentication.GetAuthConfigRequest]) (*connect.Response[authentication.GetAuthConfigResponse], error)
 	// Verify email
-	VerifyEmail(context.Context, *connect_go.Request[authentication.VerifyEmailRequest]) (*connect_go.Response[authentication.VerifyEmailResponse], error)
+	VerifyEmail(context.Context, *connect.Request[authentication.VerifyEmailRequest]) (*connect.Response[authentication.VerifyEmailResponse], error)
 	// Verify phone number
-	VerifyPhoneNumber(context.Context, *connect_go.Request[authentication.VerifyPhoneNumberRequest]) (*connect_go.Response[authentication.VerifyPhoneNumberResponse], error)
+	VerifyPhoneNumber(context.Context, *connect.Request[authentication.VerifyPhoneNumberRequest]) (*connect.Response[authentication.VerifyPhoneNumberResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -254,61 +281,72 @@ type ServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	serviceLoginHandler := connect_go.NewUnaryHandler(
+func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceLoginHandler := connect.NewUnaryHandler(
 		ServiceLoginProcedure,
 		svc.Login,
-		opts...,
+		connect.WithSchema(serviceLoginMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceLogoutHandler := connect_go.NewUnaryHandler(
+	serviceLogoutHandler := connect.NewUnaryHandler(
 		ServiceLogoutProcedure,
 		svc.Logout,
-		opts...,
+		connect.WithSchema(serviceLogoutMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetHandler := connect_go.NewUnaryHandler(
+	serviceGetHandler := connect.NewUnaryHandler(
 		ServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(serviceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceRegisterHandler := connect_go.NewUnaryHandler(
+	serviceRegisterHandler := connect.NewUnaryHandler(
 		ServiceRegisterProcedure,
 		svc.Register,
-		opts...,
+		connect.WithSchema(serviceRegisterMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceSendPasswordResetHandler := connect_go.NewUnaryHandler(
+	serviceSendPasswordResetHandler := connect.NewUnaryHandler(
 		ServiceSendPasswordResetProcedure,
 		svc.SendPasswordReset,
-		opts...,
+		connect.WithSchema(serviceSendPasswordResetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceResetPasswordHandler := connect_go.NewUnaryHandler(
+	serviceResetPasswordHandler := connect.NewUnaryHandler(
 		ServiceResetPasswordProcedure,
 		svc.ResetPassword,
-		opts...,
+		connect.WithSchema(serviceResetPasswordMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceDeleteHandler := connect_go.NewUnaryHandler(
+	serviceDeleteHandler := connect.NewUnaryHandler(
 		ServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(serviceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceRefreshTokenHandler := connect_go.NewUnaryHandler(
+	serviceRefreshTokenHandler := connect.NewUnaryHandler(
 		ServiceRefreshTokenProcedure,
 		svc.RefreshToken,
-		opts...,
+		connect.WithSchema(serviceRefreshTokenMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetAuthConfigHandler := connect_go.NewUnaryHandler(
+	serviceGetAuthConfigHandler := connect.NewUnaryHandler(
 		ServiceGetAuthConfigProcedure,
 		svc.GetAuthConfig,
-		opts...,
+		connect.WithSchema(serviceGetAuthConfigMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceVerifyEmailHandler := connect_go.NewUnaryHandler(
+	serviceVerifyEmailHandler := connect.NewUnaryHandler(
 		ServiceVerifyEmailProcedure,
 		svc.VerifyEmail,
-		opts...,
+		connect.WithSchema(serviceVerifyEmailMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceVerifyPhoneNumberHandler := connect_go.NewUnaryHandler(
+	serviceVerifyPhoneNumberHandler := connect.NewUnaryHandler(
 		ServiceVerifyPhoneNumberProcedure,
 		svc.VerifyPhoneNumber,
-		opts...,
+		connect.WithSchema(serviceVerifyPhoneNumberMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v1.authentication.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -343,46 +381,46 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) Login(context.Context, *connect_go.Request[authentication.LoginRequest]) (*connect_go.Response[authentication.LoginResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.Login is not implemented"))
+func (UnimplementedServiceHandler) Login(context.Context, *connect.Request[authentication.LoginRequest]) (*connect.Response[authentication.LoginResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.Login is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Logout(context.Context, *connect_go.Request[authentication.LogoutRequest]) (*connect_go.Response[authentication.LogoutResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.Logout is not implemented"))
+func (UnimplementedServiceHandler) Logout(context.Context, *connect.Request[authentication.LogoutRequest]) (*connect.Response[authentication.LogoutResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.Logout is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Get(context.Context, *connect_go.Request[authentication.GetRequest]) (*connect_go.Response[authentication.GetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.Get is not implemented"))
+func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[authentication.GetRequest]) (*connect.Response[authentication.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.Get is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Register(context.Context, *connect_go.Request[authentication.RegisterRequest]) (*connect_go.Response[authentication.RegisterResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.Register is not implemented"))
+func (UnimplementedServiceHandler) Register(context.Context, *connect.Request[authentication.RegisterRequest]) (*connect.Response[authentication.RegisterResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.Register is not implemented"))
 }
 
-func (UnimplementedServiceHandler) SendPasswordReset(context.Context, *connect_go.Request[authentication.SendPasswordResetRequest]) (*connect_go.Response[authentication.SendPasswordResetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.SendPasswordReset is not implemented"))
+func (UnimplementedServiceHandler) SendPasswordReset(context.Context, *connect.Request[authentication.SendPasswordResetRequest]) (*connect.Response[authentication.SendPasswordResetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.SendPasswordReset is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ResetPassword(context.Context, *connect_go.Request[authentication.ResetPasswordRequest]) (*connect_go.Response[authentication.ResetPasswordResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.ResetPassword is not implemented"))
+func (UnimplementedServiceHandler) ResetPassword(context.Context, *connect.Request[authentication.ResetPasswordRequest]) (*connect.Response[authentication.ResetPasswordResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.ResetPassword is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Delete(context.Context, *connect_go.Request[authentication.DeleteRequest]) (*connect_go.Response[authentication.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.Delete is not implemented"))
+func (UnimplementedServiceHandler) Delete(context.Context, *connect.Request[authentication.DeleteRequest]) (*connect.Response[authentication.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.Delete is not implemented"))
 }
 
-func (UnimplementedServiceHandler) RefreshToken(context.Context, *connect_go.Request[authentication.RefreshTokenRequest]) (*connect_go.Response[authentication.RefreshTokenResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.RefreshToken is not implemented"))
+func (UnimplementedServiceHandler) RefreshToken(context.Context, *connect.Request[authentication.RefreshTokenRequest]) (*connect.Response[authentication.RefreshTokenResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.RefreshToken is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetAuthConfig(context.Context, *connect_go.Request[authentication.GetAuthConfigRequest]) (*connect_go.Response[authentication.GetAuthConfigResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.GetAuthConfig is not implemented"))
+func (UnimplementedServiceHandler) GetAuthConfig(context.Context, *connect.Request[authentication.GetAuthConfigRequest]) (*connect.Response[authentication.GetAuthConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.GetAuthConfig is not implemented"))
 }
 
-func (UnimplementedServiceHandler) VerifyEmail(context.Context, *connect_go.Request[authentication.VerifyEmailRequest]) (*connect_go.Response[authentication.VerifyEmailResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.VerifyEmail is not implemented"))
+func (UnimplementedServiceHandler) VerifyEmail(context.Context, *connect.Request[authentication.VerifyEmailRequest]) (*connect.Response[authentication.VerifyEmailResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.VerifyEmail is not implemented"))
 }
 
-func (UnimplementedServiceHandler) VerifyPhoneNumber(context.Context, *connect_go.Request[authentication.VerifyPhoneNumberRequest]) (*connect_go.Response[authentication.VerifyPhoneNumberResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.authentication.Service.VerifyPhoneNumber is not implemented"))
+func (UnimplementedServiceHandler) VerifyPhoneNumber(context.Context, *connect.Request[authentication.VerifyPhoneNumberRequest]) (*connect.Response[authentication.VerifyPhoneNumberResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.VerifyPhoneNumber is not implemented"))
 }

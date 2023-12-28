@@ -5,9 +5,9 @@
 package userconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	user "github.com/rigdev/rig-go-api/api/v1/user"
 	http "net/http"
 	strings "strings"
@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// ServiceName is the fully-qualified name of the Service service.
@@ -49,22 +49,34 @@ const (
 	ServiceDeleteProcedure = "/api.v1.user.Service/Delete"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	serviceServiceDescriptor               = user.File_api_v1_user_service_proto.Services().ByName("Service")
+	serviceCreateMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceUpdateMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("Update")
+	serviceListSessionsMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("ListSessions")
+	serviceGetMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceGetByIdentifierMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetByIdentifier")
+	serviceListMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("List")
+	serviceDeleteMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("Delete")
+)
+
 // ServiceClient is a client for the api.v1.user.Service service.
 type ServiceClient interface {
 	// Create a new user
-	Create(context.Context, *connect_go.Request[user.CreateRequest]) (*connect_go.Response[user.CreateResponse], error)
+	Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error)
 	// Update a users profile and info
-	Update(context.Context, *connect_go.Request[user.UpdateRequest]) (*connect_go.Response[user.UpdateResponse], error)
+	Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error)
 	// Get the list of active sessions for the given user.
-	ListSessions(context.Context, *connect_go.Request[user.ListSessionsRequest]) (*connect_go.Response[user.ListSessionsResponse], error)
+	ListSessions(context.Context, *connect.Request[user.ListSessionsRequest]) (*connect.Response[user.ListSessionsResponse], error)
 	// Get a user by user-id.
-	Get(context.Context, *connect_go.Request[user.GetRequest]) (*connect_go.Response[user.GetResponse], error)
+	Get(context.Context, *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error)
 	// Lookup a user by a unique identifier - email, username, phone number etc.
-	GetByIdentifier(context.Context, *connect_go.Request[user.GetByIdentifierRequest]) (*connect_go.Response[user.GetByIdentifierResponse], error)
+	GetByIdentifier(context.Context, *connect.Request[user.GetByIdentifierRequest]) (*connect.Response[user.GetByIdentifierResponse], error)
 	// List users
-	List(context.Context, *connect_go.Request[user.ListRequest]) (*connect_go.Response[user.ListResponse], error)
+	List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error)
 	// Delete a specific user
-	Delete(context.Context, *connect_go.Request[user.DeleteRequest]) (*connect_go.Response[user.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.user.Service service. By default, it uses the
@@ -74,109 +86,116 @@ type ServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ServiceClient {
+func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		create: connect_go.NewClient[user.CreateRequest, user.CreateResponse](
+		create: connect.NewClient[user.CreateRequest, user.CreateResponse](
 			httpClient,
 			baseURL+ServiceCreateProcedure,
-			opts...,
+			connect.WithSchema(serviceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		update: connect_go.NewClient[user.UpdateRequest, user.UpdateResponse](
+		update: connect.NewClient[user.UpdateRequest, user.UpdateResponse](
 			httpClient,
 			baseURL+ServiceUpdateProcedure,
-			opts...,
+			connect.WithSchema(serviceUpdateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		listSessions: connect_go.NewClient[user.ListSessionsRequest, user.ListSessionsResponse](
+		listSessions: connect.NewClient[user.ListSessionsRequest, user.ListSessionsResponse](
 			httpClient,
 			baseURL+ServiceListSessionsProcedure,
-			opts...,
+			connect.WithSchema(serviceListSessionsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		get: connect_go.NewClient[user.GetRequest, user.GetResponse](
+		get: connect.NewClient[user.GetRequest, user.GetResponse](
 			httpClient,
 			baseURL+ServiceGetProcedure,
-			opts...,
+			connect.WithSchema(serviceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		getByIdentifier: connect_go.NewClient[user.GetByIdentifierRequest, user.GetByIdentifierResponse](
+		getByIdentifier: connect.NewClient[user.GetByIdentifierRequest, user.GetByIdentifierResponse](
 			httpClient,
 			baseURL+ServiceGetByIdentifierProcedure,
-			opts...,
+			connect.WithSchema(serviceGetByIdentifierMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		list: connect_go.NewClient[user.ListRequest, user.ListResponse](
+		list: connect.NewClient[user.ListRequest, user.ListResponse](
 			httpClient,
 			baseURL+ServiceListProcedure,
-			opts...,
+			connect.WithSchema(serviceListMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		delete: connect_go.NewClient[user.DeleteRequest, user.DeleteResponse](
+		delete: connect.NewClient[user.DeleteRequest, user.DeleteResponse](
 			httpClient,
 			baseURL+ServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(serviceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create          *connect_go.Client[user.CreateRequest, user.CreateResponse]
-	update          *connect_go.Client[user.UpdateRequest, user.UpdateResponse]
-	listSessions    *connect_go.Client[user.ListSessionsRequest, user.ListSessionsResponse]
-	get             *connect_go.Client[user.GetRequest, user.GetResponse]
-	getByIdentifier *connect_go.Client[user.GetByIdentifierRequest, user.GetByIdentifierResponse]
-	list            *connect_go.Client[user.ListRequest, user.ListResponse]
-	delete          *connect_go.Client[user.DeleteRequest, user.DeleteResponse]
+	create          *connect.Client[user.CreateRequest, user.CreateResponse]
+	update          *connect.Client[user.UpdateRequest, user.UpdateResponse]
+	listSessions    *connect.Client[user.ListSessionsRequest, user.ListSessionsResponse]
+	get             *connect.Client[user.GetRequest, user.GetResponse]
+	getByIdentifier *connect.Client[user.GetByIdentifierRequest, user.GetByIdentifierResponse]
+	list            *connect.Client[user.ListRequest, user.ListResponse]
+	delete          *connect.Client[user.DeleteRequest, user.DeleteResponse]
 }
 
 // Create calls api.v1.user.Service.Create.
-func (c *serviceClient) Create(ctx context.Context, req *connect_go.Request[user.CreateRequest]) (*connect_go.Response[user.CreateResponse], error) {
+func (c *serviceClient) Create(ctx context.Context, req *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // Update calls api.v1.user.Service.Update.
-func (c *serviceClient) Update(ctx context.Context, req *connect_go.Request[user.UpdateRequest]) (*connect_go.Response[user.UpdateResponse], error) {
+func (c *serviceClient) Update(ctx context.Context, req *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
 // ListSessions calls api.v1.user.Service.ListSessions.
-func (c *serviceClient) ListSessions(ctx context.Context, req *connect_go.Request[user.ListSessionsRequest]) (*connect_go.Response[user.ListSessionsResponse], error) {
+func (c *serviceClient) ListSessions(ctx context.Context, req *connect.Request[user.ListSessionsRequest]) (*connect.Response[user.ListSessionsResponse], error) {
 	return c.listSessions.CallUnary(ctx, req)
 }
 
 // Get calls api.v1.user.Service.Get.
-func (c *serviceClient) Get(ctx context.Context, req *connect_go.Request[user.GetRequest]) (*connect_go.Response[user.GetResponse], error) {
+func (c *serviceClient) Get(ctx context.Context, req *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // GetByIdentifier calls api.v1.user.Service.GetByIdentifier.
-func (c *serviceClient) GetByIdentifier(ctx context.Context, req *connect_go.Request[user.GetByIdentifierRequest]) (*connect_go.Response[user.GetByIdentifierResponse], error) {
+func (c *serviceClient) GetByIdentifier(ctx context.Context, req *connect.Request[user.GetByIdentifierRequest]) (*connect.Response[user.GetByIdentifierResponse], error) {
 	return c.getByIdentifier.CallUnary(ctx, req)
 }
 
 // List calls api.v1.user.Service.List.
-func (c *serviceClient) List(ctx context.Context, req *connect_go.Request[user.ListRequest]) (*connect_go.Response[user.ListResponse], error) {
+func (c *serviceClient) List(ctx context.Context, req *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // Delete calls api.v1.user.Service.Delete.
-func (c *serviceClient) Delete(ctx context.Context, req *connect_go.Request[user.DeleteRequest]) (*connect_go.Response[user.DeleteResponse], error) {
+func (c *serviceClient) Delete(ctx context.Context, req *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.user.Service service.
 type ServiceHandler interface {
 	// Create a new user
-	Create(context.Context, *connect_go.Request[user.CreateRequest]) (*connect_go.Response[user.CreateResponse], error)
+	Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error)
 	// Update a users profile and info
-	Update(context.Context, *connect_go.Request[user.UpdateRequest]) (*connect_go.Response[user.UpdateResponse], error)
+	Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error)
 	// Get the list of active sessions for the given user.
-	ListSessions(context.Context, *connect_go.Request[user.ListSessionsRequest]) (*connect_go.Response[user.ListSessionsResponse], error)
+	ListSessions(context.Context, *connect.Request[user.ListSessionsRequest]) (*connect.Response[user.ListSessionsResponse], error)
 	// Get a user by user-id.
-	Get(context.Context, *connect_go.Request[user.GetRequest]) (*connect_go.Response[user.GetResponse], error)
+	Get(context.Context, *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error)
 	// Lookup a user by a unique identifier - email, username, phone number etc.
-	GetByIdentifier(context.Context, *connect_go.Request[user.GetByIdentifierRequest]) (*connect_go.Response[user.GetByIdentifierResponse], error)
+	GetByIdentifier(context.Context, *connect.Request[user.GetByIdentifierRequest]) (*connect.Response[user.GetByIdentifierResponse], error)
 	// List users
-	List(context.Context, *connect_go.Request[user.ListRequest]) (*connect_go.Response[user.ListResponse], error)
+	List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error)
 	// Delete a specific user
-	Delete(context.Context, *connect_go.Request[user.DeleteRequest]) (*connect_go.Response[user.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -184,41 +203,48 @@ type ServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	serviceCreateHandler := connect_go.NewUnaryHandler(
+func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceCreateHandler := connect.NewUnaryHandler(
 		ServiceCreateProcedure,
 		svc.Create,
-		opts...,
+		connect.WithSchema(serviceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceUpdateHandler := connect_go.NewUnaryHandler(
+	serviceUpdateHandler := connect.NewUnaryHandler(
 		ServiceUpdateProcedure,
 		svc.Update,
-		opts...,
+		connect.WithSchema(serviceUpdateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListSessionsHandler := connect_go.NewUnaryHandler(
+	serviceListSessionsHandler := connect.NewUnaryHandler(
 		ServiceListSessionsProcedure,
 		svc.ListSessions,
-		opts...,
+		connect.WithSchema(serviceListSessionsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetHandler := connect_go.NewUnaryHandler(
+	serviceGetHandler := connect.NewUnaryHandler(
 		ServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(serviceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetByIdentifierHandler := connect_go.NewUnaryHandler(
+	serviceGetByIdentifierHandler := connect.NewUnaryHandler(
 		ServiceGetByIdentifierProcedure,
 		svc.GetByIdentifier,
-		opts...,
+		connect.WithSchema(serviceGetByIdentifierMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListHandler := connect_go.NewUnaryHandler(
+	serviceListHandler := connect.NewUnaryHandler(
 		ServiceListProcedure,
 		svc.List,
-		opts...,
+		connect.WithSchema(serviceListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceDeleteHandler := connect_go.NewUnaryHandler(
+	serviceDeleteHandler := connect.NewUnaryHandler(
 		ServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(serviceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v1.user.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -245,30 +271,30 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) Create(context.Context, *connect_go.Request[user.CreateRequest]) (*connect_go.Response[user.CreateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.user.Service.Create is not implemented"))
+func (UnimplementedServiceHandler) Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.user.Service.Create is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Update(context.Context, *connect_go.Request[user.UpdateRequest]) (*connect_go.Response[user.UpdateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.user.Service.Update is not implemented"))
+func (UnimplementedServiceHandler) Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.user.Service.Update is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ListSessions(context.Context, *connect_go.Request[user.ListSessionsRequest]) (*connect_go.Response[user.ListSessionsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.user.Service.ListSessions is not implemented"))
+func (UnimplementedServiceHandler) ListSessions(context.Context, *connect.Request[user.ListSessionsRequest]) (*connect.Response[user.ListSessionsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.user.Service.ListSessions is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Get(context.Context, *connect_go.Request[user.GetRequest]) (*connect_go.Response[user.GetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.user.Service.Get is not implemented"))
+func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.user.Service.Get is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetByIdentifier(context.Context, *connect_go.Request[user.GetByIdentifierRequest]) (*connect_go.Response[user.GetByIdentifierResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.user.Service.GetByIdentifier is not implemented"))
+func (UnimplementedServiceHandler) GetByIdentifier(context.Context, *connect.Request[user.GetByIdentifierRequest]) (*connect.Response[user.GetByIdentifierResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.user.Service.GetByIdentifier is not implemented"))
 }
 
-func (UnimplementedServiceHandler) List(context.Context, *connect_go.Request[user.ListRequest]) (*connect_go.Response[user.ListResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.user.Service.List is not implemented"))
+func (UnimplementedServiceHandler) List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.user.Service.List is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Delete(context.Context, *connect_go.Request[user.DeleteRequest]) (*connect_go.Response[user.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.user.Service.Delete is not implemented"))
+func (UnimplementedServiceHandler) Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.user.Service.Delete is not implemented"))
 }

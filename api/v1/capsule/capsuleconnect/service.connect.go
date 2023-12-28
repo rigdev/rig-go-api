@@ -5,9 +5,9 @@
 package capsuleconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	capsule "github.com/rigdev/rig-go-api/api/v1/capsule"
 	http "net/http"
 	strings "strings"
@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// ServiceName is the fully-qualified name of the Service service.
@@ -83,55 +83,83 @@ const (
 	ServiceGetJobExecutionsProcedure = "/api.v1.capsule.Service/GetJobExecutions"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	serviceServiceDescriptor                        = capsule.File_api_v1_capsule_service_proto.Services().ByName("Service")
+	serviceCreateMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceGetMethodDescriptor                      = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceDeleteMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Delete")
+	serviceLogsMethodDescriptor                     = serviceServiceDescriptor.Methods().ByName("Logs")
+	serviceUpdateMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Update")
+	serviceListMethodDescriptor                     = serviceServiceDescriptor.Methods().ByName("List")
+	serviceCreateBuildMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("CreateBuild")
+	serviceListBuildsMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("ListBuilds")
+	serviceDeleteBuildMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("DeleteBuild")
+	serviceDeployMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Deploy")
+	serviceListInstancesMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ListInstances")
+	serviceRestartInstanceMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("RestartInstance")
+	serviceGetRolloutMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("GetRollout")
+	serviceListRolloutsMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("ListRollouts")
+	serviceAbortRolloutMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("AbortRollout")
+	serviceListEventsMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("ListEvents")
+	serviceCapsuleMetricsMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("CapsuleMetrics")
+	serviceGetInstanceStatusMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("GetInstanceStatus")
+	serviceListInstanceStatusesMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("ListInstanceStatuses")
+	serviceExecuteMethodDescriptor                  = serviceServiceDescriptor.Methods().ByName("Execute")
+	serviceGetCustomInstanceMetricsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetCustomInstanceMetrics")
+	serviceGetJobExecutionsMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetJobExecutions")
+)
+
 // ServiceClient is a client for the api.v1.capsule.Service service.
 type ServiceClient interface {
 	// Create a new capsule.
-	Create(context.Context, *connect_go.Request[capsule.CreateRequest]) (*connect_go.Response[capsule.CreateResponse], error)
+	Create(context.Context, *connect.Request[capsule.CreateRequest]) (*connect.Response[capsule.CreateResponse], error)
 	// Get a capsule by id.
-	Get(context.Context, *connect_go.Request[capsule.GetRequest]) (*connect_go.Response[capsule.GetResponse], error)
+	Get(context.Context, *connect.Request[capsule.GetRequest]) (*connect.Response[capsule.GetResponse], error)
 	// Delete a capsule.
-	Delete(context.Context, *connect_go.Request[capsule.DeleteRequest]) (*connect_go.Response[capsule.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[capsule.DeleteRequest]) (*connect.Response[capsule.DeleteResponse], error)
 	// Logs returns (and streams) the log output of a capsule.
-	Logs(context.Context, *connect_go.Request[capsule.LogsRequest]) (*connect_go.ServerStreamForClient[capsule.LogsResponse], error)
+	Logs(context.Context, *connect.Request[capsule.LogsRequest]) (*connect.ServerStreamForClient[capsule.LogsResponse], error)
 	// Update a capsule.
-	Update(context.Context, *connect_go.Request[capsule.UpdateRequest]) (*connect_go.Response[capsule.UpdateResponse], error)
+	Update(context.Context, *connect.Request[capsule.UpdateRequest]) (*connect.Response[capsule.UpdateResponse], error)
 	// Lists all capsules for current project.
-	List(context.Context, *connect_go.Request[capsule.ListRequest]) (*connect_go.Response[capsule.ListResponse], error)
+	List(context.Context, *connect.Request[capsule.ListRequest]) (*connect.Response[capsule.ListResponse], error)
 	// Create a new build.
 	// Builds are immutable and cannot change. Create a new build to make
 	// changes from an existing one.
-	CreateBuild(context.Context, *connect_go.Request[capsule.CreateBuildRequest]) (*connect_go.Response[capsule.CreateBuildResponse], error)
+	CreateBuild(context.Context, *connect.Request[capsule.CreateBuildRequest]) (*connect.Response[capsule.CreateBuildResponse], error)
 	// List builds for a capsule.
-	ListBuilds(context.Context, *connect_go.Request[capsule.ListBuildsRequest]) (*connect_go.Response[capsule.ListBuildsResponse], error)
+	ListBuilds(context.Context, *connect.Request[capsule.ListBuildsRequest]) (*connect.Response[capsule.ListBuildsResponse], error)
 	// Delete a build.
-	DeleteBuild(context.Context, *connect_go.Request[capsule.DeleteBuildRequest]) (*connect_go.Response[capsule.DeleteBuildResponse], error)
+	DeleteBuild(context.Context, *connect.Request[capsule.DeleteBuildRequest]) (*connect.Response[capsule.DeleteBuildResponse], error)
 	// Deploy changes to a capsule.
 	// When deploying, a new rollout will be initiated. Only one rollout can be
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
-	Deploy(context.Context, *connect_go.Request[capsule.DeployRequest]) (*connect_go.Response[capsule.DeployResponse], error)
+	Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error)
 	// Lists all instances for the capsule.
-	ListInstances(context.Context, *connect_go.Request[capsule.ListInstancesRequest]) (*connect_go.Response[capsule.ListInstancesResponse], error)
+	ListInstances(context.Context, *connect.Request[capsule.ListInstancesRequest]) (*connect.Response[capsule.ListInstancesResponse], error)
 	// Restart a single capsule instance.
-	RestartInstance(context.Context, *connect_go.Request[capsule.RestartInstanceRequest]) (*connect_go.Response[capsule.RestartInstanceResponse], error)
+	RestartInstance(context.Context, *connect.Request[capsule.RestartInstanceRequest]) (*connect.Response[capsule.RestartInstanceResponse], error)
 	// Get a single rollout by ID.
-	GetRollout(context.Context, *connect_go.Request[capsule.GetRolloutRequest]) (*connect_go.Response[capsule.GetRolloutResponse], error)
+	GetRollout(context.Context, *connect.Request[capsule.GetRolloutRequest]) (*connect.Response[capsule.GetRolloutResponse], error)
 	// Lists all rollouts for the capsule.
-	ListRollouts(context.Context, *connect_go.Request[capsule.ListRolloutsRequest]) (*connect_go.Response[capsule.ListRolloutsResponse], error)
+	ListRollouts(context.Context, *connect.Request[capsule.ListRolloutsRequest]) (*connect.Response[capsule.ListRolloutsResponse], error)
 	// Abort the rollout.
-	AbortRollout(context.Context, *connect_go.Request[capsule.AbortRolloutRequest]) (*connect_go.Response[capsule.AbortRolloutResponse], error)
-	ListEvents(context.Context, *connect_go.Request[capsule.ListEventsRequest]) (*connect_go.Response[capsule.ListEventsResponse], error)
+	AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error)
+	ListEvents(context.Context, *connect.Request[capsule.ListEventsRequest]) (*connect.Response[capsule.ListEventsResponse], error)
 	// Get metrics for a capsule
-	CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error)
+	CapsuleMetrics(context.Context, *connect.Request[capsule.CapsuleMetricsRequest]) (*connect.Response[capsule.CapsuleMetricsResponse], error)
 	// GetInstanceStatus returns the current status for the given instance
-	GetInstanceStatus(context.Context, *connect_go.Request[capsule.GetInstanceStatusRequest]) (*connect_go.Response[capsule.GetInstanceStatusResponse], error)
+	GetInstanceStatus(context.Context, *connect.Request[capsule.GetInstanceStatusRequest]) (*connect.Response[capsule.GetInstanceStatusResponse], error)
 	// ListInstanceStatuses lists the status of all instances.
-	ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error)
+	ListInstanceStatuses(context.Context, *connect.Request[capsule.ListInstanceStatusesRequest]) (*connect.Response[capsule.ListInstanceStatusesResponse], error)
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
-	Execute(context.Context) *connect_go.BidiStreamForClient[capsule.ExecuteRequest, capsule.ExecuteResponse]
-	GetCustomInstanceMetrics(context.Context, *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error)
-	GetJobExecutions(context.Context, *connect_go.Request[capsule.GetJobExecutionsRequest]) (*connect_go.Response[capsule.GetJobExecutionsResponse], error)
+	Execute(context.Context) *connect.BidiStreamForClient[capsule.ExecuteRequest, capsule.ExecuteResponse]
+	GetCustomInstanceMetrics(context.Context, *connect.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect.Response[capsule.GetCustomInstanceMetricsResponse], error)
+	// Get list of job executions performed by the Capsule.
+	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -141,307 +169,330 @@ type ServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ServiceClient {
+func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		create: connect_go.NewClient[capsule.CreateRequest, capsule.CreateResponse](
+		create: connect.NewClient[capsule.CreateRequest, capsule.CreateResponse](
 			httpClient,
 			baseURL+ServiceCreateProcedure,
-			opts...,
+			connect.WithSchema(serviceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		get: connect_go.NewClient[capsule.GetRequest, capsule.GetResponse](
+		get: connect.NewClient[capsule.GetRequest, capsule.GetResponse](
 			httpClient,
 			baseURL+ServiceGetProcedure,
-			opts...,
+			connect.WithSchema(serviceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		delete: connect_go.NewClient[capsule.DeleteRequest, capsule.DeleteResponse](
+		delete: connect.NewClient[capsule.DeleteRequest, capsule.DeleteResponse](
 			httpClient,
 			baseURL+ServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(serviceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		logs: connect_go.NewClient[capsule.LogsRequest, capsule.LogsResponse](
+		logs: connect.NewClient[capsule.LogsRequest, capsule.LogsResponse](
 			httpClient,
 			baseURL+ServiceLogsProcedure,
-			opts...,
+			connect.WithSchema(serviceLogsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		update: connect_go.NewClient[capsule.UpdateRequest, capsule.UpdateResponse](
+		update: connect.NewClient[capsule.UpdateRequest, capsule.UpdateResponse](
 			httpClient,
 			baseURL+ServiceUpdateProcedure,
-			opts...,
+			connect.WithSchema(serviceUpdateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		list: connect_go.NewClient[capsule.ListRequest, capsule.ListResponse](
+		list: connect.NewClient[capsule.ListRequest, capsule.ListResponse](
 			httpClient,
 			baseURL+ServiceListProcedure,
-			opts...,
+			connect.WithSchema(serviceListMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		createBuild: connect_go.NewClient[capsule.CreateBuildRequest, capsule.CreateBuildResponse](
+		createBuild: connect.NewClient[capsule.CreateBuildRequest, capsule.CreateBuildResponse](
 			httpClient,
 			baseURL+ServiceCreateBuildProcedure,
-			opts...,
+			connect.WithSchema(serviceCreateBuildMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		listBuilds: connect_go.NewClient[capsule.ListBuildsRequest, capsule.ListBuildsResponse](
+		listBuilds: connect.NewClient[capsule.ListBuildsRequest, capsule.ListBuildsResponse](
 			httpClient,
 			baseURL+ServiceListBuildsProcedure,
-			opts...,
+			connect.WithSchema(serviceListBuildsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		deleteBuild: connect_go.NewClient[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse](
+		deleteBuild: connect.NewClient[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse](
 			httpClient,
 			baseURL+ServiceDeleteBuildProcedure,
-			opts...,
+			connect.WithSchema(serviceDeleteBuildMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		deploy: connect_go.NewClient[capsule.DeployRequest, capsule.DeployResponse](
+		deploy: connect.NewClient[capsule.DeployRequest, capsule.DeployResponse](
 			httpClient,
 			baseURL+ServiceDeployProcedure,
-			opts...,
+			connect.WithSchema(serviceDeployMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		listInstances: connect_go.NewClient[capsule.ListInstancesRequest, capsule.ListInstancesResponse](
+		listInstances: connect.NewClient[capsule.ListInstancesRequest, capsule.ListInstancesResponse](
 			httpClient,
 			baseURL+ServiceListInstancesProcedure,
-			opts...,
+			connect.WithSchema(serviceListInstancesMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		restartInstance: connect_go.NewClient[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse](
+		restartInstance: connect.NewClient[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse](
 			httpClient,
 			baseURL+ServiceRestartInstanceProcedure,
-			opts...,
+			connect.WithSchema(serviceRestartInstanceMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		getRollout: connect_go.NewClient[capsule.GetRolloutRequest, capsule.GetRolloutResponse](
+		getRollout: connect.NewClient[capsule.GetRolloutRequest, capsule.GetRolloutResponse](
 			httpClient,
 			baseURL+ServiceGetRolloutProcedure,
-			opts...,
+			connect.WithSchema(serviceGetRolloutMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		listRollouts: connect_go.NewClient[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse](
+		listRollouts: connect.NewClient[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse](
 			httpClient,
 			baseURL+ServiceListRolloutsProcedure,
-			opts...,
+			connect.WithSchema(serviceListRolloutsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		abortRollout: connect_go.NewClient[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse](
+		abortRollout: connect.NewClient[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse](
 			httpClient,
 			baseURL+ServiceAbortRolloutProcedure,
-			opts...,
+			connect.WithSchema(serviceAbortRolloutMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		listEvents: connect_go.NewClient[capsule.ListEventsRequest, capsule.ListEventsResponse](
+		listEvents: connect.NewClient[capsule.ListEventsRequest, capsule.ListEventsResponse](
 			httpClient,
 			baseURL+ServiceListEventsProcedure,
-			opts...,
+			connect.WithSchema(serviceListEventsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		capsuleMetrics: connect_go.NewClient[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse](
+		capsuleMetrics: connect.NewClient[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse](
 			httpClient,
 			baseURL+ServiceCapsuleMetricsProcedure,
-			opts...,
+			connect.WithSchema(serviceCapsuleMetricsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		getInstanceStatus: connect_go.NewClient[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse](
+		getInstanceStatus: connect.NewClient[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse](
 			httpClient,
 			baseURL+ServiceGetInstanceStatusProcedure,
-			opts...,
+			connect.WithSchema(serviceGetInstanceStatusMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		listInstanceStatuses: connect_go.NewClient[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse](
+		listInstanceStatuses: connect.NewClient[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse](
 			httpClient,
 			baseURL+ServiceListInstanceStatusesProcedure,
-			opts...,
+			connect.WithSchema(serviceListInstanceStatusesMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		execute: connect_go.NewClient[capsule.ExecuteRequest, capsule.ExecuteResponse](
+		execute: connect.NewClient[capsule.ExecuteRequest, capsule.ExecuteResponse](
 			httpClient,
 			baseURL+ServiceExecuteProcedure,
-			opts...,
+			connect.WithSchema(serviceExecuteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		getCustomInstanceMetrics: connect_go.NewClient[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse](
+		getCustomInstanceMetrics: connect.NewClient[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse](
 			httpClient,
 			baseURL+ServiceGetCustomInstanceMetricsProcedure,
-			opts...,
+			connect.WithSchema(serviceGetCustomInstanceMetricsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		getJobExecutions: connect_go.NewClient[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse](
+		getJobExecutions: connect.NewClient[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse](
 			httpClient,
 			baseURL+ServiceGetJobExecutionsProcedure,
-			opts...,
+			connect.WithSchema(serviceGetJobExecutionsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create                   *connect_go.Client[capsule.CreateRequest, capsule.CreateResponse]
-	get                      *connect_go.Client[capsule.GetRequest, capsule.GetResponse]
-	delete                   *connect_go.Client[capsule.DeleteRequest, capsule.DeleteResponse]
-	logs                     *connect_go.Client[capsule.LogsRequest, capsule.LogsResponse]
-	update                   *connect_go.Client[capsule.UpdateRequest, capsule.UpdateResponse]
-	list                     *connect_go.Client[capsule.ListRequest, capsule.ListResponse]
-	createBuild              *connect_go.Client[capsule.CreateBuildRequest, capsule.CreateBuildResponse]
-	listBuilds               *connect_go.Client[capsule.ListBuildsRequest, capsule.ListBuildsResponse]
-	deleteBuild              *connect_go.Client[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse]
-	deploy                   *connect_go.Client[capsule.DeployRequest, capsule.DeployResponse]
-	listInstances            *connect_go.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
-	restartInstance          *connect_go.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
-	getRollout               *connect_go.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
-	listRollouts             *connect_go.Client[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse]
-	abortRollout             *connect_go.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
-	listEvents               *connect_go.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
-	capsuleMetrics           *connect_go.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
-	getInstanceStatus        *connect_go.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
-	listInstanceStatuses     *connect_go.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
-	execute                  *connect_go.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
-	getCustomInstanceMetrics *connect_go.Client[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse]
-	getJobExecutions         *connect_go.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
+	create                   *connect.Client[capsule.CreateRequest, capsule.CreateResponse]
+	get                      *connect.Client[capsule.GetRequest, capsule.GetResponse]
+	delete                   *connect.Client[capsule.DeleteRequest, capsule.DeleteResponse]
+	logs                     *connect.Client[capsule.LogsRequest, capsule.LogsResponse]
+	update                   *connect.Client[capsule.UpdateRequest, capsule.UpdateResponse]
+	list                     *connect.Client[capsule.ListRequest, capsule.ListResponse]
+	createBuild              *connect.Client[capsule.CreateBuildRequest, capsule.CreateBuildResponse]
+	listBuilds               *connect.Client[capsule.ListBuildsRequest, capsule.ListBuildsResponse]
+	deleteBuild              *connect.Client[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse]
+	deploy                   *connect.Client[capsule.DeployRequest, capsule.DeployResponse]
+	listInstances            *connect.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
+	restartInstance          *connect.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
+	getRollout               *connect.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
+	listRollouts             *connect.Client[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse]
+	abortRollout             *connect.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
+	listEvents               *connect.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
+	capsuleMetrics           *connect.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
+	getInstanceStatus        *connect.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
+	listInstanceStatuses     *connect.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
+	execute                  *connect.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
+	getCustomInstanceMetrics *connect.Client[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse]
+	getJobExecutions         *connect.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
-func (c *serviceClient) Create(ctx context.Context, req *connect_go.Request[capsule.CreateRequest]) (*connect_go.Response[capsule.CreateResponse], error) {
+func (c *serviceClient) Create(ctx context.Context, req *connect.Request[capsule.CreateRequest]) (*connect.Response[capsule.CreateResponse], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // Get calls api.v1.capsule.Service.Get.
-func (c *serviceClient) Get(ctx context.Context, req *connect_go.Request[capsule.GetRequest]) (*connect_go.Response[capsule.GetResponse], error) {
+func (c *serviceClient) Get(ctx context.Context, req *connect.Request[capsule.GetRequest]) (*connect.Response[capsule.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // Delete calls api.v1.capsule.Service.Delete.
-func (c *serviceClient) Delete(ctx context.Context, req *connect_go.Request[capsule.DeleteRequest]) (*connect_go.Response[capsule.DeleteResponse], error) {
+func (c *serviceClient) Delete(ctx context.Context, req *connect.Request[capsule.DeleteRequest]) (*connect.Response[capsule.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // Logs calls api.v1.capsule.Service.Logs.
-func (c *serviceClient) Logs(ctx context.Context, req *connect_go.Request[capsule.LogsRequest]) (*connect_go.ServerStreamForClient[capsule.LogsResponse], error) {
+func (c *serviceClient) Logs(ctx context.Context, req *connect.Request[capsule.LogsRequest]) (*connect.ServerStreamForClient[capsule.LogsResponse], error) {
 	return c.logs.CallServerStream(ctx, req)
 }
 
 // Update calls api.v1.capsule.Service.Update.
-func (c *serviceClient) Update(ctx context.Context, req *connect_go.Request[capsule.UpdateRequest]) (*connect_go.Response[capsule.UpdateResponse], error) {
+func (c *serviceClient) Update(ctx context.Context, req *connect.Request[capsule.UpdateRequest]) (*connect.Response[capsule.UpdateResponse], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
 // List calls api.v1.capsule.Service.List.
-func (c *serviceClient) List(ctx context.Context, req *connect_go.Request[capsule.ListRequest]) (*connect_go.Response[capsule.ListResponse], error) {
+func (c *serviceClient) List(ctx context.Context, req *connect.Request[capsule.ListRequest]) (*connect.Response[capsule.ListResponse], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // CreateBuild calls api.v1.capsule.Service.CreateBuild.
-func (c *serviceClient) CreateBuild(ctx context.Context, req *connect_go.Request[capsule.CreateBuildRequest]) (*connect_go.Response[capsule.CreateBuildResponse], error) {
+func (c *serviceClient) CreateBuild(ctx context.Context, req *connect.Request[capsule.CreateBuildRequest]) (*connect.Response[capsule.CreateBuildResponse], error) {
 	return c.createBuild.CallUnary(ctx, req)
 }
 
 // ListBuilds calls api.v1.capsule.Service.ListBuilds.
-func (c *serviceClient) ListBuilds(ctx context.Context, req *connect_go.Request[capsule.ListBuildsRequest]) (*connect_go.Response[capsule.ListBuildsResponse], error) {
+func (c *serviceClient) ListBuilds(ctx context.Context, req *connect.Request[capsule.ListBuildsRequest]) (*connect.Response[capsule.ListBuildsResponse], error) {
 	return c.listBuilds.CallUnary(ctx, req)
 }
 
 // DeleteBuild calls api.v1.capsule.Service.DeleteBuild.
-func (c *serviceClient) DeleteBuild(ctx context.Context, req *connect_go.Request[capsule.DeleteBuildRequest]) (*connect_go.Response[capsule.DeleteBuildResponse], error) {
+func (c *serviceClient) DeleteBuild(ctx context.Context, req *connect.Request[capsule.DeleteBuildRequest]) (*connect.Response[capsule.DeleteBuildResponse], error) {
 	return c.deleteBuild.CallUnary(ctx, req)
 }
 
 // Deploy calls api.v1.capsule.Service.Deploy.
-func (c *serviceClient) Deploy(ctx context.Context, req *connect_go.Request[capsule.DeployRequest]) (*connect_go.Response[capsule.DeployResponse], error) {
+func (c *serviceClient) Deploy(ctx context.Context, req *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error) {
 	return c.deploy.CallUnary(ctx, req)
 }
 
 // ListInstances calls api.v1.capsule.Service.ListInstances.
-func (c *serviceClient) ListInstances(ctx context.Context, req *connect_go.Request[capsule.ListInstancesRequest]) (*connect_go.Response[capsule.ListInstancesResponse], error) {
+func (c *serviceClient) ListInstances(ctx context.Context, req *connect.Request[capsule.ListInstancesRequest]) (*connect.Response[capsule.ListInstancesResponse], error) {
 	return c.listInstances.CallUnary(ctx, req)
 }
 
 // RestartInstance calls api.v1.capsule.Service.RestartInstance.
-func (c *serviceClient) RestartInstance(ctx context.Context, req *connect_go.Request[capsule.RestartInstanceRequest]) (*connect_go.Response[capsule.RestartInstanceResponse], error) {
+func (c *serviceClient) RestartInstance(ctx context.Context, req *connect.Request[capsule.RestartInstanceRequest]) (*connect.Response[capsule.RestartInstanceResponse], error) {
 	return c.restartInstance.CallUnary(ctx, req)
 }
 
 // GetRollout calls api.v1.capsule.Service.GetRollout.
-func (c *serviceClient) GetRollout(ctx context.Context, req *connect_go.Request[capsule.GetRolloutRequest]) (*connect_go.Response[capsule.GetRolloutResponse], error) {
+func (c *serviceClient) GetRollout(ctx context.Context, req *connect.Request[capsule.GetRolloutRequest]) (*connect.Response[capsule.GetRolloutResponse], error) {
 	return c.getRollout.CallUnary(ctx, req)
 }
 
 // ListRollouts calls api.v1.capsule.Service.ListRollouts.
-func (c *serviceClient) ListRollouts(ctx context.Context, req *connect_go.Request[capsule.ListRolloutsRequest]) (*connect_go.Response[capsule.ListRolloutsResponse], error) {
+func (c *serviceClient) ListRollouts(ctx context.Context, req *connect.Request[capsule.ListRolloutsRequest]) (*connect.Response[capsule.ListRolloutsResponse], error) {
 	return c.listRollouts.CallUnary(ctx, req)
 }
 
 // AbortRollout calls api.v1.capsule.Service.AbortRollout.
-func (c *serviceClient) AbortRollout(ctx context.Context, req *connect_go.Request[capsule.AbortRolloutRequest]) (*connect_go.Response[capsule.AbortRolloutResponse], error) {
+func (c *serviceClient) AbortRollout(ctx context.Context, req *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error) {
 	return c.abortRollout.CallUnary(ctx, req)
 }
 
 // ListEvents calls api.v1.capsule.Service.ListEvents.
-func (c *serviceClient) ListEvents(ctx context.Context, req *connect_go.Request[capsule.ListEventsRequest]) (*connect_go.Response[capsule.ListEventsResponse], error) {
+func (c *serviceClient) ListEvents(ctx context.Context, req *connect.Request[capsule.ListEventsRequest]) (*connect.Response[capsule.ListEventsResponse], error) {
 	return c.listEvents.CallUnary(ctx, req)
 }
 
 // CapsuleMetrics calls api.v1.capsule.Service.CapsuleMetrics.
-func (c *serviceClient) CapsuleMetrics(ctx context.Context, req *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error) {
+func (c *serviceClient) CapsuleMetrics(ctx context.Context, req *connect.Request[capsule.CapsuleMetricsRequest]) (*connect.Response[capsule.CapsuleMetricsResponse], error) {
 	return c.capsuleMetrics.CallUnary(ctx, req)
 }
 
 // GetInstanceStatus calls api.v1.capsule.Service.GetInstanceStatus.
-func (c *serviceClient) GetInstanceStatus(ctx context.Context, req *connect_go.Request[capsule.GetInstanceStatusRequest]) (*connect_go.Response[capsule.GetInstanceStatusResponse], error) {
+func (c *serviceClient) GetInstanceStatus(ctx context.Context, req *connect.Request[capsule.GetInstanceStatusRequest]) (*connect.Response[capsule.GetInstanceStatusResponse], error) {
 	return c.getInstanceStatus.CallUnary(ctx, req)
 }
 
 // ListInstanceStatuses calls api.v1.capsule.Service.ListInstanceStatuses.
-func (c *serviceClient) ListInstanceStatuses(ctx context.Context, req *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error) {
+func (c *serviceClient) ListInstanceStatuses(ctx context.Context, req *connect.Request[capsule.ListInstanceStatusesRequest]) (*connect.Response[capsule.ListInstanceStatusesResponse], error) {
 	return c.listInstanceStatuses.CallUnary(ctx, req)
 }
 
 // Execute calls api.v1.capsule.Service.Execute.
-func (c *serviceClient) Execute(ctx context.Context) *connect_go.BidiStreamForClient[capsule.ExecuteRequest, capsule.ExecuteResponse] {
+func (c *serviceClient) Execute(ctx context.Context) *connect.BidiStreamForClient[capsule.ExecuteRequest, capsule.ExecuteResponse] {
 	return c.execute.CallBidiStream(ctx)
 }
 
 // GetCustomInstanceMetrics calls api.v1.capsule.Service.GetCustomInstanceMetrics.
-func (c *serviceClient) GetCustomInstanceMetrics(ctx context.Context, req *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error) {
+func (c *serviceClient) GetCustomInstanceMetrics(ctx context.Context, req *connect.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect.Response[capsule.GetCustomInstanceMetricsResponse], error) {
 	return c.getCustomInstanceMetrics.CallUnary(ctx, req)
 }
 
 // GetJobExecutions calls api.v1.capsule.Service.GetJobExecutions.
-func (c *serviceClient) GetJobExecutions(ctx context.Context, req *connect_go.Request[capsule.GetJobExecutionsRequest]) (*connect_go.Response[capsule.GetJobExecutionsResponse], error) {
+func (c *serviceClient) GetJobExecutions(ctx context.Context, req *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error) {
 	return c.getJobExecutions.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
-	Create(context.Context, *connect_go.Request[capsule.CreateRequest]) (*connect_go.Response[capsule.CreateResponse], error)
+	Create(context.Context, *connect.Request[capsule.CreateRequest]) (*connect.Response[capsule.CreateResponse], error)
 	// Get a capsule by id.
-	Get(context.Context, *connect_go.Request[capsule.GetRequest]) (*connect_go.Response[capsule.GetResponse], error)
+	Get(context.Context, *connect.Request[capsule.GetRequest]) (*connect.Response[capsule.GetResponse], error)
 	// Delete a capsule.
-	Delete(context.Context, *connect_go.Request[capsule.DeleteRequest]) (*connect_go.Response[capsule.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[capsule.DeleteRequest]) (*connect.Response[capsule.DeleteResponse], error)
 	// Logs returns (and streams) the log output of a capsule.
-	Logs(context.Context, *connect_go.Request[capsule.LogsRequest], *connect_go.ServerStream[capsule.LogsResponse]) error
+	Logs(context.Context, *connect.Request[capsule.LogsRequest], *connect.ServerStream[capsule.LogsResponse]) error
 	// Update a capsule.
-	Update(context.Context, *connect_go.Request[capsule.UpdateRequest]) (*connect_go.Response[capsule.UpdateResponse], error)
+	Update(context.Context, *connect.Request[capsule.UpdateRequest]) (*connect.Response[capsule.UpdateResponse], error)
 	// Lists all capsules for current project.
-	List(context.Context, *connect_go.Request[capsule.ListRequest]) (*connect_go.Response[capsule.ListResponse], error)
+	List(context.Context, *connect.Request[capsule.ListRequest]) (*connect.Response[capsule.ListResponse], error)
 	// Create a new build.
 	// Builds are immutable and cannot change. Create a new build to make
 	// changes from an existing one.
-	CreateBuild(context.Context, *connect_go.Request[capsule.CreateBuildRequest]) (*connect_go.Response[capsule.CreateBuildResponse], error)
+	CreateBuild(context.Context, *connect.Request[capsule.CreateBuildRequest]) (*connect.Response[capsule.CreateBuildResponse], error)
 	// List builds for a capsule.
-	ListBuilds(context.Context, *connect_go.Request[capsule.ListBuildsRequest]) (*connect_go.Response[capsule.ListBuildsResponse], error)
+	ListBuilds(context.Context, *connect.Request[capsule.ListBuildsRequest]) (*connect.Response[capsule.ListBuildsResponse], error)
 	// Delete a build.
-	DeleteBuild(context.Context, *connect_go.Request[capsule.DeleteBuildRequest]) (*connect_go.Response[capsule.DeleteBuildResponse], error)
+	DeleteBuild(context.Context, *connect.Request[capsule.DeleteBuildRequest]) (*connect.Response[capsule.DeleteBuildResponse], error)
 	// Deploy changes to a capsule.
 	// When deploying, a new rollout will be initiated. Only one rollout can be
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
-	Deploy(context.Context, *connect_go.Request[capsule.DeployRequest]) (*connect_go.Response[capsule.DeployResponse], error)
+	Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error)
 	// Lists all instances for the capsule.
-	ListInstances(context.Context, *connect_go.Request[capsule.ListInstancesRequest]) (*connect_go.Response[capsule.ListInstancesResponse], error)
+	ListInstances(context.Context, *connect.Request[capsule.ListInstancesRequest]) (*connect.Response[capsule.ListInstancesResponse], error)
 	// Restart a single capsule instance.
-	RestartInstance(context.Context, *connect_go.Request[capsule.RestartInstanceRequest]) (*connect_go.Response[capsule.RestartInstanceResponse], error)
+	RestartInstance(context.Context, *connect.Request[capsule.RestartInstanceRequest]) (*connect.Response[capsule.RestartInstanceResponse], error)
 	// Get a single rollout by ID.
-	GetRollout(context.Context, *connect_go.Request[capsule.GetRolloutRequest]) (*connect_go.Response[capsule.GetRolloutResponse], error)
+	GetRollout(context.Context, *connect.Request[capsule.GetRolloutRequest]) (*connect.Response[capsule.GetRolloutResponse], error)
 	// Lists all rollouts for the capsule.
-	ListRollouts(context.Context, *connect_go.Request[capsule.ListRolloutsRequest]) (*connect_go.Response[capsule.ListRolloutsResponse], error)
+	ListRollouts(context.Context, *connect.Request[capsule.ListRolloutsRequest]) (*connect.Response[capsule.ListRolloutsResponse], error)
 	// Abort the rollout.
-	AbortRollout(context.Context, *connect_go.Request[capsule.AbortRolloutRequest]) (*connect_go.Response[capsule.AbortRolloutResponse], error)
-	ListEvents(context.Context, *connect_go.Request[capsule.ListEventsRequest]) (*connect_go.Response[capsule.ListEventsResponse], error)
+	AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error)
+	ListEvents(context.Context, *connect.Request[capsule.ListEventsRequest]) (*connect.Response[capsule.ListEventsResponse], error)
 	// Get metrics for a capsule
-	CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error)
+	CapsuleMetrics(context.Context, *connect.Request[capsule.CapsuleMetricsRequest]) (*connect.Response[capsule.CapsuleMetricsResponse], error)
 	// GetInstanceStatus returns the current status for the given instance
-	GetInstanceStatus(context.Context, *connect_go.Request[capsule.GetInstanceStatusRequest]) (*connect_go.Response[capsule.GetInstanceStatusResponse], error)
+	GetInstanceStatus(context.Context, *connect.Request[capsule.GetInstanceStatusRequest]) (*connect.Response[capsule.GetInstanceStatusResponse], error)
 	// ListInstanceStatuses lists the status of all instances.
-	ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error)
+	ListInstanceStatuses(context.Context, *connect.Request[capsule.ListInstanceStatusesRequest]) (*connect.Response[capsule.ListInstanceStatusesResponse], error)
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
-	Execute(context.Context, *connect_go.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error
-	GetCustomInstanceMetrics(context.Context, *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error)
-	GetJobExecutions(context.Context, *connect_go.Request[capsule.GetJobExecutionsRequest]) (*connect_go.Response[capsule.GetJobExecutionsResponse], error)
+	Execute(context.Context, *connect.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error
+	GetCustomInstanceMetrics(context.Context, *connect.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect.Response[capsule.GetCustomInstanceMetricsResponse], error)
+	// Get list of job executions performed by the Capsule.
+	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -449,116 +500,138 @@ type ServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	serviceCreateHandler := connect_go.NewUnaryHandler(
+func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceCreateHandler := connect.NewUnaryHandler(
 		ServiceCreateProcedure,
 		svc.Create,
-		opts...,
+		connect.WithSchema(serviceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetHandler := connect_go.NewUnaryHandler(
+	serviceGetHandler := connect.NewUnaryHandler(
 		ServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(serviceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceDeleteHandler := connect_go.NewUnaryHandler(
+	serviceDeleteHandler := connect.NewUnaryHandler(
 		ServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(serviceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceLogsHandler := connect_go.NewServerStreamHandler(
+	serviceLogsHandler := connect.NewServerStreamHandler(
 		ServiceLogsProcedure,
 		svc.Logs,
-		opts...,
+		connect.WithSchema(serviceLogsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceUpdateHandler := connect_go.NewUnaryHandler(
+	serviceUpdateHandler := connect.NewUnaryHandler(
 		ServiceUpdateProcedure,
 		svc.Update,
-		opts...,
+		connect.WithSchema(serviceUpdateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListHandler := connect_go.NewUnaryHandler(
+	serviceListHandler := connect.NewUnaryHandler(
 		ServiceListProcedure,
 		svc.List,
-		opts...,
+		connect.WithSchema(serviceListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceCreateBuildHandler := connect_go.NewUnaryHandler(
+	serviceCreateBuildHandler := connect.NewUnaryHandler(
 		ServiceCreateBuildProcedure,
 		svc.CreateBuild,
-		opts...,
+		connect.WithSchema(serviceCreateBuildMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListBuildsHandler := connect_go.NewUnaryHandler(
+	serviceListBuildsHandler := connect.NewUnaryHandler(
 		ServiceListBuildsProcedure,
 		svc.ListBuilds,
-		opts...,
+		connect.WithSchema(serviceListBuildsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceDeleteBuildHandler := connect_go.NewUnaryHandler(
+	serviceDeleteBuildHandler := connect.NewUnaryHandler(
 		ServiceDeleteBuildProcedure,
 		svc.DeleteBuild,
-		opts...,
+		connect.WithSchema(serviceDeleteBuildMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceDeployHandler := connect_go.NewUnaryHandler(
+	serviceDeployHandler := connect.NewUnaryHandler(
 		ServiceDeployProcedure,
 		svc.Deploy,
-		opts...,
+		connect.WithSchema(serviceDeployMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListInstancesHandler := connect_go.NewUnaryHandler(
+	serviceListInstancesHandler := connect.NewUnaryHandler(
 		ServiceListInstancesProcedure,
 		svc.ListInstances,
-		opts...,
+		connect.WithSchema(serviceListInstancesMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceRestartInstanceHandler := connect_go.NewUnaryHandler(
+	serviceRestartInstanceHandler := connect.NewUnaryHandler(
 		ServiceRestartInstanceProcedure,
 		svc.RestartInstance,
-		opts...,
+		connect.WithSchema(serviceRestartInstanceMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetRolloutHandler := connect_go.NewUnaryHandler(
+	serviceGetRolloutHandler := connect.NewUnaryHandler(
 		ServiceGetRolloutProcedure,
 		svc.GetRollout,
-		opts...,
+		connect.WithSchema(serviceGetRolloutMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListRolloutsHandler := connect_go.NewUnaryHandler(
+	serviceListRolloutsHandler := connect.NewUnaryHandler(
 		ServiceListRolloutsProcedure,
 		svc.ListRollouts,
-		opts...,
+		connect.WithSchema(serviceListRolloutsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceAbortRolloutHandler := connect_go.NewUnaryHandler(
+	serviceAbortRolloutHandler := connect.NewUnaryHandler(
 		ServiceAbortRolloutProcedure,
 		svc.AbortRollout,
-		opts...,
+		connect.WithSchema(serviceAbortRolloutMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListEventsHandler := connect_go.NewUnaryHandler(
+	serviceListEventsHandler := connect.NewUnaryHandler(
 		ServiceListEventsProcedure,
 		svc.ListEvents,
-		opts...,
+		connect.WithSchema(serviceListEventsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceCapsuleMetricsHandler := connect_go.NewUnaryHandler(
+	serviceCapsuleMetricsHandler := connect.NewUnaryHandler(
 		ServiceCapsuleMetricsProcedure,
 		svc.CapsuleMetrics,
-		opts...,
+		connect.WithSchema(serviceCapsuleMetricsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetInstanceStatusHandler := connect_go.NewUnaryHandler(
+	serviceGetInstanceStatusHandler := connect.NewUnaryHandler(
 		ServiceGetInstanceStatusProcedure,
 		svc.GetInstanceStatus,
-		opts...,
+		connect.WithSchema(serviceGetInstanceStatusMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListInstanceStatusesHandler := connect_go.NewUnaryHandler(
+	serviceListInstanceStatusesHandler := connect.NewUnaryHandler(
 		ServiceListInstanceStatusesProcedure,
 		svc.ListInstanceStatuses,
-		opts...,
+		connect.WithSchema(serviceListInstanceStatusesMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceExecuteHandler := connect_go.NewBidiStreamHandler(
+	serviceExecuteHandler := connect.NewBidiStreamHandler(
 		ServiceExecuteProcedure,
 		svc.Execute,
-		opts...,
+		connect.WithSchema(serviceExecuteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetCustomInstanceMetricsHandler := connect_go.NewUnaryHandler(
+	serviceGetCustomInstanceMetricsHandler := connect.NewUnaryHandler(
 		ServiceGetCustomInstanceMetricsProcedure,
 		svc.GetCustomInstanceMetrics,
-		opts...,
+		connect.WithSchema(serviceGetCustomInstanceMetricsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetJobExecutionsHandler := connect_go.NewUnaryHandler(
+	serviceGetJobExecutionsHandler := connect.NewUnaryHandler(
 		ServiceGetJobExecutionsProcedure,
 		svc.GetJobExecutions,
-		opts...,
+		connect.WithSchema(serviceGetJobExecutionsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -615,90 +688,90 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) Create(context.Context, *connect_go.Request[capsule.CreateRequest]) (*connect_go.Response[capsule.CreateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.Create is not implemented"))
+func (UnimplementedServiceHandler) Create(context.Context, *connect.Request[capsule.CreateRequest]) (*connect.Response[capsule.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Create is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Get(context.Context, *connect_go.Request[capsule.GetRequest]) (*connect_go.Response[capsule.GetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.Get is not implemented"))
+func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[capsule.GetRequest]) (*connect.Response[capsule.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Get is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Delete(context.Context, *connect_go.Request[capsule.DeleteRequest]) (*connect_go.Response[capsule.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.Delete is not implemented"))
+func (UnimplementedServiceHandler) Delete(context.Context, *connect.Request[capsule.DeleteRequest]) (*connect.Response[capsule.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Delete is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Logs(context.Context, *connect_go.Request[capsule.LogsRequest], *connect_go.ServerStream[capsule.LogsResponse]) error {
-	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.Logs is not implemented"))
+func (UnimplementedServiceHandler) Logs(context.Context, *connect.Request[capsule.LogsRequest], *connect.ServerStream[capsule.LogsResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Logs is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Update(context.Context, *connect_go.Request[capsule.UpdateRequest]) (*connect_go.Response[capsule.UpdateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.Update is not implemented"))
+func (UnimplementedServiceHandler) Update(context.Context, *connect.Request[capsule.UpdateRequest]) (*connect.Response[capsule.UpdateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Update is not implemented"))
 }
 
-func (UnimplementedServiceHandler) List(context.Context, *connect_go.Request[capsule.ListRequest]) (*connect_go.Response[capsule.ListResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.List is not implemented"))
+func (UnimplementedServiceHandler) List(context.Context, *connect.Request[capsule.ListRequest]) (*connect.Response[capsule.ListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.List is not implemented"))
 }
 
-func (UnimplementedServiceHandler) CreateBuild(context.Context, *connect_go.Request[capsule.CreateBuildRequest]) (*connect_go.Response[capsule.CreateBuildResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.CreateBuild is not implemented"))
+func (UnimplementedServiceHandler) CreateBuild(context.Context, *connect.Request[capsule.CreateBuildRequest]) (*connect.Response[capsule.CreateBuildResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.CreateBuild is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ListBuilds(context.Context, *connect_go.Request[capsule.ListBuildsRequest]) (*connect_go.Response[capsule.ListBuildsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListBuilds is not implemented"))
+func (UnimplementedServiceHandler) ListBuilds(context.Context, *connect.Request[capsule.ListBuildsRequest]) (*connect.Response[capsule.ListBuildsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListBuilds is not implemented"))
 }
 
-func (UnimplementedServiceHandler) DeleteBuild(context.Context, *connect_go.Request[capsule.DeleteBuildRequest]) (*connect_go.Response[capsule.DeleteBuildResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.DeleteBuild is not implemented"))
+func (UnimplementedServiceHandler) DeleteBuild(context.Context, *connect.Request[capsule.DeleteBuildRequest]) (*connect.Response[capsule.DeleteBuildResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.DeleteBuild is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Deploy(context.Context, *connect_go.Request[capsule.DeployRequest]) (*connect_go.Response[capsule.DeployResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.Deploy is not implemented"))
+func (UnimplementedServiceHandler) Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Deploy is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ListInstances(context.Context, *connect_go.Request[capsule.ListInstancesRequest]) (*connect_go.Response[capsule.ListInstancesResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListInstances is not implemented"))
+func (UnimplementedServiceHandler) ListInstances(context.Context, *connect.Request[capsule.ListInstancesRequest]) (*connect.Response[capsule.ListInstancesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListInstances is not implemented"))
 }
 
-func (UnimplementedServiceHandler) RestartInstance(context.Context, *connect_go.Request[capsule.RestartInstanceRequest]) (*connect_go.Response[capsule.RestartInstanceResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.RestartInstance is not implemented"))
+func (UnimplementedServiceHandler) RestartInstance(context.Context, *connect.Request[capsule.RestartInstanceRequest]) (*connect.Response[capsule.RestartInstanceResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.RestartInstance is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetRollout(context.Context, *connect_go.Request[capsule.GetRolloutRequest]) (*connect_go.Response[capsule.GetRolloutResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetRollout is not implemented"))
+func (UnimplementedServiceHandler) GetRollout(context.Context, *connect.Request[capsule.GetRolloutRequest]) (*connect.Response[capsule.GetRolloutResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetRollout is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ListRollouts(context.Context, *connect_go.Request[capsule.ListRolloutsRequest]) (*connect_go.Response[capsule.ListRolloutsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListRollouts is not implemented"))
+func (UnimplementedServiceHandler) ListRollouts(context.Context, *connect.Request[capsule.ListRolloutsRequest]) (*connect.Response[capsule.ListRolloutsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListRollouts is not implemented"))
 }
 
-func (UnimplementedServiceHandler) AbortRollout(context.Context, *connect_go.Request[capsule.AbortRolloutRequest]) (*connect_go.Response[capsule.AbortRolloutResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.AbortRollout is not implemented"))
+func (UnimplementedServiceHandler) AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.AbortRollout is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ListEvents(context.Context, *connect_go.Request[capsule.ListEventsRequest]) (*connect_go.Response[capsule.ListEventsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListEvents is not implemented"))
+func (UnimplementedServiceHandler) ListEvents(context.Context, *connect.Request[capsule.ListEventsRequest]) (*connect.Response[capsule.ListEventsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListEvents is not implemented"))
 }
 
-func (UnimplementedServiceHandler) CapsuleMetrics(context.Context, *connect_go.Request[capsule.CapsuleMetricsRequest]) (*connect_go.Response[capsule.CapsuleMetricsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.CapsuleMetrics is not implemented"))
+func (UnimplementedServiceHandler) CapsuleMetrics(context.Context, *connect.Request[capsule.CapsuleMetricsRequest]) (*connect.Response[capsule.CapsuleMetricsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.CapsuleMetrics is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetInstanceStatus(context.Context, *connect_go.Request[capsule.GetInstanceStatusRequest]) (*connect_go.Response[capsule.GetInstanceStatusResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetInstanceStatus is not implemented"))
+func (UnimplementedServiceHandler) GetInstanceStatus(context.Context, *connect.Request[capsule.GetInstanceStatusRequest]) (*connect.Response[capsule.GetInstanceStatusResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetInstanceStatus is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ListInstanceStatuses(context.Context, *connect_go.Request[capsule.ListInstanceStatusesRequest]) (*connect_go.Response[capsule.ListInstanceStatusesResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListInstanceStatuses is not implemented"))
+func (UnimplementedServiceHandler) ListInstanceStatuses(context.Context, *connect.Request[capsule.ListInstanceStatusesRequest]) (*connect.Response[capsule.ListInstanceStatusesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListInstanceStatuses is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Execute(context.Context, *connect_go.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error {
-	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.Execute is not implemented"))
+func (UnimplementedServiceHandler) Execute(context.Context, *connect.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Execute is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetCustomInstanceMetrics(context.Context, *connect_go.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect_go.Response[capsule.GetCustomInstanceMetricsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetCustomInstanceMetrics is not implemented"))
+func (UnimplementedServiceHandler) GetCustomInstanceMetrics(context.Context, *connect.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect.Response[capsule.GetCustomInstanceMetricsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetCustomInstanceMetrics is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetJobExecutions(context.Context, *connect_go.Request[capsule.GetJobExecutionsRequest]) (*connect_go.Response[capsule.GetJobExecutionsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetJobExecutions is not implemented"))
+func (UnimplementedServiceHandler) GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetJobExecutions is not implemented"))
 }

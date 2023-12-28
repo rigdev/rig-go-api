@@ -5,9 +5,9 @@
 package settingsconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	settings "github.com/rigdev/rig-go-api/api/v1/user/settings"
 	http "net/http"
 	strings "strings"
@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// ServiceName is the fully-qualified name of the Service service.
@@ -39,12 +39,19 @@ const (
 	ServiceUpdateSettingsProcedure = "/api.v1.user.settings.Service/UpdateSettings"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	serviceServiceDescriptor              = settings.File_api_v1_user_settings_service_proto.Services().ByName("Service")
+	serviceGetSettingsMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("GetSettings")
+	serviceUpdateSettingsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("UpdateSettings")
+)
+
 // ServiceClient is a client for the api.v1.user.settings.Service service.
 type ServiceClient interface {
 	// Gets the users settings for the current project.
-	GetSettings(context.Context, *connect_go.Request[settings.GetSettingsRequest]) (*connect_go.Response[settings.GetSettingsResponse], error)
+	GetSettings(context.Context, *connect.Request[settings.GetSettingsRequest]) (*connect.Response[settings.GetSettingsResponse], error)
 	// Sets the users settings for the current project.
-	UpdateSettings(context.Context, *connect_go.Request[settings.UpdateSettingsRequest]) (*connect_go.Response[settings.UpdateSettingsResponse], error)
+	UpdateSettings(context.Context, *connect.Request[settings.UpdateSettingsRequest]) (*connect.Response[settings.UpdateSettingsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.user.settings.Service service. By default, it
@@ -54,44 +61,46 @@ type ServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ServiceClient {
+func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		getSettings: connect_go.NewClient[settings.GetSettingsRequest, settings.GetSettingsResponse](
+		getSettings: connect.NewClient[settings.GetSettingsRequest, settings.GetSettingsResponse](
 			httpClient,
 			baseURL+ServiceGetSettingsProcedure,
-			opts...,
+			connect.WithSchema(serviceGetSettingsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		updateSettings: connect_go.NewClient[settings.UpdateSettingsRequest, settings.UpdateSettingsResponse](
+		updateSettings: connect.NewClient[settings.UpdateSettingsRequest, settings.UpdateSettingsResponse](
 			httpClient,
 			baseURL+ServiceUpdateSettingsProcedure,
-			opts...,
+			connect.WithSchema(serviceUpdateSettingsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	getSettings    *connect_go.Client[settings.GetSettingsRequest, settings.GetSettingsResponse]
-	updateSettings *connect_go.Client[settings.UpdateSettingsRequest, settings.UpdateSettingsResponse]
+	getSettings    *connect.Client[settings.GetSettingsRequest, settings.GetSettingsResponse]
+	updateSettings *connect.Client[settings.UpdateSettingsRequest, settings.UpdateSettingsResponse]
 }
 
 // GetSettings calls api.v1.user.settings.Service.GetSettings.
-func (c *serviceClient) GetSettings(ctx context.Context, req *connect_go.Request[settings.GetSettingsRequest]) (*connect_go.Response[settings.GetSettingsResponse], error) {
+func (c *serviceClient) GetSettings(ctx context.Context, req *connect.Request[settings.GetSettingsRequest]) (*connect.Response[settings.GetSettingsResponse], error) {
 	return c.getSettings.CallUnary(ctx, req)
 }
 
 // UpdateSettings calls api.v1.user.settings.Service.UpdateSettings.
-func (c *serviceClient) UpdateSettings(ctx context.Context, req *connect_go.Request[settings.UpdateSettingsRequest]) (*connect_go.Response[settings.UpdateSettingsResponse], error) {
+func (c *serviceClient) UpdateSettings(ctx context.Context, req *connect.Request[settings.UpdateSettingsRequest]) (*connect.Response[settings.UpdateSettingsResponse], error) {
 	return c.updateSettings.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.user.settings.Service service.
 type ServiceHandler interface {
 	// Gets the users settings for the current project.
-	GetSettings(context.Context, *connect_go.Request[settings.GetSettingsRequest]) (*connect_go.Response[settings.GetSettingsResponse], error)
+	GetSettings(context.Context, *connect.Request[settings.GetSettingsRequest]) (*connect.Response[settings.GetSettingsResponse], error)
 	// Sets the users settings for the current project.
-	UpdateSettings(context.Context, *connect_go.Request[settings.UpdateSettingsRequest]) (*connect_go.Response[settings.UpdateSettingsResponse], error)
+	UpdateSettings(context.Context, *connect.Request[settings.UpdateSettingsRequest]) (*connect.Response[settings.UpdateSettingsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -99,16 +108,18 @@ type ServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	serviceGetSettingsHandler := connect_go.NewUnaryHandler(
+func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceGetSettingsHandler := connect.NewUnaryHandler(
 		ServiceGetSettingsProcedure,
 		svc.GetSettings,
-		opts...,
+		connect.WithSchema(serviceGetSettingsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceUpdateSettingsHandler := connect_go.NewUnaryHandler(
+	serviceUpdateSettingsHandler := connect.NewUnaryHandler(
 		ServiceUpdateSettingsProcedure,
 		svc.UpdateSettings,
-		opts...,
+		connect.WithSchema(serviceUpdateSettingsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v1.user.settings.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -125,10 +136,10 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) GetSettings(context.Context, *connect_go.Request[settings.GetSettingsRequest]) (*connect_go.Response[settings.GetSettingsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.user.settings.Service.GetSettings is not implemented"))
+func (UnimplementedServiceHandler) GetSettings(context.Context, *connect.Request[settings.GetSettingsRequest]) (*connect.Response[settings.GetSettingsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.user.settings.Service.GetSettings is not implemented"))
 }
 
-func (UnimplementedServiceHandler) UpdateSettings(context.Context, *connect_go.Request[settings.UpdateSettingsRequest]) (*connect_go.Response[settings.UpdateSettingsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.user.settings.Service.UpdateSettings is not implemented"))
+func (UnimplementedServiceHandler) UpdateSettings(context.Context, *connect.Request[settings.UpdateSettingsRequest]) (*connect.Response[settings.UpdateSettingsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.user.settings.Service.UpdateSettings is not implemented"))
 }

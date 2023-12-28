@@ -5,9 +5,9 @@
 package roleconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	role "github.com/rigdev/rig-go-api/api/v1/role"
 	http "net/http"
 	strings "strings"
@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// ServiceName is the fully-qualified name of the Service service.
@@ -49,22 +49,34 @@ const (
 	ServiceRevokeProcedure = "/api.v1.role.Service/Revoke"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	serviceServiceDescriptor      = role.File_api_v1_role_service_proto.Services().ByName("Service")
+	serviceCreateMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceDeleteMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Delete")
+	serviceListMethodDescriptor   = serviceServiceDescriptor.Methods().ByName("List")
+	serviceUpdateMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Update")
+	serviceGetMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceAssignMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Assign")
+	serviceRevokeMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Revoke")
+)
+
 // ServiceClient is a client for the api.v1.role.Service service.
 type ServiceClient interface {
 	// Create a new role
-	Create(context.Context, *connect_go.Request[role.CreateRequest]) (*connect_go.Response[role.CreateResponse], error)
+	Create(context.Context, *connect.Request[role.CreateRequest]) (*connect.Response[role.CreateResponse], error)
 	// Delete role
-	Delete(context.Context, *connect_go.Request[role.DeleteRequest]) (*connect_go.Response[role.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[role.DeleteRequest]) (*connect.Response[role.DeleteResponse], error)
 	// List roles
-	List(context.Context, *connect_go.Request[role.ListRequest]) (*connect_go.Response[role.ListResponse], error)
+	List(context.Context, *connect.Request[role.ListRequest]) (*connect.Response[role.ListResponse], error)
 	// Update role
-	Update(context.Context, *connect_go.Request[role.UpdateRequest]) (*connect_go.Response[role.UpdateResponse], error)
+	Update(context.Context, *connect.Request[role.UpdateRequest]) (*connect.Response[role.UpdateResponse], error)
 	// Get role
-	Get(context.Context, *connect_go.Request[role.GetRequest]) (*connect_go.Response[role.GetResponse], error)
+	Get(context.Context, *connect.Request[role.GetRequest]) (*connect.Response[role.GetResponse], error)
 	// Assign a role
-	Assign(context.Context, *connect_go.Request[role.AssignRequest]) (*connect_go.Response[role.AssignResponse], error)
+	Assign(context.Context, *connect.Request[role.AssignRequest]) (*connect.Response[role.AssignResponse], error)
 	// Retract a role
-	Revoke(context.Context, *connect_go.Request[role.RevokeRequest]) (*connect_go.Response[role.RevokeResponse], error)
+	Revoke(context.Context, *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.role.Service service. By default, it uses the
@@ -74,109 +86,116 @@ type ServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ServiceClient {
+func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		create: connect_go.NewClient[role.CreateRequest, role.CreateResponse](
+		create: connect.NewClient[role.CreateRequest, role.CreateResponse](
 			httpClient,
 			baseURL+ServiceCreateProcedure,
-			opts...,
+			connect.WithSchema(serviceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		delete: connect_go.NewClient[role.DeleteRequest, role.DeleteResponse](
+		delete: connect.NewClient[role.DeleteRequest, role.DeleteResponse](
 			httpClient,
 			baseURL+ServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(serviceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		list: connect_go.NewClient[role.ListRequest, role.ListResponse](
+		list: connect.NewClient[role.ListRequest, role.ListResponse](
 			httpClient,
 			baseURL+ServiceListProcedure,
-			opts...,
+			connect.WithSchema(serviceListMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		update: connect_go.NewClient[role.UpdateRequest, role.UpdateResponse](
+		update: connect.NewClient[role.UpdateRequest, role.UpdateResponse](
 			httpClient,
 			baseURL+ServiceUpdateProcedure,
-			opts...,
+			connect.WithSchema(serviceUpdateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		get: connect_go.NewClient[role.GetRequest, role.GetResponse](
+		get: connect.NewClient[role.GetRequest, role.GetResponse](
 			httpClient,
 			baseURL+ServiceGetProcedure,
-			opts...,
+			connect.WithSchema(serviceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		assign: connect_go.NewClient[role.AssignRequest, role.AssignResponse](
+		assign: connect.NewClient[role.AssignRequest, role.AssignResponse](
 			httpClient,
 			baseURL+ServiceAssignProcedure,
-			opts...,
+			connect.WithSchema(serviceAssignMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		revoke: connect_go.NewClient[role.RevokeRequest, role.RevokeResponse](
+		revoke: connect.NewClient[role.RevokeRequest, role.RevokeResponse](
 			httpClient,
 			baseURL+ServiceRevokeProcedure,
-			opts...,
+			connect.WithSchema(serviceRevokeMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create *connect_go.Client[role.CreateRequest, role.CreateResponse]
-	delete *connect_go.Client[role.DeleteRequest, role.DeleteResponse]
-	list   *connect_go.Client[role.ListRequest, role.ListResponse]
-	update *connect_go.Client[role.UpdateRequest, role.UpdateResponse]
-	get    *connect_go.Client[role.GetRequest, role.GetResponse]
-	assign *connect_go.Client[role.AssignRequest, role.AssignResponse]
-	revoke *connect_go.Client[role.RevokeRequest, role.RevokeResponse]
+	create *connect.Client[role.CreateRequest, role.CreateResponse]
+	delete *connect.Client[role.DeleteRequest, role.DeleteResponse]
+	list   *connect.Client[role.ListRequest, role.ListResponse]
+	update *connect.Client[role.UpdateRequest, role.UpdateResponse]
+	get    *connect.Client[role.GetRequest, role.GetResponse]
+	assign *connect.Client[role.AssignRequest, role.AssignResponse]
+	revoke *connect.Client[role.RevokeRequest, role.RevokeResponse]
 }
 
 // Create calls api.v1.role.Service.Create.
-func (c *serviceClient) Create(ctx context.Context, req *connect_go.Request[role.CreateRequest]) (*connect_go.Response[role.CreateResponse], error) {
+func (c *serviceClient) Create(ctx context.Context, req *connect.Request[role.CreateRequest]) (*connect.Response[role.CreateResponse], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // Delete calls api.v1.role.Service.Delete.
-func (c *serviceClient) Delete(ctx context.Context, req *connect_go.Request[role.DeleteRequest]) (*connect_go.Response[role.DeleteResponse], error) {
+func (c *serviceClient) Delete(ctx context.Context, req *connect.Request[role.DeleteRequest]) (*connect.Response[role.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // List calls api.v1.role.Service.List.
-func (c *serviceClient) List(ctx context.Context, req *connect_go.Request[role.ListRequest]) (*connect_go.Response[role.ListResponse], error) {
+func (c *serviceClient) List(ctx context.Context, req *connect.Request[role.ListRequest]) (*connect.Response[role.ListResponse], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // Update calls api.v1.role.Service.Update.
-func (c *serviceClient) Update(ctx context.Context, req *connect_go.Request[role.UpdateRequest]) (*connect_go.Response[role.UpdateResponse], error) {
+func (c *serviceClient) Update(ctx context.Context, req *connect.Request[role.UpdateRequest]) (*connect.Response[role.UpdateResponse], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
 // Get calls api.v1.role.Service.Get.
-func (c *serviceClient) Get(ctx context.Context, req *connect_go.Request[role.GetRequest]) (*connect_go.Response[role.GetResponse], error) {
+func (c *serviceClient) Get(ctx context.Context, req *connect.Request[role.GetRequest]) (*connect.Response[role.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // Assign calls api.v1.role.Service.Assign.
-func (c *serviceClient) Assign(ctx context.Context, req *connect_go.Request[role.AssignRequest]) (*connect_go.Response[role.AssignResponse], error) {
+func (c *serviceClient) Assign(ctx context.Context, req *connect.Request[role.AssignRequest]) (*connect.Response[role.AssignResponse], error) {
 	return c.assign.CallUnary(ctx, req)
 }
 
 // Revoke calls api.v1.role.Service.Revoke.
-func (c *serviceClient) Revoke(ctx context.Context, req *connect_go.Request[role.RevokeRequest]) (*connect_go.Response[role.RevokeResponse], error) {
+func (c *serviceClient) Revoke(ctx context.Context, req *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error) {
 	return c.revoke.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.role.Service service.
 type ServiceHandler interface {
 	// Create a new role
-	Create(context.Context, *connect_go.Request[role.CreateRequest]) (*connect_go.Response[role.CreateResponse], error)
+	Create(context.Context, *connect.Request[role.CreateRequest]) (*connect.Response[role.CreateResponse], error)
 	// Delete role
-	Delete(context.Context, *connect_go.Request[role.DeleteRequest]) (*connect_go.Response[role.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[role.DeleteRequest]) (*connect.Response[role.DeleteResponse], error)
 	// List roles
-	List(context.Context, *connect_go.Request[role.ListRequest]) (*connect_go.Response[role.ListResponse], error)
+	List(context.Context, *connect.Request[role.ListRequest]) (*connect.Response[role.ListResponse], error)
 	// Update role
-	Update(context.Context, *connect_go.Request[role.UpdateRequest]) (*connect_go.Response[role.UpdateResponse], error)
+	Update(context.Context, *connect.Request[role.UpdateRequest]) (*connect.Response[role.UpdateResponse], error)
 	// Get role
-	Get(context.Context, *connect_go.Request[role.GetRequest]) (*connect_go.Response[role.GetResponse], error)
+	Get(context.Context, *connect.Request[role.GetRequest]) (*connect.Response[role.GetResponse], error)
 	// Assign a role
-	Assign(context.Context, *connect_go.Request[role.AssignRequest]) (*connect_go.Response[role.AssignResponse], error)
+	Assign(context.Context, *connect.Request[role.AssignRequest]) (*connect.Response[role.AssignResponse], error)
 	// Retract a role
-	Revoke(context.Context, *connect_go.Request[role.RevokeRequest]) (*connect_go.Response[role.RevokeResponse], error)
+	Revoke(context.Context, *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -184,41 +203,48 @@ type ServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	serviceCreateHandler := connect_go.NewUnaryHandler(
+func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceCreateHandler := connect.NewUnaryHandler(
 		ServiceCreateProcedure,
 		svc.Create,
-		opts...,
+		connect.WithSchema(serviceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceDeleteHandler := connect_go.NewUnaryHandler(
+	serviceDeleteHandler := connect.NewUnaryHandler(
 		ServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(serviceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListHandler := connect_go.NewUnaryHandler(
+	serviceListHandler := connect.NewUnaryHandler(
 		ServiceListProcedure,
 		svc.List,
-		opts...,
+		connect.WithSchema(serviceListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceUpdateHandler := connect_go.NewUnaryHandler(
+	serviceUpdateHandler := connect.NewUnaryHandler(
 		ServiceUpdateProcedure,
 		svc.Update,
-		opts...,
+		connect.WithSchema(serviceUpdateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetHandler := connect_go.NewUnaryHandler(
+	serviceGetHandler := connect.NewUnaryHandler(
 		ServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(serviceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceAssignHandler := connect_go.NewUnaryHandler(
+	serviceAssignHandler := connect.NewUnaryHandler(
 		ServiceAssignProcedure,
 		svc.Assign,
-		opts...,
+		connect.WithSchema(serviceAssignMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceRevokeHandler := connect_go.NewUnaryHandler(
+	serviceRevokeHandler := connect.NewUnaryHandler(
 		ServiceRevokeProcedure,
 		svc.Revoke,
-		opts...,
+		connect.WithSchema(serviceRevokeMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v1.role.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -245,30 +271,30 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) Create(context.Context, *connect_go.Request[role.CreateRequest]) (*connect_go.Response[role.CreateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.role.Service.Create is not implemented"))
+func (UnimplementedServiceHandler) Create(context.Context, *connect.Request[role.CreateRequest]) (*connect.Response[role.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.Create is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Delete(context.Context, *connect_go.Request[role.DeleteRequest]) (*connect_go.Response[role.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.role.Service.Delete is not implemented"))
+func (UnimplementedServiceHandler) Delete(context.Context, *connect.Request[role.DeleteRequest]) (*connect.Response[role.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.Delete is not implemented"))
 }
 
-func (UnimplementedServiceHandler) List(context.Context, *connect_go.Request[role.ListRequest]) (*connect_go.Response[role.ListResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.role.Service.List is not implemented"))
+func (UnimplementedServiceHandler) List(context.Context, *connect.Request[role.ListRequest]) (*connect.Response[role.ListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.List is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Update(context.Context, *connect_go.Request[role.UpdateRequest]) (*connect_go.Response[role.UpdateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.role.Service.Update is not implemented"))
+func (UnimplementedServiceHandler) Update(context.Context, *connect.Request[role.UpdateRequest]) (*connect.Response[role.UpdateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.Update is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Get(context.Context, *connect_go.Request[role.GetRequest]) (*connect_go.Response[role.GetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.role.Service.Get is not implemented"))
+func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[role.GetRequest]) (*connect.Response[role.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.Get is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Assign(context.Context, *connect_go.Request[role.AssignRequest]) (*connect_go.Response[role.AssignResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.role.Service.Assign is not implemented"))
+func (UnimplementedServiceHandler) Assign(context.Context, *connect.Request[role.AssignRequest]) (*connect.Response[role.AssignResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.Assign is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Revoke(context.Context, *connect_go.Request[role.RevokeRequest]) (*connect_go.Response[role.RevokeResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.role.Service.Revoke is not implemented"))
+func (UnimplementedServiceHandler) Revoke(context.Context, *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.Revoke is not implemented"))
 }

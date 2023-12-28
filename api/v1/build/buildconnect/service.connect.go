@@ -5,9 +5,9 @@
 package buildconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	build "github.com/rigdev/rig-go-api/api/v1/build"
 	http "net/http"
 	strings "strings"
@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// ServiceName is the fully-qualified name of the Service service.
@@ -48,19 +48,30 @@ const (
 	ServiceDeleteProcedure = "/api.v1.build.Service/Delete"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	serviceServiceDescriptor                 = build.File_api_v1_build_service_proto.Services().ByName("Service")
+	serviceGetImageInfoMethodDescriptor      = serviceServiceDescriptor.Methods().ByName("GetImageInfo")
+	serviceGetRepositoryInfoMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetRepositoryInfo")
+	serviceGetMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceCreateMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceListMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("List")
+	serviceDeleteMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("Delete")
+)
+
 // ServiceClient is a client for the api.v1.build.Service service.
 type ServiceClient interface {
-	GetImageInfo(context.Context, *connect_go.Request[build.GetImageInfoRequest]) (*connect_go.Response[build.GetImageInfoResponse], error)
-	GetRepositoryInfo(context.Context, *connect_go.Request[build.GetRepositoryInfoRequest]) (*connect_go.Response[build.GetRepositoryInfoResponse], error)
-	Get(context.Context, *connect_go.Request[build.GetRequest]) (*connect_go.Response[build.GetResponse], error)
+	GetImageInfo(context.Context, *connect.Request[build.GetImageInfoRequest]) (*connect.Response[build.GetImageInfoResponse], error)
+	GetRepositoryInfo(context.Context, *connect.Request[build.GetRepositoryInfoRequest]) (*connect.Response[build.GetRepositoryInfoResponse], error)
+	Get(context.Context, *connect.Request[build.GetRequest]) (*connect.Response[build.GetResponse], error)
 	// Create a new build.
 	// Builds are immutable and cannot change. Create a new build to make
 	// changes from an existing one.
-	Create(context.Context, *connect_go.Request[build.CreateRequest]) (*connect_go.Response[build.CreateResponse], error)
+	Create(context.Context, *connect.Request[build.CreateRequest]) (*connect.Response[build.CreateResponse], error)
 	// List builds for a capsule.
-	List(context.Context, *connect_go.Request[build.ListRequest]) (*connect_go.Response[build.ListResponse], error)
+	List(context.Context, *connect.Request[build.ListRequest]) (*connect.Response[build.ListResponse], error)
 	// Delete a build.
-	Delete(context.Context, *connect_go.Request[build.DeleteRequest]) (*connect_go.Response[build.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[build.DeleteRequest]) (*connect.Response[build.DeleteResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.build.Service service. By default, it uses
@@ -70,95 +81,101 @@ type ServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ServiceClient {
+func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		getImageInfo: connect_go.NewClient[build.GetImageInfoRequest, build.GetImageInfoResponse](
+		getImageInfo: connect.NewClient[build.GetImageInfoRequest, build.GetImageInfoResponse](
 			httpClient,
 			baseURL+ServiceGetImageInfoProcedure,
-			opts...,
+			connect.WithSchema(serviceGetImageInfoMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		getRepositoryInfo: connect_go.NewClient[build.GetRepositoryInfoRequest, build.GetRepositoryInfoResponse](
+		getRepositoryInfo: connect.NewClient[build.GetRepositoryInfoRequest, build.GetRepositoryInfoResponse](
 			httpClient,
 			baseURL+ServiceGetRepositoryInfoProcedure,
-			opts...,
+			connect.WithSchema(serviceGetRepositoryInfoMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		get: connect_go.NewClient[build.GetRequest, build.GetResponse](
+		get: connect.NewClient[build.GetRequest, build.GetResponse](
 			httpClient,
 			baseURL+ServiceGetProcedure,
-			opts...,
+			connect.WithSchema(serviceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		create: connect_go.NewClient[build.CreateRequest, build.CreateResponse](
+		create: connect.NewClient[build.CreateRequest, build.CreateResponse](
 			httpClient,
 			baseURL+ServiceCreateProcedure,
-			opts...,
+			connect.WithSchema(serviceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		list: connect_go.NewClient[build.ListRequest, build.ListResponse](
+		list: connect.NewClient[build.ListRequest, build.ListResponse](
 			httpClient,
 			baseURL+ServiceListProcedure,
-			opts...,
+			connect.WithSchema(serviceListMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		delete: connect_go.NewClient[build.DeleteRequest, build.DeleteResponse](
+		delete: connect.NewClient[build.DeleteRequest, build.DeleteResponse](
 			httpClient,
 			baseURL+ServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(serviceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	getImageInfo      *connect_go.Client[build.GetImageInfoRequest, build.GetImageInfoResponse]
-	getRepositoryInfo *connect_go.Client[build.GetRepositoryInfoRequest, build.GetRepositoryInfoResponse]
-	get               *connect_go.Client[build.GetRequest, build.GetResponse]
-	create            *connect_go.Client[build.CreateRequest, build.CreateResponse]
-	list              *connect_go.Client[build.ListRequest, build.ListResponse]
-	delete            *connect_go.Client[build.DeleteRequest, build.DeleteResponse]
+	getImageInfo      *connect.Client[build.GetImageInfoRequest, build.GetImageInfoResponse]
+	getRepositoryInfo *connect.Client[build.GetRepositoryInfoRequest, build.GetRepositoryInfoResponse]
+	get               *connect.Client[build.GetRequest, build.GetResponse]
+	create            *connect.Client[build.CreateRequest, build.CreateResponse]
+	list              *connect.Client[build.ListRequest, build.ListResponse]
+	delete            *connect.Client[build.DeleteRequest, build.DeleteResponse]
 }
 
 // GetImageInfo calls api.v1.build.Service.GetImageInfo.
-func (c *serviceClient) GetImageInfo(ctx context.Context, req *connect_go.Request[build.GetImageInfoRequest]) (*connect_go.Response[build.GetImageInfoResponse], error) {
+func (c *serviceClient) GetImageInfo(ctx context.Context, req *connect.Request[build.GetImageInfoRequest]) (*connect.Response[build.GetImageInfoResponse], error) {
 	return c.getImageInfo.CallUnary(ctx, req)
 }
 
 // GetRepositoryInfo calls api.v1.build.Service.GetRepositoryInfo.
-func (c *serviceClient) GetRepositoryInfo(ctx context.Context, req *connect_go.Request[build.GetRepositoryInfoRequest]) (*connect_go.Response[build.GetRepositoryInfoResponse], error) {
+func (c *serviceClient) GetRepositoryInfo(ctx context.Context, req *connect.Request[build.GetRepositoryInfoRequest]) (*connect.Response[build.GetRepositoryInfoResponse], error) {
 	return c.getRepositoryInfo.CallUnary(ctx, req)
 }
 
 // Get calls api.v1.build.Service.Get.
-func (c *serviceClient) Get(ctx context.Context, req *connect_go.Request[build.GetRequest]) (*connect_go.Response[build.GetResponse], error) {
+func (c *serviceClient) Get(ctx context.Context, req *connect.Request[build.GetRequest]) (*connect.Response[build.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // Create calls api.v1.build.Service.Create.
-func (c *serviceClient) Create(ctx context.Context, req *connect_go.Request[build.CreateRequest]) (*connect_go.Response[build.CreateResponse], error) {
+func (c *serviceClient) Create(ctx context.Context, req *connect.Request[build.CreateRequest]) (*connect.Response[build.CreateResponse], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // List calls api.v1.build.Service.List.
-func (c *serviceClient) List(ctx context.Context, req *connect_go.Request[build.ListRequest]) (*connect_go.Response[build.ListResponse], error) {
+func (c *serviceClient) List(ctx context.Context, req *connect.Request[build.ListRequest]) (*connect.Response[build.ListResponse], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // Delete calls api.v1.build.Service.Delete.
-func (c *serviceClient) Delete(ctx context.Context, req *connect_go.Request[build.DeleteRequest]) (*connect_go.Response[build.DeleteResponse], error) {
+func (c *serviceClient) Delete(ctx context.Context, req *connect.Request[build.DeleteRequest]) (*connect.Response[build.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.build.Service service.
 type ServiceHandler interface {
-	GetImageInfo(context.Context, *connect_go.Request[build.GetImageInfoRequest]) (*connect_go.Response[build.GetImageInfoResponse], error)
-	GetRepositoryInfo(context.Context, *connect_go.Request[build.GetRepositoryInfoRequest]) (*connect_go.Response[build.GetRepositoryInfoResponse], error)
-	Get(context.Context, *connect_go.Request[build.GetRequest]) (*connect_go.Response[build.GetResponse], error)
+	GetImageInfo(context.Context, *connect.Request[build.GetImageInfoRequest]) (*connect.Response[build.GetImageInfoResponse], error)
+	GetRepositoryInfo(context.Context, *connect.Request[build.GetRepositoryInfoRequest]) (*connect.Response[build.GetRepositoryInfoResponse], error)
+	Get(context.Context, *connect.Request[build.GetRequest]) (*connect.Response[build.GetResponse], error)
 	// Create a new build.
 	// Builds are immutable and cannot change. Create a new build to make
 	// changes from an existing one.
-	Create(context.Context, *connect_go.Request[build.CreateRequest]) (*connect_go.Response[build.CreateResponse], error)
+	Create(context.Context, *connect.Request[build.CreateRequest]) (*connect.Response[build.CreateResponse], error)
 	// List builds for a capsule.
-	List(context.Context, *connect_go.Request[build.ListRequest]) (*connect_go.Response[build.ListResponse], error)
+	List(context.Context, *connect.Request[build.ListRequest]) (*connect.Response[build.ListResponse], error)
 	// Delete a build.
-	Delete(context.Context, *connect_go.Request[build.DeleteRequest]) (*connect_go.Response[build.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[build.DeleteRequest]) (*connect.Response[build.DeleteResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -166,36 +183,42 @@ type ServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	serviceGetImageInfoHandler := connect_go.NewUnaryHandler(
+func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceGetImageInfoHandler := connect.NewUnaryHandler(
 		ServiceGetImageInfoProcedure,
 		svc.GetImageInfo,
-		opts...,
+		connect.WithSchema(serviceGetImageInfoMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetRepositoryInfoHandler := connect_go.NewUnaryHandler(
+	serviceGetRepositoryInfoHandler := connect.NewUnaryHandler(
 		ServiceGetRepositoryInfoProcedure,
 		svc.GetRepositoryInfo,
-		opts...,
+		connect.WithSchema(serviceGetRepositoryInfoMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetHandler := connect_go.NewUnaryHandler(
+	serviceGetHandler := connect.NewUnaryHandler(
 		ServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(serviceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceCreateHandler := connect_go.NewUnaryHandler(
+	serviceCreateHandler := connect.NewUnaryHandler(
 		ServiceCreateProcedure,
 		svc.Create,
-		opts...,
+		connect.WithSchema(serviceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListHandler := connect_go.NewUnaryHandler(
+	serviceListHandler := connect.NewUnaryHandler(
 		ServiceListProcedure,
 		svc.List,
-		opts...,
+		connect.WithSchema(serviceListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceDeleteHandler := connect_go.NewUnaryHandler(
+	serviceDeleteHandler := connect.NewUnaryHandler(
 		ServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(serviceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v1.build.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -220,26 +243,26 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) GetImageInfo(context.Context, *connect_go.Request[build.GetImageInfoRequest]) (*connect_go.Response[build.GetImageInfoResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.GetImageInfo is not implemented"))
+func (UnimplementedServiceHandler) GetImageInfo(context.Context, *connect.Request[build.GetImageInfoRequest]) (*connect.Response[build.GetImageInfoResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.build.Service.GetImageInfo is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetRepositoryInfo(context.Context, *connect_go.Request[build.GetRepositoryInfoRequest]) (*connect_go.Response[build.GetRepositoryInfoResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.GetRepositoryInfo is not implemented"))
+func (UnimplementedServiceHandler) GetRepositoryInfo(context.Context, *connect.Request[build.GetRepositoryInfoRequest]) (*connect.Response[build.GetRepositoryInfoResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.build.Service.GetRepositoryInfo is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Get(context.Context, *connect_go.Request[build.GetRequest]) (*connect_go.Response[build.GetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.Get is not implemented"))
+func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[build.GetRequest]) (*connect.Response[build.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.build.Service.Get is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Create(context.Context, *connect_go.Request[build.CreateRequest]) (*connect_go.Response[build.CreateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.Create is not implemented"))
+func (UnimplementedServiceHandler) Create(context.Context, *connect.Request[build.CreateRequest]) (*connect.Response[build.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.build.Service.Create is not implemented"))
 }
 
-func (UnimplementedServiceHandler) List(context.Context, *connect_go.Request[build.ListRequest]) (*connect_go.Response[build.ListResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.List is not implemented"))
+func (UnimplementedServiceHandler) List(context.Context, *connect.Request[build.ListRequest]) (*connect.Response[build.ListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.build.Service.List is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Delete(context.Context, *connect_go.Request[build.DeleteRequest]) (*connect_go.Response[build.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.build.Service.Delete is not implemented"))
+func (UnimplementedServiceHandler) Delete(context.Context, *connect.Request[build.DeleteRequest]) (*connect.Response[build.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.build.Service.Delete is not implemented"))
 }

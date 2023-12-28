@@ -5,9 +5,9 @@
 package service_accountconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	service_account "github.com/rigdev/rig-go-api/api/v1/service_account"
 	http "net/http"
 	strings "strings"
@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// ServiceName is the fully-qualified name of the Service service.
@@ -41,17 +41,25 @@ const (
 	ServiceDeleteProcedure = "/api.v1.service_account.Service/Delete"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	serviceServiceDescriptor      = service_account.File_api_v1_service_account_service_proto.Services().ByName("Service")
+	serviceCreateMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceListMethodDescriptor   = serviceServiceDescriptor.Methods().ByName("List")
+	serviceDeleteMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Delete")
+)
+
 // ServiceClient is a client for the api.v1.service_account.Service service.
 type ServiceClient interface {
 	// Create a new Service Account. The returned client_id and client_secret can
 	// be used as login credentials. Note that the client_secret can only be read
 	// out once, at creation.
-	Create(context.Context, *connect_go.Request[service_account.CreateRequest]) (*connect_go.Response[service_account.CreateResponse], error)
+	Create(context.Context, *connect.Request[service_account.CreateRequest]) (*connect.Response[service_account.CreateResponse], error)
 	// List all service accounts for the current project.
-	List(context.Context, *connect_go.Request[service_account.ListRequest]) (*connect_go.Response[service_account.ListResponse], error)
+	List(context.Context, *connect.Request[service_account.ListRequest]) (*connect.Response[service_account.ListResponse], error)
 	// Delete a service account. It can take up to the TTL of access tokens for
 	// existing sessions using this service_account, to expire.
-	Delete(context.Context, *connect_go.Request[service_account.DeleteRequest]) (*connect_go.Response[service_account.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[service_account.DeleteRequest]) (*connect.Response[service_account.DeleteResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.service_account.Service service. By default,
@@ -61,46 +69,49 @@ type ServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ServiceClient {
+func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		create: connect_go.NewClient[service_account.CreateRequest, service_account.CreateResponse](
+		create: connect.NewClient[service_account.CreateRequest, service_account.CreateResponse](
 			httpClient,
 			baseURL+ServiceCreateProcedure,
-			opts...,
+			connect.WithSchema(serviceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		list: connect_go.NewClient[service_account.ListRequest, service_account.ListResponse](
+		list: connect.NewClient[service_account.ListRequest, service_account.ListResponse](
 			httpClient,
 			baseURL+ServiceListProcedure,
-			opts...,
+			connect.WithSchema(serviceListMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		delete: connect_go.NewClient[service_account.DeleteRequest, service_account.DeleteResponse](
+		delete: connect.NewClient[service_account.DeleteRequest, service_account.DeleteResponse](
 			httpClient,
 			baseURL+ServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(serviceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create *connect_go.Client[service_account.CreateRequest, service_account.CreateResponse]
-	list   *connect_go.Client[service_account.ListRequest, service_account.ListResponse]
-	delete *connect_go.Client[service_account.DeleteRequest, service_account.DeleteResponse]
+	create *connect.Client[service_account.CreateRequest, service_account.CreateResponse]
+	list   *connect.Client[service_account.ListRequest, service_account.ListResponse]
+	delete *connect.Client[service_account.DeleteRequest, service_account.DeleteResponse]
 }
 
 // Create calls api.v1.service_account.Service.Create.
-func (c *serviceClient) Create(ctx context.Context, req *connect_go.Request[service_account.CreateRequest]) (*connect_go.Response[service_account.CreateResponse], error) {
+func (c *serviceClient) Create(ctx context.Context, req *connect.Request[service_account.CreateRequest]) (*connect.Response[service_account.CreateResponse], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // List calls api.v1.service_account.Service.List.
-func (c *serviceClient) List(ctx context.Context, req *connect_go.Request[service_account.ListRequest]) (*connect_go.Response[service_account.ListResponse], error) {
+func (c *serviceClient) List(ctx context.Context, req *connect.Request[service_account.ListRequest]) (*connect.Response[service_account.ListResponse], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // Delete calls api.v1.service_account.Service.Delete.
-func (c *serviceClient) Delete(ctx context.Context, req *connect_go.Request[service_account.DeleteRequest]) (*connect_go.Response[service_account.DeleteResponse], error) {
+func (c *serviceClient) Delete(ctx context.Context, req *connect.Request[service_account.DeleteRequest]) (*connect.Response[service_account.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
@@ -109,12 +120,12 @@ type ServiceHandler interface {
 	// Create a new Service Account. The returned client_id and client_secret can
 	// be used as login credentials. Note that the client_secret can only be read
 	// out once, at creation.
-	Create(context.Context, *connect_go.Request[service_account.CreateRequest]) (*connect_go.Response[service_account.CreateResponse], error)
+	Create(context.Context, *connect.Request[service_account.CreateRequest]) (*connect.Response[service_account.CreateResponse], error)
 	// List all service accounts for the current project.
-	List(context.Context, *connect_go.Request[service_account.ListRequest]) (*connect_go.Response[service_account.ListResponse], error)
+	List(context.Context, *connect.Request[service_account.ListRequest]) (*connect.Response[service_account.ListResponse], error)
 	// Delete a service account. It can take up to the TTL of access tokens for
 	// existing sessions using this service_account, to expire.
-	Delete(context.Context, *connect_go.Request[service_account.DeleteRequest]) (*connect_go.Response[service_account.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[service_account.DeleteRequest]) (*connect.Response[service_account.DeleteResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -122,21 +133,24 @@ type ServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	serviceCreateHandler := connect_go.NewUnaryHandler(
+func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceCreateHandler := connect.NewUnaryHandler(
 		ServiceCreateProcedure,
 		svc.Create,
-		opts...,
+		connect.WithSchema(serviceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListHandler := connect_go.NewUnaryHandler(
+	serviceListHandler := connect.NewUnaryHandler(
 		ServiceListProcedure,
 		svc.List,
-		opts...,
+		connect.WithSchema(serviceListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceDeleteHandler := connect_go.NewUnaryHandler(
+	serviceDeleteHandler := connect.NewUnaryHandler(
 		ServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(serviceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v1.service_account.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -155,14 +169,14 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) Create(context.Context, *connect_go.Request[service_account.CreateRequest]) (*connect_go.Response[service_account.CreateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.service_account.Service.Create is not implemented"))
+func (UnimplementedServiceHandler) Create(context.Context, *connect.Request[service_account.CreateRequest]) (*connect.Response[service_account.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.service_account.Service.Create is not implemented"))
 }
 
-func (UnimplementedServiceHandler) List(context.Context, *connect_go.Request[service_account.ListRequest]) (*connect_go.Response[service_account.ListResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.service_account.Service.List is not implemented"))
+func (UnimplementedServiceHandler) List(context.Context, *connect.Request[service_account.ListRequest]) (*connect.Response[service_account.ListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.service_account.Service.List is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Delete(context.Context, *connect_go.Request[service_account.DeleteRequest]) (*connect_go.Response[service_account.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.service_account.Service.Delete is not implemented"))
+func (UnimplementedServiceHandler) Delete(context.Context, *connect.Request[service_account.DeleteRequest]) (*connect.Response[service_account.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.service_account.Service.Delete is not implemented"))
 }

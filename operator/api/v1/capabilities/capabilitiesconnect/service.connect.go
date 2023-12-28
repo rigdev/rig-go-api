@@ -5,9 +5,9 @@
 package capabilitiesconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	capabilities "github.com/rigdev/rig-go-api/operator/api/v1/capabilities"
 	http "net/http"
 	strings "strings"
@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// ServiceName is the fully-qualified name of the Service service.
@@ -37,9 +37,15 @@ const (
 	ServiceGetProcedure = "/api.v1.capabilities.Service/Get"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	serviceServiceDescriptor   = capabilities.File_operator_api_v1_capabilities_service_proto.Services().ByName("Service")
+	serviceGetMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Get")
+)
+
 // ServiceClient is a client for the api.v1.capabilities.Service service.
 type ServiceClient interface {
-	Get(context.Context, *connect_go.Request[capabilities.GetRequest]) (*connect_go.Response[capabilities.GetResponse], error)
+	Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capabilities.Service service. By default, it
@@ -49,30 +55,31 @@ type ServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ServiceClient {
+func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		get: connect_go.NewClient[capabilities.GetRequest, capabilities.GetResponse](
+		get: connect.NewClient[capabilities.GetRequest, capabilities.GetResponse](
 			httpClient,
 			baseURL+ServiceGetProcedure,
-			opts...,
+			connect.WithSchema(serviceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	get *connect_go.Client[capabilities.GetRequest, capabilities.GetResponse]
+	get *connect.Client[capabilities.GetRequest, capabilities.GetResponse]
 }
 
 // Get calls api.v1.capabilities.Service.Get.
-func (c *serviceClient) Get(ctx context.Context, req *connect_go.Request[capabilities.GetRequest]) (*connect_go.Response[capabilities.GetResponse], error) {
+func (c *serviceClient) Get(ctx context.Context, req *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.capabilities.Service service.
 type ServiceHandler interface {
-	Get(context.Context, *connect_go.Request[capabilities.GetRequest]) (*connect_go.Response[capabilities.GetResponse], error)
+	Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -80,11 +87,12 @@ type ServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	serviceGetHandler := connect_go.NewUnaryHandler(
+func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceGetHandler := connect.NewUnaryHandler(
 		ServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(serviceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v1.capabilities.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -99,6 +107,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) Get(context.Context, *connect_go.Request[capabilities.GetRequest]) (*connect_go.Response[capabilities.GetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.capabilities.Service.Get is not implemented"))
+func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capabilities.Service.Get is not implemented"))
 }

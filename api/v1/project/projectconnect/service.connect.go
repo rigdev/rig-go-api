@@ -5,9 +5,9 @@
 package projectconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	project "github.com/rigdev/rig-go-api/api/v1/project"
 	http "net/http"
 	strings "strings"
@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// ServiceName is the fully-qualified name of the Service service.
@@ -57,27 +57,42 @@ const (
 	ServiceGetCustomObjectMetricsProcedure = "/api.v1.project.Service/GetCustomObjectMetrics"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	serviceServiceDescriptor                      = project.File_api_v1_project_service_proto.Services().ByName("Service")
+	serviceCreateMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceDeleteMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("Delete")
+	serviceGetMethodDescriptor                    = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceListMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("List")
+	serviceUpdateMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("Update")
+	servicePublicKeyMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("PublicKey")
+	serviceUseMethodDescriptor                    = serviceServiceDescriptor.Methods().ByName("Use")
+	serviceGetLicenseInfoMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetLicenseInfo")
+	serviceGetObjectsByKindMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("GetObjectsByKind")
+	serviceGetCustomObjectMetricsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetCustomObjectMetrics")
+)
+
 // ServiceClient is a client for the api.v1.project.Service service.
 type ServiceClient interface {
 	// Create project
-	Create(context.Context, *connect_go.Request[project.CreateRequest]) (*connect_go.Response[project.CreateResponse], error)
+	Create(context.Context, *connect.Request[project.CreateRequest]) (*connect.Response[project.CreateResponse], error)
 	// Delete project (everything in Users)
-	Delete(context.Context, *connect_go.Request[project.DeleteRequest]) (*connect_go.Response[project.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[project.DeleteRequest]) (*connect.Response[project.DeleteResponse], error)
 	// Get project
-	Get(context.Context, *connect_go.Request[project.GetRequest]) (*connect_go.Response[project.GetResponse], error)
+	Get(context.Context, *connect.Request[project.GetRequest]) (*connect.Response[project.GetResponse], error)
 	// Get project list
-	List(context.Context, *connect_go.Request[project.ListRequest]) (*connect_go.Response[project.ListResponse], error)
+	List(context.Context, *connect.Request[project.ListRequest]) (*connect.Response[project.ListResponse], error)
 	// Update updates the profile of the project
-	Update(context.Context, *connect_go.Request[project.UpdateRequest]) (*connect_go.Response[project.UpdateResponse], error)
+	Update(context.Context, *connect.Request[project.UpdateRequest]) (*connect.Response[project.UpdateResponse], error)
 	// Get public key of system
-	PublicKey(context.Context, *connect_go.Request[project.PublicKeyRequest]) (*connect_go.Response[project.PublicKeyResponse], error)
+	PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error)
 	// Use generates a project token for editing the project as the current
 	// user.
-	Use(context.Context, *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error)
+	Use(context.Context, *connect.Request[project.UseRequest]) (*connect.Response[project.UseResponse], error)
 	// Get License Information
-	GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error)
-	GetObjectsByKind(context.Context, *connect_go.Request[project.GetObjectsByKindRequest]) (*connect_go.Response[project.GetObjectsByKindResponse], error)
-	GetCustomObjectMetrics(context.Context, *connect_go.Request[project.GetCustomObjectMetricsRequest]) (*connect_go.Response[project.GetCustomObjectMetricsResponse], error)
+	GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error)
+	GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error)
+	GetCustomObjectMetrics(context.Context, *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.project.Service service. By default, it uses
@@ -87,147 +102,157 @@ type ServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ServiceClient {
+func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		create: connect_go.NewClient[project.CreateRequest, project.CreateResponse](
+		create: connect.NewClient[project.CreateRequest, project.CreateResponse](
 			httpClient,
 			baseURL+ServiceCreateProcedure,
-			opts...,
+			connect.WithSchema(serviceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		delete: connect_go.NewClient[project.DeleteRequest, project.DeleteResponse](
+		delete: connect.NewClient[project.DeleteRequest, project.DeleteResponse](
 			httpClient,
 			baseURL+ServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(serviceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		get: connect_go.NewClient[project.GetRequest, project.GetResponse](
+		get: connect.NewClient[project.GetRequest, project.GetResponse](
 			httpClient,
 			baseURL+ServiceGetProcedure,
-			opts...,
+			connect.WithSchema(serviceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		list: connect_go.NewClient[project.ListRequest, project.ListResponse](
+		list: connect.NewClient[project.ListRequest, project.ListResponse](
 			httpClient,
 			baseURL+ServiceListProcedure,
-			opts...,
+			connect.WithSchema(serviceListMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		update: connect_go.NewClient[project.UpdateRequest, project.UpdateResponse](
+		update: connect.NewClient[project.UpdateRequest, project.UpdateResponse](
 			httpClient,
 			baseURL+ServiceUpdateProcedure,
-			opts...,
+			connect.WithSchema(serviceUpdateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		publicKey: connect_go.NewClient[project.PublicKeyRequest, project.PublicKeyResponse](
+		publicKey: connect.NewClient[project.PublicKeyRequest, project.PublicKeyResponse](
 			httpClient,
 			baseURL+ServicePublicKeyProcedure,
-			opts...,
+			connect.WithSchema(servicePublicKeyMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		use: connect_go.NewClient[project.UseRequest, project.UseResponse](
+		use: connect.NewClient[project.UseRequest, project.UseResponse](
 			httpClient,
 			baseURL+ServiceUseProcedure,
-			opts...,
+			connect.WithSchema(serviceUseMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		getLicenseInfo: connect_go.NewClient[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse](
+		getLicenseInfo: connect.NewClient[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse](
 			httpClient,
 			baseURL+ServiceGetLicenseInfoProcedure,
-			opts...,
+			connect.WithSchema(serviceGetLicenseInfoMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		getObjectsByKind: connect_go.NewClient[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse](
+		getObjectsByKind: connect.NewClient[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse](
 			httpClient,
 			baseURL+ServiceGetObjectsByKindProcedure,
-			opts...,
+			connect.WithSchema(serviceGetObjectsByKindMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
-		getCustomObjectMetrics: connect_go.NewClient[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse](
+		getCustomObjectMetrics: connect.NewClient[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse](
 			httpClient,
 			baseURL+ServiceGetCustomObjectMetricsProcedure,
-			opts...,
+			connect.WithSchema(serviceGetCustomObjectMetricsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create                 *connect_go.Client[project.CreateRequest, project.CreateResponse]
-	delete                 *connect_go.Client[project.DeleteRequest, project.DeleteResponse]
-	get                    *connect_go.Client[project.GetRequest, project.GetResponse]
-	list                   *connect_go.Client[project.ListRequest, project.ListResponse]
-	update                 *connect_go.Client[project.UpdateRequest, project.UpdateResponse]
-	publicKey              *connect_go.Client[project.PublicKeyRequest, project.PublicKeyResponse]
-	use                    *connect_go.Client[project.UseRequest, project.UseResponse]
-	getLicenseInfo         *connect_go.Client[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse]
-	getObjectsByKind       *connect_go.Client[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse]
-	getCustomObjectMetrics *connect_go.Client[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse]
+	create                 *connect.Client[project.CreateRequest, project.CreateResponse]
+	delete                 *connect.Client[project.DeleteRequest, project.DeleteResponse]
+	get                    *connect.Client[project.GetRequest, project.GetResponse]
+	list                   *connect.Client[project.ListRequest, project.ListResponse]
+	update                 *connect.Client[project.UpdateRequest, project.UpdateResponse]
+	publicKey              *connect.Client[project.PublicKeyRequest, project.PublicKeyResponse]
+	use                    *connect.Client[project.UseRequest, project.UseResponse]
+	getLicenseInfo         *connect.Client[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse]
+	getObjectsByKind       *connect.Client[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse]
+	getCustomObjectMetrics *connect.Client[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse]
 }
 
 // Create calls api.v1.project.Service.Create.
-func (c *serviceClient) Create(ctx context.Context, req *connect_go.Request[project.CreateRequest]) (*connect_go.Response[project.CreateResponse], error) {
+func (c *serviceClient) Create(ctx context.Context, req *connect.Request[project.CreateRequest]) (*connect.Response[project.CreateResponse], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // Delete calls api.v1.project.Service.Delete.
-func (c *serviceClient) Delete(ctx context.Context, req *connect_go.Request[project.DeleteRequest]) (*connect_go.Response[project.DeleteResponse], error) {
+func (c *serviceClient) Delete(ctx context.Context, req *connect.Request[project.DeleteRequest]) (*connect.Response[project.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // Get calls api.v1.project.Service.Get.
-func (c *serviceClient) Get(ctx context.Context, req *connect_go.Request[project.GetRequest]) (*connect_go.Response[project.GetResponse], error) {
+func (c *serviceClient) Get(ctx context.Context, req *connect.Request[project.GetRequest]) (*connect.Response[project.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // List calls api.v1.project.Service.List.
-func (c *serviceClient) List(ctx context.Context, req *connect_go.Request[project.ListRequest]) (*connect_go.Response[project.ListResponse], error) {
+func (c *serviceClient) List(ctx context.Context, req *connect.Request[project.ListRequest]) (*connect.Response[project.ListResponse], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // Update calls api.v1.project.Service.Update.
-func (c *serviceClient) Update(ctx context.Context, req *connect_go.Request[project.UpdateRequest]) (*connect_go.Response[project.UpdateResponse], error) {
+func (c *serviceClient) Update(ctx context.Context, req *connect.Request[project.UpdateRequest]) (*connect.Response[project.UpdateResponse], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
 // PublicKey calls api.v1.project.Service.PublicKey.
-func (c *serviceClient) PublicKey(ctx context.Context, req *connect_go.Request[project.PublicKeyRequest]) (*connect_go.Response[project.PublicKeyResponse], error) {
+func (c *serviceClient) PublicKey(ctx context.Context, req *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error) {
 	return c.publicKey.CallUnary(ctx, req)
 }
 
 // Use calls api.v1.project.Service.Use.
-func (c *serviceClient) Use(ctx context.Context, req *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error) {
+func (c *serviceClient) Use(ctx context.Context, req *connect.Request[project.UseRequest]) (*connect.Response[project.UseResponse], error) {
 	return c.use.CallUnary(ctx, req)
 }
 
 // GetLicenseInfo calls api.v1.project.Service.GetLicenseInfo.
-func (c *serviceClient) GetLicenseInfo(ctx context.Context, req *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error) {
+func (c *serviceClient) GetLicenseInfo(ctx context.Context, req *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error) {
 	return c.getLicenseInfo.CallUnary(ctx, req)
 }
 
 // GetObjectsByKind calls api.v1.project.Service.GetObjectsByKind.
-func (c *serviceClient) GetObjectsByKind(ctx context.Context, req *connect_go.Request[project.GetObjectsByKindRequest]) (*connect_go.Response[project.GetObjectsByKindResponse], error) {
+func (c *serviceClient) GetObjectsByKind(ctx context.Context, req *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error) {
 	return c.getObjectsByKind.CallUnary(ctx, req)
 }
 
 // GetCustomObjectMetrics calls api.v1.project.Service.GetCustomObjectMetrics.
-func (c *serviceClient) GetCustomObjectMetrics(ctx context.Context, req *connect_go.Request[project.GetCustomObjectMetricsRequest]) (*connect_go.Response[project.GetCustomObjectMetricsResponse], error) {
+func (c *serviceClient) GetCustomObjectMetrics(ctx context.Context, req *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error) {
 	return c.getCustomObjectMetrics.CallUnary(ctx, req)
 }
 
 // ServiceHandler is an implementation of the api.v1.project.Service service.
 type ServiceHandler interface {
 	// Create project
-	Create(context.Context, *connect_go.Request[project.CreateRequest]) (*connect_go.Response[project.CreateResponse], error)
+	Create(context.Context, *connect.Request[project.CreateRequest]) (*connect.Response[project.CreateResponse], error)
 	// Delete project (everything in Users)
-	Delete(context.Context, *connect_go.Request[project.DeleteRequest]) (*connect_go.Response[project.DeleteResponse], error)
+	Delete(context.Context, *connect.Request[project.DeleteRequest]) (*connect.Response[project.DeleteResponse], error)
 	// Get project
-	Get(context.Context, *connect_go.Request[project.GetRequest]) (*connect_go.Response[project.GetResponse], error)
+	Get(context.Context, *connect.Request[project.GetRequest]) (*connect.Response[project.GetResponse], error)
 	// Get project list
-	List(context.Context, *connect_go.Request[project.ListRequest]) (*connect_go.Response[project.ListResponse], error)
+	List(context.Context, *connect.Request[project.ListRequest]) (*connect.Response[project.ListResponse], error)
 	// Update updates the profile of the project
-	Update(context.Context, *connect_go.Request[project.UpdateRequest]) (*connect_go.Response[project.UpdateResponse], error)
+	Update(context.Context, *connect.Request[project.UpdateRequest]) (*connect.Response[project.UpdateResponse], error)
 	// Get public key of system
-	PublicKey(context.Context, *connect_go.Request[project.PublicKeyRequest]) (*connect_go.Response[project.PublicKeyResponse], error)
+	PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error)
 	// Use generates a project token for editing the project as the current
 	// user.
-	Use(context.Context, *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error)
+	Use(context.Context, *connect.Request[project.UseRequest]) (*connect.Response[project.UseResponse], error)
 	// Get License Information
-	GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error)
-	GetObjectsByKind(context.Context, *connect_go.Request[project.GetObjectsByKindRequest]) (*connect_go.Response[project.GetObjectsByKindResponse], error)
-	GetCustomObjectMetrics(context.Context, *connect_go.Request[project.GetCustomObjectMetricsRequest]) (*connect_go.Response[project.GetCustomObjectMetricsResponse], error)
+	GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error)
+	GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error)
+	GetCustomObjectMetrics(context.Context, *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -235,56 +260,66 @@ type ServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	serviceCreateHandler := connect_go.NewUnaryHandler(
+func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceCreateHandler := connect.NewUnaryHandler(
 		ServiceCreateProcedure,
 		svc.Create,
-		opts...,
+		connect.WithSchema(serviceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceDeleteHandler := connect_go.NewUnaryHandler(
+	serviceDeleteHandler := connect.NewUnaryHandler(
 		ServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(serviceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetHandler := connect_go.NewUnaryHandler(
+	serviceGetHandler := connect.NewUnaryHandler(
 		ServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(serviceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceListHandler := connect_go.NewUnaryHandler(
+	serviceListHandler := connect.NewUnaryHandler(
 		ServiceListProcedure,
 		svc.List,
-		opts...,
+		connect.WithSchema(serviceListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceUpdateHandler := connect_go.NewUnaryHandler(
+	serviceUpdateHandler := connect.NewUnaryHandler(
 		ServiceUpdateProcedure,
 		svc.Update,
-		opts...,
+		connect.WithSchema(serviceUpdateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	servicePublicKeyHandler := connect_go.NewUnaryHandler(
+	servicePublicKeyHandler := connect.NewUnaryHandler(
 		ServicePublicKeyProcedure,
 		svc.PublicKey,
-		opts...,
+		connect.WithSchema(servicePublicKeyMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceUseHandler := connect_go.NewUnaryHandler(
+	serviceUseHandler := connect.NewUnaryHandler(
 		ServiceUseProcedure,
 		svc.Use,
-		opts...,
+		connect.WithSchema(serviceUseMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetLicenseInfoHandler := connect_go.NewUnaryHandler(
+	serviceGetLicenseInfoHandler := connect.NewUnaryHandler(
 		ServiceGetLicenseInfoProcedure,
 		svc.GetLicenseInfo,
-		opts...,
+		connect.WithSchema(serviceGetLicenseInfoMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetObjectsByKindHandler := connect_go.NewUnaryHandler(
+	serviceGetObjectsByKindHandler := connect.NewUnaryHandler(
 		ServiceGetObjectsByKindProcedure,
 		svc.GetObjectsByKind,
-		opts...,
+		connect.WithSchema(serviceGetObjectsByKindMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetCustomObjectMetricsHandler := connect_go.NewUnaryHandler(
+	serviceGetCustomObjectMetricsHandler := connect.NewUnaryHandler(
 		ServiceGetCustomObjectMetricsProcedure,
 		svc.GetCustomObjectMetrics,
-		opts...,
+		connect.WithSchema(serviceGetCustomObjectMetricsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/api.v1.project.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -317,42 +352,42 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect_go.HandlerOption) (st
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) Create(context.Context, *connect_go.Request[project.CreateRequest]) (*connect_go.Response[project.CreateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.Create is not implemented"))
+func (UnimplementedServiceHandler) Create(context.Context, *connect.Request[project.CreateRequest]) (*connect.Response[project.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.Create is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Delete(context.Context, *connect_go.Request[project.DeleteRequest]) (*connect_go.Response[project.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.Delete is not implemented"))
+func (UnimplementedServiceHandler) Delete(context.Context, *connect.Request[project.DeleteRequest]) (*connect.Response[project.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.Delete is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Get(context.Context, *connect_go.Request[project.GetRequest]) (*connect_go.Response[project.GetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.Get is not implemented"))
+func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[project.GetRequest]) (*connect.Response[project.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.Get is not implemented"))
 }
 
-func (UnimplementedServiceHandler) List(context.Context, *connect_go.Request[project.ListRequest]) (*connect_go.Response[project.ListResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.List is not implemented"))
+func (UnimplementedServiceHandler) List(context.Context, *connect.Request[project.ListRequest]) (*connect.Response[project.ListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.List is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Update(context.Context, *connect_go.Request[project.UpdateRequest]) (*connect_go.Response[project.UpdateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.Update is not implemented"))
+func (UnimplementedServiceHandler) Update(context.Context, *connect.Request[project.UpdateRequest]) (*connect.Response[project.UpdateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.Update is not implemented"))
 }
 
-func (UnimplementedServiceHandler) PublicKey(context.Context, *connect_go.Request[project.PublicKeyRequest]) (*connect_go.Response[project.PublicKeyResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.PublicKey is not implemented"))
+func (UnimplementedServiceHandler) PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.PublicKey is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Use(context.Context, *connect_go.Request[project.UseRequest]) (*connect_go.Response[project.UseResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.Use is not implemented"))
+func (UnimplementedServiceHandler) Use(context.Context, *connect.Request[project.UseRequest]) (*connect.Response[project.UseResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.Use is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetLicenseInfo(context.Context, *connect_go.Request[project.GetLicenseInfoRequest]) (*connect_go.Response[project.GetLicenseInfoResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.GetLicenseInfo is not implemented"))
+func (UnimplementedServiceHandler) GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.GetLicenseInfo is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetObjectsByKind(context.Context, *connect_go.Request[project.GetObjectsByKindRequest]) (*connect_go.Response[project.GetObjectsByKindResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.GetObjectsByKind is not implemented"))
+func (UnimplementedServiceHandler) GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.GetObjectsByKind is not implemented"))
 }
 
-func (UnimplementedServiceHandler) GetCustomObjectMetrics(context.Context, *connect_go.Request[project.GetCustomObjectMetricsRequest]) (*connect_go.Response[project.GetCustomObjectMetricsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("api.v1.project.Service.GetCustomObjectMetrics is not implemented"))
+func (UnimplementedServiceHandler) GetCustomObjectMetrics(context.Context, *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.GetCustomObjectMetrics is not implemented"))
 }
