@@ -55,7 +55,7 @@ type ServiceClient interface {
 	// be used as login credentials. Note that the client_secret can only be read
 	// out once, at creation.
 	Create(context.Context, *connect.Request[service_account.CreateRequest]) (*connect.Response[service_account.CreateResponse], error)
-	// List all service accounts for the current project.
+	// List all service accounts.
 	List(context.Context, *connect.Request[service_account.ListRequest]) (*connect.Response[service_account.ListResponse], error)
 	// Delete a service account. It can take up to the TTL of access tokens for
 	// existing sessions using this service_account, to expire.
@@ -121,7 +121,7 @@ type ServiceHandler interface {
 	// be used as login credentials. Note that the client_secret can only be read
 	// out once, at creation.
 	Create(context.Context, *connect.Request[service_account.CreateRequest]) (*connect.Response[service_account.CreateResponse], error)
-	// List all service accounts for the current project.
+	// List all service accounts.
 	List(context.Context, *connect.Request[service_account.ListRequest]) (*connect.Response[service_account.ListResponse], error)
 	// Delete a service account. It can take up to the TTL of access tokens for
 	// existing sessions using this service_account, to expire.
