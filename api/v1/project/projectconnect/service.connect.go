@@ -45,8 +45,6 @@ const (
 	ServiceUpdateProcedure = "/api.v1.project.Service/Update"
 	// ServicePublicKeyProcedure is the fully-qualified name of the Service's PublicKey RPC.
 	ServicePublicKeyProcedure = "/api.v1.project.Service/PublicKey"
-	// ServiceUseProcedure is the fully-qualified name of the Service's Use RPC.
-	ServiceUseProcedure = "/api.v1.project.Service/Use"
 	// ServiceGetLicenseInfoProcedure is the fully-qualified name of the Service's GetLicenseInfo RPC.
 	ServiceGetLicenseInfoProcedure = "/api.v1.project.Service/GetLicenseInfo"
 	// ServiceGetObjectsByKindProcedure is the fully-qualified name of the Service's GetObjectsByKind
@@ -66,7 +64,6 @@ var (
 	serviceListMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("List")
 	serviceUpdateMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("Update")
 	servicePublicKeyMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("PublicKey")
-	serviceUseMethodDescriptor                    = serviceServiceDescriptor.Methods().ByName("Use")
 	serviceGetLicenseInfoMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetLicenseInfo")
 	serviceGetObjectsByKindMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("GetObjectsByKind")
 	serviceGetCustomObjectMetricsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetCustomObjectMetrics")
@@ -86,9 +83,6 @@ type ServiceClient interface {
 	Update(context.Context, *connect.Request[project.UpdateRequest]) (*connect.Response[project.UpdateResponse], error)
 	// Get public key of system
 	PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error)
-	// Use generates a project token for editing the project as the current
-	// user.
-	Use(context.Context, *connect.Request[project.UseRequest]) (*connect.Response[project.UseResponse], error)
 	// Get License Information
 	GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error)
 	GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error)
@@ -141,12 +135,6 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(servicePublicKeyMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		use: connect.NewClient[project.UseRequest, project.UseResponse](
-			httpClient,
-			baseURL+ServiceUseProcedure,
-			connect.WithSchema(serviceUseMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
 		getLicenseInfo: connect.NewClient[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse](
 			httpClient,
 			baseURL+ServiceGetLicenseInfoProcedure,
@@ -176,7 +164,6 @@ type serviceClient struct {
 	list                   *connect.Client[project.ListRequest, project.ListResponse]
 	update                 *connect.Client[project.UpdateRequest, project.UpdateResponse]
 	publicKey              *connect.Client[project.PublicKeyRequest, project.PublicKeyResponse]
-	use                    *connect.Client[project.UseRequest, project.UseResponse]
 	getLicenseInfo         *connect.Client[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse]
 	getObjectsByKind       *connect.Client[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse]
 	getCustomObjectMetrics *connect.Client[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse]
@@ -212,11 +199,6 @@ func (c *serviceClient) PublicKey(ctx context.Context, req *connect.Request[proj
 	return c.publicKey.CallUnary(ctx, req)
 }
 
-// Use calls api.v1.project.Service.Use.
-func (c *serviceClient) Use(ctx context.Context, req *connect.Request[project.UseRequest]) (*connect.Response[project.UseResponse], error) {
-	return c.use.CallUnary(ctx, req)
-}
-
 // GetLicenseInfo calls api.v1.project.Service.GetLicenseInfo.
 func (c *serviceClient) GetLicenseInfo(ctx context.Context, req *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error) {
 	return c.getLicenseInfo.CallUnary(ctx, req)
@@ -246,9 +228,6 @@ type ServiceHandler interface {
 	Update(context.Context, *connect.Request[project.UpdateRequest]) (*connect.Response[project.UpdateResponse], error)
 	// Get public key of system
 	PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error)
-	// Use generates a project token for editing the project as the current
-	// user.
-	Use(context.Context, *connect.Request[project.UseRequest]) (*connect.Response[project.UseResponse], error)
 	// Get License Information
 	GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error)
 	GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error)
@@ -297,12 +276,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(servicePublicKeyMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	serviceUseHandler := connect.NewUnaryHandler(
-		ServiceUseProcedure,
-		svc.Use,
-		connect.WithSchema(serviceUseMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
 	serviceGetLicenseInfoHandler := connect.NewUnaryHandler(
 		ServiceGetLicenseInfoProcedure,
 		svc.GetLicenseInfo,
@@ -335,8 +308,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceUpdateHandler.ServeHTTP(w, r)
 		case ServicePublicKeyProcedure:
 			servicePublicKeyHandler.ServeHTTP(w, r)
-		case ServiceUseProcedure:
-			serviceUseHandler.ServeHTTP(w, r)
 		case ServiceGetLicenseInfoProcedure:
 			serviceGetLicenseInfoHandler.ServeHTTP(w, r)
 		case ServiceGetObjectsByKindProcedure:
@@ -374,10 +345,6 @@ func (UnimplementedServiceHandler) Update(context.Context, *connect.Request[proj
 
 func (UnimplementedServiceHandler) PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.PublicKey is not implemented"))
-}
-
-func (UnimplementedServiceHandler) Use(context.Context, *connect.Request[project.UseRequest]) (*connect.Response[project.UseResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.Use is not implemented"))
 }
 
 func (UnimplementedServiceHandler) GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error) {
