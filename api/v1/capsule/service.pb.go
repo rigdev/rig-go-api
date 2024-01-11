@@ -1330,6 +1330,10 @@ type DeployRequest struct {
 	ProjectId     string `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	EnvironmentId string `protobuf:"bytes,5,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 	Message       string `protobuf:"bytes,6,opt,name=message,proto3" json:"message,omitempty"`
+	DryRun        bool   `protobuf:"varint,7,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
+	// If not zero, this will constrain the rollout only to be created if the currently running rollout matches this
+	// identifier. If this check fails, the request will return an `Aborted` error.
+	CurrentRolloutId uint64 `protobuf:"varint,8,opt,name=current_rollout_id,json=currentRolloutId,proto3" json:"current_rollout_id,omitempty"`
 }
 
 func (x *DeployRequest) Reset() {
@@ -1406,12 +1410,27 @@ func (x *DeployRequest) GetMessage() string {
 	return ""
 }
 
+func (x *DeployRequest) GetDryRun() bool {
+	if x != nil {
+		return x.DryRun
+	}
+	return false
+}
+
+func (x *DeployRequest) GetCurrentRolloutId() uint64 {
+	if x != nil {
+		return x.CurrentRolloutId
+	}
+	return 0
+}
+
 type DeployResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RolloutId uint64 `protobuf:"varint,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
+	RolloutId    uint64            `protobuf:"varint,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
+	ResourceYaml map[string]string `protobuf:"bytes,2,rep,name=resource_yaml,json=resourceYaml,proto3" json:"resource_yaml,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (x *DeployResponse) Reset() {
@@ -1451,6 +1470,13 @@ func (x *DeployResponse) GetRolloutId() uint64 {
 		return x.RolloutId
 	}
 	return 0
+}
+
+func (x *DeployResponse) GetResourceYaml() map[string]string {
+	if x != nil {
+		return x.ResourceYaml
+	}
+	return nil
 }
 
 type ListInstancesRequest struct {
@@ -3188,7 +3214,7 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18,
 	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x64,
 	0x22, 0x15, 0x0a, 0x13, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xd6, 0x01, 0x0a, 0x0d, 0x44, 0x65, 0x70, 0x6c,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x9d, 0x02, 0x0a, 0x0d, 0x44, 0x65, 0x70, 0x6c,
 	0x6f, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61, 0x70,
 	0x73, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63,
 	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x30, 0x0a, 0x07, 0x63, 0x68, 0x61, 0x6e,
@@ -3202,10 +3228,24 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x65, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e,
 	0x6d, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
 	0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x22, 0x2f, 0x0a, 0x0e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x5f, 0x69, 0x64,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x72, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x49,
-	0x64, 0x22, 0xae, 0x01, 0x0a, 0x14, 0x4c, 0x69, 0x73, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x61, 0x6e,
+	0x12, 0x17, 0x0a, 0x07, 0x64, 0x72, 0x79, 0x5f, 0x72, 0x75, 0x6e, 0x18, 0x07, 0x20, 0x01, 0x28,
+	0x08, 0x52, 0x06, 0x64, 0x72, 0x79, 0x52, 0x75, 0x6e, 0x12, 0x2c, 0x0a, 0x12, 0x63, 0x75, 0x72,
+	0x72, 0x65, 0x6e, 0x74, 0x5f, 0x72, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x5f, 0x69, 0x64, 0x18,
+	0x08, 0x20, 0x01, 0x28, 0x04, 0x52, 0x10, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x52, 0x6f,
+	0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x49, 0x64, 0x22, 0xc7, 0x01, 0x0a, 0x0e, 0x44, 0x65, 0x70, 0x6c,
+	0x6f, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x6f,
+	0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09,
+	0x72, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x49, 0x64, 0x12, 0x55, 0x0a, 0x0d, 0x72, 0x65, 0x73,
+	0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x79, 0x61, 0x6d, 0x6c, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x30, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c,
+	0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x2e, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x59, 0x61, 0x6d, 0x6c, 0x45, 0x6e, 0x74,
+	0x72, 0x79, 0x52, 0x0c, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x59, 0x61, 0x6d, 0x6c,
+	0x1a, 0x3f, 0x0a, 0x11, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x59, 0x61, 0x6d, 0x6c,
+	0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38,
+	0x01, 0x22, 0xae, 0x01, 0x0a, 0x14, 0x4c, 0x69, 0x73, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x61, 0x6e,
 	0x63, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61,
 	0x70, 0x73, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
 	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x31, 0x0a, 0x0a, 0x70, 0x61, 0x67,
@@ -3546,7 +3586,7 @@ func file_api_v1_capsule_service_proto_rawDescGZIP() []byte {
 	return file_api_v1_capsule_service_proto_rawDescData
 }
 
-var file_api_v1_capsule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 49)
+var file_api_v1_capsule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 50)
 var file_api_v1_capsule_service_proto_goTypes = []interface{}{
 	(*StreamData)(nil),                       // 0: api.v1.capsule.StreamData
 	(*ExecuteRequest)(nil),                   // 1: api.v1.capsule.ExecuteRequest
@@ -3597,22 +3637,23 @@ var file_api_v1_capsule_service_proto_goTypes = []interface{}{
 	(*ExecuteRequest_Start)(nil),             // 46: api.v1.capsule.ExecuteRequest.Start
 	(*ExecuteRequest_Resize)(nil),            // 47: api.v1.capsule.ExecuteRequest.Resize
 	nil,                                      // 48: api.v1.capsule.CreateBuildRequest.LabelsEntry
-	(*Update)(nil),                           // 49: api.v1.capsule.Update
-	(*Capsule)(nil),                          // 50: api.v1.capsule.Capsule
-	(*durationpb.Duration)(nil),              // 51: google.protobuf.Duration
-	(*Log)(nil),                              // 52: api.v1.capsule.Log
-	(*model.Pagination)(nil),                 // 53: model.Pagination
-	(*Origin)(nil),                           // 54: api.v1.capsule.Origin
-	(*Build)(nil),                            // 55: api.v1.capsule.Build
-	(*Change)(nil),                           // 56: api.v1.capsule.Change
-	(*Instance)(nil),                         // 57: api.v1.capsule.Instance
-	(*instance.Status)(nil),                  // 58: api.v1.capsule.instance.Status
-	(*Rollout)(nil),                          // 59: api.v1.capsule.Rollout
-	(*Event)(nil),                            // 60: api.v1.capsule.Event
-	(*InstanceMetrics)(nil),                  // 61: api.v1.capsule.InstanceMetrics
-	(*timestamppb.Timestamp)(nil),            // 62: google.protobuf.Timestamp
-	(JobState)(0),                            // 63: api.v1.capsule.JobState
-	(*JobExecution)(nil),                     // 64: api.v1.capsule.JobExecution
+	nil,                                      // 49: api.v1.capsule.DeployResponse.ResourceYamlEntry
+	(*Update)(nil),                           // 50: api.v1.capsule.Update
+	(*Capsule)(nil),                          // 51: api.v1.capsule.Capsule
+	(*durationpb.Duration)(nil),              // 52: google.protobuf.Duration
+	(*Log)(nil),                              // 53: api.v1.capsule.Log
+	(*model.Pagination)(nil),                 // 54: model.Pagination
+	(*Origin)(nil),                           // 55: api.v1.capsule.Origin
+	(*Build)(nil),                            // 56: api.v1.capsule.Build
+	(*Change)(nil),                           // 57: api.v1.capsule.Change
+	(*Instance)(nil),                         // 58: api.v1.capsule.Instance
+	(*instance.Status)(nil),                  // 59: api.v1.capsule.instance.Status
+	(*Rollout)(nil),                          // 60: api.v1.capsule.Rollout
+	(*Event)(nil),                            // 61: api.v1.capsule.Event
+	(*InstanceMetrics)(nil),                  // 62: api.v1.capsule.InstanceMetrics
+	(*timestamppb.Timestamp)(nil),            // 63: google.protobuf.Timestamp
+	(JobState)(0),                            // 64: api.v1.capsule.JobState
+	(*JobExecution)(nil),                     // 65: api.v1.capsule.JobExecution
 }
 var file_api_v1_capsule_service_proto_depIdxs = []int32{
 	46, // 0: api.v1.capsule.ExecuteRequest.start:type_name -> api.v1.capsule.ExecuteRequest.Start
@@ -3620,87 +3661,88 @@ var file_api_v1_capsule_service_proto_depIdxs = []int32{
 	47, // 2: api.v1.capsule.ExecuteRequest.resize:type_name -> api.v1.capsule.ExecuteRequest.Resize
 	0,  // 3: api.v1.capsule.ExecuteResponse.stdout:type_name -> api.v1.capsule.StreamData
 	0,  // 4: api.v1.capsule.ExecuteResponse.stderr:type_name -> api.v1.capsule.StreamData
-	49, // 5: api.v1.capsule.CreateRequest.initializers:type_name -> api.v1.capsule.Update
-	50, // 6: api.v1.capsule.GetResponse.capsule:type_name -> api.v1.capsule.Capsule
-	51, // 7: api.v1.capsule.LogsRequest.since:type_name -> google.protobuf.Duration
-	52, // 8: api.v1.capsule.LogsResponse.log:type_name -> api.v1.capsule.Log
-	49, // 9: api.v1.capsule.UpdateRequest.updates:type_name -> api.v1.capsule.Update
-	53, // 10: api.v1.capsule.ListRequest.pagination:type_name -> model.Pagination
-	50, // 11: api.v1.capsule.ListResponse.capsules:type_name -> api.v1.capsule.Capsule
-	54, // 12: api.v1.capsule.CreateBuildRequest.origin:type_name -> api.v1.capsule.Origin
+	50, // 5: api.v1.capsule.CreateRequest.initializers:type_name -> api.v1.capsule.Update
+	51, // 6: api.v1.capsule.GetResponse.capsule:type_name -> api.v1.capsule.Capsule
+	52, // 7: api.v1.capsule.LogsRequest.since:type_name -> google.protobuf.Duration
+	53, // 8: api.v1.capsule.LogsResponse.log:type_name -> api.v1.capsule.Log
+	50, // 9: api.v1.capsule.UpdateRequest.updates:type_name -> api.v1.capsule.Update
+	54, // 10: api.v1.capsule.ListRequest.pagination:type_name -> model.Pagination
+	51, // 11: api.v1.capsule.ListResponse.capsules:type_name -> api.v1.capsule.Capsule
+	55, // 12: api.v1.capsule.CreateBuildRequest.origin:type_name -> api.v1.capsule.Origin
 	48, // 13: api.v1.capsule.CreateBuildRequest.labels:type_name -> api.v1.capsule.CreateBuildRequest.LabelsEntry
-	53, // 14: api.v1.capsule.ListBuildsRequest.pagination:type_name -> model.Pagination
-	55, // 15: api.v1.capsule.ListBuildsResponse.builds:type_name -> api.v1.capsule.Build
-	56, // 16: api.v1.capsule.DeployRequest.changes:type_name -> api.v1.capsule.Change
-	53, // 17: api.v1.capsule.ListInstancesRequest.pagination:type_name -> model.Pagination
-	57, // 18: api.v1.capsule.ListInstancesResponse.instances:type_name -> api.v1.capsule.Instance
-	58, // 19: api.v1.capsule.GetInstanceStatusResponse.status:type_name -> api.v1.capsule.instance.Status
-	53, // 20: api.v1.capsule.ListInstanceStatusesRequest.pagination:type_name -> model.Pagination
-	58, // 21: api.v1.capsule.ListInstanceStatusesResponse.instances:type_name -> api.v1.capsule.instance.Status
-	53, // 22: api.v1.capsule.ListRolloutsRequest.pagination:type_name -> model.Pagination
-	59, // 23: api.v1.capsule.ListRolloutsResponse.rollouts:type_name -> api.v1.capsule.Rollout
-	59, // 24: api.v1.capsule.GetRolloutResponse.rollout:type_name -> api.v1.capsule.Rollout
-	53, // 25: api.v1.capsule.ListEventsRequest.pagination:type_name -> model.Pagination
-	60, // 26: api.v1.capsule.ListEventsResponse.events:type_name -> api.v1.capsule.Event
-	53, // 27: api.v1.capsule.CapsuleMetricsRequest.pagination:type_name -> model.Pagination
-	61, // 28: api.v1.capsule.CapsuleMetricsResponse.instance_metrics:type_name -> api.v1.capsule.InstanceMetrics
-	43, // 29: api.v1.capsule.GetCustomInstanceMetricsResponse.metrics:type_name -> api.v1.capsule.Metric
-	62, // 30: api.v1.capsule.Metric.latest_timestamp:type_name -> google.protobuf.Timestamp
-	63, // 31: api.v1.capsule.GetJobExecutionsRequest.states:type_name -> api.v1.capsule.JobState
-	62, // 32: api.v1.capsule.GetJobExecutionsRequest.created_from:type_name -> google.protobuf.Timestamp
-	62, // 33: api.v1.capsule.GetJobExecutionsRequest.created_to:type_name -> google.protobuf.Timestamp
-	53, // 34: api.v1.capsule.GetJobExecutionsRequest.pagination:type_name -> model.Pagination
-	64, // 35: api.v1.capsule.GetJobExecutionsResponse.job_executions:type_name -> api.v1.capsule.JobExecution
-	47, // 36: api.v1.capsule.ExecuteRequest.Start.tty:type_name -> api.v1.capsule.ExecuteRequest.Resize
-	3,  // 37: api.v1.capsule.Service.Create:input_type -> api.v1.capsule.CreateRequest
-	5,  // 38: api.v1.capsule.Service.Get:input_type -> api.v1.capsule.GetRequest
-	7,  // 39: api.v1.capsule.Service.Delete:input_type -> api.v1.capsule.DeleteRequest
-	9,  // 40: api.v1.capsule.Service.Logs:input_type -> api.v1.capsule.LogsRequest
-	11, // 41: api.v1.capsule.Service.Update:input_type -> api.v1.capsule.UpdateRequest
-	13, // 42: api.v1.capsule.Service.List:input_type -> api.v1.capsule.ListRequest
-	15, // 43: api.v1.capsule.Service.CreateBuild:input_type -> api.v1.capsule.CreateBuildRequest
-	17, // 44: api.v1.capsule.Service.ListBuilds:input_type -> api.v1.capsule.ListBuildsRequest
-	19, // 45: api.v1.capsule.Service.DeleteBuild:input_type -> api.v1.capsule.DeleteBuildRequest
-	21, // 46: api.v1.capsule.Service.Deploy:input_type -> api.v1.capsule.DeployRequest
-	23, // 47: api.v1.capsule.Service.ListInstances:input_type -> api.v1.capsule.ListInstancesRequest
-	29, // 48: api.v1.capsule.Service.RestartInstance:input_type -> api.v1.capsule.RestartInstanceRequest
-	33, // 49: api.v1.capsule.Service.GetRollout:input_type -> api.v1.capsule.GetRolloutRequest
-	31, // 50: api.v1.capsule.Service.ListRollouts:input_type -> api.v1.capsule.ListRolloutsRequest
-	35, // 51: api.v1.capsule.Service.AbortRollout:input_type -> api.v1.capsule.AbortRolloutRequest
-	37, // 52: api.v1.capsule.Service.ListEvents:input_type -> api.v1.capsule.ListEventsRequest
-	39, // 53: api.v1.capsule.Service.CapsuleMetrics:input_type -> api.v1.capsule.CapsuleMetricsRequest
-	25, // 54: api.v1.capsule.Service.GetInstanceStatus:input_type -> api.v1.capsule.GetInstanceStatusRequest
-	27, // 55: api.v1.capsule.Service.ListInstanceStatuses:input_type -> api.v1.capsule.ListInstanceStatusesRequest
-	1,  // 56: api.v1.capsule.Service.Execute:input_type -> api.v1.capsule.ExecuteRequest
-	41, // 57: api.v1.capsule.Service.GetCustomInstanceMetrics:input_type -> api.v1.capsule.GetCustomInstanceMetricsRequest
-	44, // 58: api.v1.capsule.Service.GetJobExecutions:input_type -> api.v1.capsule.GetJobExecutionsRequest
-	4,  // 59: api.v1.capsule.Service.Create:output_type -> api.v1.capsule.CreateResponse
-	6,  // 60: api.v1.capsule.Service.Get:output_type -> api.v1.capsule.GetResponse
-	8,  // 61: api.v1.capsule.Service.Delete:output_type -> api.v1.capsule.DeleteResponse
-	10, // 62: api.v1.capsule.Service.Logs:output_type -> api.v1.capsule.LogsResponse
-	12, // 63: api.v1.capsule.Service.Update:output_type -> api.v1.capsule.UpdateResponse
-	14, // 64: api.v1.capsule.Service.List:output_type -> api.v1.capsule.ListResponse
-	16, // 65: api.v1.capsule.Service.CreateBuild:output_type -> api.v1.capsule.CreateBuildResponse
-	18, // 66: api.v1.capsule.Service.ListBuilds:output_type -> api.v1.capsule.ListBuildsResponse
-	20, // 67: api.v1.capsule.Service.DeleteBuild:output_type -> api.v1.capsule.DeleteBuildResponse
-	22, // 68: api.v1.capsule.Service.Deploy:output_type -> api.v1.capsule.DeployResponse
-	24, // 69: api.v1.capsule.Service.ListInstances:output_type -> api.v1.capsule.ListInstancesResponse
-	30, // 70: api.v1.capsule.Service.RestartInstance:output_type -> api.v1.capsule.RestartInstanceResponse
-	34, // 71: api.v1.capsule.Service.GetRollout:output_type -> api.v1.capsule.GetRolloutResponse
-	32, // 72: api.v1.capsule.Service.ListRollouts:output_type -> api.v1.capsule.ListRolloutsResponse
-	36, // 73: api.v1.capsule.Service.AbortRollout:output_type -> api.v1.capsule.AbortRolloutResponse
-	38, // 74: api.v1.capsule.Service.ListEvents:output_type -> api.v1.capsule.ListEventsResponse
-	40, // 75: api.v1.capsule.Service.CapsuleMetrics:output_type -> api.v1.capsule.CapsuleMetricsResponse
-	26, // 76: api.v1.capsule.Service.GetInstanceStatus:output_type -> api.v1.capsule.GetInstanceStatusResponse
-	28, // 77: api.v1.capsule.Service.ListInstanceStatuses:output_type -> api.v1.capsule.ListInstanceStatusesResponse
-	2,  // 78: api.v1.capsule.Service.Execute:output_type -> api.v1.capsule.ExecuteResponse
-	42, // 79: api.v1.capsule.Service.GetCustomInstanceMetrics:output_type -> api.v1.capsule.GetCustomInstanceMetricsResponse
-	45, // 80: api.v1.capsule.Service.GetJobExecutions:output_type -> api.v1.capsule.GetJobExecutionsResponse
-	59, // [59:81] is the sub-list for method output_type
-	37, // [37:59] is the sub-list for method input_type
-	37, // [37:37] is the sub-list for extension type_name
-	37, // [37:37] is the sub-list for extension extendee
-	0,  // [0:37] is the sub-list for field type_name
+	54, // 14: api.v1.capsule.ListBuildsRequest.pagination:type_name -> model.Pagination
+	56, // 15: api.v1.capsule.ListBuildsResponse.builds:type_name -> api.v1.capsule.Build
+	57, // 16: api.v1.capsule.DeployRequest.changes:type_name -> api.v1.capsule.Change
+	49, // 17: api.v1.capsule.DeployResponse.resource_yaml:type_name -> api.v1.capsule.DeployResponse.ResourceYamlEntry
+	54, // 18: api.v1.capsule.ListInstancesRequest.pagination:type_name -> model.Pagination
+	58, // 19: api.v1.capsule.ListInstancesResponse.instances:type_name -> api.v1.capsule.Instance
+	59, // 20: api.v1.capsule.GetInstanceStatusResponse.status:type_name -> api.v1.capsule.instance.Status
+	54, // 21: api.v1.capsule.ListInstanceStatusesRequest.pagination:type_name -> model.Pagination
+	59, // 22: api.v1.capsule.ListInstanceStatusesResponse.instances:type_name -> api.v1.capsule.instance.Status
+	54, // 23: api.v1.capsule.ListRolloutsRequest.pagination:type_name -> model.Pagination
+	60, // 24: api.v1.capsule.ListRolloutsResponse.rollouts:type_name -> api.v1.capsule.Rollout
+	60, // 25: api.v1.capsule.GetRolloutResponse.rollout:type_name -> api.v1.capsule.Rollout
+	54, // 26: api.v1.capsule.ListEventsRequest.pagination:type_name -> model.Pagination
+	61, // 27: api.v1.capsule.ListEventsResponse.events:type_name -> api.v1.capsule.Event
+	54, // 28: api.v1.capsule.CapsuleMetricsRequest.pagination:type_name -> model.Pagination
+	62, // 29: api.v1.capsule.CapsuleMetricsResponse.instance_metrics:type_name -> api.v1.capsule.InstanceMetrics
+	43, // 30: api.v1.capsule.GetCustomInstanceMetricsResponse.metrics:type_name -> api.v1.capsule.Metric
+	63, // 31: api.v1.capsule.Metric.latest_timestamp:type_name -> google.protobuf.Timestamp
+	64, // 32: api.v1.capsule.GetJobExecutionsRequest.states:type_name -> api.v1.capsule.JobState
+	63, // 33: api.v1.capsule.GetJobExecutionsRequest.created_from:type_name -> google.protobuf.Timestamp
+	63, // 34: api.v1.capsule.GetJobExecutionsRequest.created_to:type_name -> google.protobuf.Timestamp
+	54, // 35: api.v1.capsule.GetJobExecutionsRequest.pagination:type_name -> model.Pagination
+	65, // 36: api.v1.capsule.GetJobExecutionsResponse.job_executions:type_name -> api.v1.capsule.JobExecution
+	47, // 37: api.v1.capsule.ExecuteRequest.Start.tty:type_name -> api.v1.capsule.ExecuteRequest.Resize
+	3,  // 38: api.v1.capsule.Service.Create:input_type -> api.v1.capsule.CreateRequest
+	5,  // 39: api.v1.capsule.Service.Get:input_type -> api.v1.capsule.GetRequest
+	7,  // 40: api.v1.capsule.Service.Delete:input_type -> api.v1.capsule.DeleteRequest
+	9,  // 41: api.v1.capsule.Service.Logs:input_type -> api.v1.capsule.LogsRequest
+	11, // 42: api.v1.capsule.Service.Update:input_type -> api.v1.capsule.UpdateRequest
+	13, // 43: api.v1.capsule.Service.List:input_type -> api.v1.capsule.ListRequest
+	15, // 44: api.v1.capsule.Service.CreateBuild:input_type -> api.v1.capsule.CreateBuildRequest
+	17, // 45: api.v1.capsule.Service.ListBuilds:input_type -> api.v1.capsule.ListBuildsRequest
+	19, // 46: api.v1.capsule.Service.DeleteBuild:input_type -> api.v1.capsule.DeleteBuildRequest
+	21, // 47: api.v1.capsule.Service.Deploy:input_type -> api.v1.capsule.DeployRequest
+	23, // 48: api.v1.capsule.Service.ListInstances:input_type -> api.v1.capsule.ListInstancesRequest
+	29, // 49: api.v1.capsule.Service.RestartInstance:input_type -> api.v1.capsule.RestartInstanceRequest
+	33, // 50: api.v1.capsule.Service.GetRollout:input_type -> api.v1.capsule.GetRolloutRequest
+	31, // 51: api.v1.capsule.Service.ListRollouts:input_type -> api.v1.capsule.ListRolloutsRequest
+	35, // 52: api.v1.capsule.Service.AbortRollout:input_type -> api.v1.capsule.AbortRolloutRequest
+	37, // 53: api.v1.capsule.Service.ListEvents:input_type -> api.v1.capsule.ListEventsRequest
+	39, // 54: api.v1.capsule.Service.CapsuleMetrics:input_type -> api.v1.capsule.CapsuleMetricsRequest
+	25, // 55: api.v1.capsule.Service.GetInstanceStatus:input_type -> api.v1.capsule.GetInstanceStatusRequest
+	27, // 56: api.v1.capsule.Service.ListInstanceStatuses:input_type -> api.v1.capsule.ListInstanceStatusesRequest
+	1,  // 57: api.v1.capsule.Service.Execute:input_type -> api.v1.capsule.ExecuteRequest
+	41, // 58: api.v1.capsule.Service.GetCustomInstanceMetrics:input_type -> api.v1.capsule.GetCustomInstanceMetricsRequest
+	44, // 59: api.v1.capsule.Service.GetJobExecutions:input_type -> api.v1.capsule.GetJobExecutionsRequest
+	4,  // 60: api.v1.capsule.Service.Create:output_type -> api.v1.capsule.CreateResponse
+	6,  // 61: api.v1.capsule.Service.Get:output_type -> api.v1.capsule.GetResponse
+	8,  // 62: api.v1.capsule.Service.Delete:output_type -> api.v1.capsule.DeleteResponse
+	10, // 63: api.v1.capsule.Service.Logs:output_type -> api.v1.capsule.LogsResponse
+	12, // 64: api.v1.capsule.Service.Update:output_type -> api.v1.capsule.UpdateResponse
+	14, // 65: api.v1.capsule.Service.List:output_type -> api.v1.capsule.ListResponse
+	16, // 66: api.v1.capsule.Service.CreateBuild:output_type -> api.v1.capsule.CreateBuildResponse
+	18, // 67: api.v1.capsule.Service.ListBuilds:output_type -> api.v1.capsule.ListBuildsResponse
+	20, // 68: api.v1.capsule.Service.DeleteBuild:output_type -> api.v1.capsule.DeleteBuildResponse
+	22, // 69: api.v1.capsule.Service.Deploy:output_type -> api.v1.capsule.DeployResponse
+	24, // 70: api.v1.capsule.Service.ListInstances:output_type -> api.v1.capsule.ListInstancesResponse
+	30, // 71: api.v1.capsule.Service.RestartInstance:output_type -> api.v1.capsule.RestartInstanceResponse
+	34, // 72: api.v1.capsule.Service.GetRollout:output_type -> api.v1.capsule.GetRolloutResponse
+	32, // 73: api.v1.capsule.Service.ListRollouts:output_type -> api.v1.capsule.ListRolloutsResponse
+	36, // 74: api.v1.capsule.Service.AbortRollout:output_type -> api.v1.capsule.AbortRolloutResponse
+	38, // 75: api.v1.capsule.Service.ListEvents:output_type -> api.v1.capsule.ListEventsResponse
+	40, // 76: api.v1.capsule.Service.CapsuleMetrics:output_type -> api.v1.capsule.CapsuleMetricsResponse
+	26, // 77: api.v1.capsule.Service.GetInstanceStatus:output_type -> api.v1.capsule.GetInstanceStatusResponse
+	28, // 78: api.v1.capsule.Service.ListInstanceStatuses:output_type -> api.v1.capsule.ListInstanceStatusesResponse
+	2,  // 79: api.v1.capsule.Service.Execute:output_type -> api.v1.capsule.ExecuteResponse
+	42, // 80: api.v1.capsule.Service.GetCustomInstanceMetrics:output_type -> api.v1.capsule.GetCustomInstanceMetricsResponse
+	45, // 81: api.v1.capsule.Service.GetJobExecutions:output_type -> api.v1.capsule.GetJobExecutionsResponse
+	60, // [60:82] is the sub-list for method output_type
+	38, // [38:60] is the sub-list for method input_type
+	38, // [38:38] is the sub-list for extension type_name
+	38, // [38:38] is the sub-list for extension extendee
+	0,  // [0:38] is the sub-list for field type_name
 }
 
 func init() { file_api_v1_capsule_service_proto_init() }
@@ -4311,7 +4353,7 @@ func file_api_v1_capsule_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_capsule_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   49,
+			NumMessages:   50,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
