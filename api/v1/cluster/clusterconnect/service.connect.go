@@ -35,18 +35,23 @@ const (
 const (
 	// ServiceGetConfigProcedure is the fully-qualified name of the Service's GetConfig RPC.
 	ServiceGetConfigProcedure = "/api.v1.cluster.Service/GetConfig"
+	// ServiceGetConfigsProcedure is the fully-qualified name of the Service's GetConfigs RPC.
+	ServiceGetConfigsProcedure = "/api.v1.cluster.Service/GetConfigs"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor         = cluster.File_api_v1_cluster_service_proto.Services().ByName("Service")
-	serviceGetConfigMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetConfig")
+	serviceServiceDescriptor          = cluster.File_api_v1_cluster_service_proto.Services().ByName("Service")
+	serviceGetConfigMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetConfig")
+	serviceGetConfigsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetConfigs")
 )
 
 // ServiceClient is a client for the api.v1.cluster.Service service.
 type ServiceClient interface {
 	// GetConfig returns the config for the cluster
 	GetConfig(context.Context, *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error)
+	// GetConfigs returns the configs for all clusters
+	GetConfigs(context.Context, *connect.Request[cluster.GetConfigsRequest]) (*connect.Response[cluster.GetConfigsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.cluster.Service service. By default, it uses
@@ -65,12 +70,19 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetConfigMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getConfigs: connect.NewClient[cluster.GetConfigsRequest, cluster.GetConfigsResponse](
+			httpClient,
+			baseURL+ServiceGetConfigsProcedure,
+			connect.WithSchema(serviceGetConfigsMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	getConfig *connect.Client[cluster.GetConfigRequest, cluster.GetConfigResponse]
+	getConfig  *connect.Client[cluster.GetConfigRequest, cluster.GetConfigResponse]
+	getConfigs *connect.Client[cluster.GetConfigsRequest, cluster.GetConfigsResponse]
 }
 
 // GetConfig calls api.v1.cluster.Service.GetConfig.
@@ -78,10 +90,17 @@ func (c *serviceClient) GetConfig(ctx context.Context, req *connect.Request[clus
 	return c.getConfig.CallUnary(ctx, req)
 }
 
+// GetConfigs calls api.v1.cluster.Service.GetConfigs.
+func (c *serviceClient) GetConfigs(ctx context.Context, req *connect.Request[cluster.GetConfigsRequest]) (*connect.Response[cluster.GetConfigsResponse], error) {
+	return c.getConfigs.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.cluster.Service service.
 type ServiceHandler interface {
 	// GetConfig returns the config for the cluster
 	GetConfig(context.Context, *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error)
+	// GetConfigs returns the configs for all clusters
+	GetConfigs(context.Context, *connect.Request[cluster.GetConfigsRequest]) (*connect.Response[cluster.GetConfigsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -96,10 +115,18 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetConfigMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetConfigsHandler := connect.NewUnaryHandler(
+		ServiceGetConfigsProcedure,
+		svc.GetConfigs,
+		connect.WithSchema(serviceGetConfigsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.cluster.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceGetConfigProcedure:
 			serviceGetConfigHandler.ServeHTTP(w, r)
+		case ServiceGetConfigsProcedure:
+			serviceGetConfigsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -111,4 +138,8 @@ type UnimplementedServiceHandler struct{}
 
 func (UnimplementedServiceHandler) GetConfig(context.Context, *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.cluster.Service.GetConfig is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetConfigs(context.Context, *connect.Request[cluster.GetConfigsRequest]) (*connect.Response[cluster.GetConfigsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.cluster.Service.GetConfigs is not implemented"))
 }
