@@ -21,13 +21,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// The plan for a rig installation
 type Plan int32
 
 const (
-	Plan_PLAN_UNSPECIFIED Plan = 0
-	Plan_PLAN_FREE        Plan = 1
-	Plan_PLAN_TEAM        Plan = 2
-	Plan_PLAN_ENTERPRISE  Plan = 3
+	Plan_PLAN_UNSPECIFIED Plan = 0 // Unspecified / unactivated plan.
+	Plan_PLAN_FREE        Plan = 1 // Free tier.
+	Plan_PLAN_TEAM        Plan = 2 // Team / Pro tier.
+	Plan_PLAN_ENTERPRISE  Plan = 3 // Enterprise tier.
 )
 
 // Enum value maps for Plan.
@@ -73,16 +74,17 @@ func (Plan) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_project_project_proto_rawDescGZIP(), []int{0}
 }
 
+// The top most model that capsules etc belong to.
 type Project struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ProjectId      string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	InstallationId string                 `protobuf:"bytes,5,opt,name=installation_id,json=installationId,proto3" json:"installation_id,omitempty"`
+	ProjectId      string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`                // The unique id of the project.
+	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`                                           // Deprecated: Name of the project.
+	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                // When the project was created.
+	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                // When the project was last updated.
+	InstallationId string                 `protobuf:"bytes,5,opt,name=installation_id,json=installationId,proto3" json:"installation_id,omitempty"` // The installation id of the project.
 }
 
 func (x *Project) Reset() {
@@ -152,6 +154,7 @@ func (x *Project) GetInstallationId() string {
 	return ""
 }
 
+// Update msg for a project.
 type Update struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -214,7 +217,7 @@ type isUpdate_Field interface {
 }
 
 type Update_Name struct {
-	Name string `protobuf:"bytes,1,opt,name=name,proto3,oneof"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3,oneof"` // Update the name of the project.
 }
 
 func (*Update_Name) isUpdate_Field() {}

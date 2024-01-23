@@ -61,8 +61,11 @@ var (
 
 // ServiceClient is a client for the api.v1.build.Service service.
 type ServiceClient interface {
+	// Get Information about an image in a build.
 	GetImageInfo(context.Context, *connect.Request[build.GetImageInfoRequest]) (*connect.Response[build.GetImageInfoResponse], error)
+	// Get Information about a docker registry repository.
 	GetRepositoryInfo(context.Context, *connect.Request[build.GetRepositoryInfoRequest]) (*connect.Response[build.GetRepositoryInfoResponse], error)
+	// Get a build.
 	Get(context.Context, *connect.Request[build.GetRequest]) (*connect.Response[build.GetResponse], error)
 	// Create a new build.
 	// Builds are immutable and cannot change. Create a new build to make
@@ -165,8 +168,11 @@ func (c *serviceClient) Delete(ctx context.Context, req *connect.Request[build.D
 
 // ServiceHandler is an implementation of the api.v1.build.Service service.
 type ServiceHandler interface {
+	// Get Information about an image in a build.
 	GetImageInfo(context.Context, *connect.Request[build.GetImageInfoRequest]) (*connect.Response[build.GetImageInfoResponse], error)
+	// Get Information about a docker registry repository.
 	GetRepositoryInfo(context.Context, *connect.Request[build.GetRepositoryInfoRequest]) (*connect.Response[build.GetRepositoryInfoResponse], error)
+	// Get a build.
 	Get(context.Context, *connect.Request[build.GetRequest]) (*connect.Response[build.GetResponse], error)
 	// Create a new build.
 	// Builds are immutable and cannot change. Create a new build to make

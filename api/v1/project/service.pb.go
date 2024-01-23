@@ -23,14 +23,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// The request of a Namespace.Create RPC
+// The request to create a project.
 type CreateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Initializers []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"`
-	ProjectId    string    `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	Initializers []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"`            // The initializers of the project.
+	ProjectId    string    `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // ID of the project to create.
 }
 
 func (x *CreateRequest) Reset() {
@@ -79,13 +79,13 @@ func (x *CreateRequest) GetProjectId() string {
 	return ""
 }
 
-// The response of a Namespace.Create RPC
+// The response to Create a project.
 type CreateResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Project *Project `protobuf:"bytes,1,opt,name=project,proto3" json:"project,omitempty"`
+	Project *Project `protobuf:"bytes,1,opt,name=project,proto3" json:"project,omitempty"` // The created project.
 }
 
 func (x *CreateResponse) Reset() {
@@ -127,13 +127,13 @@ func (x *CreateResponse) GetProject() *Project {
 	return nil
 }
 
-// The request of a Namespace.Delete RPC
+// Request to delete a project.
 type DeleteRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // Id of the project to delete
 }
 
 func (x *DeleteRequest) Reset() {
@@ -175,7 +175,7 @@ func (x *DeleteRequest) GetProjectId() string {
 	return ""
 }
 
-// The response of a Namespace.Delete RPC
+// Empty response for deleting a project.
 type DeleteResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -214,14 +214,14 @@ func (*DeleteResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_project_service_proto_rawDescGZIP(), []int{3}
 }
 
-// The request of a Namespace.Update RPC
+// Update the name field of a project.
 type UpdateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Updates   []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"`
-	ProjectId string    `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	Updates   []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"`                      // the updates to apply.
+	ProjectId string    `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // The project to update.
 }
 
 func (x *UpdateRequest) Reset() {
@@ -270,7 +270,7 @@ func (x *UpdateRequest) GetProjectId() string {
 	return ""
 }
 
-// The response of a Namespace.Update RPC
+// Empty response for updating a project.
 type UpdateResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -309,13 +309,13 @@ func (*UpdateResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_project_service_proto_rawDescGZIP(), []int{5}
 }
 
-// The request of a Namespace.Get RPC
+// Request for getting a project.
 type GetRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // The project to get.
 }
 
 func (x *GetRequest) Reset() {
@@ -357,13 +357,13 @@ func (x *GetRequest) GetProjectId() string {
 	return ""
 }
 
-// The response of a Namespace.Get RPC
+// Response for getting a project.
 type GetResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Project *Project `protobuf:"bytes,1,opt,name=project,proto3" json:"project,omitempty"`
+	Project *Project `protobuf:"bytes,1,opt,name=project,proto3" json:"project,omitempty"` // The retrieved project.
 }
 
 func (x *GetResponse) Reset() {
@@ -405,13 +405,13 @@ func (x *GetResponse) GetProject() *Project {
 	return nil
 }
 
-// The request of a Namespace.List RPC
+// Request for listing projects.
 type ListRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"` // Pagination options.
 }
 
 func (x *ListRequest) Reset() {
@@ -453,13 +453,14 @@ func (x *ListRequest) GetPagination() *model.Pagination {
 	return nil
 }
 
+// Response for listing projects.
 type ListResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Projects []*Project `protobuf:"bytes,1,rep,name=projects,proto3" json:"projects,omitempty"`
-	Total    int64      `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Projects []*Project `protobuf:"bytes,1,rep,name=projects,proto3" json:"projects,omitempty"` // The retrieved projects.
+	Total    int64      `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`      // Total number of projects.
 }
 
 func (x *ListResponse) Reset() {
@@ -508,13 +509,13 @@ func (x *ListResponse) GetTotal() int64 {
 	return 0
 }
 
-// The request of a Namespace.PublicKey RPC
+// Request to get the public key of a project.
 type PublicKeyRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // The project to get the key from.
 }
 
 func (x *PublicKeyRequest) Reset() {
@@ -556,14 +557,13 @@ func (x *PublicKeyRequest) GetProjectId() string {
 	return ""
 }
 
-// The response of a Namespace.PublicKey RPC
+// Response for getting a projects public key.
 type PublicKeyResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The id of the project
-	PublicKey string `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
+	PublicKey string `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"` // the retrieved public key.
 }
 
 func (x *PublicKeyResponse) Reset() {
@@ -605,12 +605,13 @@ func (x *PublicKeyResponse) GetPublicKey() string {
 	return ""
 }
 
+// Request to get the license information of the Rig installation.
 type GetLicenseInfoRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // Deprecated: Only the Rig-Project has license information.
 }
 
 func (x *GetLicenseInfoRequest) Reset() {
@@ -652,13 +653,14 @@ func (x *GetLicenseInfoRequest) GetProjectId() string {
 	return ""
 }
 
+// Response for getting the license information of the Rig installation.
 type GetLicenseInfoResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Plan      Plan                   `protobuf:"varint,1,opt,name=plan,proto3,enum=api.v1.project.Plan" json:"plan,omitempty"`
-	ExpiresAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	Plan      Plan                   `protobuf:"varint,1,opt,name=plan,proto3,enum=api.v1.project.Plan" json:"plan,omitempty"`  // The plan of the rig installation.
+	ExpiresAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"` // The expiration date of the license.
 }
 
 func (x *GetLicenseInfoResponse) Reset() {
@@ -707,14 +709,15 @@ func (x *GetLicenseInfoResponse) GetExpiresAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// Request to get custom metrics for a project and environment.
 type GetCustomObjectMetricsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ObjectReference *capsule.ObjectReference `protobuf:"bytes,1,opt,name=object_reference,json=objectReference,proto3" json:"object_reference,omitempty"`
-	ProjectId       string                   `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	EnvironmentId   string                   `protobuf:"bytes,3,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
+	ObjectReference *capsule.ObjectReference `protobuf:"bytes,1,opt,name=object_reference,json=objectReference,proto3" json:"object_reference,omitempty"` // The object to get metrics for.
+	ProjectId       string                   `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`                   // The project to get metrics for.
+	EnvironmentId   string                   `protobuf:"bytes,3,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`       // The environment to get metrics for.
 }
 
 func (x *GetCustomObjectMetricsRequest) Reset() {
@@ -770,14 +773,15 @@ func (x *GetCustomObjectMetricsRequest) GetEnvironmentId() string {
 	return ""
 }
 
+// Response for getting custom metrics for a project and environment.
 type GetCustomObjectMetricsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Metrics       []*capsule.Metric `protobuf:"bytes,1,rep,name=metrics,proto3" json:"metrics,omitempty"`
-	ProjectId     string            `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	EnvironmentId string            `protobuf:"bytes,3,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
+	Metrics       []*capsule.Metric `protobuf:"bytes,1,rep,name=metrics,proto3" json:"metrics,omitempty"`                                  // The metrics for the given object.
+	ProjectId     string            `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project the metrics are for.
+	EnvironmentId string            `protobuf:"bytes,3,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment the metrics are for.
 }
 
 func (x *GetCustomObjectMetricsResponse) Reset() {
@@ -833,13 +837,14 @@ func (x *GetCustomObjectMetricsResponse) GetEnvironmentId() string {
 	return ""
 }
 
+// Model of a kubernetes object.
 type KubernetesObject struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Kind string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
-	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Kind string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"` // Type / kind of the object.
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"` // Name of the object.
 }
 
 func (x *KubernetesObject) Reset() {
@@ -888,15 +893,16 @@ func (x *KubernetesObject) GetName() string {
 	return ""
 }
 
+// Request to get all objects of a given kind in a project and environment.
 type GetObjectsByKindRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Kind          string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
-	ApiVersion    string `protobuf:"bytes,2,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
-	ProjectId     string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
+	Kind          string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`                                        // The kind of the objects to get.
+	ApiVersion    string `protobuf:"bytes,2,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`          // The api version of the objects to get.
+	ProjectId     string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project to get the objects for.
+	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment to get the objects for.
 }
 
 func (x *GetObjectsByKindRequest) Reset() {
@@ -959,12 +965,13 @@ func (x *GetObjectsByKindRequest) GetEnvironmentId() string {
 	return ""
 }
 
+// Response for getting all objects of a given kind in a project and environment.
 type GetObjectsByKindResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Objects []*KubernetesObject `protobuf:"bytes,1,rep,name=objects,proto3" json:"objects,omitempty"`
+	Objects []*KubernetesObject `protobuf:"bytes,1,rep,name=objects,proto3" json:"objects,omitempty"` // The objects of the given kind.
 }
 
 func (x *GetObjectsByKindResponse) Reset() {

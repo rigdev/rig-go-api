@@ -22,14 +22,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Different states a job execution can be in
 type JobState int32
 
 const (
-	JobState_JOB_STATE_UNSPECIFIED JobState = 0
-	JobState_JOB_STATE_ONGOING     JobState = 1
-	JobState_JOB_STATE_COMPLETED   JobState = 2
-	JobState_JOB_STATE_FAILED      JobState = 3
-	JobState_JOB_STATE_TERMINATED  JobState = 4
+	JobState_JOB_STATE_UNSPECIFIED JobState = 0 // Default value.
+	JobState_JOB_STATE_ONGOING     JobState = 1 // The job is running.
+	JobState_JOB_STATE_COMPLETED   JobState = 2 // The job completed successfully.
+	JobState_JOB_STATE_FAILED      JobState = 3 // The job failed.
+	JobState_JOB_STATE_TERMINATED  JobState = 4 // The job was terminated.
 )
 
 // Enum value maps for JobState.
@@ -77,21 +78,22 @@ func (JobState) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_job_proto_rawDescGZIP(), []int{0}
 }
 
+// An execution of a cron job.
 type JobExecution struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	JobName       string                 `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	FinishedAt    *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"`
-	State         JobState               `protobuf:"varint,4,opt,name=state,proto3,enum=api.v1.capsule.JobState" json:"state,omitempty"`
-	Retries       int32                  `protobuf:"varint,5,opt,name=retries,proto3" json:"retries,omitempty"`
-	RolloutId     uint64                 `protobuf:"varint,6,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
-	CapsuleId     string                 `protobuf:"bytes,7,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
-	ProjectId     string                 `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	ExecutionId   string                 `protobuf:"bytes,9,opt,name=execution_id,json=executionId,proto3" json:"execution_id,omitempty"`
-	EnvironmentId string                 `protobuf:"bytes,10,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
+	JobName       string                 `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`                    // Name of the job.
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`              // When the job started running.
+	FinishedAt    *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"`           // When the job finished.
+	State         JobState               `protobuf:"varint,4,opt,name=state,proto3,enum=api.v1.capsule.JobState" json:"state,omitempty"`         // The state of the job.
+	Retries       int32                  `protobuf:"varint,5,opt,name=retries,proto3" json:"retries,omitempty"`                                  // Number of retries.
+	RolloutId     uint64                 `protobuf:"varint,6,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`             // ID of the rollout.
+	CapsuleId     string                 `protobuf:"bytes,7,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`              // ID of the capsule.
+	ProjectId     string                 `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`              // ID of the project.
+	ExecutionId   string                 `protobuf:"bytes,9,opt,name=execution_id,json=executionId,proto3" json:"execution_id,omitempty"`        // ID of the execution.
+	EnvironmentId string                 `protobuf:"bytes,10,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // ID of the environment.
 }
 
 func (x *JobExecution) Reset() {
@@ -196,15 +198,18 @@ func (x *JobExecution) GetEnvironmentId() string {
 	return ""
 }
 
+// Specification for a cron job.
 type CronJob struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	JobName    string               `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`
-	Schedule   string               `protobuf:"bytes,2,opt,name=schedule,proto3" json:"schedule,omitempty"`
-	MaxRetries int32                `protobuf:"varint,3,opt,name=max_retries,json=maxRetries,proto3" json:"max_retries,omitempty"`
-	Timeout    *durationpb.Duration `protobuf:"bytes,4,opt,name=timeout,proto3" json:"timeout,omitempty"`
+	JobName    string               `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`           // Name of the job.
+	Schedule   string               `protobuf:"bytes,2,opt,name=schedule,proto3" json:"schedule,omitempty"`                        // Cron schedule.
+	MaxRetries int32                `protobuf:"varint,3,opt,name=max_retries,json=maxRetries,proto3" json:"max_retries,omitempty"` // Maximum number of retries.
+	Timeout    *durationpb.Duration `protobuf:"bytes,4,opt,name=timeout,proto3" json:"timeout,omitempty"`                          // Maximum duration of the job.
+	// The type of the job
+	//
 	// Types that are assignable to JobType:
 	//
 	//	*CronJob_Url
@@ -298,25 +303,26 @@ type isCronJob_JobType interface {
 }
 
 type CronJob_Url struct {
-	Url *JobURL `protobuf:"bytes,5,opt,name=url,proto3,oneof"`
+	Url *JobURL `protobuf:"bytes,5,opt,name=url,proto3,oneof"` // URL job.
 }
 
 type CronJob_Command struct {
-	Command *JobCommand `protobuf:"bytes,6,opt,name=command,proto3,oneof"`
+	Command *JobCommand `protobuf:"bytes,6,opt,name=command,proto3,oneof"` // Command job.
 }
 
 func (*CronJob_Url) isCronJob_JobType() {}
 
 func (*CronJob_Command) isCronJob_JobType() {}
 
+// Run a job by making a HTTP request to a URL.
 type JobURL struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Port            uint64            `protobuf:"varint,1,opt,name=port,proto3" json:"port,omitempty"`
-	Path            string            `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
-	QueryParameters map[string]string `protobuf:"bytes,3,rep,name=query_parameters,json=queryParameters,proto3" json:"query_parameters,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Port            uint64            `protobuf:"varint,1,opt,name=port,proto3" json:"port,omitempty"`                                                                                                                                     // Port to make the request to.
+	Path            string            `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`                                                                                                                                      // Path to make the request to.
+	QueryParameters map[string]string `protobuf:"bytes,3,rep,name=query_parameters,json=queryParameters,proto3" json:"query_parameters,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // Query parameters to add to the request.
 }
 
 func (x *JobURL) Reset() {
@@ -372,13 +378,14 @@ func (x *JobURL) GetQueryParameters() map[string]string {
 	return nil
 }
 
+// Run a job by running a command in an instance of a capsule
 type JobCommand struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Command string   `protobuf:"bytes,1,opt,name=command,proto3" json:"command,omitempty"`
-	Args    []string `protobuf:"bytes,2,rep,name=args,proto3" json:"args,omitempty"`
+	Command string   `protobuf:"bytes,1,opt,name=command,proto3" json:"command,omitempty"` // Command to run.
+	Args    []string `protobuf:"bytes,2,rep,name=args,proto3" json:"args,omitempty"`       // Arguments to pass to the command.
 }
 
 func (x *JobCommand) Reset() {

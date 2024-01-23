@@ -21,12 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Request for listing available environments.
 type ListRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"` // Pagination options.
 }
 
 func (x *ListRequest) Reset() {
@@ -68,13 +69,14 @@ func (x *ListRequest) GetPagination() *model.Pagination {
 	return nil
 }
 
+// Response for listing available environments.
 type ListResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Environments    []*Environment `protobuf:"bytes,1,rep,name=environments,proto3" json:"environments,omitempty"`
-	PlatformVersion string         `protobuf:"bytes,2,opt,name=platform_version,json=platformVersion,proto3" json:"platform_version,omitempty"`
+	Environments    []*Environment `protobuf:"bytes,1,rep,name=environments,proto3" json:"environments,omitempty"`                              // List of environments.
+	PlatformVersion string         `protobuf:"bytes,2,opt,name=platform_version,json=platformVersion,proto3" json:"platform_version,omitempty"` // The version of the Rig-platform.
 }
 
 func (x *ListResponse) Reset() {

@@ -21,13 +21,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Different states a stage can be in.
 type StageState int32
 
 const (
-	StageState_STAGE_STATE_UNSPECIFIED StageState = 0
-	StageState_STAGE_STATE_DEPLOYING   StageState = 1
-	StageState_STAGE_STATE_RUNNING     StageState = 2
-	StageState_STAGE_STATE_STOPPED     StageState = 3
+	StageState_STAGE_STATE_UNSPECIFIED StageState = 0 // The state is unspecified.
+	StageState_STAGE_STATE_DEPLOYING   StageState = 1 // The stage is deploying.
+	StageState_STAGE_STATE_RUNNING     StageState = 2 // The stage is running.
+	StageState_STAGE_STATE_STOPPED     StageState = 3 // The stage is stopped.
 )
 
 // Enum value maps for StageState.
@@ -73,13 +74,14 @@ func (StageState) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_rollout_status_proto_rawDescGZIP(), []int{0}
 }
 
+// Different states a step can be in.
 type StepState int32
 
 const (
-	StepState_STEP_STATE_UNSPECIFIED StepState = 0
-	StepState_STEP_STATE_ONGOING     StepState = 1
-	StepState_STEP_STATE_FAILED      StepState = 2
-	StepState_STEP_STATE_DONE        StepState = 3
+	StepState_STEP_STATE_UNSPECIFIED StepState = 0 // The state is unspecified.
+	StepState_STEP_STATE_ONGOING     StepState = 1 // The step is ongoing.
+	StepState_STEP_STATE_FAILED      StepState = 2 // The step failed.
+	StepState_STEP_STATE_DONE        StepState = 3 // The step is done.
 )
 
 // Enum value maps for StepState.
@@ -125,15 +127,16 @@ func (StepState) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_rollout_status_proto_rawDescGZIP(), []int{1}
 }
 
+// Different states a rollout can be in.
 type State int32
 
 const (
-	State_STATE_UNSPECIFIED       State = 0
-	State_STATE_PREPARING         State = 1
-	State_STATE_CONFIGURE         State = 2
-	State_STATE_RESOURCE_CREATION State = 3
-	State_STATE_RUNNING           State = 4
-	State_STATE_STOPPED           State = 5
+	State_STATE_UNSPECIFIED       State = 0 // The state is unspecified.
+	State_STATE_PREPARING         State = 1 // The rollout is preparing.
+	State_STATE_CONFIGURE         State = 2 // The rollout is configuring.
+	State_STATE_RESOURCE_CREATION State = 3 // The rollout is creating resources.
+	State_STATE_RUNNING           State = 4 // The rollout is running.
+	State_STATE_STOPPED           State = 5 // The rollout is stopped.
 )
 
 // Enum value maps for State.
@@ -183,14 +186,15 @@ func (State) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_rollout_status_proto_rawDescGZIP(), []int{2}
 }
 
+// Different result of a rollout.
 type Result int32
 
 const (
-	Result_RESULT_UNSPECIFIED Result = 0
-	Result_RESULT_REPLACED    Result = 1
-	Result_RESULT_FAILED      Result = 2
-	Result_RESULT_ABORTED     Result = 3
-	Result_RESULT_ROLLBACK    Result = 4
+	Result_RESULT_UNSPECIFIED Result = 0 // The result is unspecified.
+	Result_RESULT_REPLACED    Result = 1 // The rollout has been replaced.
+	Result_RESULT_FAILED      Result = 2 // The rollout has failed.
+	Result_RESULT_ABORTED     Result = 3 // The rollout has been aborted.
+	Result_RESULT_ROLLBACK    Result = 4 // The rollout has been rolled back.
 )
 
 // Enum value maps for Result.
@@ -238,14 +242,15 @@ func (Result) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_rollout_status_proto_rawDescGZIP(), []int{3}
 }
 
+// The result of a configuration step.
 type ConfigureResult int32
 
 const (
-	ConfigureResult_CONFIGURE_RESULT_UNSPECIFIED ConfigureResult = 0
-	ConfigureResult_CONFIGURE_RESULT_CREATED     ConfigureResult = 1
-	ConfigureResult_CONFIGURE_RESULT_UPDATED     ConfigureResult = 2
-	ConfigureResult_CONFIGURE_RESULT_NO_CHANGE   ConfigureResult = 3
-	ConfigureResult_CONFIGURE_RESULT_DELETED     ConfigureResult = 4
+	ConfigureResult_CONFIGURE_RESULT_UNSPECIFIED ConfigureResult = 0 // The result is unspecified.
+	ConfigureResult_CONFIGURE_RESULT_CREATED     ConfigureResult = 1 // The resource is to be created.
+	ConfigureResult_CONFIGURE_RESULT_UPDATED     ConfigureResult = 2 // The resource is to be updated.
+	ConfigureResult_CONFIGURE_RESULT_NO_CHANGE   ConfigureResult = 3 // The resource has no change.
+	ConfigureResult_CONFIGURE_RESULT_DELETED     ConfigureResult = 4 // The resource is to be deleted.
 )
 
 // Enum value maps for ConfigureResult.
@@ -293,17 +298,17 @@ func (ConfigureResult) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_rollout_status_proto_rawDescGZIP(), []int{4}
 }
 
-// Status is a representation of the current state of a rollout
+// Status is a representation of the current state of a rollout.
 type Status struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RolloutId uint64                 `protobuf:"varint,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
-	State     State                  `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.rollout.State" json:"state,omitempty"`
-	Stages    *Stages                `protobuf:"bytes,3,opt,name=stages,proto3" json:"stages,omitempty"`
-	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	Result    Result                 `protobuf:"varint,5,opt,name=result,proto3,enum=api.v1.capsule.rollout.Result" json:"result,omitempty"`
+	RolloutId uint64                 `protobuf:"varint,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`             // The ID of the rollout.
+	State     State                  `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.rollout.State" json:"state,omitempty"`    // The current state of the rollout.
+	Stages    *Stages                `protobuf:"bytes,3,opt,name=stages,proto3" json:"stages,omitempty"`                                     // The stages of the rollout.
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`              // The last time the rollout was updated.
+	Result    Result                 `protobuf:"varint,5,opt,name=result,proto3,enum=api.v1.capsule.rollout.Result" json:"result,omitempty"` // The result of the rollout.
 }
 
 func (x *Status) Reset() {
@@ -373,15 +378,16 @@ func (x *Status) GetResult() Result {
 	return Result_RESULT_UNSPECIFIED
 }
 
+// Information about a stage of a rollout.
 type StageInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	State     StageState             `protobuf:"varint,3,opt,name=state,proto3,enum=api.v1.capsule.rollout.StageState" json:"state,omitempty"`
-	StartedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	Name      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                                           // Name of the stage.
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                // The last time the stage was updated.
+	State     StageState             `protobuf:"varint,3,opt,name=state,proto3,enum=api.v1.capsule.rollout.StageState" json:"state,omitempty"` // The current state of the stage.
+	StartedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`                // The time the stage started.
 }
 
 func (x *StageInfo) Reset() {
@@ -444,12 +450,13 @@ func (x *StageInfo) GetStartedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// A generic step of a stage.
 type GenericStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info *StepInfo `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
+	Info *StepInfo `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"` // Step information.
 }
 
 func (x *GenericStep) Reset() {
@@ -491,16 +498,17 @@ func (x *GenericStep) GetInfo() *StepInfo {
 	return nil
 }
 
+// Information about a step of a stage.
 type StepInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Message   string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	State     StepState              `protobuf:"varint,4,opt,name=state,proto3,enum=api.v1.capsule.rollout.StepState" json:"state,omitempty"`
-	StartedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	Name      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                                          // Name of the step.
+	Message   string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`                                    // Messages in the step.
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`               // The last time the step was updated.
+	State     StepState              `protobuf:"varint,4,opt,name=state,proto3,enum=api.v1.capsule.rollout.StepState" json:"state,omitempty"` // The current state of the step.
+	StartedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`               // The time the step started.
 }
 
 func (x *StepInfo) Reset() {
@@ -570,14 +578,15 @@ func (x *StepInfo) GetStartedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// The three stages of a rollout
 type Stages struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Configure        *ConfigureStage        `protobuf:"bytes,1,opt,name=configure,proto3" json:"configure,omitempty"`
-	ResourceCreation *ResourceCreationStage `protobuf:"bytes,2,opt,name=resource_creation,json=resourceCreation,proto3" json:"resource_creation,omitempty"`
-	Running          *RunningStage          `protobuf:"bytes,3,opt,name=running,proto3" json:"running,omitempty"`
+	Configure        *ConfigureStage        `protobuf:"bytes,1,opt,name=configure,proto3" json:"configure,omitempty"`                                       // The configure stage.
+	ResourceCreation *ResourceCreationStage `protobuf:"bytes,2,opt,name=resource_creation,json=resourceCreation,proto3" json:"resource_creation,omitempty"` // The resource creation stage.
+	Running          *RunningStage          `protobuf:"bytes,3,opt,name=running,proto3" json:"running,omitempty"`                                           // The running stage.
 }
 
 func (x *Stages) Reset() {
@@ -633,13 +642,14 @@ func (x *Stages) GetRunning() *RunningStage {
 	return nil
 }
 
+// The configure stage.
 type ConfigureStage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info  *StageInfo       `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	Steps []*ConfigureStep `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"`
+	Info  *StageInfo       `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`   // Stage information.
+	Steps []*ConfigureStep `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"` // The steps of the stage.
 }
 
 func (x *ConfigureStage) Reset() {
@@ -688,6 +698,7 @@ func (x *ConfigureStage) GetSteps() []*ConfigureStep {
 	return nil
 }
 
+// A step of the configure stage.
 type ConfigureStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -774,19 +785,19 @@ type isConfigureStep_Step interface {
 }
 
 type ConfigureStep_Generic struct {
-	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"`
+	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"` // A generic step.
 }
 
 type ConfigureStep_ConfigureCapsule struct {
-	ConfigureCapsule *ConfigureCapsuleStep `protobuf:"bytes,2,opt,name=configure_capsule,json=configureCapsule,proto3,oneof"`
+	ConfigureCapsule *ConfigureCapsuleStep `protobuf:"bytes,2,opt,name=configure_capsule,json=configureCapsule,proto3,oneof"` // A step configuring a capsule.
 }
 
 type ConfigureStep_ConfigureFile struct {
-	ConfigureFile *ConfigureFileStep `protobuf:"bytes,3,opt,name=configure_file,json=configureFile,proto3,oneof"`
+	ConfigureFile *ConfigureFileStep `protobuf:"bytes,3,opt,name=configure_file,json=configureFile,proto3,oneof"` // A step configuring a file.
 }
 
 type ConfigureStep_ConfigureEnv struct {
-	ConfigureEnv *ConfigureEnvStep `protobuf:"bytes,4,opt,name=configure_env,json=configureEnv,proto3,oneof"`
+	ConfigureEnv *ConfigureEnvStep `protobuf:"bytes,4,opt,name=configure_env,json=configureEnv,proto3,oneof"` // A step configuring an environment.
 }
 
 func (*ConfigureStep_Generic) isConfigureStep_Step() {}
@@ -797,13 +808,14 @@ func (*ConfigureStep_ConfigureFile) isConfigureStep_Step() {}
 
 func (*ConfigureStep_ConfigureEnv) isConfigureStep_Step() {}
 
+// A step configuring a capsule.
 type ConfigureCapsuleStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info  *StepInfo       `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	State ConfigureResult `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.rollout.ConfigureResult" json:"state,omitempty"`
+	Info  *StepInfo       `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`                                                // Step information.
+	State ConfigureResult `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.rollout.ConfigureResult" json:"state,omitempty"` // The state of the step.
 }
 
 func (x *ConfigureCapsuleStep) Reset() {
@@ -852,15 +864,16 @@ func (x *ConfigureCapsuleStep) GetState() ConfigureResult {
 	return ConfigureResult_CONFIGURE_RESULT_UNSPECIFIED
 }
 
+// A step configuring a file.
 type ConfigureFileStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info     *StepInfo       `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	State    ConfigureResult `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.rollout.ConfigureResult" json:"state,omitempty"`
-	Path     string          `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
-	IsSecret bool            `protobuf:"varint,4,opt,name=is_secret,json=isSecret,proto3" json:"is_secret,omitempty"`
+	Info     *StepInfo       `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`                                                // Step information.
+	State    ConfigureResult `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.rollout.ConfigureResult" json:"state,omitempty"` // The result of the file configuration.
+	Path     string          `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`                                                // The path of the file.
+	IsSecret bool            `protobuf:"varint,4,opt,name=is_secret,json=isSecret,proto3" json:"is_secret,omitempty"`                       // Whether the file is a secret.
 }
 
 func (x *ConfigureFileStep) Reset() {
@@ -923,14 +936,15 @@ func (x *ConfigureFileStep) GetIsSecret() bool {
 	return false
 }
 
+// A step configuring an environment.
 type ConfigureEnvStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info     *StepInfo       `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	State    ConfigureResult `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.rollout.ConfigureResult" json:"state,omitempty"`
-	IsSecret bool            `protobuf:"varint,3,opt,name=is_secret,json=isSecret,proto3" json:"is_secret,omitempty"`
+	Info     *StepInfo       `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`                                                // Step information.
+	State    ConfigureResult `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.rollout.ConfigureResult" json:"state,omitempty"` // The result of the environment configuration.
+	IsSecret bool            `protobuf:"varint,3,opt,name=is_secret,json=isSecret,proto3" json:"is_secret,omitempty"`                       // Whether the environment is a secret.
 }
 
 func (x *ConfigureEnvStep) Reset() {
@@ -986,13 +1000,14 @@ func (x *ConfigureEnvStep) GetIsSecret() bool {
 	return false
 }
 
+// The resource creation stage.
 type ResourceCreationStage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info  *StageInfo              `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	Steps []*ResourceCreationStep `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"`
+	Info  *StageInfo              `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`   // Stage information.
+	Steps []*ResourceCreationStep `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"` // The steps of the stage.
 }
 
 func (x *ResourceCreationStage) Reset() {
@@ -1041,6 +1056,7 @@ func (x *ResourceCreationStage) GetSteps() []*ResourceCreationStep {
 	return nil
 }
 
+// A step of the resource creation stage.
 type ResourceCreationStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1111,25 +1127,26 @@ type isResourceCreationStep_Step interface {
 }
 
 type ResourceCreationStep_Generic struct {
-	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"`
+	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"` // A generic step.
 }
 
 type ResourceCreationStep_CreateResource struct {
-	CreateResource *CreateResourceStep `protobuf:"bytes,2,opt,name=create_resource,json=createResource,proto3,oneof"`
+	CreateResource *CreateResourceStep `protobuf:"bytes,2,opt,name=create_resource,json=createResource,proto3,oneof"` // A step creating a resource.
 }
 
 func (*ResourceCreationStep_Generic) isResourceCreationStep_Step() {}
 
 func (*ResourceCreationStep_CreateResource) isResourceCreationStep_Step() {}
 
+// A step creating a resource.
 type CreateResourceStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info *StepInfo `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	Kind string    `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
-	Name string    `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Info *StepInfo `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"` // Step information.
+	Kind string    `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"` // The kind of the resource.
+	Name string    `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"` // The name of the resource.
 }
 
 func (x *CreateResourceStep) Reset() {
@@ -1185,13 +1202,14 @@ func (x *CreateResourceStep) GetName() string {
 	return ""
 }
 
+// The running stage.
 type RunningStage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info  *StageInfo     `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	Steps []*RunningStep `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"`
+	Info  *StageInfo     `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`   // Stage information.
+	Steps []*RunningStep `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"` // The steps of the stage.
 }
 
 func (x *RunningStage) Reset() {
@@ -1240,6 +1258,7 @@ func (x *RunningStage) GetSteps() []*RunningStep {
 	return nil
 }
 
+// A step of the running stage.
 type RunningStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1310,27 +1329,28 @@ type isRunningStep_Step interface {
 }
 
 type RunningStep_Generic struct {
-	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"`
+	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"` // A generic step.
 }
 
 type RunningStep_Instances struct {
-	Instances *InstancesStep `protobuf:"bytes,2,opt,name=instances,proto3,oneof"`
+	Instances *InstancesStep `protobuf:"bytes,2,opt,name=instances,proto3,oneof"` // A step containing information on the instances of the rollout.
 }
 
 func (*RunningStep_Generic) isRunningStep_Step() {}
 
 func (*RunningStep_Instances) isRunningStep_Step() {}
 
+// Information on the instances of the rollout.
 type InstancesStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info            *StepInfo `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	NumUpdated      uint32    `protobuf:"varint,2,opt,name=num_updated,json=numUpdated,proto3" json:"num_updated,omitempty"`
-	NumReady        uint32    `protobuf:"varint,3,opt,name=num_ready,json=numReady,proto3" json:"num_ready,omitempty"`
-	NumStuck        uint32    `protobuf:"varint,4,opt,name=num_stuck,json=numStuck,proto3" json:"num_stuck,omitempty"`
-	NumWrongVersion uint32    `protobuf:"varint,5,opt,name=num_wrong_version,json=numWrongVersion,proto3" json:"num_wrong_version,omitempty"`
+	Info            *StepInfo `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`                                                 // Step information.
+	NumUpdated      uint32    `protobuf:"varint,2,opt,name=num_updated,json=numUpdated,proto3" json:"num_updated,omitempty"`                  // The number of updated instances.
+	NumReady        uint32    `protobuf:"varint,3,opt,name=num_ready,json=numReady,proto3" json:"num_ready,omitempty"`                        // The number of ready instances.
+	NumStuck        uint32    `protobuf:"varint,4,opt,name=num_stuck,json=numStuck,proto3" json:"num_stuck,omitempty"`                        // The number of stuck instances.
+	NumWrongVersion uint32    `protobuf:"varint,5,opt,name=num_wrong_version,json=numWrongVersion,proto3" json:"num_wrong_version,omitempty"` // The number of instances with the wrong version.
 }
 
 func (x *InstancesStep) Reset() {

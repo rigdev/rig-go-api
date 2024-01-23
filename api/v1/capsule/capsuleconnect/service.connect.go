@@ -130,10 +130,11 @@ type ServiceClient interface {
 	ListRollouts(context.Context, *connect.Request[capsule.ListRolloutsRequest]) (*connect.Response[capsule.ListRolloutsResponse], error)
 	// Abort the rollout.
 	AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error)
+	// List capsule events.
 	ListEvents(context.Context, *connect.Request[capsule.ListEventsRequest]) (*connect.Response[capsule.ListEventsResponse], error)
 	// Get metrics for a capsule
 	CapsuleMetrics(context.Context, *connect.Request[capsule.CapsuleMetricsRequest]) (*connect.Response[capsule.CapsuleMetricsResponse], error)
-	// GetInstanceStatus returns the current status for the given instance
+	// GetInstanceStatus returns the current status for the given instance.
 	GetInstanceStatus(context.Context, *connect.Request[capsule.GetInstanceStatusRequest]) (*connect.Response[capsule.GetInstanceStatusResponse], error)
 	// ListInstanceStatuses lists the status of all instances.
 	ListInstanceStatuses(context.Context, *connect.Request[capsule.ListInstanceStatusesRequest]) (*connect.Response[capsule.ListInstanceStatusesResponse], error)
@@ -419,10 +420,11 @@ type ServiceHandler interface {
 	ListRollouts(context.Context, *connect.Request[capsule.ListRolloutsRequest]) (*connect.Response[capsule.ListRolloutsResponse], error)
 	// Abort the rollout.
 	AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error)
+	// List capsule events.
 	ListEvents(context.Context, *connect.Request[capsule.ListEventsRequest]) (*connect.Response[capsule.ListEventsResponse], error)
 	// Get metrics for a capsule
 	CapsuleMetrics(context.Context, *connect.Request[capsule.CapsuleMetricsRequest]) (*connect.Response[capsule.CapsuleMetricsResponse], error)
-	// GetInstanceStatus returns the current status for the given instance
+	// GetInstanceStatus returns the current status for the given instance.
 	GetInstanceStatus(context.Context, *connect.Request[capsule.GetInstanceStatusRequest]) (*connect.Response[capsule.GetInstanceStatusResponse], error)
 	// ListInstanceStatuses lists the status of all instances.
 	ListInstanceStatuses(context.Context, *connect.Request[capsule.ListInstanceStatusesRequest]) (*connect.Response[capsule.ListInstanceStatusesResponse], error)

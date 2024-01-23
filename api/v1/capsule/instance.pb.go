@@ -1683,7 +1683,7 @@ type ContainerStateTerminated struct {
 	// Time at which the container last terminated
 	// +optional
 	FinishedAt *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"`
-	// Container's ID in the format '<type>://<container_id>'
+	// Container's ID in the format 'type://container_id'
 	// +optional
 	ContainerId string `protobuf:"bytes,7,opt,name=container_id,json=containerId,proto3" json:"container_id,omitempty"`
 }

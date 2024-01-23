@@ -21,14 +21,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Log of an instance
 type Log struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Timestamp  *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	Message    *LogMessage            `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	InstanceId string                 `protobuf:"bytes,3,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	Timestamp  *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`                     // Timestamp of the log
+	Message    *LogMessage            `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`                         // Message of the log
+	InstanceId string                 `protobuf:"bytes,3,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"` // Instance ID of the log
 }
 
 func (x *Log) Reset() {
@@ -84,6 +85,7 @@ func (x *Log) GetInstanceId() string {
 	return ""
 }
 
+// The actual log message
 type LogMessage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -154,11 +156,11 @@ type isLogMessage_Message interface {
 }
 
 type LogMessage_Stdout struct {
-	Stdout []byte `protobuf:"bytes,1,opt,name=stdout,proto3,oneof"`
+	Stdout []byte `protobuf:"bytes,1,opt,name=stdout,proto3,oneof"` // If the log is stdout
 }
 
 type LogMessage_Stderr struct {
-	Stderr []byte `protobuf:"bytes,2,opt,name=stderr,proto3,oneof"`
+	Stderr []byte `protobuf:"bytes,2,opt,name=stderr,proto3,oneof"` // If the log is stderr
 }
 
 func (*LogMessage_Stdout) isLogMessage_Message() {}

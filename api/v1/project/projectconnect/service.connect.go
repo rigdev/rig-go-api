@@ -71,21 +71,23 @@ var (
 
 // ServiceClient is a client for the api.v1.project.Service service.
 type ServiceClient interface {
-	// Create project
+	// Create project.
 	Create(context.Context, *connect.Request[project.CreateRequest]) (*connect.Response[project.CreateResponse], error)
-	// Delete project (everything in Users)
+	// Delete project.
 	Delete(context.Context, *connect.Request[project.DeleteRequest]) (*connect.Response[project.DeleteResponse], error)
-	// Get project
+	// Get project.
 	Get(context.Context, *connect.Request[project.GetRequest]) (*connect.Response[project.GetResponse], error)
-	// Get project list
+	// Get project list.
 	List(context.Context, *connect.Request[project.ListRequest]) (*connect.Response[project.ListResponse], error)
-	// Update updates the profile of the project
+	// Update updates the profile of the project.
 	Update(context.Context, *connect.Request[project.UpdateRequest]) (*connect.Response[project.UpdateResponse], error)
-	// Get public key of system
+	// Get public key.
 	PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error)
-	// Get License Information
+	// Get License Information.
 	GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error)
+	// Returns all objects of a given kind.
 	GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error)
+	// Returns all metrics of a given custom object.
 	GetCustomObjectMetrics(context.Context, *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error)
 }
 
@@ -216,21 +218,23 @@ func (c *serviceClient) GetCustomObjectMetrics(ctx context.Context, req *connect
 
 // ServiceHandler is an implementation of the api.v1.project.Service service.
 type ServiceHandler interface {
-	// Create project
+	// Create project.
 	Create(context.Context, *connect.Request[project.CreateRequest]) (*connect.Response[project.CreateResponse], error)
-	// Delete project (everything in Users)
+	// Delete project.
 	Delete(context.Context, *connect.Request[project.DeleteRequest]) (*connect.Response[project.DeleteResponse], error)
-	// Get project
+	// Get project.
 	Get(context.Context, *connect.Request[project.GetRequest]) (*connect.Response[project.GetResponse], error)
-	// Get project list
+	// Get project list.
 	List(context.Context, *connect.Request[project.ListRequest]) (*connect.Response[project.ListResponse], error)
-	// Update updates the profile of the project
+	// Update updates the profile of the project.
 	Update(context.Context, *connect.Request[project.UpdateRequest]) (*connect.Response[project.UpdateResponse], error)
-	// Get public key of system
+	// Get public key.
 	PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error)
-	// Get License Information
+	// Get License Information.
 	GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error)
+	// Returns all objects of a given kind.
 	GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error)
+	// Returns all metrics of a given custom object.
 	GetCustomObjectMetrics(context.Context, *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error)
 }
 

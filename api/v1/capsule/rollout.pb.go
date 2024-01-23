@@ -23,18 +23,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Different states a rollout can be in.
 type RolloutState int32
 
 const (
-	RolloutState_ROLLOUT_STATE_UNSPECIFIED       RolloutState = 0
-	RolloutState_ROLLOUT_STATE_PENDING           RolloutState = 1
-	RolloutState_ROLLOUT_STATE_PREPARING         RolloutState = 6
-	RolloutState_ROLLOUT_STATE_APPLYING          RolloutState = 2
-	RolloutState_ROLLOUT_STATE_RESOURCE_CREATION RolloutState = 8
-	RolloutState_ROLLOUT_STATE_INSTANCE_ROLL_OUT RolloutState = 7
-	RolloutState_ROLLOUT_STATE_DONE              RolloutState = 3
-	RolloutState_ROLLOUT_STATE_ABORTED           RolloutState = 4
-	RolloutState_ROLLOUT_STATE_FAILED            RolloutState = 5
+	RolloutState_ROLLOUT_STATE_UNSPECIFIED       RolloutState = 0 // Default value.
+	RolloutState_ROLLOUT_STATE_PENDING           RolloutState = 1 // Pending rollout.
+	RolloutState_ROLLOUT_STATE_PREPARING         RolloutState = 6 // Preparing rollout.
+	RolloutState_ROLLOUT_STATE_APPLYING          RolloutState = 2 // Applying rollout.
+	RolloutState_ROLLOUT_STATE_RESOURCE_CREATION RolloutState = 8 // Creating resources.
+	RolloutState_ROLLOUT_STATE_INSTANCE_ROLL_OUT RolloutState = 7 // Rolling out instances.
+	RolloutState_ROLLOUT_STATE_DONE              RolloutState = 3 // Rollout is done.
+	RolloutState_ROLLOUT_STATE_ABORTED           RolloutState = 4 // Rollout is aborted.
+	RolloutState_ROLLOUT_STATE_FAILED            RolloutState = 5 // Rollout failed.
 )
 
 // Enum value maps for RolloutState.
@@ -136,15 +137,16 @@ func (EventType) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_rollout_proto_rawDescGZIP(), []int{1}
 }
 
+// The rollout model.
 type Rollout struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RolloutId     uint64          `protobuf:"varint,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
-	Config        *RolloutConfig  `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
-	Status        *RolloutStatus  `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
-	RolloutStatus *rollout.Status `protobuf:"bytes,4,opt,name=rollout_status,json=rolloutStatus,proto3" json:"rollout_status,omitempty"`
+	RolloutId     uint64          `protobuf:"varint,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`            // Unique indentifier for the rollout.
+	Config        *RolloutConfig  `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`                                    // The rollout config.
+	Status        *RolloutStatus  `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`                                    // The rollout status.
+	RolloutStatus *rollout.Status `protobuf:"bytes,4,opt,name=rollout_status,json=rolloutStatus,proto3" json:"rollout_status,omitempty"` // The rollout status.
 }
 
 func (x *Rollout) Reset() {

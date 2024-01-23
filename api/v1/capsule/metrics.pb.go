@@ -21,15 +21,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Metrics for a container.
 type ContainerMetrics struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Timestamp    *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	MemoryBytes  uint64                 `protobuf:"varint,2,opt,name=memory_bytes,json=memoryBytes,proto3" json:"memory_bytes,omitempty"`
-	CpuMs        uint64                 `protobuf:"varint,3,opt,name=cpu_ms,json=cpuMs,proto3" json:"cpu_ms,omitempty"`
-	StorageBytes uint64                 `protobuf:"varint,4,opt,name=storage_bytes,json=storageBytes,proto3" json:"storage_bytes,omitempty"`
+	Timestamp    *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`                            // Timestamp of the metrics.
+	MemoryBytes  uint64                 `protobuf:"varint,2,opt,name=memory_bytes,json=memoryBytes,proto3" json:"memory_bytes,omitempty"`    // Memory usage in bytes.
+	CpuMs        uint64                 `protobuf:"varint,3,opt,name=cpu_ms,json=cpuMs,proto3" json:"cpu_ms,omitempty"`                      // CPU usage in milliseconds.
+	StorageBytes uint64                 `protobuf:"varint,4,opt,name=storage_bytes,json=storageBytes,proto3" json:"storage_bytes,omitempty"` // Storage usage in bytes.
 }
 
 func (x *ContainerMetrics) Reset() {
@@ -92,15 +93,16 @@ func (x *ContainerMetrics) GetStorageBytes() uint64 {
 	return 0
 }
 
+// Metrics for an instance
 type InstanceMetrics struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId      string            `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
-	InstanceId     string            `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
-	MainContainer  *ContainerMetrics `protobuf:"bytes,3,opt,name=main_container,json=mainContainer,proto3" json:"main_container,omitempty"`
-	ProxyContainer *ContainerMetrics `protobuf:"bytes,4,opt,name=proxy_container,json=proxyContainer,proto3" json:"proxy_container,omitempty"`
+	CapsuleId      string            `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`                // Capsule of the instance.
+	InstanceId     string            `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`             // Instance ID.
+	MainContainer  *ContainerMetrics `protobuf:"bytes,3,opt,name=main_container,json=mainContainer,proto3" json:"main_container,omitempty"`    // Main container metrics.
+	ProxyContainer *ContainerMetrics `protobuf:"bytes,4,opt,name=proxy_container,json=proxyContainer,proto3" json:"proxy_container,omitempty"` // Proxy container metrics.
 }
 
 func (x *InstanceMetrics) Reset() {

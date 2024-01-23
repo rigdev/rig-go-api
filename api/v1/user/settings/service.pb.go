@@ -20,6 +20,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Request for getting users settings for the Rig project.
 type GetSettingsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -58,12 +59,13 @@ func (*GetSettingsRequest) Descriptor() ([]byte, []int) {
 	return file_api_v1_user_settings_service_proto_rawDescGZIP(), []int{0}
 }
 
+// Response for getting users settings for the Rig project.
 type GetSettingsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Settings *Settings `protobuf:"bytes,1,opt,name=settings,proto3" json:"settings,omitempty"`
+	Settings *Settings `protobuf:"bytes,1,opt,name=settings,proto3" json:"settings,omitempty"` // The users settings.
 }
 
 func (x *GetSettingsResponse) Reset() {
@@ -105,12 +107,13 @@ func (x *GetSettingsResponse) GetSettings() *Settings {
 	return nil
 }
 
+// Request for updating users settings for the Rig project.
 type UpdateSettingsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Settings []*Update `protobuf:"bytes,1,rep,name=settings,proto3" json:"settings,omitempty"`
+	Settings []*Update `protobuf:"bytes,1,rep,name=settings,proto3" json:"settings,omitempty"` // The updates to apply to the users settings.
 }
 
 func (x *UpdateSettingsRequest) Reset() {
@@ -152,6 +155,7 @@ func (x *UpdateSettingsRequest) GetSettings() []*Update {
 	return nil
 }
 
+// Empty response for updating users settings for the Rig project.
 type UpdateSettingsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

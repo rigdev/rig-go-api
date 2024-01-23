@@ -20,6 +20,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Author of a change.
 type Author struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -113,11 +114,11 @@ type isAuthor_Account interface {
 }
 
 type Author_UserId struct {
-	UserId string `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3,oneof"`
+	UserId string `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3,oneof"` // if a user did the change
 }
 
 type Author_ServiceAccountId struct {
-	ServiceAccountId string `protobuf:"bytes,4,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"`
+	ServiceAccountId string `protobuf:"bytes,4,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"` // if a service account did the change
 }
 
 func (*Author_UserId) isAuthor_Account() {}

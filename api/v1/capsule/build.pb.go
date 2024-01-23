@@ -22,19 +22,20 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Build is an environment wide abstraction of an image along with metadata for a capsule.
 type Build struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	BuildId    string                 `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
-	Digest     string                 `protobuf:"bytes,7,opt,name=digest,proto3" json:"digest,omitempty"`
-	Repository string                 `protobuf:"bytes,8,opt,name=repository,proto3" json:"repository,omitempty"`
-	Tag        string                 `protobuf:"bytes,9,opt,name=tag,proto3" json:"tag,omitempty"`
-	CreatedBy  *model.Author          `protobuf:"bytes,3,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`
-	CreatedAt  *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	Origin     *Origin                `protobuf:"bytes,5,opt,name=origin,proto3" json:"origin,omitempty"`
-	Labels     map[string]string      `protobuf:"bytes,6,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	BuildId    string                 `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`                                                                        // unique identifier for the build
+	Digest     string                 `protobuf:"bytes,7,opt,name=digest,proto3" json:"digest,omitempty"`                                                                                         // digest of the image
+	Repository string                 `protobuf:"bytes,8,opt,name=repository,proto3" json:"repository,omitempty"`                                                                                 // repository of the image
+	Tag        string                 `protobuf:"bytes,9,opt,name=tag,proto3" json:"tag,omitempty"`                                                                                               // tag of the image
+	CreatedBy  *model.Author          `protobuf:"bytes,3,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`                                                                  // user who created the build
+	CreatedAt  *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                                                                  // time the build was created
+	Origin     *Origin                `protobuf:"bytes,5,opt,name=origin,proto3" json:"origin,omitempty"`                                                                                         // origin of the build
+	Labels     map[string]string      `protobuf:"bytes,6,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // labels of the build
 }
 
 func (x *Build) Reset() {
@@ -125,14 +126,15 @@ func (x *Build) GetLabels() map[string]string {
 	return nil
 }
 
+// GitReference is an origin of a build.
 type GitReference struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RepositoryUrl string `protobuf:"bytes,1,opt,name=repository_url,json=repositoryUrl,proto3" json:"repository_url,omitempty"`
-	CommitSha     string `protobuf:"bytes,2,opt,name=commit_sha,json=commitSha,proto3" json:"commit_sha,omitempty"`
-	CommitUrl     string `protobuf:"bytes,3,opt,name=commit_url,json=commitUrl,proto3" json:"commit_url,omitempty"`
+	RepositoryUrl string `protobuf:"bytes,1,opt,name=repository_url,json=repositoryUrl,proto3" json:"repository_url,omitempty"` // The url of the git repository
+	CommitSha     string `protobuf:"bytes,2,opt,name=commit_sha,json=commitSha,proto3" json:"commit_sha,omitempty"`             // The commit sha of the git repository
+	CommitUrl     string `protobuf:"bytes,3,opt,name=commit_url,json=commitUrl,proto3" json:"commit_url,omitempty"`             // The commit url of the git repository
 }
 
 func (x *GitReference) Reset() {
@@ -188,6 +190,7 @@ func (x *GitReference) GetCommitUrl() string {
 	return ""
 }
 
+// Where the build came from
 type Origin struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -250,7 +253,7 @@ type isOrigin_Kind interface {
 }
 
 type Origin_GitReference struct {
-	GitReference *GitReference `protobuf:"bytes,1,opt,name=git_reference,json=gitReference,proto3,oneof"`
+	GitReference *GitReference `protobuf:"bytes,1,opt,name=git_reference,json=gitReference,proto3,oneof"` // The build came from a git repository
 }
 
 func (*Origin_GitReference) isOrigin_Kind() {}

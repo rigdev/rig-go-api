@@ -22,16 +22,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Group is a named collection of users and service accounts with optional metadata.
 type Group struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GroupId    string                 `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
-	NumMembers uint64                 `protobuf:"varint,5,opt,name=num_members,json=numMembers,proto3" json:"num_members,omitempty"`
-	Metadata   map[string][]byte      `protobuf:"bytes,6,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	CreatedAt  *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt  *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	GroupId    string                 `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`                                                                            // Unique name of the group.
+	NumMembers uint64                 `protobuf:"varint,5,opt,name=num_members,json=numMembers,proto3" json:"num_members,omitempty"`                                                                  // Number of members.
+	Metadata   map[string][]byte      `protobuf:"bytes,6,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // Metadata of the group.
+	CreatedAt  *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                                                                      // Creation time of the group.
+	UpdatedAt  *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                                                                      // Last update time of the group.
 }
 
 func (x *Group) Reset() {
@@ -101,6 +102,7 @@ func (x *Group) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// An update msg for a group.
 type Update struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -179,15 +181,15 @@ type isUpdate_Field interface {
 }
 
 type Update_GroupId struct {
-	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3,oneof"`
+	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3,oneof"` // Update the unique group name.
 }
 
 type Update_SetMetadata struct {
-	SetMetadata *model.Metadata `protobuf:"bytes,2,opt,name=set_metadata,json=setMetadata,proto3,oneof"`
+	SetMetadata *model.Metadata `protobuf:"bytes,2,opt,name=set_metadata,json=setMetadata,proto3,oneof"` // Update or create a metadata entry.
 }
 
 type Update_DeleteMetadataKey struct {
-	DeleteMetadataKey string `protobuf:"bytes,3,opt,name=delete_metadata_key,json=deleteMetadataKey,proto3,oneof"`
+	DeleteMetadataKey string `protobuf:"bytes,3,opt,name=delete_metadata_key,json=deleteMetadataKey,proto3,oneof"` // Delete a metadata entry.
 }
 
 func (*Update_GroupId) isUpdate_Field() {}
@@ -196,6 +198,7 @@ func (*Update_SetMetadata) isUpdate_Field() {}
 
 func (*Update_DeleteMetadataKey) isUpdate_Field() {}
 
+// MemberID is a union of service account id and user id.
 type MemberID struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -266,11 +269,11 @@ type isMemberID_Kind interface {
 }
 
 type MemberID_ServiceAccountId struct {
-	ServiceAccountId string `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"`
+	ServiceAccountId string `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"` // ID of a service account.
 }
 
 type MemberID_UserId struct {
-	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3,oneof"`
+	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3,oneof"` // ID of a user.
 }
 
 func (*MemberID_ServiceAccountId) isMemberID_Kind() {}

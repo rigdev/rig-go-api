@@ -20,6 +20,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Empty get settings request
 type GetSettingsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -58,12 +59,13 @@ func (*GetSettingsRequest) Descriptor() ([]byte, []int) {
 	return file_api_v1_project_settings_service_proto_rawDescGZIP(), []int{0}
 }
 
+// Response for getting settings for the project.
 type GetSettingsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Settings *Settings `protobuf:"bytes,1,opt,name=settings,proto3" json:"settings,omitempty"`
+	Settings *Settings `protobuf:"bytes,1,opt,name=settings,proto3" json:"settings,omitempty"` // The settings.
 }
 
 func (x *GetSettingsResponse) Reset() {
@@ -105,12 +107,13 @@ func (x *GetSettingsResponse) GetSettings() *Settings {
 	return nil
 }
 
+// Request for  updating settings for a project.
 type UpdateSettingsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Updates []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"`
+	Updates []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"` // The updates to apply.
 }
 
 func (x *UpdateSettingsRequest) Reset() {
@@ -152,6 +155,7 @@ func (x *UpdateSettingsRequest) GetUpdates() []*Update {
 	return nil
 }
 
+// Empty response for updating a project's settings.
 type UpdateSettingsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

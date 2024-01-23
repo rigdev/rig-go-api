@@ -20,14 +20,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Environment model.
 type Environment struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	EnvironmentId   string `protobuf:"bytes,1,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
-	Default         bool   `protobuf:"varint,2,opt,name=default,proto3" json:"default,omitempty"`
-	OperatorVersion string `protobuf:"bytes,3,opt,name=operator_version,json=operatorVersion,proto3" json:"operator_version,omitempty"`
+	EnvironmentId   string `protobuf:"bytes,1,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`       // ID of the environment.
+	Default         bool   `protobuf:"varint,2,opt,name=default,proto3" json:"default,omitempty"`                                       // If true, this is the default environment.
+	OperatorVersion string `protobuf:"bytes,3,opt,name=operator_version,json=operatorVersion,proto3" json:"operator_version,omitempty"` // The version of the Rig-operator CRD for this environment.
 }
 
 func (x *Environment) Reset() {

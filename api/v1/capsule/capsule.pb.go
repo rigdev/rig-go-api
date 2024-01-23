@@ -22,15 +22,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Environment wide capsule abstraction
 type Capsule struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId      string                 `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
-	CurrentRollout uint64                 `protobuf:"varint,5,opt,name=current_rollout,json=currentRollout,proto3" json:"current_rollout,omitempty"`
-	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	UpdatedBy      *model.Author          `protobuf:"bytes,7,opt,name=updated_by,json=updatedBy,proto3" json:"updated_by,omitempty"`
+	CapsuleId      string                 `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`                 // ID of the capsule
+	CurrentRollout uint64                 `protobuf:"varint,5,opt,name=current_rollout,json=currentRollout,proto3" json:"current_rollout,omitempty"` // Current rollout of the capsule
+	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                 // Last time the capsule was updated
+	UpdatedBy      *model.Author          `protobuf:"bytes,7,opt,name=updated_by,json=updatedBy,proto3" json:"updated_by,omitempty"`                 // Author of the last update
 }
 
 func (x *Capsule) Reset() {
@@ -93,6 +94,7 @@ func (x *Capsule) GetUpdatedBy() *model.Author {
 	return nil
 }
 
+// Legacy update message
 type Update struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

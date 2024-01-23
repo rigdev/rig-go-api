@@ -21,14 +21,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Different states a stage can be in.
 type StageState int32
 
 const (
-	StageState_STAGE_STATE_UNSPECIFIED StageState = 0
-	StageState_STAGE_STATE_ONGOING     StageState = 1
-	StageState_STAGE_STATE_FAILED      StageState = 2
-	StageState_STAGE_STATE_DONE        StageState = 3
-	StageState_STAGE_STATE_RUNNING     StageState = 4
+	StageState_STAGE_STATE_UNSPECIFIED StageState = 0 // Unspecified state.
+	StageState_STAGE_STATE_ONGOING     StageState = 1 // Stage is ongoing.
+	StageState_STAGE_STATE_FAILED      StageState = 2 // Stage has failed.
+	StageState_STAGE_STATE_DONE        StageState = 3 // Stage is done.
+	StageState_STAGE_STATE_RUNNING     StageState = 4 // Stage is running.
 )
 
 // Enum value maps for StageState.
@@ -76,14 +77,15 @@ func (StageState) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_instance_status_proto_rawDescGZIP(), []int{0}
 }
 
+// Different states a step can be in.
 type StepState int32
 
 const (
-	StepState_STEP_STATE_UNSPECIFIED StepState = 0
-	StepState_STEP_STATE_ONGOING     StepState = 1
-	StepState_STEP_STATE_FAILED      StepState = 2
-	StepState_STEP_STATE_DONE        StepState = 3
-	StepState_STEP_STATE_RUNNING     StepState = 4
+	StepState_STEP_STATE_UNSPECIFIED StepState = 0 // Unspecified state.
+	StepState_STEP_STATE_ONGOING     StepState = 1 // Step is ongoing.
+	StepState_STEP_STATE_FAILED      StepState = 2 // Step has failed.
+	StepState_STEP_STATE_DONE        StepState = 3 // Step is done.
+	StepState_STEP_STATE_RUNNING     StepState = 4 // Step is running.
 )
 
 // Enum value maps for StepState.
@@ -131,12 +133,13 @@ func (StepState) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_instance_status_proto_rawDescGZIP(), []int{1}
 }
 
+// Different states of a placement step
 type PlacementState int32
 
 const (
-	PlacementState_SCHEDULING_STATE_UNSPECIFIED    PlacementState = 0
-	PlacementState_SCHEDULING_STATE_UNSCHEDULEABLE PlacementState = 1
-	PlacementState_SCHEDULING_STATE_DONE           PlacementState = 2
+	PlacementState_SCHEDULING_STATE_UNSPECIFIED    PlacementState = 0 // Unspecified state.
+	PlacementState_SCHEDULING_STATE_UNSCHEDULEABLE PlacementState = 1 // If the instance is unschedulable.
+	PlacementState_SCHEDULING_STATE_DONE           PlacementState = 2 // If the instance is scheduled.
 )
 
 // Enum value maps for PlacementState.
@@ -180,14 +183,15 @@ func (PlacementState) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_instance_status_proto_rawDescGZIP(), []int{2}
 }
 
+// Different states of an image pulling step.
 type ImagePullingState int32
 
 const (
-	ImagePullingState_IMAGE_PULLING_STATE_UNSPECIFIED ImagePullingState = 0
-	ImagePullingState_IMAGE_PULLING_STATE_PULLING     ImagePullingState = 1
-	ImagePullingState_IMAGE_PULLING_STATE_ERROR       ImagePullingState = 2
-	ImagePullingState_IMAGE_PULLING_STATE_BACK_OFF    ImagePullingState = 3
-	ImagePullingState_IMAGE_PULLING_STATE_DONE        ImagePullingState = 4
+	ImagePullingState_IMAGE_PULLING_STATE_UNSPECIFIED ImagePullingState = 0 // Unspecified state.
+	ImagePullingState_IMAGE_PULLING_STATE_PULLING     ImagePullingState = 1 // Image is being pulled.
+	ImagePullingState_IMAGE_PULLING_STATE_ERROR       ImagePullingState = 2 // Image pulling has failed.
+	ImagePullingState_IMAGE_PULLING_STATE_BACK_OFF    ImagePullingState = 3 // Image pulling is in back off.
+	ImagePullingState_IMAGE_PULLING_STATE_DONE        ImagePullingState = 4 // Image pulling is done.
 )
 
 // Enum value maps for ImagePullingState.
@@ -235,13 +239,14 @@ func (ImagePullingState) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_instance_status_proto_rawDescGZIP(), []int{3}
 }
 
+// Different states of a ready step.
 type ReadyState int32
 
 const (
-	ReadyState_READY_STATE_UNSPECIFIED        ReadyState = 0
-	ReadyState_READY_STATE_CRASH_LOOP_BACKOFF ReadyState = 1
-	ReadyState_READY_STATE_NOT_READY          ReadyState = 2
-	ReadyState_READY_STATE_READY              ReadyState = 3
+	ReadyState_READY_STATE_UNSPECIFIED        ReadyState = 0 // Unspecified state.
+	ReadyState_READY_STATE_CRASH_LOOP_BACKOFF ReadyState = 1 // If the instance is in crash loop backoff.
+	ReadyState_READY_STATE_NOT_READY          ReadyState = 2 // If the instance is not ready.
+	ReadyState_READY_STATE_READY              ReadyState = 3 // If the instance is ready.
 )
 
 // Enum value maps for ReadyState.
@@ -287,17 +292,17 @@ func (ReadyState) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_capsule_instance_status_proto_rawDescGZIP(), []int{4}
 }
 
-// Status is a representation of the current state of an instance
+// Status is a representation of the current state of an instance.
 type Status struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	InstanceId string                 `protobuf:"bytes,1,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
-	Stages     *Stages                `protobuf:"bytes,2,opt,name=stages,proto3" json:"stages,omitempty"`
-	RolloutId  uint64                 `protobuf:"varint,3,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
-	Image      string                 `protobuf:"bytes,4,opt,name=image,proto3" json:"image,omitempty"`
-	CreatedAt  *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	InstanceId string                 `protobuf:"bytes,1,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"` // Instance ID.
+	Stages     *Stages                `protobuf:"bytes,2,opt,name=stages,proto3" json:"stages,omitempty"`                           // Stages of the instance.
+	RolloutId  uint64                 `protobuf:"varint,3,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`   // Rollout ID.
+	Image      string                 `protobuf:"bytes,4,opt,name=image,proto3" json:"image,omitempty"`                             // Image of the instance.
+	CreatedAt  *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`    // Creation time of the instance.
 }
 
 func (x *Status) Reset() {
@@ -367,15 +372,16 @@ func (x *Status) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// The different stages of the instance.
 type Stages struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Schedule  *SchedulingStage `protobuf:"bytes,1,opt,name=schedule,proto3" json:"schedule,omitempty"`
-	Preparing *PreparingStage  `protobuf:"bytes,2,opt,name=preparing,proto3" json:"preparing,omitempty"`
-	Running   *RunningStage    `protobuf:"bytes,3,opt,name=running,proto3" json:"running,omitempty"`
-	Deleted   *DeletedStage    `protobuf:"bytes,4,opt,name=deleted,proto3" json:"deleted,omitempty"`
+	Schedule  *SchedulingStage `protobuf:"bytes,1,opt,name=schedule,proto3" json:"schedule,omitempty"`   // Scheduling stage.
+	Preparing *PreparingStage  `protobuf:"bytes,2,opt,name=preparing,proto3" json:"preparing,omitempty"` // Preparing stage.
+	Running   *RunningStage    `protobuf:"bytes,3,opt,name=running,proto3" json:"running,omitempty"`     // Running stage.
+	Deleted   *DeletedStage    `protobuf:"bytes,4,opt,name=deleted,proto3" json:"deleted,omitempty"`     // Deleted stage.
 }
 
 func (x *Stages) Reset() {
@@ -438,14 +444,15 @@ func (x *Stages) GetDeleted() *DeletedStage {
 	return nil
 }
 
+// Meta information about a stage.
 type StageInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	State     StageState             `protobuf:"varint,3,opt,name=state,proto3,enum=api.v1.capsule.instance.StageState" json:"state,omitempty"`
+	Name      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                                            // Name of the stage.
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                 // Last update time of the stage.
+	State     StageState             `protobuf:"varint,3,opt,name=state,proto3,enum=api.v1.capsule.instance.StageState" json:"state,omitempty"` // State of the stage.
 }
 
 func (x *StageInfo) Reset() {
@@ -501,13 +508,14 @@ func (x *StageInfo) GetState() StageState {
 	return StageState_STAGE_STATE_UNSPECIFIED
 }
 
+// The scheduling stage.
 type SchedulingStage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info  *StageInfo        `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	Steps []*SchedulingStep `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"`
+	Info  *StageInfo        `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`   // Meta information about the stage.
+	Steps []*SchedulingStep `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"` // Steps of the stage.
 }
 
 func (x *SchedulingStage) Reset() {
@@ -556,6 +564,7 @@ func (x *SchedulingStage) GetSteps() []*SchedulingStep {
 	return nil
 }
 
+// A step of the scheduling stage.
 type SchedulingStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -626,24 +635,25 @@ type isSchedulingStep_Step interface {
 }
 
 type SchedulingStep_Generic struct {
-	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"`
+	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"` // Generic step.
 }
 
 type SchedulingStep_Placement struct {
-	Placement *PlacementStep `protobuf:"bytes,2,opt,name=placement,proto3,oneof"`
+	Placement *PlacementStep `protobuf:"bytes,2,opt,name=placement,proto3,oneof"` // Placement step - On what node should the instance run.
 }
 
 func (*SchedulingStep_Generic) isSchedulingStep_Step() {}
 
 func (*SchedulingStep_Placement) isSchedulingStep_Step() {}
 
+// Placement step.
 type PlacementStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info *StepInfo `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	Node string    `protobuf:"bytes,2,opt,name=node,proto3" json:"node,omitempty"`
+	Info *StepInfo `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"` // Meta information about the step.
+	Node string    `protobuf:"bytes,2,opt,name=node,proto3" json:"node,omitempty"` // Node on which the instance should run.
 }
 
 func (x *PlacementStep) Reset() {
@@ -692,6 +702,7 @@ func (x *PlacementStep) GetNode() string {
 	return ""
 }
 
+// A generic step.
 type GenericStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -739,15 +750,16 @@ func (x *GenericStep) GetInfo() *StepInfo {
 	return nil
 }
 
+// Meta data about a step.
 type StepInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Message   string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	State     StepState              `protobuf:"varint,4,opt,name=state,proto3,enum=api.v1.capsule.instance.StepState" json:"state,omitempty"`
+	Name      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                                           // Name of the step.
+	Message   string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`                                     // Message of the step.
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                // Last update time of the step.
+	State     StepState              `protobuf:"varint,4,opt,name=state,proto3,enum=api.v1.capsule.instance.StepState" json:"state,omitempty"` // State of the step.
 }
 
 func (x *StepInfo) Reset() {
@@ -810,13 +822,14 @@ func (x *StepInfo) GetState() StepState {
 	return StepState_STEP_STATE_UNSPECIFIED
 }
 
+// The preparing stage
 type PreparingStage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info  *StageInfo       `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	Steps []*PreparingStep `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"`
+	Info  *StageInfo       `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`   // Meta information about the stage.
+	Steps []*PreparingStep `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"` // Steps of the stage.
 }
 
 func (x *PreparingStage) Reset() {
@@ -865,6 +878,7 @@ func (x *PreparingStage) GetSteps() []*PreparingStep {
 	return nil
 }
 
+// A step of the preparing stage.
 type PreparingStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -935,25 +949,26 @@ type isPreparingStep_Step interface {
 }
 
 type PreparingStep_Generic struct {
-	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"`
+	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"` // Generic step.
 }
 
 type PreparingStep_ImagePulling struct {
-	ImagePulling *ImagePullingStep `protobuf:"bytes,2,opt,name=image_pulling,json=imagePulling,proto3,oneof"`
+	ImagePulling *ImagePullingStep `protobuf:"bytes,2,opt,name=image_pulling,json=imagePulling,proto3,oneof"` // Image pulling step.
 }
 
 func (*PreparingStep_Generic) isPreparingStep_Step() {}
 
 func (*PreparingStep_ImagePulling) isPreparingStep_Step() {}
 
+// An image pulling step of the preparing stage.
 type ImagePullingStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info  *StepInfo         `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	State ImagePullingState `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.instance.ImagePullingState" json:"state,omitempty"`
-	Image string            `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`
+	Info  *StepInfo         `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`                                                   // Meta information about the step.
+	State ImagePullingState `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.instance.ImagePullingState" json:"state,omitempty"` // State of the step.
+	Image string            `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`                                                 // Image that is being pulled.
 }
 
 func (x *ImagePullingStep) Reset() {
@@ -1009,15 +1024,16 @@ func (x *ImagePullingStep) GetImage() string {
 	return ""
 }
 
+// The running stage of the instance
 type RunningStage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info                     *StageInfo            `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	Steps                    []*RunningStep        `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"`
-	Restarts                 uint32                `protobuf:"varint,3,opt,name=restarts,proto3" json:"restarts,omitempty"`
-	LastContainerTermination *ContainerTermination `protobuf:"bytes,4,opt,name=last_container_termination,json=lastContainerTermination,proto3" json:"last_container_termination,omitempty"`
+	Info                     *StageInfo            `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`                                                                           // Meta information about the stage.
+	Steps                    []*RunningStep        `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"`                                                                         // Steps of the stage.
+	Restarts                 uint32                `protobuf:"varint,3,opt,name=restarts,proto3" json:"restarts,omitempty"`                                                                  // Number of restarts of the instance.
+	LastContainerTermination *ContainerTermination `protobuf:"bytes,4,opt,name=last_container_termination,json=lastContainerTermination,proto3" json:"last_container_termination,omitempty"` // Information about the last container termination.
 }
 
 func (x *RunningStage) Reset() {
@@ -1080,6 +1096,7 @@ func (x *RunningStage) GetLastContainerTermination() *ContainerTermination {
 	return nil
 }
 
+// A step of the running stage.
 type RunningStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1158,15 +1175,15 @@ type isRunningStep_Step interface {
 }
 
 type RunningStep_Generic struct {
-	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"`
+	Generic *GenericStep `protobuf:"bytes,1,opt,name=generic,proto3,oneof"` // Generic step.
 }
 
 type RunningStep_Ready struct {
-	Ready *ReadyStep `protobuf:"bytes,2,opt,name=ready,proto3,oneof"`
+	Ready *ReadyStep `protobuf:"bytes,2,opt,name=ready,proto3,oneof"` // Ready step.
 }
 
 type RunningStep_Executing struct {
-	Executing *ExecutingStep `protobuf:"bytes,3,opt,name=executing,proto3,oneof"`
+	Executing *ExecutingStep `protobuf:"bytes,3,opt,name=executing,proto3,oneof"` // Executing step.
 }
 
 func (*RunningStep_Generic) isRunningStep_Step() {}
@@ -1175,15 +1192,16 @@ func (*RunningStep_Ready) isRunningStep_Step() {}
 
 func (*RunningStep_Executing) isRunningStep_Step() {}
 
+// A ready step of the running stage.
 type ReadyStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info      *StepInfo              `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	State     ReadyState             `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.instance.ReadyState" json:"state,omitempty"`
-	FailedAt  *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=failed_at,json=failedAt,proto3" json:"failed_at,omitempty"`
-	FailCount uint32                 `protobuf:"varint,4,opt,name=fail_count,json=failCount,proto3" json:"fail_count,omitempty"`
+	Info      *StepInfo              `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`                                            // Meta information about the step.
+	State     ReadyState             `protobuf:"varint,2,opt,name=state,proto3,enum=api.v1.capsule.instance.ReadyState" json:"state,omitempty"` // State of the step.
+	FailedAt  *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=failed_at,json=failedAt,proto3" json:"failed_at,omitempty"`                    // Time at which the step failed.
+	FailCount uint32                 `protobuf:"varint,4,opt,name=fail_count,json=failCount,proto3" json:"fail_count,omitempty"`                // Number of times the step has failed.
 }
 
 func (x *ReadyStep) Reset() {
@@ -1246,13 +1264,14 @@ func (x *ReadyStep) GetFailCount() uint32 {
 	return 0
 }
 
+// An executing step of the running stage.
 type ExecutingStep struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Info      *StepInfo              `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	StartedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	Info      *StepInfo              `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`                            // Meta information about the step.
+	StartedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"` // Time at which the step started.
 }
 
 func (x *ExecutingStep) Reset() {
@@ -1301,6 +1320,7 @@ func (x *ExecutingStep) GetStartedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// Information about the last container termination.
 type ContainerTermination struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1323,7 +1343,7 @@ type ContainerTermination struct {
 	// Time at which the container last terminated
 	// +optional
 	FinishedAt *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"`
-	// Container's ID in the format '<type>://<container_id>'
+	// Container's ID in the format 'type://container_id'
 	// +optional
 	ContainerId string `protobuf:"bytes,7,opt,name=container_id,json=containerId,proto3" json:"container_id,omitempty"`
 }

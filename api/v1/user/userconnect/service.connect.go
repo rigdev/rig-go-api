@@ -63,9 +63,9 @@ var (
 
 // ServiceClient is a client for the api.v1.user.Service service.
 type ServiceClient interface {
-	// Create a new user
+	// Create a new user.
 	Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error)
-	// Update a users profile and info
+	// Update a users profile and info.
 	Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error)
 	// Get the list of active sessions for the given user.
 	ListSessions(context.Context, *connect.Request[user.ListSessionsRequest]) (*connect.Response[user.ListSessionsResponse], error)
@@ -73,9 +73,9 @@ type ServiceClient interface {
 	Get(context.Context, *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error)
 	// Lookup a user by a unique identifier - email, username, phone number etc.
 	GetByIdentifier(context.Context, *connect.Request[user.GetByIdentifierRequest]) (*connect.Response[user.GetByIdentifierResponse], error)
-	// List users
+	// List users.
 	List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error)
-	// Delete a specific user
+	// Delete a specific user.
 	Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error)
 }
 
@@ -182,9 +182,9 @@ func (c *serviceClient) Delete(ctx context.Context, req *connect.Request[user.De
 
 // ServiceHandler is an implementation of the api.v1.user.Service service.
 type ServiceHandler interface {
-	// Create a new user
+	// Create a new user.
 	Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error)
-	// Update a users profile and info
+	// Update a users profile and info.
 	Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error)
 	// Get the list of active sessions for the given user.
 	ListSessions(context.Context, *connect.Request[user.ListSessionsRequest]) (*connect.Response[user.ListSessionsResponse], error)
@@ -192,9 +192,9 @@ type ServiceHandler interface {
 	Get(context.Context, *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error)
 	// Lookup a user by a unique identifier - email, username, phone number etc.
 	GetByIdentifier(context.Context, *connect.Request[user.GetByIdentifierRequest]) (*connect.Response[user.GetByIdentifierResponse], error)
-	// List users
+	// List users.
 	List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error)
-	// Delete a specific user
+	// Delete a specific user.
 	Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error)
 }
 

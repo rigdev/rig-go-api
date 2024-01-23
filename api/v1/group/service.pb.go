@@ -21,13 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// The request of a Groups.Create RPC
+// The request of a Groups.Create RPC.
 type CreateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Initializers []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"`
+	Initializers []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"` // The group to create.
 }
 
 func (x *CreateRequest) Reset() {
@@ -69,13 +69,13 @@ func (x *CreateRequest) GetInitializers() []*Update {
 	return nil
 }
 
-// The response of a Groups.Create RPC
+// The response of a Groups.Create RPC.
 type CreateResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Group *Group `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"`
+	Group *Group `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"` // The created group.
 }
 
 func (x *CreateResponse) Reset() {
@@ -117,14 +117,14 @@ func (x *CreateResponse) GetGroup() *Group {
 	return nil
 }
 
-// The request of a Groups.List RPC
+// The request of a Groups.List RPC.
 type ListRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-	Search     string            `protobuf:"bytes,2,opt,name=search,proto3" json:"search,omitempty"`
+	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"` // Pagination options.
+	Search     string            `protobuf:"bytes,2,opt,name=search,proto3" json:"search,omitempty"`         // Search string.
 }
 
 func (x *ListRequest) Reset() {
@@ -173,16 +173,14 @@ func (x *ListRequest) GetSearch() string {
 	return ""
 }
 
-// The response of a Groups.List RPC
+// The response of a Groups.List RPC.
 type ListResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// list of groups
-	Groups []*Group `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
-	// count of total amount of groups
-	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Groups []*Group `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"` // list of groups.
+	Total  uint64   `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`  // total amount of groups.
 }
 
 func (x *ListResponse) Reset() {
@@ -231,14 +229,13 @@ func (x *ListResponse) GetTotal() uint64 {
 	return 0
 }
 
-// The request of a Group.Delete RPC
+// The request of a Group.Delete RPC.
 type DeleteRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The group to delete
-	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // The group to delete.
 }
 
 func (x *DeleteRequest) Reset() {
@@ -280,7 +277,7 @@ func (x *DeleteRequest) GetGroupId() string {
 	return ""
 }
 
-// The response of a Group.Delete RPC
+// The response of a Group.Delete RPC.
 type DeleteResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -319,15 +316,14 @@ func (*DeleteResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_group_service_proto_rawDescGZIP(), []int{5}
 }
 
-// The request of a Groups.Update RPC
+// The request of a Groups.Update RPC.
 type UpdateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Updates []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"`
-	// The group id
-	GroupId string `protobuf:"bytes,2,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	Updates []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"`                // The updates to apply.
+	GroupId string    `protobuf:"bytes,2,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // The group id.
 }
 
 func (x *UpdateRequest) Reset() {
@@ -376,7 +372,7 @@ func (x *UpdateRequest) GetGroupId() string {
 	return ""
 }
 
-// The response of a Groups.Update RPC
+// The response of a Groups.Update RPC.
 type UpdateResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -415,14 +411,13 @@ func (*UpdateResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_group_service_proto_rawDescGZIP(), []int{7}
 }
 
-// The request of a Groups.Get RPC
+// The request of a Groups.Get RPC.
 type GetRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The group id
-	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // The group id.
 }
 
 func (x *GetRequest) Reset() {
@@ -470,7 +465,7 @@ type GetResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Group *Group `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"`
+	Group *Group `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"` // The group.
 }
 
 func (x *GetResponse) Reset() {
@@ -512,13 +507,14 @@ func (x *GetResponse) GetGroup() *Group {
 	return nil
 }
 
+// Request for adding one or more members to a group.
 type AddMemberRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GroupId   string      `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
-	MemberIds []*MemberID `protobuf:"bytes,2,rep,name=member_ids,json=memberIds,proto3" json:"member_ids,omitempty"`
+	GroupId   string      `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`       // The group to add members to.
+	MemberIds []*MemberID `protobuf:"bytes,2,rep,name=member_ids,json=memberIds,proto3" json:"member_ids,omitempty"` // The members to add.
 }
 
 func (x *AddMemberRequest) Reset() {
@@ -567,6 +563,7 @@ func (x *AddMemberRequest) GetMemberIds() []*MemberID {
 	return nil
 }
 
+// Empty response for adding one or more members to a group.
 type AddMemberResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -605,13 +602,14 @@ func (*AddMemberResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_group_service_proto_rawDescGZIP(), []int{11}
 }
 
+// Request for removing a member from a group.
 type RemoveMemberRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GroupId  string    `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
-	MemberId *MemberID `protobuf:"bytes,2,opt,name=member_id,json=memberId,proto3" json:"member_id,omitempty"`
+	GroupId  string    `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`    // The group to remove the member from.
+	MemberId *MemberID `protobuf:"bytes,2,opt,name=member_id,json=memberId,proto3" json:"member_id,omitempty"` // The member to remove.
 }
 
 func (x *RemoveMemberRequest) Reset() {
@@ -660,6 +658,7 @@ func (x *RemoveMemberRequest) GetMemberId() *MemberID {
 	return nil
 }
 
+// Empty response for removing a member from a group.
 type RemoveMemberResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -698,13 +697,14 @@ func (*RemoveMemberResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_group_service_proto_rawDescGZIP(), []int{13}
 }
 
+// Reqyest for listing members of a group.
 type ListMembersRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GroupId    string            `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
-	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	GroupId    string            `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // The group to list members of.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`          // Pagination options.
 }
 
 func (x *ListMembersRequest) Reset() {
@@ -753,13 +753,14 @@ func (x *ListMembersRequest) GetPagination() *model.Pagination {
 	return nil
 }
 
+// Response for listing members of a group.
 type ListMembersResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Members []*model.MemberEntry `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"`
-	Total   uint64               `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Members []*model.MemberEntry `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"` // The members in the group.
+	Total   uint64               `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`    // The total amount of members in the group.
 }
 
 func (x *ListMembersResponse) Reset() {
@@ -808,13 +809,14 @@ func (x *ListMembersResponse) GetTotal() uint64 {
 	return 0
 }
 
+// Request for listing the groups a member is in.
 type ListGroupsForMemberRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	MemberId   *MemberID         `protobuf:"bytes,1,opt,name=member_id,json=memberId,proto3" json:"member_id,omitempty"`
-	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	MemberId   *MemberID         `protobuf:"bytes,1,opt,name=member_id,json=memberId,proto3" json:"member_id,omitempty"` // The member to list groups for.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`             // Pagination options.
 }
 
 func (x *ListGroupsForMemberRequest) Reset() {
@@ -863,13 +865,14 @@ func (x *ListGroupsForMemberRequest) GetPagination() *model.Pagination {
 	return nil
 }
 
+// Response for listing the groups a member is in.
 type ListGroupsForMemberResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Groups []*Group `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
-	Total  uint64   `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Groups []*Group `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"` // The groups the member is in.
+	Total  uint64   `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`  // The total amount of groups the member is in.
 }
 
 func (x *ListGroupsForMemberResponse) Reset() {

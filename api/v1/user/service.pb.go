@@ -21,12 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Request to get a user by an identifier.
 type GetByIdentifierRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Identifier *model.UserIdentifier `protobuf:"bytes,1,opt,name=identifier,proto3" json:"identifier,omitempty"`
+	Identifier *model.UserIdentifier `protobuf:"bytes,1,opt,name=identifier,proto3" json:"identifier,omitempty"` // The identifier to lookup.
 }
 
 func (x *GetByIdentifierRequest) Reset() {
@@ -68,12 +69,13 @@ func (x *GetByIdentifierRequest) GetIdentifier() *model.UserIdentifier {
 	return nil
 }
 
+// Response to get a user by an identifier.
 type GetByIdentifierResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"` // The user.
 }
 
 func (x *GetByIdentifierResponse) Reset() {
@@ -115,15 +117,14 @@ func (x *GetByIdentifierResponse) GetUser() *User {
 	return nil
 }
 
-// The request of a Users.Create RPC
+// The request to create a user.
 type CreateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Initial fields to set.
-	Initializers   []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"`
-	InitialGroupId string    `protobuf:"bytes,2,opt,name=initial_group_id,json=initialGroupId,proto3" json:"initial_group_id,omitempty"`
+	Initializers   []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"`                             // Initial fields to set.
+	InitialGroupId string    `protobuf:"bytes,2,opt,name=initial_group_id,json=initialGroupId,proto3" json:"initial_group_id,omitempty"` // If set, the user will be added to this group upon creation.
 }
 
 func (x *CreateRequest) Reset() {
@@ -172,14 +173,13 @@ func (x *CreateRequest) GetInitialGroupId() string {
 	return ""
 }
 
-// The response of a Users.Create RPC
+// The response of creating a user.
 type CreateResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The created user.
-	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"` // The created user.
 }
 
 func (x *CreateResponse) Reset() {
@@ -221,15 +221,14 @@ func (x *CreateResponse) GetUser() *User {
 	return nil
 }
 
-// The request of a Users.Update RPC
+// The request of updating a user.
 type UpdateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The user identifier to fetch the user
-	UserId  string    `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Updates []*Update `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"`
+	UserId  string    `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // The user identifier of the user to update.
+	Updates []*Update `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"`             // The updates to apply to the user.
 }
 
 func (x *UpdateRequest) Reset() {
@@ -278,7 +277,7 @@ func (x *UpdateRequest) GetUpdates() []*Update {
 	return nil
 }
 
-// The response of a Users.Update RPC
+// Empty update response.
 type UpdateResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -317,13 +316,13 @@ func (*UpdateResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_user_service_proto_rawDescGZIP(), []int{5}
 }
 
-// The request of an Users.Get RPC
+// Get request for retrieving a user.
 type GetRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The user identifier to fetch the user
+	// The user identifier to fetch the user.
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 }
 
@@ -366,13 +365,13 @@ func (x *GetRequest) GetUserId() string {
 	return ""
 }
 
-// The response of an Users.Get RPC
+// The response of getting a user.
 type GetResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"` // The retrieved user.
 }
 
 func (x *GetResponse) Reset() {
@@ -414,14 +413,14 @@ func (x *GetResponse) GetUser() *User {
 	return nil
 }
 
-// The request of an Users.ListSessions RPC
+// Request to list a users login sessions.
 type ListSessionsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId     string            `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	UserId     string            `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // The user to retrieve sessions for.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`       // Pagination options.
 }
 
 func (x *ListSessionsRequest) Reset() {
@@ -470,14 +469,14 @@ func (x *ListSessionsRequest) GetPagination() *model.Pagination {
 	return nil
 }
 
-// The response of a Users.ListSessions RPC
+// The response of listing a users login sessions.
 type ListSessionsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Sessions []*SessionEntry `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"`
-	Total    uint64          `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Sessions []*SessionEntry `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"` // The retrieved sessions.
+	Total    uint64          `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`      // The total number of sessions.
 }
 
 func (x *ListSessionsResponse) Reset() {
@@ -526,14 +525,13 @@ func (x *ListSessionsResponse) GetTotal() uint64 {
 	return 0
 }
 
-// The request of an Users.Delete RPC
+// Request for deleting a user.
 type DeleteRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The user identifier to fetch the user
-	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // The user identifier to fetch the user.
 }
 
 func (x *DeleteRequest) Reset() {
@@ -575,7 +573,7 @@ func (x *DeleteRequest) GetUserId() string {
 	return ""
 }
 
-// The response of an Users.Delete RPC
+// Empty response for deleting a user.
 type DeleteResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -614,14 +612,14 @@ func (*DeleteResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_user_service_proto_rawDescGZIP(), []int{11}
 }
 
-// The request of a Users.List RPC
+// Request for listing users.
 type ListRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-	Search     string            `protobuf:"bytes,2,opt,name=search,proto3" json:"search,omitempty"`
+	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"` // Pagination options.
+	Search     string            `protobuf:"bytes,2,opt,name=search,proto3" json:"search,omitempty"`         // Search string.
 }
 
 func (x *ListRequest) Reset() {
@@ -670,16 +668,14 @@ func (x *ListRequest) GetSearch() string {
 	return ""
 }
 
-// The response of a Users.List RPC
+// Response for listing users.
 type ListResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The users returned
-	Users []*model.UserEntry `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
-	// Return number of users in database
-	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Users []*model.UserEntry `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`  // The users returned.
+	Total uint64             `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"` // total number of users.
 }
 
 func (x *ListResponse) Reset() {

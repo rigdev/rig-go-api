@@ -48,9 +48,9 @@ var (
 
 // ServiceClient is a client for the api.v1.cluster.Service service.
 type ServiceClient interface {
-	// GetConfig returns the config for the cluster
+	// GetConfig returns the config for the cluster.
 	GetConfig(context.Context, *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error)
-	// GetConfigs returns the configs for all clusters
+	// GetConfigs returns the configs for all clusters.
 	GetConfigs(context.Context, *connect.Request[cluster.GetConfigsRequest]) (*connect.Response[cluster.GetConfigsResponse], error)
 }
 
@@ -97,9 +97,9 @@ func (c *serviceClient) GetConfigs(ctx context.Context, req *connect.Request[clu
 
 // ServiceHandler is an implementation of the api.v1.cluster.Service service.
 type ServiceHandler interface {
-	// GetConfig returns the config for the cluster
+	// GetConfig returns the config for the cluster.
 	GetConfig(context.Context, *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error)
-	// GetConfigs returns the configs for all clusters
+	// GetConfigs returns the configs for all clusters.
 	GetConfigs(context.Context, *connect.Request[cluster.GetConfigsRequest]) (*connect.Response[cluster.GetConfigsResponse], error)
 }
 

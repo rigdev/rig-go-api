@@ -20,13 +20,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// The LoginType enum defines the type of login.
 type LoginType int32
 
 const (
-	LoginType_LOGIN_TYPE_UNSPECIFIED       LoginType = 0
-	LoginType_LOGIN_TYPE_EMAIL_PASSWORD    LoginType = 1
-	LoginType_LOGIN_TYPE_PHONE_PASSWORD    LoginType = 2
-	LoginType_LOGIN_TYPE_USERNAME_PASSWORD LoginType = 3
+	LoginType_LOGIN_TYPE_UNSPECIFIED       LoginType = 0 // Default value.
+	LoginType_LOGIN_TYPE_EMAIL_PASSWORD    LoginType = 1 // Email and password login.
+	LoginType_LOGIN_TYPE_PHONE_PASSWORD    LoginType = 2 // deprecated: text is not supported - Phone number and password login.
+	LoginType_LOGIN_TYPE_USERNAME_PASSWORD LoginType = 3 // Username and password login.
 )
 
 // Enum value maps for LoginType.

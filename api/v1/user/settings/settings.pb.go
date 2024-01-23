@@ -22,16 +22,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// The different template types.
 type TemplateType int32
 
 const (
-	TemplateType_TEMPLATE_TYPE_UNSPECIFIED          TemplateType = 0
-	TemplateType_TEMPLATE_TYPE_WELCOME_EMAIL        TemplateType = 1
-	TemplateType_TEMPLATE_TYPE_EMAIL_VERIFICATION   TemplateType = 2
-	TemplateType_TEMPLATE_TYPE_EMAIL_RESET_PASSWORD TemplateType = 3
-	TemplateType_TEMPLATE_TYPE_WELCOME_TEXT         TemplateType = 4
-	TemplateType_TEMPLATE_TYPE_TEXT_VERIFICATION    TemplateType = 5
-	TemplateType_TEMPLATE_TYPE_TEXT_RESET_PASSWORD  TemplateType = 6
+	TemplateType_TEMPLATE_TYPE_UNSPECIFIED          TemplateType = 0 // Unspecified template type.
+	TemplateType_TEMPLATE_TYPE_WELCOME_EMAIL        TemplateType = 1 // The welcome email template.
+	TemplateType_TEMPLATE_TYPE_EMAIL_VERIFICATION   TemplateType = 2 // The email verification template.
+	TemplateType_TEMPLATE_TYPE_EMAIL_RESET_PASSWORD TemplateType = 3 // The reset password email template.
+	TemplateType_TEMPLATE_TYPE_WELCOME_TEXT         TemplateType = 4 // Deprecated: Text is not supported - The welcome text template.
+	TemplateType_TEMPLATE_TYPE_TEXT_VERIFICATION    TemplateType = 5 // Deprecated: Text is not supported - The text verification template.
+	TemplateType_TEMPLATE_TYPE_TEXT_RESET_PASSWORD  TemplateType = 6 // Deprecated: Text is not supported - The reset password text template.
 )
 
 // Enum value maps for TemplateType.
@@ -83,11 +84,14 @@ func (TemplateType) EnumDescriptor() ([]byte, []int) {
 	return file_api_v1_user_settings_settings_proto_rawDescGZIP(), []int{0}
 }
 
+// Update message for updating users settings.
 type Update struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// A oneof field for the different settings fields.
+	//
 	// Types that are assignable to Field:
 	//
 	//	*Update_AllowRegister
@@ -225,47 +229,47 @@ type isUpdate_Field interface {
 }
 
 type Update_AllowRegister struct {
-	AllowRegister bool `protobuf:"varint,1,opt,name=allow_register,json=allowRegister,proto3,oneof"`
+	AllowRegister bool `protobuf:"varint,1,opt,name=allow_register,json=allowRegister,proto3,oneof"` // If true, users can self register.
 }
 
 type Update_IsVerifiedEmailRequired struct {
-	IsVerifiedEmailRequired bool `protobuf:"varint,2,opt,name=is_verified_email_required,json=isVerifiedEmailRequired,proto3,oneof"`
+	IsVerifiedEmailRequired bool `protobuf:"varint,2,opt,name=is_verified_email_required,json=isVerifiedEmailRequired,proto3,oneof"` // If true, users must be verified via email to login.
 }
 
 type Update_IsVerifiedPhoneRequired struct {
-	IsVerifiedPhoneRequired bool `protobuf:"varint,3,opt,name=is_verified_phone_required,json=isVerifiedPhoneRequired,proto3,oneof"`
+	IsVerifiedPhoneRequired bool `protobuf:"varint,3,opt,name=is_verified_phone_required,json=isVerifiedPhoneRequired,proto3,oneof"` // If true, users must be verified via phone to login.
 }
 
 type Update_AccessTokenTtl struct {
-	AccessTokenTtl *durationpb.Duration `protobuf:"bytes,4,opt,name=access_token_ttl,json=accessTokenTtl,proto3,oneof"`
+	AccessTokenTtl *durationpb.Duration `protobuf:"bytes,4,opt,name=access_token_ttl,json=accessTokenTtl,proto3,oneof"` // Access token Time to Live.
 }
 
 type Update_RefreshTokenTtl struct {
-	RefreshTokenTtl *durationpb.Duration `protobuf:"bytes,5,opt,name=refresh_token_ttl,json=refreshTokenTtl,proto3,oneof"`
+	RefreshTokenTtl *durationpb.Duration `protobuf:"bytes,5,opt,name=refresh_token_ttl,json=refreshTokenTtl,proto3,oneof"` // Refresh token Time to Live.
 }
 
 type Update_VerificationCodeTtl struct {
-	VerificationCodeTtl *durationpb.Duration `protobuf:"bytes,6,opt,name=verification_code_ttl,json=verificationCodeTtl,proto3,oneof"`
+	VerificationCodeTtl *durationpb.Duration `protobuf:"bytes,6,opt,name=verification_code_ttl,json=verificationCodeTtl,proto3,oneof"` // Verification code Time to Live.
 }
 
 type Update_PasswordHashing struct {
-	PasswordHashing *model.HashingConfig `protobuf:"bytes,7,opt,name=password_hashing,json=passwordHashing,proto3,oneof"`
+	PasswordHashing *model.HashingConfig `protobuf:"bytes,7,opt,name=password_hashing,json=passwordHashing,proto3,oneof"` // The hashing config used to hash passwords.
 }
 
 type Update_LoginMechanisms_ struct {
-	LoginMechanisms *Update_LoginMechanisms `protobuf:"bytes,8,opt,name=login_mechanisms,json=loginMechanisms,proto3,oneof"`
+	LoginMechanisms *Update_LoginMechanisms `protobuf:"bytes,8,opt,name=login_mechanisms,json=loginMechanisms,proto3,oneof"` // The allowed login mechanisms.
 }
 
 type Update_EmailProvider struct {
-	EmailProvider *EmailProvider `protobuf:"bytes,9,opt,name=email_provider,json=emailProvider,proto3,oneof"`
+	EmailProvider *EmailProvider `protobuf:"bytes,9,opt,name=email_provider,json=emailProvider,proto3,oneof"` // The email provider.
 }
 
 type Update_TextProvider struct {
-	TextProvider *TextProvider `protobuf:"bytes,10,opt,name=text_provider,json=textProvider,proto3,oneof"`
+	TextProvider *TextProvider `protobuf:"bytes,10,opt,name=text_provider,json=textProvider,proto3,oneof"` // The text provider.
 }
 
 type Update_Template struct {
-	Template *Template `protobuf:"bytes,11,opt,name=template,proto3,oneof"`
+	Template *Template `protobuf:"bytes,11,opt,name=template,proto3,oneof"` // The templates used for sending emails and texts.
 }
 
 func (*Update_AllowRegister) isUpdate_Field() {}
@@ -290,11 +294,14 @@ func (*Update_TextProvider) isUpdate_Field() {}
 
 func (*Update_Template) isUpdate_Field() {}
 
+// Message that tells how the user was registered / created.
 type RegisterMethod struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// The method used to register a user.
+	//
 	// Types that are assignable to Method:
 	//
 	//	*RegisterMethod_System_
@@ -360,17 +367,18 @@ type isRegisterMethod_Method interface {
 }
 
 type RegisterMethod_System_ struct {
-	System *RegisterMethod_System `protobuf:"bytes,1,opt,name=system,proto3,oneof"`
+	System *RegisterMethod_System `protobuf:"bytes,1,opt,name=system,proto3,oneof"` // The user was created by the system.
 }
 
 type RegisterMethod_Signup_ struct {
-	Signup *RegisterMethod_Signup `protobuf:"bytes,2,opt,name=signup,proto3,oneof"`
+	Signup *RegisterMethod_Signup `protobuf:"bytes,2,opt,name=signup,proto3,oneof"` // The user was self-registered with a login-type.
 }
 
 func (*RegisterMethod_System_) isRegisterMethod_Method() {}
 
 func (*RegisterMethod_Signup_) isRegisterMethod_Method() {}
 
+// Message that tells how the user was authenticated.
 type AuthMethod struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -438,23 +446,24 @@ type AuthMethod_LoginType struct {
 
 func (*AuthMethod_LoginType) isAuthMethod_Method() {}
 
+// The users settings configuration. Settings of everything that has to do with users.
 type Settings struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AllowRegister           bool                 `protobuf:"varint,1,opt,name=allow_register,json=allowRegister,proto3" json:"allow_register,omitempty"`
-	IsVerifiedEmailRequired bool                 `protobuf:"varint,2,opt,name=is_verified_email_required,json=isVerifiedEmailRequired,proto3" json:"is_verified_email_required,omitempty"`
-	IsVerifiedPhoneRequired bool                 `protobuf:"varint,3,opt,name=is_verified_phone_required,json=isVerifiedPhoneRequired,proto3" json:"is_verified_phone_required,omitempty"`
-	AccessTokenTtl          *durationpb.Duration `protobuf:"bytes,4,opt,name=access_token_ttl,json=accessTokenTtl,proto3" json:"access_token_ttl,omitempty"`
-	RefreshTokenTtl         *durationpb.Duration `protobuf:"bytes,5,opt,name=refresh_token_ttl,json=refreshTokenTtl,proto3" json:"refresh_token_ttl,omitempty"`
-	VerificationCodeTtl     *durationpb.Duration `protobuf:"bytes,6,opt,name=verification_code_ttl,json=verificationCodeTtl,proto3" json:"verification_code_ttl,omitempty"`
-	PasswordHashing         *model.HashingConfig `protobuf:"bytes,7,opt,name=password_hashing,json=passwordHashing,proto3" json:"password_hashing,omitempty"`
-	LoginMechanisms         []model.LoginType    `protobuf:"varint,8,rep,packed,name=login_mechanisms,json=loginMechanisms,proto3,enum=model.LoginType" json:"login_mechanisms,omitempty"`
-	SendWelcomeMail         bool                 `protobuf:"varint,10,opt,name=send_welcome_mail,json=sendWelcomeMail,proto3" json:"send_welcome_mail,omitempty"`
-	EmailProvider           *EmailProviderEntry  `protobuf:"bytes,11,opt,name=email_provider,json=emailProvider,proto3" json:"email_provider,omitempty"`
-	TextProvider            *TextProviderEntry   `protobuf:"bytes,12,opt,name=text_provider,json=textProvider,proto3" json:"text_provider,omitempty"`
-	Templates               *Templates           `protobuf:"bytes,13,opt,name=templates,proto3" json:"templates,omitempty"`
+	AllowRegister           bool                 `protobuf:"varint,1,opt,name=allow_register,json=allowRegister,proto3" json:"allow_register,omitempty"`                                   // If true, users can self register.
+	IsVerifiedEmailRequired bool                 `protobuf:"varint,2,opt,name=is_verified_email_required,json=isVerifiedEmailRequired,proto3" json:"is_verified_email_required,omitempty"` // If true, users must be verified via email to login.
+	IsVerifiedPhoneRequired bool                 `protobuf:"varint,3,opt,name=is_verified_phone_required,json=isVerifiedPhoneRequired,proto3" json:"is_verified_phone_required,omitempty"` // Deprecated: Text is not supported - If true, users must be verified via phone to login.
+	AccessTokenTtl          *durationpb.Duration `protobuf:"bytes,4,opt,name=access_token_ttl,json=accessTokenTtl,proto3" json:"access_token_ttl,omitempty"`                               // Access token Time to Live.
+	RefreshTokenTtl         *durationpb.Duration `protobuf:"bytes,5,opt,name=refresh_token_ttl,json=refreshTokenTtl,proto3" json:"refresh_token_ttl,omitempty"`                            // Refresh token Time to Live.
+	VerificationCodeTtl     *durationpb.Duration `protobuf:"bytes,6,opt,name=verification_code_ttl,json=verificationCodeTtl,proto3" json:"verification_code_ttl,omitempty"`                // Verification code Time to Live.
+	PasswordHashing         *model.HashingConfig `protobuf:"bytes,7,opt,name=password_hashing,json=passwordHashing,proto3" json:"password_hashing,omitempty"`                              // The hashing config used to hash passwords.
+	LoginMechanisms         []model.LoginType    `protobuf:"varint,8,rep,packed,name=login_mechanisms,json=loginMechanisms,proto3,enum=model.LoginType" json:"login_mechanisms,omitempty"` // The allowed login mechanisms.
+	SendWelcomeMail         bool                 `protobuf:"varint,10,opt,name=send_welcome_mail,json=sendWelcomeMail,proto3" json:"send_welcome_mail,omitempty"`                          // If true, send a welcome email to new users.
+	EmailProvider           *EmailProviderEntry  `protobuf:"bytes,11,opt,name=email_provider,json=emailProvider,proto3" json:"email_provider,omitempty"`                                   // The email provider.
+	TextProvider            *TextProviderEntry   `protobuf:"bytes,12,opt,name=text_provider,json=textProvider,proto3" json:"text_provider,omitempty"`                                      // Deprecated: Text is not supported - The text provider.
+	Templates               *Templates           `protobuf:"bytes,13,opt,name=templates,proto3" json:"templates,omitempty"`                                                                // The templates used for sending emails and texts.
 }
 
 func (x *Settings) Reset() {
@@ -573,6 +582,7 @@ func (x *Settings) GetTemplates() *Templates {
 	return nil
 }
 
+// Default email provider instance.
 type DefaultInstance struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -611,6 +621,7 @@ func (*DefaultInstance) Descriptor() ([]byte, []int) {
 	return file_api_v1_user_settings_settings_proto_rawDescGZIP(), []int{4}
 }
 
+// Mailjet email rpvoider instance.
 type MailjetInstance struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -649,6 +660,7 @@ func (*MailjetInstance) Descriptor() ([]byte, []int) {
 	return file_api_v1_user_settings_settings_proto_rawDescGZIP(), []int{5}
 }
 
+// Deprecated: Text is not supported - Default text provider instance.
 type TwilioInstance struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -687,13 +699,16 @@ func (*TwilioInstance) Descriptor() ([]byte, []int) {
 	return file_api_v1_user_settings_settings_proto_rawDescGZIP(), []int{6}
 }
 
+// SMTP email provider instance.
 type SmtpInstance struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// Host of the smtp server.
 	Host string `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"`
-	Port int64  `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"`
+	// Port of the smtp server.
+	Port int64 `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"`
 }
 
 func (x *SmtpInstance) Reset() {
@@ -742,6 +757,7 @@ func (x *SmtpInstance) GetPort() int64 {
 	return 0
 }
 
+// Type of email instance in a provider.
 type EmailInstance struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -820,15 +836,15 @@ type isEmailInstance_Instance interface {
 }
 
 type EmailInstance_Default struct {
-	Default *DefaultInstance `protobuf:"bytes,1,opt,name=default,proto3,oneof"`
+	Default *DefaultInstance `protobuf:"bytes,1,opt,name=default,proto3,oneof"` // default from platform config.
 }
 
 type EmailInstance_Mailjet struct {
-	Mailjet *MailjetInstance `protobuf:"bytes,2,opt,name=mailjet,proto3,oneof"`
+	Mailjet *MailjetInstance `protobuf:"bytes,2,opt,name=mailjet,proto3,oneof"` // Mailjet instance.
 }
 
 type EmailInstance_Smtp struct {
-	Smtp *SmtpInstance `protobuf:"bytes,3,opt,name=smtp,proto3,oneof"`
+	Smtp *SmtpInstance `protobuf:"bytes,3,opt,name=smtp,proto3,oneof"` // SMTP instance.
 }
 
 func (*EmailInstance_Default) isEmailInstance_Instance() {}
@@ -837,6 +853,7 @@ func (*EmailInstance_Mailjet) isEmailInstance_Instance() {}
 
 func (*EmailInstance_Smtp) isEmailInstance_Instance() {}
 
+// Deprecated: Text is not supported - Type of text instance in a provider.
 type TextInstance struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -907,25 +924,26 @@ type isTextInstance_Instance interface {
 }
 
 type TextInstance_Default struct {
-	Default *DefaultInstance `protobuf:"bytes,1,opt,name=default,proto3,oneof"`
+	Default *DefaultInstance `protobuf:"bytes,1,opt,name=default,proto3,oneof"` // default from platform config.
 }
 
 type TextInstance_Twilio struct {
-	Twilio *TwilioInstance `protobuf:"bytes,2,opt,name=twilio,proto3,oneof"`
+	Twilio *TwilioInstance `protobuf:"bytes,2,opt,name=twilio,proto3,oneof"` // Twilio instance.
 }
 
 func (*TextInstance_Default) isTextInstance_Instance() {}
 
 func (*TextInstance_Twilio) isTextInstance_Instance() {}
 
+// The email provider.
 type EmailProvider struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	From        string                     `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
-	Credentials *model.ProviderCredentials `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"`
-	Instance    *EmailInstance             `protobuf:"bytes,3,opt,name=instance,proto3" json:"instance,omitempty"`
+	From        string                     `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`               // The email-address that the provider sends emails from.
+	Credentials *model.ProviderCredentials `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"` // The credentials for the provider.
+	Instance    *EmailInstance             `protobuf:"bytes,3,opt,name=instance,proto3" json:"instance,omitempty"`       // The instance of the provider.
 }
 
 func (x *EmailProvider) Reset() {
@@ -981,15 +999,16 @@ func (x *EmailProvider) GetInstance() *EmailInstance {
 	return nil
 }
 
+// an entry model for the email provider.
 type EmailProviderEntry struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	From     string         `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
-	ClientId string         `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
-	SecretId string         `protobuf:"bytes,3,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
-	Instance *EmailInstance `protobuf:"bytes,4,opt,name=instance,proto3" json:"instance,omitempty"`
+	From     string         `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`                         // The email-address that the provider sends emails from.
+	ClientId string         `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"` // The client id for the provider.
+	SecretId string         `protobuf:"bytes,3,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"` // The secret id for the provider.
+	Instance *EmailInstance `protobuf:"bytes,4,opt,name=instance,proto3" json:"instance,omitempty"`                 // The instance of the provider.
 }
 
 func (x *EmailProviderEntry) Reset() {
@@ -1052,14 +1071,15 @@ func (x *EmailProviderEntry) GetInstance() *EmailInstance {
 	return nil
 }
 
+// Deprecated: Text is not supported - The text provider.
 type TextProvider struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	From        string                     `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
-	Credentials *model.ProviderCredentials `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"`
-	Instance    *TextInstance              `protobuf:"bytes,3,opt,name=instance,proto3" json:"instance,omitempty"`
+	From        string                     `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`               // The phone number that the provider sends texts from.
+	Credentials *model.ProviderCredentials `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"` // The credentials for the provider.
+	Instance    *TextInstance              `protobuf:"bytes,3,opt,name=instance,proto3" json:"instance,omitempty"`       // The instance of the provider.
 }
 
 func (x *TextProvider) Reset() {
@@ -1115,15 +1135,16 @@ func (x *TextProvider) GetInstance() *TextInstance {
 	return nil
 }
 
+// Deprecated: Text is not supported - An entry model for the text provider.
 type TextProviderEntry struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	From     string        `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
-	ClientId string        `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
-	SecretId string        `protobuf:"bytes,3,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
-	Instance *TextInstance `protobuf:"bytes,4,opt,name=instance,proto3" json:"instance,omitempty"`
+	From     string        `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`                         // The phone number that the provider sends texts from.
+	ClientId string        `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"` // The client id for the provider.
+	SecretId string        `protobuf:"bytes,3,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"` // The secret id for the provider.
+	Instance *TextInstance `protobuf:"bytes,4,opt,name=instance,proto3" json:"instance,omitempty"`                 // The instance of the provider.
 }
 
 func (x *TextProviderEntry) Reset() {
@@ -1186,15 +1207,16 @@ func (x *TextProviderEntry) GetInstance() *TextInstance {
 	return nil
 }
 
+// A generic template model for sending emails and texts.
 type Template struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Body    string       `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
-	Subject string       `protobuf:"bytes,2,opt,name=subject,proto3" json:"subject,omitempty"`
-	Type    TemplateType `protobuf:"varint,3,opt,name=type,proto3,enum=api.v1.user.settings.TemplateType" json:"type,omitempty"`
-	Format  []string     `protobuf:"bytes,4,rep,name=format,proto3" json:"format,omitempty"`
+	Body    string       `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`                                         // The body of the template.
+	Subject string       `protobuf:"bytes,2,opt,name=subject,proto3" json:"subject,omitempty"`                                   // The subject of the template.
+	Type    TemplateType `protobuf:"varint,3,opt,name=type,proto3,enum=api.v1.user.settings.TemplateType" json:"type,omitempty"` // The type of the template.
+	Format  []string     `protobuf:"bytes,4,rep,name=format,proto3" json:"format,omitempty"`                                     // The format of the template.
 }
 
 func (x *Template) Reset() {
@@ -1262,12 +1284,12 @@ type Templates struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	WelcomeEmail       *Template `protobuf:"bytes,1,opt,name=welcome_email,json=welcomeEmail,proto3" json:"welcome_email,omitempty"`
-	WelcomeText        *Template `protobuf:"bytes,2,opt,name=welcome_text,json=welcomeText,proto3" json:"welcome_text,omitempty"`
-	ResetPasswordEmail *Template `protobuf:"bytes,3,opt,name=reset_password_email,json=resetPasswordEmail,proto3" json:"reset_password_email,omitempty"`
-	ResetPasswordText  *Template `protobuf:"bytes,4,opt,name=reset_password_text,json=resetPasswordText,proto3" json:"reset_password_text,omitempty"`
-	VerifyEmail        *Template `protobuf:"bytes,5,opt,name=verify_email,json=verifyEmail,proto3" json:"verify_email,omitempty"`
-	VerifyPhoneNumber  *Template `protobuf:"bytes,6,opt,name=verify_phone_number,json=verifyPhoneNumber,proto3" json:"verify_phone_number,omitempty"`
+	WelcomeEmail       *Template `protobuf:"bytes,1,opt,name=welcome_email,json=welcomeEmail,proto3" json:"welcome_email,omitempty"`                     // The welcome email template.
+	WelcomeText        *Template `protobuf:"bytes,2,opt,name=welcome_text,json=welcomeText,proto3" json:"welcome_text,omitempty"`                        // Deprecated: Text is not supported - The welcome text template.
+	ResetPasswordEmail *Template `protobuf:"bytes,3,opt,name=reset_password_email,json=resetPasswordEmail,proto3" json:"reset_password_email,omitempty"` // The reset password email template.
+	ResetPasswordText  *Template `protobuf:"bytes,4,opt,name=reset_password_text,json=resetPasswordText,proto3" json:"reset_password_text,omitempty"`    // Deprecated: Text is not supported - The reset password text template.
+	VerifyEmail        *Template `protobuf:"bytes,5,opt,name=verify_email,json=verifyEmail,proto3" json:"verify_email,omitempty"`                        // The email verification template.
+	VerifyPhoneNumber  *Template `protobuf:"bytes,6,opt,name=verify_phone_number,json=verifyPhoneNumber,proto3" json:"verify_phone_number,omitempty"`    // Deprecated: Text is not supported - The text verification template.
 }
 
 func (x *Templates) Reset() {
@@ -1344,6 +1366,7 @@ func (x *Templates) GetVerifyPhoneNumber() *Template {
 	return nil
 }
 
+// The allowed login mechanisms
 type Update_LoginMechanisms struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1391,6 +1414,7 @@ func (x *Update_LoginMechanisms) GetLoginMechanisms() []model.LoginType {
 	return nil
 }
 
+// The user was created by the system.
 type RegisterMethod_System struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1429,12 +1453,13 @@ func (*RegisterMethod_System) Descriptor() ([]byte, []int) {
 	return file_api_v1_user_settings_settings_proto_rawDescGZIP(), []int{1, 0}
 }
 
+// The user was self-registered with a login-type.
 type RegisterMethod_Signup struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	LoginType model.LoginType `protobuf:"varint,1,opt,name=login_type,json=loginType,proto3,enum=model.LoginType" json:"login_type,omitempty"`
+	LoginType model.LoginType `protobuf:"varint,1,opt,name=login_type,json=loginType,proto3,enum=model.LoginType" json:"login_type,omitempty"` // The login type used to register.
 }
 
 func (x *RegisterMethod_Signup) Reset() {

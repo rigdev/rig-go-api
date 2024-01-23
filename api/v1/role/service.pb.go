@@ -21,13 +21,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Request to create a role.
 type CreateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RoleId      string        `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
-	Permissions []*Permission `protobuf:"bytes,2,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	RoleId      string        `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"` // The id / name of the role to create.
+	Permissions []*Permission `protobuf:"bytes,2,rep,name=permissions,proto3" json:"permissions,omitempty"`     // The permissions to assign to the role.
 }
 
 func (x *CreateRequest) Reset() {
@@ -76,12 +77,13 @@ func (x *CreateRequest) GetPermissions() []*Permission {
 	return nil
 }
 
+// Response to create a role.
 type CreateResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Role *Role `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"`
+	Role *Role `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"` // The created role.
 }
 
 func (x *CreateResponse) Reset() {
@@ -123,12 +125,13 @@ func (x *CreateResponse) GetRole() *Role {
 	return nil
 }
 
+// Request to delete a role.
 type DeleteRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RoleId string `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	RoleId string `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"` // The id / name of the role to delete.
 }
 
 func (x *DeleteRequest) Reset() {
@@ -170,6 +173,7 @@ func (x *DeleteRequest) GetRoleId() string {
 	return ""
 }
 
+// Empty Response to delete a role.
 type DeleteResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -208,12 +212,13 @@ func (*DeleteResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_role_service_proto_rawDescGZIP(), []int{3}
 }
 
+// Request to list roles.
 type ListRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"` // Pagination options.
 }
 
 func (x *ListRequest) Reset() {
@@ -255,12 +260,13 @@ func (x *ListRequest) GetPagination() *model.Pagination {
 	return nil
 }
 
+// Response to list roles.
 type ListResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Roles []*Role `protobuf:"bytes,1,rep,name=roles,proto3" json:"roles,omitempty"`
+	Roles []*Role `protobuf:"bytes,1,rep,name=roles,proto3" json:"roles,omitempty"` // The retrieved roles.
 }
 
 func (x *ListResponse) Reset() {
@@ -302,13 +308,14 @@ func (x *ListResponse) GetRoles() []*Role {
 	return nil
 }
 
+// Request to update a role.
 type UpdateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RoleId  string    `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
-	Updates []*Update `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"`
+	RoleId  string    `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"` // the role to update.
+	Updates []*Update `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"`             // The updates to apply to the role.
 }
 
 func (x *UpdateRequest) Reset() {
@@ -357,6 +364,7 @@ func (x *UpdateRequest) GetUpdates() []*Update {
 	return nil
 }
 
+// Empty update response.
 type UpdateResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -395,12 +403,13 @@ func (*UpdateResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_role_service_proto_rawDescGZIP(), []int{7}
 }
 
+// Request to retrieve a role.
 type GetRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RoleId string `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	RoleId string `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"` // The role to retrieve.
 }
 
 func (x *GetRequest) Reset() {
@@ -442,12 +451,13 @@ func (x *GetRequest) GetRoleId() string {
 	return ""
 }
 
+// Response to getting a role.
 type GetResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Role *Role `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"`
+	Role *Role `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"` // The retrieved role.
 }
 
 func (x *GetResponse) Reset() {
@@ -489,13 +499,14 @@ func (x *GetResponse) GetRole() *Role {
 	return nil
 }
 
+// Assign a role to an entity.
 type AssignRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RoleId   string    `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
-	EntityId *EntityID `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	RoleId   string    `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`       // The role to assign.
+	EntityId *EntityID `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"` // The entity to assign the role to.
 }
 
 func (x *AssignRequest) Reset() {
@@ -544,6 +555,7 @@ func (x *AssignRequest) GetEntityId() *EntityID {
 	return nil
 }
 
+// Empty response of assigning a role to an entity.
 type AssignResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -582,13 +594,14 @@ func (*AssignResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_role_service_proto_rawDescGZIP(), []int{11}
 }
 
+// Revoke a role from an entity.
 type RevokeRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RoleId   string    `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
-	EntityId *EntityID `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	RoleId   string    `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`       // The role to revoke.
+	EntityId *EntityID `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"` // The entity to revoke the role from.
 }
 
 func (x *RevokeRequest) Reset() {
@@ -637,6 +650,7 @@ func (x *RevokeRequest) GetEntityId() *EntityID {
 	return nil
 }
 
+// Empty response for revoking a role.
 type RevokeResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

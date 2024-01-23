@@ -70,23 +70,23 @@ var (
 
 // ServiceClient is a client for the api.v1.group.Service service.
 type ServiceClient interface {
-	// Create a new group
+	// Create a new group.
 	Create(context.Context, *connect.Request[group.CreateRequest]) (*connect.Response[group.CreateResponse], error)
-	// Delete group
+	// Delete a group.
 	Delete(context.Context, *connect.Request[group.DeleteRequest]) (*connect.Response[group.DeleteResponse], error)
-	// List groups
+	// List groups.
 	List(context.Context, *connect.Request[group.ListRequest]) (*connect.Response[group.ListResponse], error)
-	// Update group
+	// Update group.
 	Update(context.Context, *connect.Request[group.UpdateRequest]) (*connect.Response[group.UpdateResponse], error)
-	// Get group
+	// Get group.
 	Get(context.Context, *connect.Request[group.GetRequest]) (*connect.Response[group.GetResponse], error)
-	// Add a member to a group
+	// Add a member to a group.
 	AddMember(context.Context, *connect.Request[group.AddMemberRequest]) (*connect.Response[group.AddMemberResponse], error)
-	// Remove member from Group
+	// Remove member from group.
 	RemoveMember(context.Context, *connect.Request[group.RemoveMemberRequest]) (*connect.Response[group.RemoveMemberResponse], error)
-	// Get Group Members
+	// Get Group Members.
 	ListMembers(context.Context, *connect.Request[group.ListMembersRequest]) (*connect.Response[group.ListMembersResponse], error)
-	// Get Groups
+	// Get Groups.
 	ListGroupsForMember(context.Context, *connect.Request[group.ListGroupsForMemberRequest]) (*connect.Response[group.ListGroupsForMemberResponse], error)
 }
 
@@ -217,23 +217,23 @@ func (c *serviceClient) ListGroupsForMember(ctx context.Context, req *connect.Re
 
 // ServiceHandler is an implementation of the api.v1.group.Service service.
 type ServiceHandler interface {
-	// Create a new group
+	// Create a new group.
 	Create(context.Context, *connect.Request[group.CreateRequest]) (*connect.Response[group.CreateResponse], error)
-	// Delete group
+	// Delete a group.
 	Delete(context.Context, *connect.Request[group.DeleteRequest]) (*connect.Response[group.DeleteResponse], error)
-	// List groups
+	// List groups.
 	List(context.Context, *connect.Request[group.ListRequest]) (*connect.Response[group.ListResponse], error)
-	// Update group
+	// Update group.
 	Update(context.Context, *connect.Request[group.UpdateRequest]) (*connect.Response[group.UpdateResponse], error)
-	// Get group
+	// Get group.
 	Get(context.Context, *connect.Request[group.GetRequest]) (*connect.Response[group.GetResponse], error)
-	// Add a member to a group
+	// Add a member to a group.
 	AddMember(context.Context, *connect.Request[group.AddMemberRequest]) (*connect.Response[group.AddMemberResponse], error)
-	// Remove member from Group
+	// Remove member from group.
 	RemoveMember(context.Context, *connect.Request[group.RemoveMemberRequest]) (*connect.Response[group.RemoveMemberResponse], error)
-	// Get Group Members
+	// Get Group Members.
 	ListMembers(context.Context, *connect.Request[group.ListMembersRequest]) (*connect.Response[group.ListMembersResponse], error)
-	// Get Groups
+	// Get Groups.
 	ListGroupsForMember(context.Context, *connect.Request[group.ListGroupsForMemberRequest]) (*connect.Response[group.ListGroupsForMemberResponse], error)
 }
 

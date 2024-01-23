@@ -20,6 +20,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Deprecated: sidecar configuration
 type Sidecar struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -67,6 +68,7 @@ func (x *Sidecar) GetInterfaces() []*SidecarInterface {
 	return nil
 }
 
+// Deprecated: sidecar interface configuration
 type SidecarInterface struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

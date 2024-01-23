@@ -22,17 +22,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// An event is a message from a rollout
 type Event struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Potential author associated with the event.
-	CreatedBy *model.Author          `protobuf:"bytes,1,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`
-	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	RolloutId uint64                 `protobuf:"varint,3,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
-	Message   string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
-	EventData *EventData             `protobuf:"bytes,5,opt,name=event_data,json=eventData,proto3" json:"event_data,omitempty"`
+	CreatedBy *model.Author          `protobuf:"bytes,1,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`  // Potential author associated with the event.
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`  // When the event was created.
+	RolloutId uint64                 `protobuf:"varint,3,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"` // The rollout that created the event.
+	Message   string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`                       // A message associated with the event.
+	EventData *EventData             `protobuf:"bytes,5,opt,name=event_data,json=eventData,proto3" json:"event_data,omitempty"`  // The data associated with the event.
 }
 
 func (x *Event) Reset() {
@@ -102,6 +102,7 @@ func (x *Event) GetEventData() *EventData {
 	return nil
 }
 
+// An event that is associated with a rollout.
 type RolloutEvent struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -140,6 +141,7 @@ func (*RolloutEvent) Descriptor() ([]byte, []int) {
 	return file_api_v1_capsule_event_proto_rawDescGZIP(), []int{1}
 }
 
+// An event that is associated with an abort.
 type AbortEvent struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -178,6 +180,7 @@ func (*AbortEvent) Descriptor() ([]byte, []int) {
 	return file_api_v1_capsule_event_proto_rawDescGZIP(), []int{2}
 }
 
+// An event that is associated with an error.
 type ErrorEvent struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -216,6 +219,7 @@ func (*ErrorEvent) Descriptor() ([]byte, []int) {
 	return file_api_v1_capsule_event_proto_rawDescGZIP(), []int{3}
 }
 
+// The data associated with an event.
 type EventData struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -294,15 +298,15 @@ type isEventData_Kind interface {
 }
 
 type EventData_Rollout struct {
-	Rollout *RolloutEvent `protobuf:"bytes,1,opt,name=rollout,proto3,oneof"`
+	Rollout *RolloutEvent `protobuf:"bytes,1,opt,name=rollout,proto3,oneof"` // If event is a rollout.
 }
 
 type EventData_Error struct {
-	Error *ErrorEvent `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+	Error *ErrorEvent `protobuf:"bytes,2,opt,name=error,proto3,oneof"` // if event is an error event.
 }
 
 type EventData_Abort struct {
-	Abort *AbortEvent `protobuf:"bytes,3,opt,name=abort,proto3,oneof"`
+	Abort *AbortEvent `protobuf:"bytes,3,opt,name=abort,proto3,oneof"` // If event is an abort event.
 }
 
 func (*EventData_Rollout) isEventData_Kind() {}

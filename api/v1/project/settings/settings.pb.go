@@ -20,12 +20,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Project wide settings.
 type Settings struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	DockerRegistries []*DockerRegistry `protobuf:"bytes,4,rep,name=docker_registries,json=dockerRegistries,proto3" json:"docker_registries,omitempty"`
+	DockerRegistries []*DockerRegistry `protobuf:"bytes,4,rep,name=docker_registries,json=dockerRegistries,proto3" json:"docker_registries,omitempty"` // Docker registries for images.
 }
 
 func (x *Settings) Reset() {
@@ -67,13 +68,14 @@ func (x *Settings) GetDockerRegistries() []*DockerRegistry {
 	return nil
 }
 
+// Docker registry.
 type DockerRegistry struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	SecretId string `protobuf:"bytes,1,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
-	Host     string `protobuf:"bytes,2,opt,name=host,proto3" json:"host,omitempty"`
+	SecretId string `protobuf:"bytes,1,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"` // The secret id of the docker registry.
+	Host     string `protobuf:"bytes,2,opt,name=host,proto3" json:"host,omitempty"`                         // Host of the docker registry/
 }
 
 func (x *DockerRegistry) Reset() {
@@ -122,12 +124,13 @@ func (x *DockerRegistry) GetHost() string {
 	return ""
 }
 
+// Message for adding a docker registry
 type AddDockerRegistry struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Host string `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"`
+	Host string `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"` // The host of the docker registry.
 	// Types that are assignable to Field:
 	//
 	//	*AddDockerRegistry_Auth
@@ -200,25 +203,26 @@ type isAddDockerRegistry_Field interface {
 }
 
 type AddDockerRegistry_Auth struct {
-	Auth string `protobuf:"bytes,2,opt,name=auth,proto3,oneof"`
+	Auth string `protobuf:"bytes,2,opt,name=auth,proto3,oneof"` // authentication string to the docker registry.
 }
 
 type AddDockerRegistry_Credentials struct {
-	Credentials *DockerRegistryCredentials `protobuf:"bytes,3,opt,name=credentials,proto3,oneof"`
+	Credentials *DockerRegistryCredentials `protobuf:"bytes,3,opt,name=credentials,proto3,oneof"` // Credentials for the docker registry.
 }
 
 func (*AddDockerRegistry_Auth) isAddDockerRegistry_Field() {}
 
 func (*AddDockerRegistry_Credentials) isAddDockerRegistry_Field() {}
 
+// Credentials for a docker registry.
 type DockerRegistryCredentials struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	Email    string `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"` // Username for the docker registry.
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"` // Password for the docker registry.
+	Email    string `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`       // Email for the docker registry.
 }
 
 func (x *DockerRegistryCredentials) Reset() {
@@ -274,11 +278,14 @@ func (x *DockerRegistryCredentials) GetEmail() string {
 	return ""
 }
 
+// Update message for project settings.
 type Update struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// A number of updates to apply to the project settings.
+	//
 	// Types that are assignable to Field:
 	//
 	//	*Update_AddDockerRegistry
@@ -344,11 +351,11 @@ type isUpdate_Field interface {
 }
 
 type Update_AddDockerRegistry struct {
-	AddDockerRegistry *AddDockerRegistry `protobuf:"bytes,4,opt,name=add_docker_registry,json=addDockerRegistry,proto3,oneof"`
+	AddDockerRegistry *AddDockerRegistry `protobuf:"bytes,4,opt,name=add_docker_registry,json=addDockerRegistry,proto3,oneof"` // Add a docker registry.
 }
 
 type Update_DeleteDockerRegistry struct {
-	DeleteDockerRegistry string `protobuf:"bytes,5,opt,name=delete_docker_registry,json=deleteDockerRegistry,proto3,oneof"`
+	DeleteDockerRegistry string `protobuf:"bytes,5,opt,name=delete_docker_registry,json=deleteDockerRegistry,proto3,oneof"` // Delete a docker registry.
 }
 
 func (*Update_AddDockerRegistry) isUpdate_Field() {}

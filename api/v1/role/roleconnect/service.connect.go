@@ -63,19 +63,19 @@ var (
 
 // ServiceClient is a client for the api.v1.role.Service service.
 type ServiceClient interface {
-	// Create a new role
+	// Create a new role.
 	Create(context.Context, *connect.Request[role.CreateRequest]) (*connect.Response[role.CreateResponse], error)
-	// Delete role
+	// Delete role.
 	Delete(context.Context, *connect.Request[role.DeleteRequest]) (*connect.Response[role.DeleteResponse], error)
-	// List roles
+	// List roles.
 	List(context.Context, *connect.Request[role.ListRequest]) (*connect.Response[role.ListResponse], error)
 	// Update role
 	Update(context.Context, *connect.Request[role.UpdateRequest]) (*connect.Response[role.UpdateResponse], error)
-	// Get role
+	// Get role.
 	Get(context.Context, *connect.Request[role.GetRequest]) (*connect.Response[role.GetResponse], error)
-	// Assign a role
+	// Assign a role.
 	Assign(context.Context, *connect.Request[role.AssignRequest]) (*connect.Response[role.AssignResponse], error)
-	// Retract a role
+	// Revoke a role.
 	Revoke(context.Context, *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error)
 }
 
@@ -182,19 +182,19 @@ func (c *serviceClient) Revoke(ctx context.Context, req *connect.Request[role.Re
 
 // ServiceHandler is an implementation of the api.v1.role.Service service.
 type ServiceHandler interface {
-	// Create a new role
+	// Create a new role.
 	Create(context.Context, *connect.Request[role.CreateRequest]) (*connect.Response[role.CreateResponse], error)
-	// Delete role
+	// Delete role.
 	Delete(context.Context, *connect.Request[role.DeleteRequest]) (*connect.Response[role.DeleteResponse], error)
-	// List roles
+	// List roles.
 	List(context.Context, *connect.Request[role.ListRequest]) (*connect.Response[role.ListResponse], error)
 	// Update role
 	Update(context.Context, *connect.Request[role.UpdateRequest]) (*connect.Response[role.UpdateResponse], error)
-	// Get role
+	// Get role.
 	Get(context.Context, *connect.Request[role.GetRequest]) (*connect.Response[role.GetResponse], error)
-	// Assign a role
+	// Assign a role.
 	Assign(context.Context, *connect.Request[role.AssignRequest]) (*connect.Response[role.AssignResponse], error)
-	// Retract a role
+	// Revoke a role.
 	Revoke(context.Context, *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error)
 }
 
