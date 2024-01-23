@@ -45,12 +45,6 @@ const (
 	ServiceUpdateProcedure = "/api.v1.capsule.Service/Update"
 	// ServiceListProcedure is the fully-qualified name of the Service's List RPC.
 	ServiceListProcedure = "/api.v1.capsule.Service/List"
-	// ServiceCreateBuildProcedure is the fully-qualified name of the Service's CreateBuild RPC.
-	ServiceCreateBuildProcedure = "/api.v1.capsule.Service/CreateBuild"
-	// ServiceListBuildsProcedure is the fully-qualified name of the Service's ListBuilds RPC.
-	ServiceListBuildsProcedure = "/api.v1.capsule.Service/ListBuilds"
-	// ServiceDeleteBuildProcedure is the fully-qualified name of the Service's DeleteBuild RPC.
-	ServiceDeleteBuildProcedure = "/api.v1.capsule.Service/DeleteBuild"
 	// ServiceDeployProcedure is the fully-qualified name of the Service's Deploy RPC.
 	ServiceDeployProcedure = "/api.v1.capsule.Service/Deploy"
 	// ServiceListInstancesProcedure is the fully-qualified name of the Service's ListInstances RPC.
@@ -92,9 +86,6 @@ var (
 	serviceLogsMethodDescriptor                     = serviceServiceDescriptor.Methods().ByName("Logs")
 	serviceUpdateMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Update")
 	serviceListMethodDescriptor                     = serviceServiceDescriptor.Methods().ByName("List")
-	serviceCreateBuildMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("CreateBuild")
-	serviceListBuildsMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("ListBuilds")
-	serviceDeleteBuildMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("DeleteBuild")
 	serviceDeployMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Deploy")
 	serviceListInstancesMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ListInstances")
 	serviceRestartInstanceMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("RestartInstance")
@@ -124,14 +115,6 @@ type ServiceClient interface {
 	Update(context.Context, *connect.Request[capsule.UpdateRequest]) (*connect.Response[capsule.UpdateResponse], error)
 	// Lists all capsules for current project.
 	List(context.Context, *connect.Request[capsule.ListRequest]) (*connect.Response[capsule.ListResponse], error)
-	// Create a new build.
-	// Builds are immutable and cannot change. Create a new build to make
-	// changes from an existing one.
-	CreateBuild(context.Context, *connect.Request[capsule.CreateBuildRequest]) (*connect.Response[capsule.CreateBuildResponse], error)
-	// List builds for a capsule.
-	ListBuilds(context.Context, *connect.Request[capsule.ListBuildsRequest]) (*connect.Response[capsule.ListBuildsResponse], error)
-	// Delete a build.
-	DeleteBuild(context.Context, *connect.Request[capsule.DeleteBuildRequest]) (*connect.Response[capsule.DeleteBuildResponse], error)
 	// Deploy changes to a capsule.
 	// When deploying, a new rollout will be initiated. Only one rollout can be
 	// running at a single point in time.
@@ -206,24 +189,6 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			httpClient,
 			baseURL+ServiceListProcedure,
 			connect.WithSchema(serviceListMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		createBuild: connect.NewClient[capsule.CreateBuildRequest, capsule.CreateBuildResponse](
-			httpClient,
-			baseURL+ServiceCreateBuildProcedure,
-			connect.WithSchema(serviceCreateBuildMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		listBuilds: connect.NewClient[capsule.ListBuildsRequest, capsule.ListBuildsResponse](
-			httpClient,
-			baseURL+ServiceListBuildsProcedure,
-			connect.WithSchema(serviceListBuildsMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		deleteBuild: connect.NewClient[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse](
-			httpClient,
-			baseURL+ServiceDeleteBuildProcedure,
-			connect.WithSchema(serviceDeleteBuildMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		deploy: connect.NewClient[capsule.DeployRequest, capsule.DeployResponse](
@@ -315,9 +280,6 @@ type serviceClient struct {
 	logs                     *connect.Client[capsule.LogsRequest, capsule.LogsResponse]
 	update                   *connect.Client[capsule.UpdateRequest, capsule.UpdateResponse]
 	list                     *connect.Client[capsule.ListRequest, capsule.ListResponse]
-	createBuild              *connect.Client[capsule.CreateBuildRequest, capsule.CreateBuildResponse]
-	listBuilds               *connect.Client[capsule.ListBuildsRequest, capsule.ListBuildsResponse]
-	deleteBuild              *connect.Client[capsule.DeleteBuildRequest, capsule.DeleteBuildResponse]
 	deploy                   *connect.Client[capsule.DeployRequest, capsule.DeployResponse]
 	listInstances            *connect.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
 	restartInstance          *connect.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
@@ -361,21 +323,6 @@ func (c *serviceClient) Update(ctx context.Context, req *connect.Request[capsule
 // List calls api.v1.capsule.Service.List.
 func (c *serviceClient) List(ctx context.Context, req *connect.Request[capsule.ListRequest]) (*connect.Response[capsule.ListResponse], error) {
 	return c.list.CallUnary(ctx, req)
-}
-
-// CreateBuild calls api.v1.capsule.Service.CreateBuild.
-func (c *serviceClient) CreateBuild(ctx context.Context, req *connect.Request[capsule.CreateBuildRequest]) (*connect.Response[capsule.CreateBuildResponse], error) {
-	return c.createBuild.CallUnary(ctx, req)
-}
-
-// ListBuilds calls api.v1.capsule.Service.ListBuilds.
-func (c *serviceClient) ListBuilds(ctx context.Context, req *connect.Request[capsule.ListBuildsRequest]) (*connect.Response[capsule.ListBuildsResponse], error) {
-	return c.listBuilds.CallUnary(ctx, req)
-}
-
-// DeleteBuild calls api.v1.capsule.Service.DeleteBuild.
-func (c *serviceClient) DeleteBuild(ctx context.Context, req *connect.Request[capsule.DeleteBuildRequest]) (*connect.Response[capsule.DeleteBuildResponse], error) {
-	return c.deleteBuild.CallUnary(ctx, req)
 }
 
 // Deploy calls api.v1.capsule.Service.Deploy.
@@ -457,14 +404,6 @@ type ServiceHandler interface {
 	Update(context.Context, *connect.Request[capsule.UpdateRequest]) (*connect.Response[capsule.UpdateResponse], error)
 	// Lists all capsules for current project.
 	List(context.Context, *connect.Request[capsule.ListRequest]) (*connect.Response[capsule.ListResponse], error)
-	// Create a new build.
-	// Builds are immutable and cannot change. Create a new build to make
-	// changes from an existing one.
-	CreateBuild(context.Context, *connect.Request[capsule.CreateBuildRequest]) (*connect.Response[capsule.CreateBuildResponse], error)
-	// List builds for a capsule.
-	ListBuilds(context.Context, *connect.Request[capsule.ListBuildsRequest]) (*connect.Response[capsule.ListBuildsResponse], error)
-	// Delete a build.
-	DeleteBuild(context.Context, *connect.Request[capsule.DeleteBuildRequest]) (*connect.Response[capsule.DeleteBuildResponse], error)
 	// Deploy changes to a capsule.
 	// When deploying, a new rollout will be initiated. Only one rollout can be
 	// running at a single point in time.
@@ -535,24 +474,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		ServiceListProcedure,
 		svc.List,
 		connect.WithSchema(serviceListMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	serviceCreateBuildHandler := connect.NewUnaryHandler(
-		ServiceCreateBuildProcedure,
-		svc.CreateBuild,
-		connect.WithSchema(serviceCreateBuildMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	serviceListBuildsHandler := connect.NewUnaryHandler(
-		ServiceListBuildsProcedure,
-		svc.ListBuilds,
-		connect.WithSchema(serviceListBuildsMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	serviceDeleteBuildHandler := connect.NewUnaryHandler(
-		ServiceDeleteBuildProcedure,
-		svc.DeleteBuild,
-		connect.WithSchema(serviceDeleteBuildMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	serviceDeployHandler := connect.NewUnaryHandler(
@@ -647,12 +568,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceUpdateHandler.ServeHTTP(w, r)
 		case ServiceListProcedure:
 			serviceListHandler.ServeHTTP(w, r)
-		case ServiceCreateBuildProcedure:
-			serviceCreateBuildHandler.ServeHTTP(w, r)
-		case ServiceListBuildsProcedure:
-			serviceListBuildsHandler.ServeHTTP(w, r)
-		case ServiceDeleteBuildProcedure:
-			serviceDeleteBuildHandler.ServeHTTP(w, r)
 		case ServiceDeployProcedure:
 			serviceDeployHandler.ServeHTTP(w, r)
 		case ServiceListInstancesProcedure:
@@ -710,18 +625,6 @@ func (UnimplementedServiceHandler) Update(context.Context, *connect.Request[caps
 
 func (UnimplementedServiceHandler) List(context.Context, *connect.Request[capsule.ListRequest]) (*connect.Response[capsule.ListResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.List is not implemented"))
-}
-
-func (UnimplementedServiceHandler) CreateBuild(context.Context, *connect.Request[capsule.CreateBuildRequest]) (*connect.Response[capsule.CreateBuildResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.CreateBuild is not implemented"))
-}
-
-func (UnimplementedServiceHandler) ListBuilds(context.Context, *connect.Request[capsule.ListBuildsRequest]) (*connect.Response[capsule.ListBuildsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListBuilds is not implemented"))
-}
-
-func (UnimplementedServiceHandler) DeleteBuild(context.Context, *connect.Request[capsule.DeleteBuildRequest]) (*connect.Response[capsule.DeleteBuildResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.DeleteBuild is not implemented"))
 }
 
 func (UnimplementedServiceHandler) Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error) {
