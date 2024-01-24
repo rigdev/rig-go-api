@@ -21,6 +21,53 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// The type of SSO. Currently only OIDC is supported.
+type SSOType int32
+
+const (
+	SSOType_SSO_TYPE_UNSPECIFIED SSOType = 0
+	SSOType_SSO_TYPE_OIDC        SSOType = 1
+)
+
+// Enum value maps for SSOType.
+var (
+	SSOType_name = map[int32]string{
+		0: "SSO_TYPE_UNSPECIFIED",
+		1: "SSO_TYPE_OIDC",
+	}
+	SSOType_value = map[string]int32{
+		"SSO_TYPE_UNSPECIFIED": 0,
+		"SSO_TYPE_OIDC":        1,
+	}
+)
+
+func (x SSOType) Enum() *SSOType {
+	p := new(SSOType)
+	*p = x
+	return p
+}
+
+func (x SSOType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SSOType) Descriptor() protoreflect.EnumDescriptor {
+	return file_api_v1_authentication_service_proto_enumTypes[0].Descriptor()
+}
+
+func (SSOType) Type() protoreflect.EnumType {
+	return &file_api_v1_authentication_service_proto_enumTypes[0]
+}
+
+func (x SSOType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SSOType.Descriptor instead.
+func (SSOType) EnumDescriptor() ([]byte, []int) {
+	return file_api_v1_authentication_service_proto_rawDescGZIP(), []int{0}
+}
+
 // Request to verify the email of a user with a verification code sent to the email.
 type VerifyEmailRequest struct {
 	state         protoimpl.MessageState
@@ -1082,6 +1129,8 @@ type GetAuthConfigResponse struct {
 	LoginTypes []model.LoginType `protobuf:"varint,4,rep,packed,name=login_types,json=loginTypes,proto3,enum=model.LoginType" json:"login_types,omitempty"`
 	// True if new users can sign up.
 	AllowsRegister bool `protobuf:"varint,7,opt,name=allows_register,json=allowsRegister,proto3" json:"allows_register,omitempty"`
+	// SSO login options
+	SsoOptions []*SSOOption `protobuf:"bytes,8,rep,name=sso_options,json=ssoOptions,proto3" json:"sso_options,omitempty"`
 }
 
 func (x *GetAuthConfigResponse) Reset() {
@@ -1149,6 +1198,168 @@ func (x *GetAuthConfigResponse) GetAllowsRegister() bool {
 		return x.AllowsRegister
 	}
 	return false
+}
+
+func (x *GetAuthConfigResponse) GetSsoOptions() []*SSOOption {
+	if x != nil {
+		return x.SsoOptions
+	}
+	return nil
+}
+
+// A login option for using SSO. This might be merged into
+// GetAuthConfigResponse.login_types, but is introduced as a separate field, to
+// maintain backwards compatibility.
+type SSOOption struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Type of SSO. Currently only OIDC is supported.
+	Type SSOType `protobuf:"varint,1,opt,name=type,proto3,enum=api.v1.authentication.SSOType" json:"type,omitempty"`
+	// ID of the SSO provider as given in the platform configuration.
+	ProviderId string `protobuf:"bytes,2,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
+	// Name of SSO provider. This is an optional human readable version of the provider ID.
+	Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	// URL of the underlying issuer. This can be used in the frontend for
+	// showing specific items for certain known issuers.
+	IssuerUrl string `protobuf:"bytes,4,opt,name=issuer_url,json=issuerUrl,proto3" json:"issuer_url,omitempty"`
+}
+
+func (x *SSOOption) Reset() {
+	*x = SSOOption{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_authentication_service_proto_msgTypes[22]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SSOOption) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SSOOption) ProtoMessage() {}
+
+func (x *SSOOption) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_authentication_service_proto_msgTypes[22]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SSOOption.ProtoReflect.Descriptor instead.
+func (*SSOOption) Descriptor() ([]byte, []int) {
+	return file_api_v1_authentication_service_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *SSOOption) GetType() SSOType {
+	if x != nil {
+		return x.Type
+	}
+	return SSOType_SSO_TYPE_UNSPECIFIED
+}
+
+func (x *SSOOption) GetProviderId() string {
+	if x != nil {
+		return x.ProviderId
+	}
+	return ""
+}
+
+func (x *SSOOption) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SSOOption) GetIssuerUrl() string {
+	if x != nil {
+		return x.IssuerUrl
+	}
+	return ""
+}
+
+// Represents an SSO provided ID of a user
+type SSOID struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// What type of SSO this ID is from
+	Type SSOType `protobuf:"varint,1,opt,name=type,proto3,enum=api.v1.authentication.SSOType" json:"type,omitempty"`
+	// The ID of the SSO provider
+	ProviderId string `protobuf:"bytes,2,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
+	// The ID provided by SSO
+	SsoId string `protobuf:"bytes,3,opt,name=sso_id,json=ssoId,proto3" json:"sso_id,omitempty"`
+	// The internal user ID
+	UserId string `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+}
+
+func (x *SSOID) Reset() {
+	*x = SSOID{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_authentication_service_proto_msgTypes[23]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SSOID) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SSOID) ProtoMessage() {}
+
+func (x *SSOID) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_authentication_service_proto_msgTypes[23]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SSOID.ProtoReflect.Descriptor instead.
+func (*SSOID) Descriptor() ([]byte, []int) {
+	return file_api_v1_authentication_service_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *SSOID) GetType() SSOType {
+	if x != nil {
+		return x.Type
+	}
+	return SSOType_SSO_TYPE_UNSPECIFIED
+}
+
+func (x *SSOID) GetProviderId() string {
+	if x != nil {
+		return x.ProviderId
+	}
+	return ""
+}
+
+func (x *SSOID) GetSsoId() string {
+	if x != nil {
+		return x.SsoId
+	}
+	return ""
+}
+
+func (x *SSOID) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
 }
 
 var File_api_v1_authentication_service_proto protoreflect.FileDescriptor
@@ -1248,7 +1459,7 @@ var file_api_v1_authentication_service_proto_rawDesc = []byte{
 	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x65, 0x6e, 0x74, 0x69,
 	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x05, 0x74, 0x6f,
 	0x6b, 0x65, 0x6e, 0x22, 0x16, 0x0a, 0x14, 0x47, 0x65, 0x74, 0x41, 0x75, 0x74, 0x68, 0x43, 0x6f,
-	0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0xcf, 0x01, 0x0a, 0x15,
+	0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x92, 0x02, 0x0a, 0x15,
 	0x47, 0x65, 0x74, 0x41, 0x75, 0x74, 0x68, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73,
 	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x6c, 0x6f, 0x67,
@@ -1261,7 +1472,33 @@ var file_api_v1_authentication_service_proto_rawDesc = []byte{
 	0x6f, 0x67, 0x69, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x0a, 0x6c, 0x6f, 0x67, 0x69, 0x6e, 0x54,
 	0x79, 0x70, 0x65, 0x73, 0x12, 0x27, 0x0a, 0x0f, 0x61, 0x6c, 0x6c, 0x6f, 0x77, 0x73, 0x5f, 0x72,
 	0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x18, 0x07, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0e, 0x61,
-	0x6c, 0x6c, 0x6f, 0x77, 0x73, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x32, 0xe3, 0x08,
+	0x6c, 0x6c, 0x6f, 0x77, 0x73, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x12, 0x41, 0x0a,
+	0x0b, 0x73, 0x73, 0x6f, 0x5f, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x08, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x20, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x61, 0x75, 0x74, 0x68,
+	0x65, 0x6e, 0x74, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x53, 0x53, 0x4f, 0x4f, 0x70,
+	0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0a, 0x73, 0x73, 0x6f, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x22, 0x93, 0x01, 0x0a, 0x09, 0x53, 0x53, 0x4f, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x32,
+	0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1e, 0x2e, 0x61,
+	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x65, 0x6e, 0x74, 0x69, 0x63, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x53, 0x53, 0x4f, 0x54, 0x79, 0x70, 0x65, 0x52, 0x04, 0x74, 0x79,
+	0x70, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x5f, 0x69,
+	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65,
+	0x72, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x69, 0x73, 0x73, 0x75, 0x65,
+	0x72, 0x5f, 0x75, 0x72, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x69, 0x73, 0x73,
+	0x75, 0x65, 0x72, 0x55, 0x72, 0x6c, 0x22, 0x8c, 0x01, 0x0a, 0x05, 0x53, 0x53, 0x4f, 0x49, 0x44,
+	0x12, 0x32, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1e,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x65, 0x6e, 0x74, 0x69,
+	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x53, 0x53, 0x4f, 0x54, 0x79, 0x70, 0x65, 0x52, 0x04,
+	0x74, 0x79, 0x70, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72,
+	0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x76, 0x69,
+	0x64, 0x65, 0x72, 0x49, 0x64, 0x12, 0x15, 0x0a, 0x06, 0x73, 0x73, 0x6f, 0x5f, 0x69, 0x64, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x73, 0x73, 0x6f, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07,
+	0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x75,
+	0x73, 0x65, 0x72, 0x49, 0x64, 0x2a, 0x36, 0x0a, 0x07, 0x53, 0x53, 0x4f, 0x54, 0x79, 0x70, 0x65,
+	0x12, 0x18, 0x0a, 0x14, 0x53, 0x53, 0x4f, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x55, 0x4e, 0x53,
+	0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x11, 0x0a, 0x0d, 0x53, 0x53,
+	0x4f, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x4f, 0x49, 0x44, 0x43, 0x10, 0x01, 0x32, 0xe3, 0x08,
 	0x0a, 0x07, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x54, 0x0a, 0x05, 0x4c, 0x6f, 0x67,
 	0x69, 0x6e, 0x12, 0x23, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x61, 0x75, 0x74, 0x68,
 	0x65, 0x6e, 0x74, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x4c, 0x6f, 0x67, 0x69, 0x6e,
@@ -1361,77 +1598,84 @@ func file_api_v1_authentication_service_proto_rawDescGZIP() []byte {
 	return file_api_v1_authentication_service_proto_rawDescData
 }
 
-var file_api_v1_authentication_service_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_api_v1_authentication_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_api_v1_authentication_service_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_api_v1_authentication_service_proto_goTypes = []interface{}{
-	(*VerifyEmailRequest)(nil),        // 0: api.v1.authentication.VerifyEmailRequest
-	(*VerifyEmailResponse)(nil),       // 1: api.v1.authentication.VerifyEmailResponse
-	(*VerifyPhoneNumberRequest)(nil),  // 2: api.v1.authentication.VerifyPhoneNumberRequest
-	(*VerifyPhoneNumberResponse)(nil), // 3: api.v1.authentication.VerifyPhoneNumberResponse
-	(*LoginRequest)(nil),              // 4: api.v1.authentication.LoginRequest
-	(*LoginResponse)(nil),             // 5: api.v1.authentication.LoginResponse
-	(*LogoutRequest)(nil),             // 6: api.v1.authentication.LogoutRequest
-	(*LogoutResponse)(nil),            // 7: api.v1.authentication.LogoutResponse
-	(*GetRequest)(nil),                // 8: api.v1.authentication.GetRequest
-	(*GetResponse)(nil),               // 9: api.v1.authentication.GetResponse
-	(*RegisterRequest)(nil),           // 10: api.v1.authentication.RegisterRequest
-	(*RegisterResponse)(nil),          // 11: api.v1.authentication.RegisterResponse
-	(*SendPasswordResetRequest)(nil),  // 12: api.v1.authentication.SendPasswordResetRequest
-	(*SendPasswordResetResponse)(nil), // 13: api.v1.authentication.SendPasswordResetResponse
-	(*ResetPasswordRequest)(nil),      // 14: api.v1.authentication.ResetPasswordRequest
-	(*ResetPasswordResponse)(nil),     // 15: api.v1.authentication.ResetPasswordResponse
-	(*DeleteRequest)(nil),             // 16: api.v1.authentication.DeleteRequest
-	(*DeleteResponse)(nil),            // 17: api.v1.authentication.DeleteResponse
-	(*RefreshTokenRequest)(nil),       // 18: api.v1.authentication.RefreshTokenRequest
-	(*RefreshTokenResponse)(nil),      // 19: api.v1.authentication.RefreshTokenResponse
-	(*GetAuthConfigRequest)(nil),      // 20: api.v1.authentication.GetAuthConfigRequest
-	(*GetAuthConfigResponse)(nil),     // 21: api.v1.authentication.GetAuthConfigResponse
-	(*UserPassword)(nil),              // 22: api.v1.authentication.UserPassword
-	(*ClientCredentials)(nil),         // 23: api.v1.authentication.ClientCredentials
-	(*Token)(nil),                     // 24: api.v1.authentication.Token
-	(*model.UserInfo)(nil),            // 25: model.UserInfo
-	(*model.UserIdentifier)(nil),      // 26: model.UserIdentifier
-	(model.LoginType)(0),              // 27: model.LoginType
+	(SSOType)(0),                      // 0: api.v1.authentication.SSOType
+	(*VerifyEmailRequest)(nil),        // 1: api.v1.authentication.VerifyEmailRequest
+	(*VerifyEmailResponse)(nil),       // 2: api.v1.authentication.VerifyEmailResponse
+	(*VerifyPhoneNumberRequest)(nil),  // 3: api.v1.authentication.VerifyPhoneNumberRequest
+	(*VerifyPhoneNumberResponse)(nil), // 4: api.v1.authentication.VerifyPhoneNumberResponse
+	(*LoginRequest)(nil),              // 5: api.v1.authentication.LoginRequest
+	(*LoginResponse)(nil),             // 6: api.v1.authentication.LoginResponse
+	(*LogoutRequest)(nil),             // 7: api.v1.authentication.LogoutRequest
+	(*LogoutResponse)(nil),            // 8: api.v1.authentication.LogoutResponse
+	(*GetRequest)(nil),                // 9: api.v1.authentication.GetRequest
+	(*GetResponse)(nil),               // 10: api.v1.authentication.GetResponse
+	(*RegisterRequest)(nil),           // 11: api.v1.authentication.RegisterRequest
+	(*RegisterResponse)(nil),          // 12: api.v1.authentication.RegisterResponse
+	(*SendPasswordResetRequest)(nil),  // 13: api.v1.authentication.SendPasswordResetRequest
+	(*SendPasswordResetResponse)(nil), // 14: api.v1.authentication.SendPasswordResetResponse
+	(*ResetPasswordRequest)(nil),      // 15: api.v1.authentication.ResetPasswordRequest
+	(*ResetPasswordResponse)(nil),     // 16: api.v1.authentication.ResetPasswordResponse
+	(*DeleteRequest)(nil),             // 17: api.v1.authentication.DeleteRequest
+	(*DeleteResponse)(nil),            // 18: api.v1.authentication.DeleteResponse
+	(*RefreshTokenRequest)(nil),       // 19: api.v1.authentication.RefreshTokenRequest
+	(*RefreshTokenResponse)(nil),      // 20: api.v1.authentication.RefreshTokenResponse
+	(*GetAuthConfigRequest)(nil),      // 21: api.v1.authentication.GetAuthConfigRequest
+	(*GetAuthConfigResponse)(nil),     // 22: api.v1.authentication.GetAuthConfigResponse
+	(*SSOOption)(nil),                 // 23: api.v1.authentication.SSOOption
+	(*SSOID)(nil),                     // 24: api.v1.authentication.SSOID
+	(*UserPassword)(nil),              // 25: api.v1.authentication.UserPassword
+	(*ClientCredentials)(nil),         // 26: api.v1.authentication.ClientCredentials
+	(*Token)(nil),                     // 27: api.v1.authentication.Token
+	(*model.UserInfo)(nil),            // 28: model.UserInfo
+	(*model.UserIdentifier)(nil),      // 29: model.UserIdentifier
+	(model.LoginType)(0),              // 30: model.LoginType
 }
 var file_api_v1_authentication_service_proto_depIdxs = []int32{
-	22, // 0: api.v1.authentication.LoginRequest.user_password:type_name -> api.v1.authentication.UserPassword
-	23, // 1: api.v1.authentication.LoginRequest.client_credentials:type_name -> api.v1.authentication.ClientCredentials
-	24, // 2: api.v1.authentication.LoginResponse.token:type_name -> api.v1.authentication.Token
-	25, // 3: api.v1.authentication.LoginResponse.user_info:type_name -> model.UserInfo
-	25, // 4: api.v1.authentication.GetResponse.user_info:type_name -> model.UserInfo
-	22, // 5: api.v1.authentication.RegisterRequest.user_password:type_name -> api.v1.authentication.UserPassword
-	24, // 6: api.v1.authentication.RegisterResponse.token:type_name -> api.v1.authentication.Token
-	25, // 7: api.v1.authentication.RegisterResponse.user_info:type_name -> model.UserInfo
-	26, // 8: api.v1.authentication.SendPasswordResetRequest.identifier:type_name -> model.UserIdentifier
-	26, // 9: api.v1.authentication.ResetPasswordRequest.identifier:type_name -> model.UserIdentifier
-	24, // 10: api.v1.authentication.RefreshTokenResponse.token:type_name -> api.v1.authentication.Token
-	27, // 11: api.v1.authentication.GetAuthConfigResponse.login_types:type_name -> model.LoginType
-	4,  // 12: api.v1.authentication.Service.Login:input_type -> api.v1.authentication.LoginRequest
-	6,  // 13: api.v1.authentication.Service.Logout:input_type -> api.v1.authentication.LogoutRequest
-	8,  // 14: api.v1.authentication.Service.Get:input_type -> api.v1.authentication.GetRequest
-	10, // 15: api.v1.authentication.Service.Register:input_type -> api.v1.authentication.RegisterRequest
-	12, // 16: api.v1.authentication.Service.SendPasswordReset:input_type -> api.v1.authentication.SendPasswordResetRequest
-	14, // 17: api.v1.authentication.Service.ResetPassword:input_type -> api.v1.authentication.ResetPasswordRequest
-	16, // 18: api.v1.authentication.Service.Delete:input_type -> api.v1.authentication.DeleteRequest
-	18, // 19: api.v1.authentication.Service.RefreshToken:input_type -> api.v1.authentication.RefreshTokenRequest
-	20, // 20: api.v1.authentication.Service.GetAuthConfig:input_type -> api.v1.authentication.GetAuthConfigRequest
-	0,  // 21: api.v1.authentication.Service.VerifyEmail:input_type -> api.v1.authentication.VerifyEmailRequest
-	2,  // 22: api.v1.authentication.Service.VerifyPhoneNumber:input_type -> api.v1.authentication.VerifyPhoneNumberRequest
-	5,  // 23: api.v1.authentication.Service.Login:output_type -> api.v1.authentication.LoginResponse
-	7,  // 24: api.v1.authentication.Service.Logout:output_type -> api.v1.authentication.LogoutResponse
-	9,  // 25: api.v1.authentication.Service.Get:output_type -> api.v1.authentication.GetResponse
-	11, // 26: api.v1.authentication.Service.Register:output_type -> api.v1.authentication.RegisterResponse
-	13, // 27: api.v1.authentication.Service.SendPasswordReset:output_type -> api.v1.authentication.SendPasswordResetResponse
-	15, // 28: api.v1.authentication.Service.ResetPassword:output_type -> api.v1.authentication.ResetPasswordResponse
-	17, // 29: api.v1.authentication.Service.Delete:output_type -> api.v1.authentication.DeleteResponse
-	19, // 30: api.v1.authentication.Service.RefreshToken:output_type -> api.v1.authentication.RefreshTokenResponse
-	21, // 31: api.v1.authentication.Service.GetAuthConfig:output_type -> api.v1.authentication.GetAuthConfigResponse
-	1,  // 32: api.v1.authentication.Service.VerifyEmail:output_type -> api.v1.authentication.VerifyEmailResponse
-	3,  // 33: api.v1.authentication.Service.VerifyPhoneNumber:output_type -> api.v1.authentication.VerifyPhoneNumberResponse
-	23, // [23:34] is the sub-list for method output_type
-	12, // [12:23] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	25, // 0: api.v1.authentication.LoginRequest.user_password:type_name -> api.v1.authentication.UserPassword
+	26, // 1: api.v1.authentication.LoginRequest.client_credentials:type_name -> api.v1.authentication.ClientCredentials
+	27, // 2: api.v1.authentication.LoginResponse.token:type_name -> api.v1.authentication.Token
+	28, // 3: api.v1.authentication.LoginResponse.user_info:type_name -> model.UserInfo
+	28, // 4: api.v1.authentication.GetResponse.user_info:type_name -> model.UserInfo
+	25, // 5: api.v1.authentication.RegisterRequest.user_password:type_name -> api.v1.authentication.UserPassword
+	27, // 6: api.v1.authentication.RegisterResponse.token:type_name -> api.v1.authentication.Token
+	28, // 7: api.v1.authentication.RegisterResponse.user_info:type_name -> model.UserInfo
+	29, // 8: api.v1.authentication.SendPasswordResetRequest.identifier:type_name -> model.UserIdentifier
+	29, // 9: api.v1.authentication.ResetPasswordRequest.identifier:type_name -> model.UserIdentifier
+	27, // 10: api.v1.authentication.RefreshTokenResponse.token:type_name -> api.v1.authentication.Token
+	30, // 11: api.v1.authentication.GetAuthConfigResponse.login_types:type_name -> model.LoginType
+	23, // 12: api.v1.authentication.GetAuthConfigResponse.sso_options:type_name -> api.v1.authentication.SSOOption
+	0,  // 13: api.v1.authentication.SSOOption.type:type_name -> api.v1.authentication.SSOType
+	0,  // 14: api.v1.authentication.SSOID.type:type_name -> api.v1.authentication.SSOType
+	5,  // 15: api.v1.authentication.Service.Login:input_type -> api.v1.authentication.LoginRequest
+	7,  // 16: api.v1.authentication.Service.Logout:input_type -> api.v1.authentication.LogoutRequest
+	9,  // 17: api.v1.authentication.Service.Get:input_type -> api.v1.authentication.GetRequest
+	11, // 18: api.v1.authentication.Service.Register:input_type -> api.v1.authentication.RegisterRequest
+	13, // 19: api.v1.authentication.Service.SendPasswordReset:input_type -> api.v1.authentication.SendPasswordResetRequest
+	15, // 20: api.v1.authentication.Service.ResetPassword:input_type -> api.v1.authentication.ResetPasswordRequest
+	17, // 21: api.v1.authentication.Service.Delete:input_type -> api.v1.authentication.DeleteRequest
+	19, // 22: api.v1.authentication.Service.RefreshToken:input_type -> api.v1.authentication.RefreshTokenRequest
+	21, // 23: api.v1.authentication.Service.GetAuthConfig:input_type -> api.v1.authentication.GetAuthConfigRequest
+	1,  // 24: api.v1.authentication.Service.VerifyEmail:input_type -> api.v1.authentication.VerifyEmailRequest
+	3,  // 25: api.v1.authentication.Service.VerifyPhoneNumber:input_type -> api.v1.authentication.VerifyPhoneNumberRequest
+	6,  // 26: api.v1.authentication.Service.Login:output_type -> api.v1.authentication.LoginResponse
+	8,  // 27: api.v1.authentication.Service.Logout:output_type -> api.v1.authentication.LogoutResponse
+	10, // 28: api.v1.authentication.Service.Get:output_type -> api.v1.authentication.GetResponse
+	12, // 29: api.v1.authentication.Service.Register:output_type -> api.v1.authentication.RegisterResponse
+	14, // 30: api.v1.authentication.Service.SendPasswordReset:output_type -> api.v1.authentication.SendPasswordResetResponse
+	16, // 31: api.v1.authentication.Service.ResetPassword:output_type -> api.v1.authentication.ResetPasswordResponse
+	18, // 32: api.v1.authentication.Service.Delete:output_type -> api.v1.authentication.DeleteResponse
+	20, // 33: api.v1.authentication.Service.RefreshToken:output_type -> api.v1.authentication.RefreshTokenResponse
+	22, // 34: api.v1.authentication.Service.GetAuthConfig:output_type -> api.v1.authentication.GetAuthConfigResponse
+	2,  // 35: api.v1.authentication.Service.VerifyEmail:output_type -> api.v1.authentication.VerifyEmailResponse
+	4,  // 36: api.v1.authentication.Service.VerifyPhoneNumber:output_type -> api.v1.authentication.VerifyPhoneNumberResponse
+	26, // [26:37] is the sub-list for method output_type
+	15, // [15:26] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_api_v1_authentication_service_proto_init() }
@@ -1705,6 +1949,30 @@ func file_api_v1_authentication_service_proto_init() {
 				return nil
 			}
 		}
+		file_api_v1_authentication_service_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SSOOption); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_authentication_service_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SSOID); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_api_v1_authentication_service_proto_msgTypes[4].OneofWrappers = []interface{}{
 		(*LoginRequest_UserPassword)(nil),
@@ -1718,13 +1986,14 @@ func file_api_v1_authentication_service_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_authentication_service_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   22,
+			NumEnums:      1,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_api_v1_authentication_service_proto_goTypes,
 		DependencyIndexes: file_api_v1_authentication_service_proto_depIdxs,
+		EnumInfos:         file_api_v1_authentication_service_proto_enumTypes,
 		MessageInfos:      file_api_v1_authentication_service_proto_msgTypes,
 	}.Build()
 	File_api_v1_authentication_service_proto = out.File
