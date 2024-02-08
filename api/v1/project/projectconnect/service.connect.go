@@ -45,8 +45,6 @@ const (
 	ServiceUpdateProcedure = "/api.v1.project.Service/Update"
 	// ServicePublicKeyProcedure is the fully-qualified name of the Service's PublicKey RPC.
 	ServicePublicKeyProcedure = "/api.v1.project.Service/PublicKey"
-	// ServiceGetLicenseInfoProcedure is the fully-qualified name of the Service's GetLicenseInfo RPC.
-	ServiceGetLicenseInfoProcedure = "/api.v1.project.Service/GetLicenseInfo"
 	// ServiceGetObjectsByKindProcedure is the fully-qualified name of the Service's GetObjectsByKind
 	// RPC.
 	ServiceGetObjectsByKindProcedure = "/api.v1.project.Service/GetObjectsByKind"
@@ -64,7 +62,6 @@ var (
 	serviceListMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("List")
 	serviceUpdateMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("Update")
 	servicePublicKeyMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("PublicKey")
-	serviceGetLicenseInfoMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetLicenseInfo")
 	serviceGetObjectsByKindMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("GetObjectsByKind")
 	serviceGetCustomObjectMetricsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetCustomObjectMetrics")
 )
@@ -83,8 +80,6 @@ type ServiceClient interface {
 	Update(context.Context, *connect.Request[project.UpdateRequest]) (*connect.Response[project.UpdateResponse], error)
 	// Get public key.
 	PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error)
-	// Get License Information.
-	GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error)
 	// Returns all objects of a given kind.
 	GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error)
 	// Returns all metrics of a given custom object.
@@ -137,12 +132,6 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(servicePublicKeyMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		getLicenseInfo: connect.NewClient[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse](
-			httpClient,
-			baseURL+ServiceGetLicenseInfoProcedure,
-			connect.WithSchema(serviceGetLicenseInfoMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
 		getObjectsByKind: connect.NewClient[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse](
 			httpClient,
 			baseURL+ServiceGetObjectsByKindProcedure,
@@ -166,7 +155,6 @@ type serviceClient struct {
 	list                   *connect.Client[project.ListRequest, project.ListResponse]
 	update                 *connect.Client[project.UpdateRequest, project.UpdateResponse]
 	publicKey              *connect.Client[project.PublicKeyRequest, project.PublicKeyResponse]
-	getLicenseInfo         *connect.Client[project.GetLicenseInfoRequest, project.GetLicenseInfoResponse]
 	getObjectsByKind       *connect.Client[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse]
 	getCustomObjectMetrics *connect.Client[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse]
 }
@@ -201,11 +189,6 @@ func (c *serviceClient) PublicKey(ctx context.Context, req *connect.Request[proj
 	return c.publicKey.CallUnary(ctx, req)
 }
 
-// GetLicenseInfo calls api.v1.project.Service.GetLicenseInfo.
-func (c *serviceClient) GetLicenseInfo(ctx context.Context, req *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error) {
-	return c.getLicenseInfo.CallUnary(ctx, req)
-}
-
 // GetObjectsByKind calls api.v1.project.Service.GetObjectsByKind.
 func (c *serviceClient) GetObjectsByKind(ctx context.Context, req *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error) {
 	return c.getObjectsByKind.CallUnary(ctx, req)
@@ -230,8 +213,6 @@ type ServiceHandler interface {
 	Update(context.Context, *connect.Request[project.UpdateRequest]) (*connect.Response[project.UpdateResponse], error)
 	// Get public key.
 	PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error)
-	// Get License Information.
-	GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error)
 	// Returns all objects of a given kind.
 	GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error)
 	// Returns all metrics of a given custom object.
@@ -280,12 +261,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(servicePublicKeyMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetLicenseInfoHandler := connect.NewUnaryHandler(
-		ServiceGetLicenseInfoProcedure,
-		svc.GetLicenseInfo,
-		connect.WithSchema(serviceGetLicenseInfoMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
 	serviceGetObjectsByKindHandler := connect.NewUnaryHandler(
 		ServiceGetObjectsByKindProcedure,
 		svc.GetObjectsByKind,
@@ -312,8 +287,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceUpdateHandler.ServeHTTP(w, r)
 		case ServicePublicKeyProcedure:
 			servicePublicKeyHandler.ServeHTTP(w, r)
-		case ServiceGetLicenseInfoProcedure:
-			serviceGetLicenseInfoHandler.ServeHTTP(w, r)
 		case ServiceGetObjectsByKindProcedure:
 			serviceGetObjectsByKindHandler.ServeHTTP(w, r)
 		case ServiceGetCustomObjectMetricsProcedure:
@@ -349,10 +322,6 @@ func (UnimplementedServiceHandler) Update(context.Context, *connect.Request[proj
 
 func (UnimplementedServiceHandler) PublicKey(context.Context, *connect.Request[project.PublicKeyRequest]) (*connect.Response[project.PublicKeyResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.PublicKey is not implemented"))
-}
-
-func (UnimplementedServiceHandler) GetLicenseInfo(context.Context, *connect.Request[project.GetLicenseInfoRequest]) (*connect.Response[project.GetLicenseInfoResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.GetLicenseInfo is not implemented"))
 }
 
 func (UnimplementedServiceHandler) GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error) {

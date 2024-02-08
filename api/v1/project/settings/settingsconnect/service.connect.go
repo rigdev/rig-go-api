@@ -37,6 +37,8 @@ const (
 	ServiceGetSettingsProcedure = "/api.v1.project.settings.Service/GetSettings"
 	// ServiceUpdateSettingsProcedure is the fully-qualified name of the Service's UpdateSettings RPC.
 	ServiceUpdateSettingsProcedure = "/api.v1.project.settings.Service/UpdateSettings"
+	// ServiceGetLicenseInfoProcedure is the fully-qualified name of the Service's GetLicenseInfo RPC.
+	ServiceGetLicenseInfoProcedure = "/api.v1.project.settings.Service/GetLicenseInfo"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -44,6 +46,7 @@ var (
 	serviceServiceDescriptor              = settings.File_api_v1_project_settings_service_proto.Services().ByName("Service")
 	serviceGetSettingsMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("GetSettings")
 	serviceUpdateSettingsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("UpdateSettings")
+	serviceGetLicenseInfoMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetLicenseInfo")
 )
 
 // ServiceClient is a client for the api.v1.project.settings.Service service.
@@ -52,6 +55,8 @@ type ServiceClient interface {
 	GetSettings(context.Context, *connect.Request[settings.GetSettingsRequest]) (*connect.Response[settings.GetSettingsResponse], error)
 	// Sets the users settings for the current project.
 	UpdateSettings(context.Context, *connect.Request[settings.UpdateSettingsRequest]) (*connect.Response[settings.UpdateSettingsResponse], error)
+	// Get License Information.
+	GetLicenseInfo(context.Context, *connect.Request[settings.GetLicenseInfoRequest]) (*connect.Response[settings.GetLicenseInfoResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.project.settings.Service service. By default,
@@ -76,6 +81,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceUpdateSettingsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getLicenseInfo: connect.NewClient[settings.GetLicenseInfoRequest, settings.GetLicenseInfoResponse](
+			httpClient,
+			baseURL+ServiceGetLicenseInfoProcedure,
+			connect.WithSchema(serviceGetLicenseInfoMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -83,6 +94,7 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 type serviceClient struct {
 	getSettings    *connect.Client[settings.GetSettingsRequest, settings.GetSettingsResponse]
 	updateSettings *connect.Client[settings.UpdateSettingsRequest, settings.UpdateSettingsResponse]
+	getLicenseInfo *connect.Client[settings.GetLicenseInfoRequest, settings.GetLicenseInfoResponse]
 }
 
 // GetSettings calls api.v1.project.settings.Service.GetSettings.
@@ -95,12 +107,19 @@ func (c *serviceClient) UpdateSettings(ctx context.Context, req *connect.Request
 	return c.updateSettings.CallUnary(ctx, req)
 }
 
+// GetLicenseInfo calls api.v1.project.settings.Service.GetLicenseInfo.
+func (c *serviceClient) GetLicenseInfo(ctx context.Context, req *connect.Request[settings.GetLicenseInfoRequest]) (*connect.Response[settings.GetLicenseInfoResponse], error) {
+	return c.getLicenseInfo.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.project.settings.Service service.
 type ServiceHandler interface {
 	// Gets the users settings for the current project.
 	GetSettings(context.Context, *connect.Request[settings.GetSettingsRequest]) (*connect.Response[settings.GetSettingsResponse], error)
 	// Sets the users settings for the current project.
 	UpdateSettings(context.Context, *connect.Request[settings.UpdateSettingsRequest]) (*connect.Response[settings.UpdateSettingsResponse], error)
+	// Get License Information.
+	GetLicenseInfo(context.Context, *connect.Request[settings.GetLicenseInfoRequest]) (*connect.Response[settings.GetLicenseInfoResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -121,12 +140,20 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceUpdateSettingsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetLicenseInfoHandler := connect.NewUnaryHandler(
+		ServiceGetLicenseInfoProcedure,
+		svc.GetLicenseInfo,
+		connect.WithSchema(serviceGetLicenseInfoMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.project.settings.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceGetSettingsProcedure:
 			serviceGetSettingsHandler.ServeHTTP(w, r)
 		case ServiceUpdateSettingsProcedure:
 			serviceUpdateSettingsHandler.ServeHTTP(w, r)
+		case ServiceGetLicenseInfoProcedure:
+			serviceGetLicenseInfoHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -142,4 +169,8 @@ func (UnimplementedServiceHandler) GetSettings(context.Context, *connect.Request
 
 func (UnimplementedServiceHandler) UpdateSettings(context.Context, *connect.Request[settings.UpdateSettingsRequest]) (*connect.Response[settings.UpdateSettingsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.settings.Service.UpdateSettings is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetLicenseInfo(context.Context, *connect.Request[settings.GetLicenseInfoRequest]) (*connect.Response[settings.GetLicenseInfoResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.settings.Service.GetLicenseInfo is not implemented"))
 }
