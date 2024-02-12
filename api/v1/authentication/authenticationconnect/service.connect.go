@@ -57,22 +57,26 @@ const (
 	// ServiceVerifyPhoneNumberProcedure is the fully-qualified name of the Service's VerifyPhoneNumber
 	// RPC.
 	ServiceVerifyPhoneNumberProcedure = "/api.v1.authentication.Service/VerifyPhoneNumber"
+	// ServiceSendVerificationEmailProcedure is the fully-qualified name of the Service's
+	// SendVerificationEmail RPC.
+	ServiceSendVerificationEmailProcedure = "/api.v1.authentication.Service/SendVerificationEmail"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor                 = authentication.File_api_v1_authentication_service_proto.Services().ByName("Service")
-	serviceLoginMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("Login")
-	serviceLogoutMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("Logout")
-	serviceGetMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("Get")
-	serviceRegisterMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("Register")
-	serviceSendPasswordResetMethodDescriptor = serviceServiceDescriptor.Methods().ByName("SendPasswordReset")
-	serviceResetPasswordMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("ResetPassword")
-	serviceDeleteMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("Delete")
-	serviceRefreshTokenMethodDescriptor      = serviceServiceDescriptor.Methods().ByName("RefreshToken")
-	serviceGetAuthConfigMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("GetAuthConfig")
-	serviceVerifyEmailMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("VerifyEmail")
-	serviceVerifyPhoneNumberMethodDescriptor = serviceServiceDescriptor.Methods().ByName("VerifyPhoneNumber")
+	serviceServiceDescriptor                     = authentication.File_api_v1_authentication_service_proto.Services().ByName("Service")
+	serviceLoginMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("Login")
+	serviceLogoutMethodDescriptor                = serviceServiceDescriptor.Methods().ByName("Logout")
+	serviceGetMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceRegisterMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("Register")
+	serviceSendPasswordResetMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("SendPasswordReset")
+	serviceResetPasswordMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("ResetPassword")
+	serviceDeleteMethodDescriptor                = serviceServiceDescriptor.Methods().ByName("Delete")
+	serviceRefreshTokenMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("RefreshToken")
+	serviceGetAuthConfigMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetAuthConfig")
+	serviceVerifyEmailMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("VerifyEmail")
+	serviceVerifyPhoneNumberMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("VerifyPhoneNumber")
+	serviceSendVerificationEmailMethodDescriptor = serviceServiceDescriptor.Methods().ByName("SendVerificationEmail")
 )
 
 // ServiceClient is a client for the api.v1.authentication.Service service.
@@ -99,6 +103,7 @@ type ServiceClient interface {
 	VerifyEmail(context.Context, *connect.Request[authentication.VerifyEmailRequest]) (*connect.Response[authentication.VerifyEmailResponse], error)
 	// Verify phone number
 	VerifyPhoneNumber(context.Context, *connect.Request[authentication.VerifyPhoneNumberRequest]) (*connect.Response[authentication.VerifyPhoneNumberResponse], error)
+	SendVerificationEmail(context.Context, *connect.Request[authentication.SendVerificationEmailRequest]) (*connect.Response[authentication.SendVerificationEmailResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.authentication.Service service. By default,
@@ -177,22 +182,29 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceVerifyPhoneNumberMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		sendVerificationEmail: connect.NewClient[authentication.SendVerificationEmailRequest, authentication.SendVerificationEmailResponse](
+			httpClient,
+			baseURL+ServiceSendVerificationEmailProcedure,
+			connect.WithSchema(serviceSendVerificationEmailMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	login             *connect.Client[authentication.LoginRequest, authentication.LoginResponse]
-	logout            *connect.Client[authentication.LogoutRequest, authentication.LogoutResponse]
-	get               *connect.Client[authentication.GetRequest, authentication.GetResponse]
-	register          *connect.Client[authentication.RegisterRequest, authentication.RegisterResponse]
-	sendPasswordReset *connect.Client[authentication.SendPasswordResetRequest, authentication.SendPasswordResetResponse]
-	resetPassword     *connect.Client[authentication.ResetPasswordRequest, authentication.ResetPasswordResponse]
-	delete            *connect.Client[authentication.DeleteRequest, authentication.DeleteResponse]
-	refreshToken      *connect.Client[authentication.RefreshTokenRequest, authentication.RefreshTokenResponse]
-	getAuthConfig     *connect.Client[authentication.GetAuthConfigRequest, authentication.GetAuthConfigResponse]
-	verifyEmail       *connect.Client[authentication.VerifyEmailRequest, authentication.VerifyEmailResponse]
-	verifyPhoneNumber *connect.Client[authentication.VerifyPhoneNumberRequest, authentication.VerifyPhoneNumberResponse]
+	login                 *connect.Client[authentication.LoginRequest, authentication.LoginResponse]
+	logout                *connect.Client[authentication.LogoutRequest, authentication.LogoutResponse]
+	get                   *connect.Client[authentication.GetRequest, authentication.GetResponse]
+	register              *connect.Client[authentication.RegisterRequest, authentication.RegisterResponse]
+	sendPasswordReset     *connect.Client[authentication.SendPasswordResetRequest, authentication.SendPasswordResetResponse]
+	resetPassword         *connect.Client[authentication.ResetPasswordRequest, authentication.ResetPasswordResponse]
+	delete                *connect.Client[authentication.DeleteRequest, authentication.DeleteResponse]
+	refreshToken          *connect.Client[authentication.RefreshTokenRequest, authentication.RefreshTokenResponse]
+	getAuthConfig         *connect.Client[authentication.GetAuthConfigRequest, authentication.GetAuthConfigResponse]
+	verifyEmail           *connect.Client[authentication.VerifyEmailRequest, authentication.VerifyEmailResponse]
+	verifyPhoneNumber     *connect.Client[authentication.VerifyPhoneNumberRequest, authentication.VerifyPhoneNumberResponse]
+	sendVerificationEmail *connect.Client[authentication.SendVerificationEmailRequest, authentication.SendVerificationEmailResponse]
 }
 
 // Login calls api.v1.authentication.Service.Login.
@@ -250,6 +262,11 @@ func (c *serviceClient) VerifyPhoneNumber(ctx context.Context, req *connect.Requ
 	return c.verifyPhoneNumber.CallUnary(ctx, req)
 }
 
+// SendVerificationEmail calls api.v1.authentication.Service.SendVerificationEmail.
+func (c *serviceClient) SendVerificationEmail(ctx context.Context, req *connect.Request[authentication.SendVerificationEmailRequest]) (*connect.Response[authentication.SendVerificationEmailResponse], error) {
+	return c.sendVerificationEmail.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.authentication.Service service.
 type ServiceHandler interface {
 	// Login authenticats a user and returns a access/refresh token
@@ -274,6 +291,7 @@ type ServiceHandler interface {
 	VerifyEmail(context.Context, *connect.Request[authentication.VerifyEmailRequest]) (*connect.Response[authentication.VerifyEmailResponse], error)
 	// Verify phone number
 	VerifyPhoneNumber(context.Context, *connect.Request[authentication.VerifyPhoneNumberRequest]) (*connect.Response[authentication.VerifyPhoneNumberResponse], error)
+	SendVerificationEmail(context.Context, *connect.Request[authentication.SendVerificationEmailRequest]) (*connect.Response[authentication.SendVerificationEmailResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -348,6 +366,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceVerifyPhoneNumberMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceSendVerificationEmailHandler := connect.NewUnaryHandler(
+		ServiceSendVerificationEmailProcedure,
+		svc.SendVerificationEmail,
+		connect.WithSchema(serviceSendVerificationEmailMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.authentication.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceLoginProcedure:
@@ -372,6 +396,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceVerifyEmailHandler.ServeHTTP(w, r)
 		case ServiceVerifyPhoneNumberProcedure:
 			serviceVerifyPhoneNumberHandler.ServeHTTP(w, r)
+		case ServiceSendVerificationEmailProcedure:
+			serviceSendVerificationEmailHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -423,4 +449,8 @@ func (UnimplementedServiceHandler) VerifyEmail(context.Context, *connect.Request
 
 func (UnimplementedServiceHandler) VerifyPhoneNumber(context.Context, *connect.Request[authentication.VerifyPhoneNumberRequest]) (*connect.Response[authentication.VerifyPhoneNumberResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.VerifyPhoneNumber is not implemented"))
+}
+
+func (UnimplementedServiceHandler) SendVerificationEmail(context.Context, *connect.Request[authentication.SendVerificationEmailRequest]) (*connect.Response[authentication.SendVerificationEmailResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.authentication.Service.SendVerificationEmail is not implemented"))
 }
