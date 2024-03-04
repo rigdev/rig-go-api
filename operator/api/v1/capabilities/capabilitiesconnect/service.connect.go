@@ -35,17 +35,21 @@ const (
 const (
 	// ServiceGetProcedure is the fully-qualified name of the Service's Get RPC.
 	ServiceGetProcedure = "/api.v1.capabilities.Service/Get"
+	// ServiceGetConfigProcedure is the fully-qualified name of the Service's GetConfig RPC.
+	ServiceGetConfigProcedure = "/api.v1.capabilities.Service/GetConfig"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor   = capabilities.File_operator_api_v1_capabilities_service_proto.Services().ByName("Service")
-	serviceGetMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceServiceDescriptor         = capabilities.File_operator_api_v1_capabilities_service_proto.Services().ByName("Service")
+	serviceGetMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceGetConfigMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetConfig")
 )
 
 // ServiceClient is a client for the api.v1.capabilities.Service service.
 type ServiceClient interface {
 	Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error)
+	GetConfig(context.Context, *connect.Request[capabilities.GetConfigRequest]) (*connect.Response[capabilities.GetConfigResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capabilities.Service service. By default, it
@@ -64,12 +68,19 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getConfig: connect.NewClient[capabilities.GetConfigRequest, capabilities.GetConfigResponse](
+			httpClient,
+			baseURL+ServiceGetConfigProcedure,
+			connect.WithSchema(serviceGetConfigMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	get *connect.Client[capabilities.GetRequest, capabilities.GetResponse]
+	get       *connect.Client[capabilities.GetRequest, capabilities.GetResponse]
+	getConfig *connect.Client[capabilities.GetConfigRequest, capabilities.GetConfigResponse]
 }
 
 // Get calls api.v1.capabilities.Service.Get.
@@ -77,9 +88,15 @@ func (c *serviceClient) Get(ctx context.Context, req *connect.Request[capabiliti
 	return c.get.CallUnary(ctx, req)
 }
 
+// GetConfig calls api.v1.capabilities.Service.GetConfig.
+func (c *serviceClient) GetConfig(ctx context.Context, req *connect.Request[capabilities.GetConfigRequest]) (*connect.Response[capabilities.GetConfigResponse], error) {
+	return c.getConfig.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.capabilities.Service service.
 type ServiceHandler interface {
 	Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error)
+	GetConfig(context.Context, *connect.Request[capabilities.GetConfigRequest]) (*connect.Response[capabilities.GetConfigResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -94,10 +111,18 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetConfigHandler := connect.NewUnaryHandler(
+		ServiceGetConfigProcedure,
+		svc.GetConfig,
+		connect.WithSchema(serviceGetConfigMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.capabilities.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceGetProcedure:
 			serviceGetHandler.ServeHTTP(w, r)
+		case ServiceGetConfigProcedure:
+			serviceGetConfigHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -109,4 +134,8 @@ type UnimplementedServiceHandler struct{}
 
 func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capabilities.Service.Get is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetConfig(context.Context, *connect.Request[capabilities.GetConfigRequest]) (*connect.Response[capabilities.GetConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capabilities.Service.GetConfig is not implemented"))
 }

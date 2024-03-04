@@ -35,18 +35,22 @@ const (
 const (
 	// ServiceListProcedure is the fully-qualified name of the Service's List RPC.
 	ServiceListProcedure = "/api.v1.environment.Service/List"
+	// ServiceGetNamespacesProcedure is the fully-qualified name of the Service's GetNamespaces RPC.
+	ServiceGetNamespacesProcedure = "/api.v1.environment.Service/GetNamespaces"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor    = environment.File_api_v1_environment_service_proto.Services().ByName("Service")
-	serviceListMethodDescriptor = serviceServiceDescriptor.Methods().ByName("List")
+	serviceServiceDescriptor             = environment.File_api_v1_environment_service_proto.Services().ByName("Service")
+	serviceListMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("List")
+	serviceGetNamespacesMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetNamespaces")
 )
 
 // ServiceClient is a client for the api.v1.environment.Service service.
 type ServiceClient interface {
 	// List available environments.
 	List(context.Context, *connect.Request[environment.ListRequest]) (*connect.Response[environment.ListResponse], error)
+	GetNamespaces(context.Context, *connect.Request[environment.GetNamespacesRequest]) (*connect.Response[environment.GetNamespacesResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.environment.Service service. By default, it
@@ -65,12 +69,19 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceListMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getNamespaces: connect.NewClient[environment.GetNamespacesRequest, environment.GetNamespacesResponse](
+			httpClient,
+			baseURL+ServiceGetNamespacesProcedure,
+			connect.WithSchema(serviceGetNamespacesMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	list *connect.Client[environment.ListRequest, environment.ListResponse]
+	list          *connect.Client[environment.ListRequest, environment.ListResponse]
+	getNamespaces *connect.Client[environment.GetNamespacesRequest, environment.GetNamespacesResponse]
 }
 
 // List calls api.v1.environment.Service.List.
@@ -78,10 +89,16 @@ func (c *serviceClient) List(ctx context.Context, req *connect.Request[environme
 	return c.list.CallUnary(ctx, req)
 }
 
+// GetNamespaces calls api.v1.environment.Service.GetNamespaces.
+func (c *serviceClient) GetNamespaces(ctx context.Context, req *connect.Request[environment.GetNamespacesRequest]) (*connect.Response[environment.GetNamespacesResponse], error) {
+	return c.getNamespaces.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.environment.Service service.
 type ServiceHandler interface {
 	// List available environments.
 	List(context.Context, *connect.Request[environment.ListRequest]) (*connect.Response[environment.ListResponse], error)
+	GetNamespaces(context.Context, *connect.Request[environment.GetNamespacesRequest]) (*connect.Response[environment.GetNamespacesResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -96,10 +113,18 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceListMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetNamespacesHandler := connect.NewUnaryHandler(
+		ServiceGetNamespacesProcedure,
+		svc.GetNamespaces,
+		connect.WithSchema(serviceGetNamespacesMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.environment.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceListProcedure:
 			serviceListHandler.ServeHTTP(w, r)
+		case ServiceGetNamespacesProcedure:
+			serviceGetNamespacesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -111,4 +136,8 @@ type UnimplementedServiceHandler struct{}
 
 func (UnimplementedServiceHandler) List(context.Context, *connect.Request[environment.ListRequest]) (*connect.Response[environment.ListResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.environment.Service.List is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetNamespaces(context.Context, *connect.Request[environment.GetNamespacesRequest]) (*connect.Response[environment.GetNamespacesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.environment.Service.GetNamespaces is not implemented"))
 }
