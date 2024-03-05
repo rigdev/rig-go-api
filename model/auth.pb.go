@@ -24,11 +24,16 @@ const (
 type LoginType int32
 
 const (
-	LoginType_LOGIN_TYPE_UNSPECIFIED       LoginType = 0 // Default value.
-	LoginType_LOGIN_TYPE_EMAIL_PASSWORD    LoginType = 1 // Email and password login.
-	LoginType_LOGIN_TYPE_PHONE_PASSWORD    LoginType = 2 // deprecated: text is not supported - Phone number and password login.
-	LoginType_LOGIN_TYPE_USERNAME_PASSWORD LoginType = 3 // Username and password login.
-	LoginType_LOGIN_TYPE_SSO               LoginType = 4 // SSO Login
+	// Default value.
+	LoginType_LOGIN_TYPE_UNSPECIFIED LoginType = 0
+	// Email and password login.
+	LoginType_LOGIN_TYPE_EMAIL_PASSWORD LoginType = 1
+	// deprecated: text is not supported - Phone number and password login.
+	LoginType_LOGIN_TYPE_PHONE_PASSWORD LoginType = 2
+	// Username and password login.
+	LoginType_LOGIN_TYPE_USERNAME_PASSWORD LoginType = 3
+	// SSO Login
+	LoginType_LOGIN_TYPE_SSO LoginType = 4
 )
 
 // Enum value maps for LoginType.

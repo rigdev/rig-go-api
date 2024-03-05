@@ -30,8 +30,10 @@ type StreamData struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Data   []byte `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`      // Stream data.
-	Closed bool   `protobuf:"varint,2,opt,name=closed,proto3" json:"closed,omitempty"` // If the stream is closed.
+	// Stream data.
+	Data []byte `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	// If the stream is closed.
+	Closed bool `protobuf:"varint,2,opt,name=closed,proto3" json:"closed,omitempty"`
 }
 
 func (x *StreamData) Reset() {
@@ -80,7 +82,8 @@ func (x *StreamData) GetClosed() bool {
 	return false
 }
 
-// Execute request. This can either be a request to start a request, a terminal resize msg or a stream data msg.
+// Execute request. This can either be a request to start a request, a terminal
+// resize msg or a stream data msg.
 type ExecuteRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -91,9 +94,11 @@ type ExecuteRequest struct {
 	//	*ExecuteRequest_Start_
 	//	*ExecuteRequest_Stdin
 	//	*ExecuteRequest_Resize_
-	Request       isExecuteRequest_Request `protobuf_oneof:"request"`
-	ProjectId     string                   `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project ID.
-	EnvironmentId string                   `protobuf:"bytes,5,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment ID.
+	Request isExecuteRequest_Request `protobuf_oneof:"request"`
+	// The project ID.
+	ProjectId string `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment ID.
+	EnvironmentId string `protobuf:"bytes,5,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *ExecuteRequest) Reset() {
@@ -175,15 +180,18 @@ type isExecuteRequest_Request interface {
 }
 
 type ExecuteRequest_Start_ struct {
-	Start *ExecuteRequest_Start `protobuf:"bytes,1,opt,name=start,proto3,oneof"` // Start request.
+	// Start request.
+	Start *ExecuteRequest_Start `protobuf:"bytes,1,opt,name=start,proto3,oneof"`
 }
 
 type ExecuteRequest_Stdin struct {
-	Stdin *StreamData `protobuf:"bytes,2,opt,name=stdin,proto3,oneof"` // Stream stdin request
+	// Stream stdin request
+	Stdin *StreamData `protobuf:"bytes,2,opt,name=stdin,proto3,oneof"`
 }
 
 type ExecuteRequest_Resize_ struct {
-	Resize *ExecuteRequest_Resize `protobuf:"bytes,3,opt,name=resize,proto3,oneof"` // Resize request
+	// Resize request
+	Resize *ExecuteRequest_Resize `protobuf:"bytes,3,opt,name=resize,proto3,oneof"`
 }
 
 func (*ExecuteRequest_Start_) isExecuteRequest_Request() {}
@@ -271,15 +279,18 @@ type isExecuteResponse_Response interface {
 }
 
 type ExecuteResponse_Stdout struct {
-	Stdout *StreamData `protobuf:"bytes,1,opt,name=stdout,proto3,oneof"` // Stdout of the execute.
+	// Stdout of the execute.
+	Stdout *StreamData `protobuf:"bytes,1,opt,name=stdout,proto3,oneof"`
 }
 
 type ExecuteResponse_Stderr struct {
-	Stderr *StreamData `protobuf:"bytes,2,opt,name=stderr,proto3,oneof"` // Stderr in case of an error.
+	// Stderr in case of an error.
+	Stderr *StreamData `protobuf:"bytes,2,opt,name=stderr,proto3,oneof"`
 }
 
 type ExecuteResponse_ExitCode struct {
-	ExitCode int32 `protobuf:"varint,3,opt,name=exit_code,json=exitCode,proto3,oneof"` // Exit code of the execute.
+	// Exit code of the execute.
+	ExitCode int32 `protobuf:"varint,3,opt,name=exit_code,json=exitCode,proto3,oneof"`
 }
 
 func (*ExecuteResponse_Stdout) isExecuteResponse_Response() {}
@@ -294,12 +305,14 @@ type CreateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The name of the capsule. This property must be unique for a project and cannot be changed
-	// after creation.
-	// Resources created in associating with the capsule will use this name.
-	Name         string    `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Initializers []*Update `protobuf:"bytes,2,rep,name=initializers,proto3" json:"initializers,omitempty"`            // Deprecated field: The initial properties of the capsule.
-	ProjectId    string    `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // The project to create the capsule in.
+	// The name of the capsule. This property must be unique for a project and
+	// cannot be changed after creation. Resources created in associating with the
+	// capsule will use this name.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Deprecated field: The initial properties of the capsule.
+	Initializers []*Update `protobuf:"bytes,2,rep,name=initializers,proto3" json:"initializers,omitempty"`
+	// The project to create the capsule in.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *CreateRequest) Reset() {
@@ -361,7 +374,8 @@ type CreateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"` // ID of the capsule. This is the same as the name.
+	// ID of the capsule. This is the same as the name.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
 }
 
 func (x *CreateResponse) Reset() {
@@ -409,8 +423,10 @@ type GetRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"` // Capsule to get.
-	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // Project in which the capsule is.
+	// Capsule to get.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Project in which the capsule is.
+	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *GetRequest) Reset() {
@@ -465,7 +481,8 @@ type GetResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Capsule *Capsule `protobuf:"bytes,1,opt,name=capsule,proto3" json:"capsule,omitempty"` // The capsule.
+	// The capsule.
+	Capsule *Capsule `protobuf:"bytes,1,opt,name=capsule,proto3" json:"capsule,omitempty"`
 }
 
 func (x *GetResponse) Reset() {
@@ -513,8 +530,10 @@ type DeleteRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"` // The capsule to delete.
-	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // The project in which the capsule is to be deleted.
+	// The capsule to delete.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The project in which the capsule is to be deleted.
+	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *DeleteRequest) Reset() {
@@ -608,13 +627,20 @@ type LogsRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId          string               `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`                             // The capsule to read logs from.
-	InstanceId         string               `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`                          // The instance in the capsule to read logs from.
-	Follow             bool                 `protobuf:"varint,3,opt,name=follow,proto3" json:"follow,omitempty"`                                                   // If true, the request will stay open and stream new log messages.
-	Since              *durationpb.Duration `protobuf:"bytes,4,opt,name=since,proto3" json:"since,omitempty"`                                                      // If set, will not show logs older than since.
-	ProjectId          string               `protobuf:"bytes,5,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`                             // The project in which the capsule is.
-	EnvironmentId      string               `protobuf:"bytes,6,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`                 // Environment to get logs from.
-	PreviousContainers bool                 `protobuf:"varint,7,opt,name=previous_containers,json=previousContainers,proto3" json:"previous_containers,omitempty"` // If true, include logs from previously terminated containers
+	// The capsule to read logs from.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The instance in the capsule to read logs from.
+	InstanceId string `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	// If true, the request will stay open and stream new log messages.
+	Follow bool `protobuf:"varint,3,opt,name=follow,proto3" json:"follow,omitempty"`
+	// If set, will not show logs older than since.
+	Since *durationpb.Duration `protobuf:"bytes,4,opt,name=since,proto3" json:"since,omitempty"`
+	// The project in which the capsule is.
+	ProjectId string `protobuf:"bytes,5,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Environment to get logs from.
+	EnvironmentId string `protobuf:"bytes,6,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
+	// If true, include logs from previously terminated containers
+	PreviousContainers bool `protobuf:"varint,7,opt,name=previous_containers,json=previousContainers,proto3" json:"previous_containers,omitempty"`
 }
 
 func (x *LogsRequest) Reset() {
@@ -704,7 +730,8 @@ type LogsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Log *Log `protobuf:"bytes,1,opt,name=log,proto3" json:"log,omitempty"` // The actual logs
+	// The actual logs
+	Log *Log `protobuf:"bytes,1,opt,name=log,proto3" json:"log,omitempty"`
 }
 
 func (x *LogsResponse) Reset() {
@@ -752,8 +779,10 @@ type UpdateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId string    `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"` // The capsule to update.
-	Updates   []*Update `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"`                      // The updates to apply to the capsule.
+	// The capsule to update.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The updates to apply to the capsule.
+	Updates   []*Update `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"`
 	ProjectId string    `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
@@ -855,8 +884,10 @@ type ListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`                // Pagination options.
-	ProjectId  string            `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // Project in which to list capsules.
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	// Project in which to list capsules.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *ListRequest) Reset() {
@@ -911,8 +942,10 @@ type ListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Capsules []*Capsule `protobuf:"bytes,1,rep,name=capsules,proto3" json:"capsules,omitempty"` // The capsules.
-	Total    uint64     `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`      // Total number of capsules in the project.
+	// The capsules.
+	Capsules []*Capsule `protobuf:"bytes,1,rep,name=capsules,proto3" json:"capsules,omitempty"`
+	// Total number of capsules in the project.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListResponse) Reset() {
@@ -961,19 +994,28 @@ func (x *ListResponse) GetTotal() uint64 {
 	return 0
 }
 
-// Deploy request. This will deploy a number of changes which results in a new rollout.
+// Deploy request. This will deploy a number of changes which results in a new
+// rollout.
 type DeployRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId     string    `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`             // Capsule to deploy to.
-	Changes       []*Change `protobuf:"bytes,2,rep,name=changes,proto3" json:"changes,omitempty"`                                  // Changes to include in the new rollout.
-	Force         bool      `protobuf:"varint,3,opt,name=force,proto3" json:"force,omitempty"`                                     // Force deploy, aborting an existing rollout if ongoing.
-	ProjectId     string    `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // Project in which the capsule lives.
-	EnvironmentId string    `protobuf:"bytes,5,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // Environment in which to deploy.
-	Message       string    `protobuf:"bytes,6,opt,name=message,proto3" json:"message,omitempty"`                                  // Deploy message.
-	DryRun        bool      `protobuf:"varint,7,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`                     // if true, the deploy will not be executed, but the request will return the rollout config.
+	// Capsule to deploy to.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Changes to include in the new rollout.
+	Changes []*Change `protobuf:"bytes,2,rep,name=changes,proto3" json:"changes,omitempty"`
+	// Force deploy, aborting an existing rollout if ongoing.
+	Force bool `protobuf:"varint,3,opt,name=force,proto3" json:"force,omitempty"`
+	// Project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Environment in which to deploy.
+	EnvironmentId string `protobuf:"bytes,5,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
+	// Deploy message.
+	Message string `protobuf:"bytes,6,opt,name=message,proto3" json:"message,omitempty"`
+	// if true, the deploy will not be executed, but the request will return the
+	// rollout config.
+	DryRun bool `protobuf:"varint,7,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
 	// If not zero, this will constrain the rollout only to be created if the
 	// currently running rollout matches this identifier. If this check fails, the
 	// request will return an `Aborted` error.
@@ -1074,9 +1116,12 @@ type DeployResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RolloutId     uint64            `protobuf:"varint,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`                                                                                                 // ID of the new rollout.
-	ResourceYaml  map[string]string `protobuf:"bytes,2,rep,name=resource_yaml,json=resourceYaml,proto3" json:"resource_yaml,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // The YAML of the resources that will be deployed.
-	RolloutConfig *RolloutConfig    `protobuf:"bytes,3,opt,name=rollout_config,json=rolloutConfig,proto3" json:"rollout_config,omitempty"`                                                                                      // The rollout config.
+	// ID of the new rollout.
+	RolloutId uint64 `protobuf:"varint,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
+	// The YAML of the resources that will be deployed.
+	ResourceYaml map[string]string `protobuf:"bytes,2,rep,name=resource_yaml,json=resourceYaml,proto3" json:"resource_yaml,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// The rollout config.
+	RolloutConfig *RolloutConfig `protobuf:"bytes,3,opt,name=rollout_config,json=rolloutConfig,proto3" json:"rollout_config,omitempty"`
 }
 
 func (x *DeployResponse) Reset() {
@@ -1138,12 +1183,18 @@ type ListInstancesRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId       string            `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`                    // Capsule to list instances from.
-	Pagination      *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`                                   // Pagination options.
-	ProjectId       string            `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`                    // Project in which the capsule lives.
-	EnvironmentId   string            `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`        // Environment to list instances from.
-	IncludeDeleted  bool              `protobuf:"varint,5,opt,name=include_deleted,json=includeDeleted,proto3" json:"include_deleted,omitempty"`    // if true, deleted instances will be included in the response.
-	ExcludeExisting bool              `protobuf:"varint,6,opt,name=exclude_existing,json=excludeExisting,proto3" json:"exclude_existing,omitempty"` // if true, existing instances will be excluded from the response.
+	// Capsule to list instances from.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	// Project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Environment to list instances from.
+	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
+	// if true, deleted instances will be included in the response.
+	IncludeDeleted bool `protobuf:"varint,5,opt,name=include_deleted,json=includeDeleted,proto3" json:"include_deleted,omitempty"`
+	// if true, existing instances will be excluded from the response.
+	ExcludeExisting bool `protobuf:"varint,6,opt,name=exclude_existing,json=excludeExisting,proto3" json:"exclude_existing,omitempty"`
 }
 
 func (x *ListInstancesRequest) Reset() {
@@ -1226,8 +1277,10 @@ type ListInstancesResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Instances []*Instance `protobuf:"bytes,1,rep,name=instances,proto3" json:"instances,omitempty"` // The instances.
-	Total     uint64      `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`        // Total number of instances in the capsule for the given environment.
+	// The instances.
+	Instances []*Instance `protobuf:"bytes,1,rep,name=instances,proto3" json:"instances,omitempty"`
+	// Total number of instances in the capsule for the given environment.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListInstancesResponse) Reset() {
@@ -1282,10 +1335,14 @@ type GetInstanceStatusRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId     string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`             // The capsule to get the instance status from.
-	InstanceId    string `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`          // The instance to get.
-	ProjectId     string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project in which the capsule lives.
-	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment to get the instance from.
+	// The capsule to get the instance status from.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The instance to get.
+	InstanceId string `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	// The project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment to get the instance from.
+	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *GetInstanceStatusRequest) Reset() {
@@ -1354,7 +1411,8 @@ type GetInstanceStatusResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Status *instance.Status `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"` // The instance status.
+	// The instance status.
+	Status *instance.Status `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 }
 
 func (x *GetInstanceStatusResponse) Reset() {
@@ -1402,12 +1460,18 @@ type ListInstanceStatusesRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId       string            `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`                    // The capsule to get the instance statuses from.
-	Pagination      *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`                                   // Pagination options.
-	ProjectId       string            `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`                    // The project in which the capsule is.
-	EnvironmentId   string            `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`        // The environment to get the instance statuses from.
-	IncludeDeleted  bool              `protobuf:"varint,5,opt,name=include_deleted,json=includeDeleted,proto3" json:"include_deleted,omitempty"`    // if true, deleted instances will be included in the response.
-	ExcludeExisting bool              `protobuf:"varint,6,opt,name=exclude_existing,json=excludeExisting,proto3" json:"exclude_existing,omitempty"` // if true, existing instances will be excluded from the response.
+	// The capsule to get the instance statuses from.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	// The project in which the capsule is.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment to get the instance statuses from.
+	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
+	// if true, deleted instances will be included in the response.
+	IncludeDeleted bool `protobuf:"varint,5,opt,name=include_deleted,json=includeDeleted,proto3" json:"include_deleted,omitempty"`
+	// if true, existing instances will be excluded from the response.
+	ExcludeExisting bool `protobuf:"varint,6,opt,name=exclude_existing,json=excludeExisting,proto3" json:"exclude_existing,omitempty"`
 }
 
 func (x *ListInstanceStatusesRequest) Reset() {
@@ -1490,8 +1554,10 @@ type ListInstanceStatusesResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Instances []*instance.Status `protobuf:"bytes,1,rep,name=instances,proto3" json:"instances,omitempty"` // The instance statuses.
-	Total     uint64             `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`        // Total number of instances in the capsule for the given environment.
+	// The instance statuses.
+	Instances []*instance.Status `protobuf:"bytes,1,rep,name=instances,proto3" json:"instances,omitempty"`
+	// Total number of instances in the capsule for the given environment.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListInstanceStatusesResponse) Reset() {
@@ -1546,10 +1612,14 @@ type RestartInstanceRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId     string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`             // The capsule to restart the instance in.
-	InstanceId    string `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`          // The instance to restart.
-	ProjectId     string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project in which the capsule lives.
-	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment to restart the instance in.
+	// The capsule to restart the instance in.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The instance to restart.
+	InstanceId string `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	// The project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment to restart the instance in.
+	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *RestartInstanceRequest) Reset() {
@@ -1657,10 +1727,14 @@ type ListRolloutsRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId     string            `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`             // The capsule to list rollouts for.
-	Pagination    *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`                            // Pagination options.
-	ProjectId     string            `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project in which the capsule lives.
-	EnvironmentId string            `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment to list rollouts for.
+	// The capsule to list rollouts for.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	// The project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment to list rollouts for.
+	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *ListRolloutsRequest) Reset() {
@@ -1729,8 +1803,10 @@ type ListRolloutsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Rollouts []*Rollout `protobuf:"bytes,1,rep,name=rollouts,proto3" json:"rollouts,omitempty"` // The rollouts.
-	Total    uint64     `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`      // Total number of rollouts in the capsule for the given environment.
+	// The rollouts.
+	Rollouts []*Rollout `protobuf:"bytes,1,rep,name=rollouts,proto3" json:"rollouts,omitempty"`
+	// Total number of rollouts in the capsule for the given environment.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListRolloutsResponse) Reset() {
@@ -1785,9 +1861,11 @@ type GetRolloutRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`  // The capsule to get the rollout from.
-	RolloutId uint64 `protobuf:"varint,2,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"` // The rollout to get.
-	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`  // The project in which the capsule lives.
+	// The capsule to get the rollout from.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The rollout to get.
+	RolloutId uint64 `protobuf:"varint,2,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // The project in which the capsule lives.
 }
 
 func (x *GetRolloutRequest) Reset() {
@@ -1843,13 +1921,15 @@ func (x *GetRolloutRequest) GetProjectId() string {
 	return ""
 }
 
-// GetRolloutResponse returns a single rollout for a capsule and an environment in a project.
+// GetRolloutResponse returns a single rollout for a capsule and an environment
+// in a project.
 type GetRolloutResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Rollout *Rollout `protobuf:"bytes,1,opt,name=rollout,proto3" json:"rollout,omitempty"` // The rollout.
+	// The rollout.
+	Rollout *Rollout `protobuf:"bytes,1,opt,name=rollout,proto3" json:"rollout,omitempty"`
 }
 
 func (x *GetRolloutResponse) Reset() {
@@ -1897,10 +1977,14 @@ type AbortRolloutRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId     string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`             // The capsule to abort the rollout in.
-	RolloutId     uint64 `protobuf:"varint,2,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`            // The rollout to abort.
-	ProjectId     string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project in which the capsule lives.
-	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment the rollout is in.
+	// The capsule to abort the rollout in.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The rollout to abort.
+	RolloutId uint64 `protobuf:"varint,2,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
+	// The project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment the rollout is in.
+	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *AbortRolloutRequest) Reset() {
@@ -2002,17 +2086,23 @@ func (*AbortRolloutResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{30}
 }
 
-// ListEvents request for listing rollout events for a given rollout in a capsule and environment.
+// ListEvents request for listing rollout events for a given rollout in a
+// capsule and environment.
 type ListEventsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId     string            `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`             // The capsule to list events for.
-	RolloutId     uint64            `protobuf:"varint,2,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`            // The rollout to list events for.
-	Pagination    *model.Pagination `protobuf:"bytes,3,opt,name=pagination,proto3" json:"pagination,omitempty"`                            // Pagination options.
-	ProjectId     string            `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project in which the capsule lives.
-	EnvironmentId string            `protobuf:"bytes,5,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment to list events for.
+	// The capsule to list events for.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The rollout to list events for.
+	RolloutId uint64 `protobuf:"varint,2,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,3,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	// The project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment to list events for.
+	EnvironmentId string `protobuf:"bytes,5,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *ListEventsRequest) Reset() {
@@ -2088,8 +2178,10 @@ type ListEventsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Events []*Event `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"` // The events for a rollout in a capsule and environment for a given project.
-	Total  uint64   `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`  // Total number of events in the capsule for the given environment.
+	// The events for a rollout in a capsule and environment for a given project.
+	Events []*Event `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
+	// Total number of events in the capsule for the given environment.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListEventsResponse) Reset() {
@@ -2144,11 +2236,16 @@ type CapsuleMetricsRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId     string                 `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`             // The capsule to get metrics for.
-	InstanceId    string                 `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`          // If set, only returns metrics for the given instance_id.
-	ProjectId     string                 `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project in which the capsule lives.
-	EnvironmentId string                 `protobuf:"bytes,5,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment to get metrics for.
-	Since         *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=since,proto3" json:"since,omitempty"`                                      // Return metrics generated after 'since'
+	// The capsule to get metrics for.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// If set, only returns metrics for the given instance_id.
+	InstanceId string `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	// The project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment to get metrics for.
+	EnvironmentId string `protobuf:"bytes,5,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
+	// Return metrics generated after 'since'
+	Since *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=since,proto3" json:"since,omitempty"`
 }
 
 func (x *CapsuleMetricsRequest) Reset() {
@@ -2224,7 +2321,8 @@ type CapsuleMetricsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	InstanceMetrics []*InstanceMetrics `protobuf:"bytes,1,rep,name=instance_metrics,json=instanceMetrics,proto3" json:"instance_metrics,omitempty"` // Metrics
+	// Metrics
+	InstanceMetrics []*InstanceMetrics `protobuf:"bytes,1,rep,name=instance_metrics,json=instanceMetrics,proto3" json:"instance_metrics,omitempty"`
 }
 
 func (x *CapsuleMetricsResponse) Reset() {
@@ -2272,9 +2370,12 @@ type GetCustomInstanceMetricsRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId     string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`             // The capsule to get metrics for.
-	ProjectId     string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project in which the capsule lives.
-	EnvironmentId string `protobuf:"bytes,3,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment to get metrics for.
+	// The capsule to get metrics for.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment to get metrics for.
+	EnvironmentId string `protobuf:"bytes,3,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *GetCustomInstanceMetricsRequest) Reset() {
@@ -2336,7 +2437,8 @@ type GetCustomInstanceMetricsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Metrics []*Metric `protobuf:"bytes,1,rep,name=metrics,proto3" json:"metrics,omitempty"` // Custom Metrics.
+	// Custom Metrics.
+	Metrics []*Metric `protobuf:"bytes,1,rep,name=metrics,proto3" json:"metrics,omitempty"`
 }
 
 func (x *GetCustomInstanceMetricsResponse) Reset() {
@@ -2384,9 +2486,12 @@ type Metric struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name            string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                                              // Name of the metric.
-	LatestValue     float64                `protobuf:"fixed64,2,opt,name=latest_value,json=latestValue,proto3" json:"latest_value,omitempty"`           // Latest value of the metric.
-	LatestTimestamp *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=latest_timestamp,json=latestTimestamp,proto3" json:"latest_timestamp,omitempty"` // Timestamp of the latest value.
+	// Name of the metric.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Latest value of the metric.
+	LatestValue float64 `protobuf:"fixed64,2,opt,name=latest_value,json=latestValue,proto3" json:"latest_value,omitempty"`
+	// Timestamp of the latest value.
+	LatestTimestamp *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=latest_timestamp,json=latestTimestamp,proto3" json:"latest_timestamp,omitempty"`
 }
 
 func (x *Metric) Reset() {
@@ -2448,14 +2553,22 @@ type GetJobExecutionsRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId     string                 `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`               // The capsule to get job executions for.
-	JobName       string                 `protobuf:"bytes,2,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`                     // The name of the job to get executions for.
-	States        []JobState             `protobuf:"varint,4,rep,packed,name=states,proto3,enum=api.v1.capsule.JobState" json:"states,omitempty"` // Filtering executions by job state.
-	CreatedFrom   *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_from,json=createdFrom,proto3" json:"created_from,omitempty"`         // Filtering executions created before this timestamp.
-	CreatedTo     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_to,json=createdTo,proto3" json:"created_to,omitempty"`               // Filtering executions created after this timestamp.
-	Pagination    *model.Pagination      `protobuf:"bytes,7,opt,name=pagination,proto3" json:"pagination,omitempty"`                              // Pagination options.
-	ProjectId     string                 `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`               // The project in which the capsule lives.
-	EnvironmentId string                 `protobuf:"bytes,9,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`   // The environment to get job executions for.
+	// The capsule to get job executions for.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The name of the job to get executions for.
+	JobName string `protobuf:"bytes,2,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`
+	// Filtering executions by job state.
+	States []JobState `protobuf:"varint,4,rep,packed,name=states,proto3,enum=api.v1.capsule.JobState" json:"states,omitempty"`
+	// Filtering executions created before this timestamp.
+	CreatedFrom *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_from,json=createdFrom,proto3" json:"created_from,omitempty"`
+	// Filtering executions created after this timestamp.
+	CreatedTo *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_to,json=createdTo,proto3" json:"created_to,omitempty"`
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,7,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	// The project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment to get job executions for.
+	EnvironmentId string `protobuf:"bytes,9,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *GetJobExecutionsRequest) Reset() {
@@ -2552,8 +2665,10 @@ type GetJobExecutionsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	JobExecutions []*JobExecution `protobuf:"bytes,1,rep,name=job_executions,json=jobExecutions,proto3" json:"job_executions,omitempty"` // Job executions.
-	Total         uint64          `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`                                     // Total number of executions ignorring pagination.
+	// Job executions.
+	JobExecutions []*JobExecution `protobuf:"bytes,1,rep,name=job_executions,json=jobExecutions,proto3" json:"job_executions,omitempty"`
+	// Total number of executions ignorring pagination.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *GetJobExecutionsResponse) Reset() {
@@ -2608,12 +2723,18 @@ type ExecuteRequest_Start struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId   string                 `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`    // The capsule to execute in.
-	InstanceId  string                 `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"` // The instance to execute in.
-	Command     string                 `protobuf:"bytes,3,opt,name=command,proto3" json:"command,omitempty"`                         // The command to execute.
-	Arguments   []string               `protobuf:"bytes,4,rep,name=arguments,proto3" json:"arguments,omitempty"`                     // The arguments to the command.
-	Tty         *ExecuteRequest_Resize `protobuf:"bytes,5,opt,name=tty,proto3" json:"tty,omitempty"`                                 // The initial terminal size.
-	Interactive bool                   `protobuf:"varint,6,opt,name=interactive,proto3" json:"interactive,omitempty"`                // If the command is interactive.
+	// The capsule to execute in.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// The instance to execute in.
+	InstanceId string `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	// The command to execute.
+	Command string `protobuf:"bytes,3,opt,name=command,proto3" json:"command,omitempty"`
+	// The arguments to the command.
+	Arguments []string `protobuf:"bytes,4,rep,name=arguments,proto3" json:"arguments,omitempty"`
+	// The initial terminal size.
+	Tty *ExecuteRequest_Resize `protobuf:"bytes,5,opt,name=tty,proto3" json:"tty,omitempty"`
+	// If the command is interactive.
+	Interactive bool `protobuf:"varint,6,opt,name=interactive,proto3" json:"interactive,omitempty"`
 }
 
 func (x *ExecuteRequest_Start) Reset() {
@@ -2696,8 +2817,10 @@ type ExecuteRequest_Resize struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Height uint32 `protobuf:"varint,1,opt,name=height,proto3" json:"height,omitempty"` // The new terminal height.
-	Width  uint32 `protobuf:"varint,2,opt,name=width,proto3" json:"width,omitempty"`   // The new terminal width.
+	// The new terminal height.
+	Height uint32 `protobuf:"varint,1,opt,name=height,proto3" json:"height,omitempty"`
+	// The new terminal width.
+	Width uint32 `protobuf:"varint,2,opt,name=width,proto3" json:"width,omitempty"`
 }
 
 func (x *ExecuteRequest_Resize) Reset() {

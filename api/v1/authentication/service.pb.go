@@ -69,14 +69,16 @@ func (SSOType) EnumDescriptor() ([]byte, []int) {
 }
 
 // Request to send an email containing the code for the email verification flow.
-// This is an upsert, and will invalidate the current verification-code if it exists.
-// Only possible if an email-provider is configured, and the user has en email.
+// This is an upsert, and will invalidate the current verification-code if it
+// exists. Only possible if an email-provider is configured, and the user has en
+// email.
 type SendVerificationEmailRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Identifier *model.UserIdentifier `protobuf:"bytes,1,opt,name=identifier,proto3" json:"identifier,omitempty"` // User identifier of the user.
+	// User identifier of the user.
+	Identifier *model.UserIdentifier `protobuf:"bytes,1,opt,name=identifier,proto3" json:"identifier,omitempty"`
 }
 
 func (x *SendVerificationEmailRequest) Reset() {
@@ -124,7 +126,8 @@ type SendVerificationEmailResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"` // JWT token to verify the email.
+	// JWT token to verify the email.
+	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 }
 
 func (x *SendVerificationEmailResponse) Reset() {
@@ -166,15 +169,19 @@ func (x *SendVerificationEmailResponse) GetToken() string {
 	return ""
 }
 
-// Request to verify the email of a user with a verification code sent to the email.
+// Request to verify the email of a user with a verification code sent to the
+// email.
 type VerifyEmailRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Code  string `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`   // The verification code.
-	Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"` // The email of the user.
-	Token string `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"` // JWT token to verify the email.
+	// The verification code.
+	Code string `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	// The email of the user.
+	Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	// JWT token to verify the email.
+	Token string `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
 }
 
 func (x *VerifyEmailRequest) Reset() {
@@ -269,7 +276,8 @@ func (*VerifyEmailResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_authentication_service_proto_rawDescGZIP(), []int{3}
 }
 
-// Request to verify the phone number of a user with a verification code sent to the phone number.
+// Request to verify the phone number of a user with a verification code sent to
+// the phone number.
 type VerifyPhoneNumberRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -435,11 +443,13 @@ type isLoginRequest_Method interface {
 }
 
 type LoginRequest_UserPassword struct {
-	UserPassword *UserPassword `protobuf:"bytes,1,opt,name=user_password,json=userPassword,proto3,oneof"` // User identifier & password.
+	// User identifier & password.
+	UserPassword *UserPassword `protobuf:"bytes,1,opt,name=user_password,json=userPassword,proto3,oneof"`
 }
 
 type LoginRequest_ClientCredentials struct {
-	ClientCredentials *ClientCredentials `protobuf:"bytes,3,opt,name=client_credentials,json=clientCredentials,proto3,oneof"` // Client credentials from service account.
+	// Client credentials from service account.
+	ClientCredentials *ClientCredentials `protobuf:"bytes,3,opt,name=client_credentials,json=clientCredentials,proto3,oneof"`
 }
 
 func (*LoginRequest_UserPassword) isLoginRequest_Method() {}
@@ -452,9 +462,12 @@ type LoginResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Token    *Token          `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`                       // The access token and refresh token.
-	UserId   string          `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`       // ID of the user.
-	UserInfo *model.UserInfo `protobuf:"bytes,3,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"` // User information.
+	// The access token and refresh token.
+	Token *Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	// ID of the user.
+	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// User information.
+	UserInfo *model.UserInfo `protobuf:"bytes,3,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"`
 }
 
 func (x *LoginResponse) Reset() {
@@ -588,7 +601,8 @@ func (*LogoutResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_authentication_service_proto_rawDescGZIP(), []int{9}
 }
 
-// Get request to get the logged in user. The user ID etc. is taken from the token.
+// Get request to get the logged in user. The user ID etc. is taken from the
+// token.
 type GetRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -633,8 +647,10 @@ type GetResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserInfo *model.UserInfo `protobuf:"bytes,1,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"` // Information about the user.
-	UserId   string          `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`       // ID of the user
+	// Information about the user.
+	UserInfo *model.UserInfo `protobuf:"bytes,1,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"`
+	// ID of the user
+	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 }
 
 func (x *GetResponse) Reset() {
@@ -683,7 +699,8 @@ func (x *GetResponse) GetUserId() string {
 	return ""
 }
 
-// Register request for users to self-register. This is only possible with the register bool set in users settings.
+// Register request for users to self-register. This is only possible with the
+// register bool set in users settings.
 type RegisterRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -746,7 +763,8 @@ type isRegisterRequest_Method interface {
 }
 
 type RegisterRequest_UserPassword struct {
-	UserPassword *UserPassword `protobuf:"bytes,1,opt,name=user_password,json=userPassword,proto3,oneof"` // User identifier & password for the new user.
+	// User identifier & password for the new user.
+	UserPassword *UserPassword `protobuf:"bytes,1,opt,name=user_password,json=userPassword,proto3,oneof"`
 }
 
 func (*RegisterRequest_UserPassword) isRegisterRequest_Method() {}
@@ -757,9 +775,12 @@ type RegisterResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Token    *Token          `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`                       // Access and refresh token for the new logged in user.
-	UserId   string          `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`       // User ID of the new user.
-	UserInfo *model.UserInfo `protobuf:"bytes,3,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"` // Information about the new user.
+	// Access and refresh token for the new logged in user.
+	Token *Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	// User ID of the new user.
+	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// Information about the new user.
+	UserInfo *model.UserInfo `protobuf:"bytes,3,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"`
 }
 
 func (x *RegisterResponse) Reset() {
@@ -815,13 +836,15 @@ func (x *RegisterResponse) GetUserInfo() *model.UserInfo {
 	return nil
 }
 
-// Request to send a reset password email to the user. This is only possible if an email provider is configured, and the user has an email.
+// Request to send a reset password email to the user. This is only possible if
+// an email provider is configured, and the user has an email.
 type SendPasswordResetRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Identifier *model.UserIdentifier `protobuf:"bytes,1,opt,name=identifier,proto3" json:"identifier,omitempty"` // User identifier of the user.
+	// User identifier of the user.
+	Identifier *model.UserIdentifier `protobuf:"bytes,1,opt,name=identifier,proto3" json:"identifier,omitempty"`
 }
 
 func (x *SendPasswordResetRequest) Reset() {
@@ -869,7 +892,8 @@ type SendPasswordResetResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"` // JWT token to reset the password.
+	// JWT token to reset the password.
+	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 }
 
 func (x *SendPasswordResetResponse) Reset() {
@@ -911,16 +935,21 @@ func (x *SendPasswordResetResponse) GetToken() string {
 	return ""
 }
 
-// Request to reset the password of a user with a verification code sent to the email.
+// Request to reset the password of a user with a verification code sent to the
+// email.
 type ResetPasswordRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Code        string                `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`                                  // The 6 digit verification code
-	NewPassword string                `protobuf:"bytes,2,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"` // The new password
-	Identifier  *model.UserIdentifier `protobuf:"bytes,3,opt,name=identifier,proto3" json:"identifier,omitempty"`                      // Identifier of the user
-	Token       string                `protobuf:"bytes,4,opt,name=token,proto3" json:"token,omitempty"`                                // JWT token to reset the password.
+	// The 6 digit verification code
+	Code string `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	// The new password
+	NewPassword string `protobuf:"bytes,2,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
+	// Identifier of the user
+	Identifier *model.UserIdentifier `protobuf:"bytes,3,opt,name=identifier,proto3" json:"identifier,omitempty"`
+	// JWT token to reset the password.
+	Token string `protobuf:"bytes,4,opt,name=token,proto3" json:"token,omitempty"`
 }
 
 func (x *ResetPasswordRequest) Reset() {
@@ -1022,7 +1051,8 @@ func (*ResetPasswordResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_authentication_service_proto_rawDescGZIP(), []int{17}
 }
 
-// Request to delete the logged in user. The user ID etc. is taken from the token.
+// Request to delete the logged in user. The user ID etc. is taken from the
+// token.
 type DeleteRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1107,7 +1137,8 @@ type RefreshTokenRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The access token of the user
-	RefreshToken string `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"` // Refresh token matching the access token.
+	// Refresh token matching the access token.
+	RefreshToken string `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
 }
 
 func (x *RefreshTokenRequest) Reset() {
@@ -1155,7 +1186,8 @@ type RefreshTokenResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Token *Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"` // New refresh and access tokens
+	// New refresh and access tokens
+	Token *Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 }
 
 func (x *RefreshTokenResponse) Reset() {
@@ -1197,7 +1229,8 @@ func (x *RefreshTokenResponse) GetToken() *Token {
 	return nil
 }
 
-// Empty Request to get the auth config containing the available login mechanisms and if self-registering is enabled.
+// Empty Request to get the auth config containing the available login
+// mechanisms and if self-registering is enabled.
 type GetAuthConfigRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1236,7 +1269,8 @@ func (*GetAuthConfigRequest) Descriptor() ([]byte, []int) {
 	return file_api_v1_authentication_service_proto_rawDescGZIP(), []int{22}
 }
 
-// Response with the auth config containing the available login mechanisms and if self-registering is enabled.
+// Response with the auth config containing the available login mechanisms and
+// if self-registering is enabled.
 type GetAuthConfigResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1342,7 +1376,8 @@ type SSOOption struct {
 	Type SSOType `protobuf:"varint,1,opt,name=type,proto3,enum=api.v1.authentication.SSOType" json:"type,omitempty"`
 	// ID of the SSO provider as given in the platform configuration.
 	ProviderId string `protobuf:"bytes,2,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
-	// Name of SSO provider. This is an optional human readable version of the provider ID.
+	// Name of SSO provider. This is an optional human readable version of the
+	// provider ID.
 	Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	// URL of the underlying issuer. This can be used in the frontend for
 	// showing specific items for certain known issuers.

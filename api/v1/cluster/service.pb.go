@@ -76,7 +76,8 @@ type GetConfigRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	EnvironmentId string `protobuf:"bytes,1,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment to get cluster config for.
+	// The environment to get cluster config for.
+	EnvironmentId string `protobuf:"bytes,1,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *GetConfigRequest) Reset() {
@@ -124,7 +125,8 @@ type GetConfigResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ClusterType ClusterType `protobuf:"varint,1,opt,name=cluster_type,json=clusterType,proto3,enum=api.v1.cluster.ClusterType" json:"cluster_type,omitempty"` // Type of the cluster.
+	// Type of the cluster.
+	ClusterType ClusterType `protobuf:"varint,1,opt,name=cluster_type,json=clusterType,proto3,enum=api.v1.cluster.ClusterType" json:"cluster_type,omitempty"`
 	// dev registry of the cluster. This is either a Docker daemon or a registry.
 	//
 	// Types that are assignable to DevRegistry:
@@ -132,7 +134,8 @@ type GetConfigResponse struct {
 	//	*GetConfigResponse_Docker
 	//	*GetConfigResponse_Registry
 	DevRegistry isGetConfigResponse_DevRegistry `protobuf_oneof:"dev_registry"`
-	Ingress     bool                            `protobuf:"varint,4,opt,name=ingress,proto3" json:"ingress,omitempty"` // if true, the cluster has an ingress controller.
+	// if true, the cluster has an ingress controller.
+	Ingress bool `protobuf:"varint,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
 }
 
 func (x *GetConfigResponse) Reset() {
@@ -207,11 +210,13 @@ type isGetConfigResponse_DevRegistry interface {
 }
 
 type GetConfigResponse_Docker struct {
-	Docker *DockerDaemon `protobuf:"bytes,2,opt,name=docker,proto3,oneof"` // Docker.
+	// Docker.
+	Docker *DockerDaemon `protobuf:"bytes,2,opt,name=docker,proto3,oneof"`
 }
 
 type GetConfigResponse_Registry struct {
-	Registry *Registry `protobuf:"bytes,3,opt,name=registry,proto3,oneof"` // Registry.
+	// Registry.
+	Registry *Registry `protobuf:"bytes,3,opt,name=registry,proto3,oneof"`
 }
 
 func (*GetConfigResponse_Docker) isGetConfigResponse_DevRegistry() {}

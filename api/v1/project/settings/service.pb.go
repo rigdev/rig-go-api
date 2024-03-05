@@ -67,8 +67,10 @@ type GetLicenseInfoResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Plan      project.Plan           `protobuf:"varint,1,opt,name=plan,proto3,enum=api.v1.project.Plan" json:"plan,omitempty"`  // The plan of the rig installation.
-	ExpiresAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"` // The expiration date of the license.
+	// The plan of the rig installation.
+	Plan project.Plan `protobuf:"varint,1,opt,name=plan,proto3,enum=api.v1.project.Plan" json:"plan,omitempty"`
+	// The expiration date of the license.
+	ExpiresAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
 }
 
 func (x *GetLicenseInfoResponse) Reset() {
@@ -162,7 +164,8 @@ type GetSettingsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Settings *Settings `protobuf:"bytes,1,opt,name=settings,proto3" json:"settings,omitempty"` // The settings.
+	// The settings.
+	Settings *Settings `protobuf:"bytes,1,opt,name=settings,proto3" json:"settings,omitempty"`
 }
 
 func (x *GetSettingsResponse) Reset() {
@@ -210,7 +213,8 @@ type UpdateSettingsRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Updates []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"` // The updates to apply.
+	// The updates to apply.
+	Updates []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"`
 }
 
 func (x *UpdateSettingsRequest) Reset() {

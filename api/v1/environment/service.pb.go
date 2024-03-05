@@ -27,7 +27,8 @@ type ListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"` // Pagination options.
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
 func (x *ListRequest) Reset() {
@@ -75,8 +76,10 @@ type ListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Environments    []*Environment `protobuf:"bytes,1,rep,name=environments,proto3" json:"environments,omitempty"`                              // List of environments.
-	PlatformVersion string         `protobuf:"bytes,2,opt,name=platform_version,json=platformVersion,proto3" json:"platform_version,omitempty"` // The version of the Rig-platform.
+	// List of environments.
+	Environments []*Environment `protobuf:"bytes,1,rep,name=environments,proto3" json:"environments,omitempty"`
+	// The version of the Rig-platform.
+	PlatformVersion string `protobuf:"bytes,2,opt,name=platform_version,json=platformVersion,proto3" json:"platform_version,omitempty"`
 }
 
 func (x *ListResponse) Reset() {

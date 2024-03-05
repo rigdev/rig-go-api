@@ -27,7 +27,8 @@ type GetByIdentifierRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Identifier *model.UserIdentifier `protobuf:"bytes,1,opt,name=identifier,proto3" json:"identifier,omitempty"` // The identifier to lookup.
+	// The identifier to lookup.
+	Identifier *model.UserIdentifier `protobuf:"bytes,1,opt,name=identifier,proto3" json:"identifier,omitempty"`
 }
 
 func (x *GetByIdentifierRequest) Reset() {
@@ -75,7 +76,8 @@ type GetByIdentifierResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"` // The user.
+	// The user.
+	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 }
 
 func (x *GetByIdentifierResponse) Reset() {
@@ -123,8 +125,10 @@ type CreateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Initializers   []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"`                             // Initial fields to set.
-	InitialGroupId string    `protobuf:"bytes,2,opt,name=initial_group_id,json=initialGroupId,proto3" json:"initial_group_id,omitempty"` // If set, the user will be added to this group upon creation.
+	// Initial fields to set.
+	Initializers []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"`
+	// If set, the user will be added to this group upon creation.
+	InitialGroupId string `protobuf:"bytes,2,opt,name=initial_group_id,json=initialGroupId,proto3" json:"initial_group_id,omitempty"`
 }
 
 func (x *CreateRequest) Reset() {
@@ -179,7 +183,8 @@ type CreateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"` // The created user.
+	// The created user.
+	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 }
 
 func (x *CreateResponse) Reset() {
@@ -227,8 +232,10 @@ type UpdateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId  string    `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // The user identifier of the user to update.
-	Updates []*Update `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"`             // The updates to apply to the user.
+	// The user identifier of the user to update.
+	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// The updates to apply to the user.
+	Updates []*Update `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"`
 }
 
 func (x *UpdateRequest) Reset() {
@@ -371,7 +378,8 @@ type GetResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"` // The retrieved user.
+	// The retrieved user.
+	User *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 }
 
 func (x *GetResponse) Reset() {
@@ -419,8 +427,10 @@ type ListSessionsRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId     string            `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // The user to retrieve sessions for.
-	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`       // Pagination options.
+	// The user to retrieve sessions for.
+	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
 func (x *ListSessionsRequest) Reset() {
@@ -475,8 +485,10 @@ type ListSessionsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Sessions []*SessionEntry `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"` // The retrieved sessions.
-	Total    uint64          `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`      // The total number of sessions.
+	// The retrieved sessions.
+	Sessions []*SessionEntry `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"`
+	// The total number of sessions.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListSessionsResponse) Reset() {
@@ -531,7 +543,8 @@ type DeleteRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // The user identifier to fetch the user.
+	// The user identifier to fetch the user.
+	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 }
 
 func (x *DeleteRequest) Reset() {
@@ -618,8 +631,10 @@ type ListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"` // Pagination options.
-	Search     string            `protobuf:"bytes,2,opt,name=search,proto3" json:"search,omitempty"`         // Search string.
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	// Search string.
+	Search string `protobuf:"bytes,2,opt,name=search,proto3" json:"search,omitempty"`
 }
 
 func (x *ListRequest) Reset() {
@@ -674,8 +689,10 @@ type ListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Users []*model.UserEntry `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`  // The users returned.
-	Total uint64             `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"` // total number of users.
+	// The users returned.
+	Users []*model.UserEntry `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	// total number of users.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListResponse) Reset() {

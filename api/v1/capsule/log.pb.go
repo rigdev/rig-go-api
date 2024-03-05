@@ -27,9 +27,12 @@ type Log struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Timestamp  *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`                     // Timestamp of the log
-	Message    *LogMessage            `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`                         // Message of the log
-	InstanceId string                 `protobuf:"bytes,3,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"` // Instance ID of the log
+	// Timestamp of the log
+	Timestamp *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	// Message of the log
+	Message *LogMessage `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// Instance ID of the log
+	InstanceId string `protobuf:"bytes,3,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
 }
 
 func (x *Log) Reset() {
@@ -164,15 +167,18 @@ type isLogMessage_Message interface {
 }
 
 type LogMessage_Stdout struct {
-	Stdout []byte `protobuf:"bytes,1,opt,name=stdout,proto3,oneof"` // If the log is stdout
+	// If the log is stdout
+	Stdout []byte `protobuf:"bytes,1,opt,name=stdout,proto3,oneof"`
 }
 
 type LogMessage_Stderr struct {
-	Stderr []byte `protobuf:"bytes,2,opt,name=stderr,proto3,oneof"` // If the log is stderr
+	// If the log is stderr
+	Stderr []byte `protobuf:"bytes,2,opt,name=stderr,proto3,oneof"`
 }
 
 type LogMessage_ContainerTermination_ struct {
-	ContainerTermination *LogMessage_ContainerTermination `protobuf:"bytes,3,opt,name=container_termination,json=containerTermination,proto3,oneof"` // Represents a termination event
+	// Represents a termination event
+	ContainerTermination *LogMessage_ContainerTermination `protobuf:"bytes,3,opt,name=container_termination,json=containerTermination,proto3,oneof"`
 }
 
 func (*LogMessage_Stdout) isLogMessage_Message() {}

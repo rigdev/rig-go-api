@@ -26,7 +26,8 @@ type BcryptHashingConfig struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Cost int32 `protobuf:"varint,1,opt,name=cost,proto3" json:"cost,omitempty"` // The cost of the hashing algorithm.
+	// The cost of the hashing algorithm.
+	Cost int32 `protobuf:"varint,1,opt,name=cost,proto3" json:"cost,omitempty"`
 }
 
 func (x *BcryptHashingConfig) Reset() {
@@ -113,12 +114,18 @@ type ScryptHashingConfig struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	SignerKey     string `protobuf:"bytes,1,opt,name=signer_key,json=signerKey,proto3" json:"signer_key,omitempty"`             // The key used to sign the salt.
-	SaltSeparator string `protobuf:"bytes,2,opt,name=salt_separator,json=saltSeparator,proto3" json:"salt_separator,omitempty"` // The salt separator.
-	Rounds        int32  `protobuf:"varint,3,opt,name=rounds,proto3" json:"rounds,omitempty"`                                   // The number of rounds in the algorithm.
-	MemCost       int32  `protobuf:"varint,4,opt,name=mem_cost,json=memCost,proto3" json:"mem_cost,omitempty"`                  // The memory cost of the algorithm.
-	P             int32  `protobuf:"varint,5,opt,name=p,proto3" json:"p,omitempty"`                                             // The parallelization factor of the algorithm.
-	KeyLen        int32  `protobuf:"varint,6,opt,name=key_len,json=keyLen,proto3" json:"key_len,omitempty"`                     // The length of the key.
+	// The key used to sign the salt.
+	SignerKey string `protobuf:"bytes,1,opt,name=signer_key,json=signerKey,proto3" json:"signer_key,omitempty"`
+	// The salt separator.
+	SaltSeparator string `protobuf:"bytes,2,opt,name=salt_separator,json=saltSeparator,proto3" json:"salt_separator,omitempty"`
+	// The number of rounds in the algorithm.
+	Rounds int32 `protobuf:"varint,3,opt,name=rounds,proto3" json:"rounds,omitempty"`
+	// The memory cost of the algorithm.
+	MemCost int32 `protobuf:"varint,4,opt,name=mem_cost,json=memCost,proto3" json:"mem_cost,omitempty"`
+	// The parallelization factor of the algorithm.
+	P int32 `protobuf:"varint,5,opt,name=p,proto3" json:"p,omitempty"`
+	// The length of the key.
+	KeyLen int32 `protobuf:"varint,6,opt,name=key_len,json=keyLen,proto3" json:"key_len,omitempty"`
 }
 
 func (x *ScryptHashingConfig) Reset() {
@@ -201,7 +208,8 @@ type ScryptHashingInstance struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Salt []byte `protobuf:"bytes,1,opt,name=salt,proto3" json:"salt,omitempty"` // The salt used to hash the password.
+	// The salt used to hash the password.
+	Salt []byte `protobuf:"bytes,1,opt,name=salt,proto3" json:"salt,omitempty"`
 }
 
 func (x *ScryptHashingInstance) Reset() {
@@ -314,11 +322,13 @@ type isHashingConfig_Method interface {
 }
 
 type HashingConfig_Bcrypt struct {
-	Bcrypt *BcryptHashingConfig `protobuf:"bytes,1,opt,name=bcrypt,proto3,oneof"` // if bcrypt is set, use bcrypt.
+	// if bcrypt is set, use bcrypt.
+	Bcrypt *BcryptHashingConfig `protobuf:"bytes,1,opt,name=bcrypt,proto3,oneof"`
 }
 
 type HashingConfig_Scrypt struct {
-	Scrypt *ScryptHashingConfig `protobuf:"bytes,2,opt,name=scrypt,proto3,oneof"` // if scrypt is set, use scrypt.
+	// if scrypt is set, use scrypt.
+	Scrypt *ScryptHashingConfig `protobuf:"bytes,2,opt,name=scrypt,proto3,oneof"`
 }
 
 func (*HashingConfig_Bcrypt) isHashingConfig_Method() {}
@@ -331,8 +341,10 @@ type HashingInstance struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Config *HashingConfig `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"` // The hashing configuration.
-	Hash   []byte         `protobuf:"bytes,2,opt,name=hash,proto3" json:"hash,omitempty"`     // A hash
+	// The hashing configuration.
+	Config *HashingConfig `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"`
+	// A hash
+	Hash []byte `protobuf:"bytes,2,opt,name=hash,proto3" json:"hash,omitempty"`
 	// Types that are assignable to Instance:
 	//
 	//	*HashingInstance_Bcrypt
@@ -412,11 +424,13 @@ type isHashingInstance_Instance interface {
 }
 
 type HashingInstance_Bcrypt struct {
-	Bcrypt *BcryptHashingInstance `protobuf:"bytes,3,opt,name=bcrypt,proto3,oneof"` // if bcrypt is set, this bcrypt instance was used.
+	// if bcrypt is set, this bcrypt instance was used.
+	Bcrypt *BcryptHashingInstance `protobuf:"bytes,3,opt,name=bcrypt,proto3,oneof"`
 }
 
 type HashingInstance_Scrypt struct {
-	Scrypt *ScryptHashingInstance `protobuf:"bytes,4,opt,name=scrypt,proto3,oneof"` // if scrypt is set, this scrypt instance was used.
+	// if scrypt is set, this scrypt instance was used.
+	Scrypt *ScryptHashingInstance `protobuf:"bytes,4,opt,name=scrypt,proto3,oneof"`
 }
 
 func (*HashingInstance_Bcrypt) isHashingInstance_Instance() {}
@@ -429,9 +443,12 @@ type Pagination struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Offset     uint32 `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`         // Where to start the pagination.
-	Limit      uint32 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`           // How many items to return.
-	Descending bool   `protobuf:"varint,3,opt,name=descending,proto3" json:"descending,omitempty"` // Whether to sort in descending order.
+	// Where to start the pagination.
+	Offset uint32 `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	// How many items to return.
+	Limit uint32 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	// Whether to sort in descending order.
+	Descending bool `protobuf:"varint,3,opt,name=descending,proto3" json:"descending,omitempty"`
 }
 
 func (x *Pagination) Reset() {

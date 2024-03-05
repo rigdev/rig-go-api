@@ -65,7 +65,8 @@ type GetSettingsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Settings *Settings `protobuf:"bytes,1,opt,name=settings,proto3" json:"settings,omitempty"` // The users settings.
+	// The users settings.
+	Settings *Settings `protobuf:"bytes,1,opt,name=settings,proto3" json:"settings,omitempty"`
 }
 
 func (x *GetSettingsResponse) Reset() {
@@ -113,7 +114,8 @@ type UpdateSettingsRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Settings []*Update `protobuf:"bytes,1,rep,name=settings,proto3" json:"settings,omitempty"` // The updates to apply to the users settings.
+	// The updates to apply to the users settings.
+	Settings []*Update `protobuf:"bytes,1,rep,name=settings,proto3" json:"settings,omitempty"`
 }
 
 func (x *UpdateSettingsRequest) Reset() {

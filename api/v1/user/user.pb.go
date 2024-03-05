@@ -26,10 +26,14 @@ const (
 type VerificationType int32
 
 const (
-	VerificationType_VERIFICATION_TYPE_UNSPECIFIED    VerificationType = 0 // Default value
-	VerificationType_VERIFICATION_TYPE_EMAIL          VerificationType = 1 // Email verification code.
-	VerificationType_VERIFICATION_TYPE_TEXT           VerificationType = 2 // Deprecated: text is not supported - text verification code.
-	VerificationType_VERIFICATION_TYPE_RESET_PASSWORD VerificationType = 3 // reset password verification code.
+	// Default value
+	VerificationType_VERIFICATION_TYPE_UNSPECIFIED VerificationType = 0
+	// Email verification code.
+	VerificationType_VERIFICATION_TYPE_EMAIL VerificationType = 1
+	// Deprecated: text is not supported - text verification code.
+	VerificationType_VERIFICATION_TYPE_TEXT VerificationType = 2
+	// reset password verification code.
+	VerificationType_VERIFICATION_TYPE_RESET_PASSWORD VerificationType = 3
 )
 
 // Enum value maps for VerificationType.
@@ -81,13 +85,20 @@ type VerificationCode struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Code        *model.HashingInstance `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`                                    // Hashed verification code.
-	SentAt      *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=sent_at,json=sentAt,proto3" json:"sent_at,omitempty"`                  // Timestamp when the verification code was sent.
-	ExpiresAt   *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`         // Timestamp when the verification code expires.
-	Attempts    int32                  `protobuf:"varint,4,opt,name=attempts,proto3" json:"attempts,omitempty"`                           // Number of attempts to verify the code.
-	LastAttempt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_attempt,json=lastAttempt,proto3" json:"last_attempt,omitempty"`   // Timestamp of the last attempt to verify the code.
-	Type        VerificationType       `protobuf:"varint,6,opt,name=type,proto3,enum=api.v1.user.VerificationType" json:"type,omitempty"` // Type of verification code.
-	UserId      string                 `protobuf:"bytes,7,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                  // User ID of the user who the code was sent to.
+	// Hashed verification code.
+	Code *model.HashingInstance `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	// Timestamp when the verification code was sent.
+	SentAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=sent_at,json=sentAt,proto3" json:"sent_at,omitempty"`
+	// Timestamp when the verification code expires.
+	ExpiresAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	// Number of attempts to verify the code.
+	Attempts int32 `protobuf:"varint,4,opt,name=attempts,proto3" json:"attempts,omitempty"`
+	// Timestamp of the last attempt to verify the code.
+	LastAttempt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_attempt,json=lastAttempt,proto3" json:"last_attempt,omitempty"`
+	// Type of verification code.
+	Type VerificationType `protobuf:"varint,6,opt,name=type,proto3,enum=api.v1.user.VerificationType" json:"type,omitempty"`
+	// User ID of the user who the code was sent to.
+	UserId string `protobuf:"bytes,7,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 }
 
 func (x *VerificationCode) Reset() {
@@ -177,8 +188,10 @@ type Profile struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	FirstName string `protobuf:"bytes,1,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"` // First name of the user.
-	LastName  string `protobuf:"bytes,2,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`    // Last name of the user.
+	// First name of the user.
+	FirstName string `protobuf:"bytes,1,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	// Last name of the user.
+	LastName string `protobuf:"bytes,2,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
 }
 
 func (x *Profile) Reset() {
@@ -233,15 +246,25 @@ type User struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId           string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                                                                               // User ID of the user.
-	UserInfo         *model.UserInfo        `protobuf:"bytes,2,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"`                                                                         // User info of the user.
-	Profile          *Profile               `protobuf:"bytes,3,opt,name=profile,proto3" json:"profile,omitempty"`                                                                                           // Profile of the user.
-	UpdatedAt        *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                                                                      // Timestamp when the user was last updated.
-	RegisterInfo     *model.RegisterInfo    `protobuf:"bytes,5,opt,name=register_info,json=registerInfo,proto3" json:"register_info,omitempty"`                                                             // Register info of the user.
-	IsPhoneVerified  bool                   `protobuf:"varint,6,opt,name=is_phone_verified,json=isPhoneVerified,proto3" json:"is_phone_verified,omitempty"`                                                 // Deprecated: text is not supported - Whether the user's phone number is verified.
-	IsEmailVerified  bool                   `protobuf:"varint,7,opt,name=is_email_verified,json=isEmailVerified,proto3" json:"is_email_verified,omitempty"`                                                 // Whether the user's email is verified.
-	NewSessionsSince *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=new_sessions_since,json=newSessionsSince,proto3" json:"new_sessions_since,omitempty"`                                               // Timestamp when the user last created a new session.
-	Metadata         map[string][]byte      `protobuf:"bytes,9,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // Metadata of the user.
+	// User ID of the user.
+	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// User info of the user.
+	UserInfo *model.UserInfo `protobuf:"bytes,2,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"`
+	// Profile of the user.
+	Profile *Profile `protobuf:"bytes,3,opt,name=profile,proto3" json:"profile,omitempty"`
+	// Timestamp when the user was last updated.
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	// Register info of the user.
+	RegisterInfo *model.RegisterInfo `protobuf:"bytes,5,opt,name=register_info,json=registerInfo,proto3" json:"register_info,omitempty"`
+	// Deprecated: text is not supported - Whether the user's phone number is
+	// verified.
+	IsPhoneVerified bool `protobuf:"varint,6,opt,name=is_phone_verified,json=isPhoneVerified,proto3" json:"is_phone_verified,omitempty"`
+	// Whether the user's email is verified.
+	IsEmailVerified bool `protobuf:"varint,7,opt,name=is_email_verified,json=isEmailVerified,proto3" json:"is_email_verified,omitempty"`
+	// Timestamp when the user last created a new session.
+	NewSessionsSince *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=new_sessions_since,json=newSessionsSince,proto3" json:"new_sessions_since,omitempty"`
+	// Metadata of the user.
+	Metadata map[string][]byte `protobuf:"bytes,9,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (x *User) Reset() {
@@ -484,47 +507,59 @@ type isUpdate_Field interface {
 }
 
 type Update_Email struct {
-	Email string `protobuf:"bytes,1,opt,name=email,proto3,oneof"` // Email of the user.
+	// Email of the user.
+	Email string `protobuf:"bytes,1,opt,name=email,proto3,oneof"`
 }
 
 type Update_Username struct {
-	Username string `protobuf:"bytes,2,opt,name=username,proto3,oneof"` // Username of the user.
+	// Username of the user.
+	Username string `protobuf:"bytes,2,opt,name=username,proto3,oneof"`
 }
 
 type Update_PhoneNumber struct {
-	PhoneNumber string `protobuf:"bytes,3,opt,name=phone_number,json=phoneNumber,proto3,oneof"` // Deprecated: text is not supported - Phone number of the user.
+	// Deprecated: text is not supported - Phone number of the user.
+	PhoneNumber string `protobuf:"bytes,3,opt,name=phone_number,json=phoneNumber,proto3,oneof"`
 }
 
 type Update_Password struct {
-	Password string `protobuf:"bytes,4,opt,name=password,proto3,oneof"` // Password of the user.
+	// Password of the user.
+	Password string `protobuf:"bytes,4,opt,name=password,proto3,oneof"`
 }
 
 type Update_Profile struct {
-	Profile *Profile `protobuf:"bytes,5,opt,name=profile,proto3,oneof"` // Profile of the user.
+	// Profile of the user.
+	Profile *Profile `protobuf:"bytes,5,opt,name=profile,proto3,oneof"`
 }
 
 type Update_IsEmailVerified struct {
-	IsEmailVerified bool `protobuf:"varint,6,opt,name=is_email_verified,json=isEmailVerified,proto3,oneof"` // Whether the user's email is verified.
+	// Whether the user's email is verified.
+	IsEmailVerified bool `protobuf:"varint,6,opt,name=is_email_verified,json=isEmailVerified,proto3,oneof"`
 }
 
 type Update_IsPhoneVerified struct {
-	IsPhoneVerified bool `protobuf:"varint,7,opt,name=is_phone_verified,json=isPhoneVerified,proto3,oneof"` // Deprecated: text is not supported - Whether the user's phone number is verified.
+	// Deprecated: text is not supported - Whether the user's phone number is
+	// verified.
+	IsPhoneVerified bool `protobuf:"varint,7,opt,name=is_phone_verified,json=isPhoneVerified,proto3,oneof"`
 }
 
 type Update_ResetSessions_ struct {
-	ResetSessions *Update_ResetSessions `protobuf:"bytes,8,opt,name=reset_sessions,json=resetSessions,proto3,oneof"` // Reset sessions of the user.
+	// Reset sessions of the user.
+	ResetSessions *Update_ResetSessions `protobuf:"bytes,8,opt,name=reset_sessions,json=resetSessions,proto3,oneof"`
 }
 
 type Update_SetMetadata struct {
-	SetMetadata *model.Metadata `protobuf:"bytes,9,opt,name=set_metadata,json=setMetadata,proto3,oneof"` // Set metadata of the user.
+	// Set metadata of the user.
+	SetMetadata *model.Metadata `protobuf:"bytes,9,opt,name=set_metadata,json=setMetadata,proto3,oneof"`
 }
 
 type Update_DeleteMetadataKey struct {
-	DeleteMetadataKey string `protobuf:"bytes,10,opt,name=delete_metadata_key,json=deleteMetadataKey,proto3,oneof"` // Delete metadata of the user.
+	// Delete metadata of the user.
+	DeleteMetadataKey string `protobuf:"bytes,10,opt,name=delete_metadata_key,json=deleteMetadataKey,proto3,oneof"`
 }
 
 type Update_HashedPassword struct {
-	HashedPassword *model.HashingInstance `protobuf:"bytes,12,opt,name=hashed_password,json=hashedPassword,proto3,oneof"` // Hashed password of the user.
+	// Hashed password of the user.
+	HashedPassword *model.HashingInstance `protobuf:"bytes,12,opt,name=hashed_password,json=hashedPassword,proto3,oneof"`
 }
 
 func (*Update_Email) isUpdate_Field() {}
@@ -612,7 +647,8 @@ type isAuthMethod_Method interface {
 }
 
 type AuthMethod_LoginType struct {
-	LoginType model.LoginType `protobuf:"varint,1,opt,name=login_type,json=loginType,proto3,enum=model.LoginType,oneof"` // Login type of the user.
+	// Login type of the user.
+	LoginType model.LoginType `protobuf:"varint,1,opt,name=login_type,json=loginType,proto3,enum=model.LoginType,oneof"`
 }
 
 func (*AuthMethod_LoginType) isAuthMethod_Method() {}
@@ -623,8 +659,9 @@ type SessionEntry struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	SessionId string   `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"` // Session ID of the session.
-	Session   *Session `protobuf:"bytes,2,opt,name=session,proto3" json:"session,omitempty"`                      // Session of the session.
+	// Session ID of the session.
+	SessionId string   `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	Session   *Session `protobuf:"bytes,2,opt,name=session,proto3" json:"session,omitempty"` // Session of the session.
 }
 
 func (x *SessionEntry) Reset() {
@@ -679,14 +716,22 @@ type Session struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AuthMethod    *AuthMethod            `protobuf:"bytes,1,opt,name=auth_method,json=authMethod,proto3" json:"auth_method,omitempty"`           // how the user is authenticated.
-	IsInvalidated bool                   `protobuf:"varint,2,opt,name=is_invalidated,json=isInvalidated,proto3" json:"is_invalidated,omitempty"` // if the session is invalidated
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`              // Timestamp when the session was created.
-	InvalidatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=invalidated_at,json=invalidatedAt,proto3" json:"invalidated_at,omitempty"`  // Timestamp when the session was invalidated.
-	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`              // Timestamp when the session expires.
-	RenewedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=renewed_at,json=renewedAt,proto3" json:"renewed_at,omitempty"`              // Timestamp when the session was renewed.
-	Country       string                 `protobuf:"bytes,7,opt,name=country,proto3" json:"country,omitempty"`                                   // Country of the session.
-	PostalCode    int32                  `protobuf:"varint,8,opt,name=postal_code,json=postalCode,proto3" json:"postal_code,omitempty"`          // Postal code of the session.
+	// how the user is authenticated.
+	AuthMethod *AuthMethod `protobuf:"bytes,1,opt,name=auth_method,json=authMethod,proto3" json:"auth_method,omitempty"`
+	// if the session is invalidated
+	IsInvalidated bool `protobuf:"varint,2,opt,name=is_invalidated,json=isInvalidated,proto3" json:"is_invalidated,omitempty"`
+	// Timestamp when the session was created.
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// Timestamp when the session was invalidated.
+	InvalidatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=invalidated_at,json=invalidatedAt,proto3" json:"invalidated_at,omitempty"`
+	// Timestamp when the session expires.
+	ExpiresAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	// Timestamp when the session was renewed.
+	RenewedAt *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=renewed_at,json=renewedAt,proto3" json:"renewed_at,omitempty"`
+	// Country of the session.
+	Country string `protobuf:"bytes,7,opt,name=country,proto3" json:"country,omitempty"`
+	// Postal code of the session.
+	PostalCode int32 `protobuf:"varint,8,opt,name=postal_code,json=postalCode,proto3" json:"postal_code,omitempty"`
 }
 
 func (x *Session) Reset() {
@@ -777,7 +822,8 @@ func (x *Session) GetPostalCode() int32 {
 	return 0
 }
 
-// if sessions are reset, all sessions will be invalidated and a new session will be created.
+// if sessions are reset, all sessions will be invalidated and a new session
+// will be created.
 type Update_ResetSessions struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

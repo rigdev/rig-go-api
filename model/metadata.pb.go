@@ -26,8 +26,10 @@ type Metadata struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Key   string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`     // Key of the metadata.
-	Value []byte `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"` // Value of the metadata.
+	// Key of the metadata.
+	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	// Value of the metadata.
+	Value []byte `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 }
 
 func (x *Metadata) Reset() {

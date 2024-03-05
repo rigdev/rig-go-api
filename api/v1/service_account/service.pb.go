@@ -27,8 +27,10 @@ type CreateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name           string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                                             // Name of the service account to create.
-	InitialGroupId string `protobuf:"bytes,2,opt,name=initial_group_id,json=initialGroupId,proto3" json:"initial_group_id,omitempty"` // If set, the service-account will be added to this group upon creation.
+	// Name of the service account to create.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// If set, the service-account will be added to this group upon creation.
+	InitialGroupId string `protobuf:"bytes,2,opt,name=initial_group_id,json=initialGroupId,proto3" json:"initial_group_id,omitempty"`
 }
 
 func (x *CreateRequest) Reset() {
@@ -83,9 +85,12 @@ type CreateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ServiceAccount *ServiceAccount `protobuf:"bytes,1,opt,name=service_account,json=serviceAccount,proto3" json:"service_account,omitempty"` // The created service account.
-	ClientId       string          `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`                   // The client id of the service account.
-	ClientSecret   string          `protobuf:"bytes,3,opt,name=client_secret,json=clientSecret,proto3" json:"client_secret,omitempty"`       // The client secret of the service account.
+	// The created service account.
+	ServiceAccount *ServiceAccount `protobuf:"bytes,1,opt,name=service_account,json=serviceAccount,proto3" json:"service_account,omitempty"`
+	// The client id of the service account.
+	ClientId string `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	// The client secret of the service account.
+	ClientSecret string `protobuf:"bytes,3,opt,name=client_secret,json=clientSecret,proto3" json:"client_secret,omitempty"`
 }
 
 func (x *CreateResponse) Reset() {
@@ -186,7 +191,8 @@ type ListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ServiceAccounts []*model.ServiceAccountEntry `protobuf:"bytes,1,rep,name=service_accounts,json=serviceAccounts,proto3" json:"service_accounts,omitempty"` // the retrieved service accounts.
+	// the retrieved service accounts.
+	ServiceAccounts []*model.ServiceAccountEntry `protobuf:"bytes,1,rep,name=service_accounts,json=serviceAccounts,proto3" json:"service_accounts,omitempty"`
 }
 
 func (x *ListResponse) Reset() {
@@ -234,7 +240,8 @@ type DeleteRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ServiceAccountId string `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"` // The id of the service account to delete.
+	// The id of the service account to delete.
+	ServiceAccountId string `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"`
 }
 
 func (x *DeleteRequest) Reset() {

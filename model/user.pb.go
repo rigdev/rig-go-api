@@ -100,7 +100,8 @@ type isUserIdentifier_Identifier interface {
 }
 
 type UserIdentifier_Username struct {
-	Username string `protobuf:"bytes,1,opt,name=username,proto3,oneof"` // username is unique.
+	// username is unique.
+	Username string `protobuf:"bytes,1,opt,name=username,proto3,oneof"`
 }
 
 type UserIdentifier_Email struct {
@@ -123,7 +124,8 @@ type UserInfo struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Email       string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`                                // email of the user.
+	// email of the user.
+	Email       string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	Username    string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`                          // username of the user.
 	PhoneNumber string                 `protobuf:"bytes,3,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"` // Deprecated: text is not supported - phone number of the user.
 	CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`       // when the user was created.
@@ -203,7 +205,8 @@ type UserEntry struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                      // unique id of the user.
+	// unique id of the user.
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	PrintableName string                 `protobuf:"bytes,2,opt,name=printable_name,json=printableName,proto3" json:"printable_name,omitempty"` // pretty printable name of a user.
 	RegisterInfo  *RegisterInfo          `protobuf:"bytes,3,opt,name=register_info,json=registerInfo,proto3" json:"register_info,omitempty"`    // how the user was registered.
 	Verified      bool                   `protobuf:"varint,4,opt,name=verified,proto3" json:"verified,omitempty"`                               // whether the user is verified.
@@ -285,18 +288,20 @@ func (x *UserEntry) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-// Entry model of a service account - placed in models to prevent cyclic imports.
+// Entry model of a service account - placed in models to prevent cyclic
+// imports.
 type ServiceAccountEntry struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ServiceAccountId string                 `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"` // unique id of the service account.
-	Name             string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`                                                   // name of the service account.
-	ClientId         string                 `protobuf:"bytes,3,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`                           // client id of the service account.
-	GroupIds         []string               `protobuf:"bytes,4,rep,name=group_ids,json=groupIds,proto3" json:"group_ids,omitempty"`                           // groups the service account belongs to.
-	CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                        // when the service account was created.
-	CreatedBy        *Author                `protobuf:"bytes,6,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`                        // who created the service account.
+	// unique id of the service account.
+	ServiceAccountId string                 `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"`
+	Name             string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`                            // name of the service account.
+	ClientId         string                 `protobuf:"bytes,3,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`    // client id of the service account.
+	GroupIds         []string               `protobuf:"bytes,4,rep,name=group_ids,json=groupIds,proto3" json:"group_ids,omitempty"`    // groups the service account belongs to.
+	CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // when the service account was created.
+	CreatedBy        *Author                `protobuf:"bytes,6,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"` // who created the service account.
 }
 
 func (x *ServiceAccountEntry) Reset() {
@@ -454,7 +459,8 @@ type isMemberEntry_Entry interface {
 }
 
 type MemberEntry_User struct {
-	User *UserEntry `protobuf:"bytes,1,opt,name=user,proto3,oneof"` // if the member is a user.
+	// if the member is a user.
+	User *UserEntry `protobuf:"bytes,1,opt,name=user,proto3,oneof"`
 }
 
 type MemberEntry_ServiceAccount struct {
@@ -471,8 +477,9 @@ type RegisterInfo struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CreaterId string          `protobuf:"bytes,1,opt,name=creater_id,json=createrId,proto3" json:"creater_id,omitempty"` // Who created the user.
-	Method    *RegisterMethod `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`                        // How the user was registered.
+	// Who created the user.
+	CreaterId string          `protobuf:"bytes,1,opt,name=creater_id,json=createrId,proto3" json:"creater_id,omitempty"`
+	Method    *RegisterMethod `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"` // How the user was registered.
 }
 
 func (x *RegisterInfo) Reset() {
@@ -592,7 +599,8 @@ type isRegisterMethod_Method interface {
 }
 
 type RegisterMethod_System_ struct {
-	System *RegisterMethod_System `protobuf:"bytes,1,opt,name=system,proto3,oneof"` // system created the user.
+	// system created the user.
+	System *RegisterMethod_System `protobuf:"bytes,1,opt,name=system,proto3,oneof"`
 }
 
 type RegisterMethod_Signup_ struct {
@@ -648,7 +656,8 @@ type RegisterMethod_Signup struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	LoginType LoginType `protobuf:"varint,1,opt,name=login_type,json=loginType,proto3,enum=model.LoginType" json:"login_type,omitempty"` // The login type used to sign up.
+	// The login type used to sign up.
+	LoginType LoginType `protobuf:"varint,1,opt,name=login_type,json=loginType,proto3,enum=model.LoginType" json:"login_type,omitempty"`
 }
 
 func (x *RegisterMethod_Signup) Reset() {

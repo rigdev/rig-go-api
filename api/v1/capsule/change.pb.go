@@ -23,9 +23,12 @@ const (
 type EnvironmentSource_Kind int32
 
 const (
-	EnvironmentSource_KIND_UNSPECIFIED EnvironmentSource_Kind = 0 // Unspecified.
-	EnvironmentSource_KIND_CONFIG_MAP  EnvironmentSource_Kind = 1 // Environment variables from a config map.
-	EnvironmentSource_KIND_SECRET      EnvironmentSource_Kind = 2 // Environment variables from a secret.
+	// Unspecified.
+	EnvironmentSource_KIND_UNSPECIFIED EnvironmentSource_Kind = 0
+	// Environment variables from a config map.
+	EnvironmentSource_KIND_CONFIG_MAP EnvironmentSource_Kind = 1
+	// Environment variables from a secret.
+	EnvironmentSource_KIND_SECRET EnvironmentSource_Kind = 2
 )
 
 // Enum value maps for EnvironmentSource_Kind.
@@ -270,75 +273,93 @@ type isChange_Field interface {
 }
 
 type Change_Replicas struct {
-	Replicas uint32 `protobuf:"varint,1,opt,name=replicas,proto3,oneof"` // Number of replicas changed.
+	// Number of replicas changed.
+	Replicas uint32 `protobuf:"varint,1,opt,name=replicas,proto3,oneof"`
 }
 
 type Change_BuildId struct {
-	BuildId string `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3,oneof"` // New build change.
+	// New build change.
+	BuildId string `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3,oneof"`
 }
 
 type Change_Network struct {
-	Network *Network `protobuf:"bytes,3,opt,name=network,proto3,oneof"` // Network interfaces change.
+	// Network interfaces change.
+	Network *Network `protobuf:"bytes,3,opt,name=network,proto3,oneof"`
 }
 
 type Change_ContainerSettings struct {
-	ContainerSettings *ContainerSettings `protobuf:"bytes,4,opt,name=container_settings,json=containerSettings,proto3,oneof"` // Container settings of the instances.
+	// Container settings of the instances.
+	ContainerSettings *ContainerSettings `protobuf:"bytes,4,opt,name=container_settings,json=containerSettings,proto3,oneof"`
 }
 
 type Change_AutoAddRigServiceAccounts struct {
-	AutoAddRigServiceAccounts bool `protobuf:"varint,5,opt,name=auto_add_rig_service_accounts,json=autoAddRigServiceAccounts,proto3,oneof"` // Automatically add a rig-service account.
+	// Automatically add a rig-service account.
+	AutoAddRigServiceAccounts bool `protobuf:"varint,5,opt,name=auto_add_rig_service_accounts,json=autoAddRigServiceAccounts,proto3,oneof"`
 }
 
 type Change_SetConfigFile struct {
-	SetConfigFile *Change_ConfigFile `protobuf:"bytes,6,opt,name=set_config_file,json=setConfigFile,proto3,oneof"` // Set a config file - either update or add.
+	// Set a config file - either update or add.
+	SetConfigFile *Change_ConfigFile `protobuf:"bytes,6,opt,name=set_config_file,json=setConfigFile,proto3,oneof"`
 }
 
 type Change_RemoveConfigFile struct {
-	RemoveConfigFile string `protobuf:"bytes,7,opt,name=remove_config_file,json=removeConfigFile,proto3,oneof"` // Path of a config file to remove.
+	// Path of a config file to remove.
+	RemoveConfigFile string `protobuf:"bytes,7,opt,name=remove_config_file,json=removeConfigFile,proto3,oneof"`
 }
 
 type Change_HorizontalScale struct {
-	HorizontalScale *HorizontalScale `protobuf:"bytes,8,opt,name=horizontal_scale,json=horizontalScale,proto3,oneof"` // Horizontal scaling settings.
+	// Horizontal scaling settings.
+	HorizontalScale *HorizontalScale `protobuf:"bytes,8,opt,name=horizontal_scale,json=horizontalScale,proto3,oneof"`
 }
 
 type Change_Rollback_ struct {
-	Rollback *Change_Rollback `protobuf:"bytes,9,opt,name=rollback,proto3,oneof"` // Rollback to a previous rollout.
+	// Rollback to a previous rollout.
+	Rollback *Change_Rollback `protobuf:"bytes,9,opt,name=rollback,proto3,oneof"`
 }
 
 type Change_SetEnvironmentVariable struct {
-	SetEnvironmentVariable *Change_EnvironmentVariable `protobuf:"bytes,11,opt,name=set_environment_variable,json=setEnvironmentVariable,proto3,oneof"` // Update or add an environment variable.
+	// Update or add an environment variable.
+	SetEnvironmentVariable *Change_EnvironmentVariable `protobuf:"bytes,11,opt,name=set_environment_variable,json=setEnvironmentVariable,proto3,oneof"`
 }
 
 type Change_RemoveEnvironmentVariable struct {
-	RemoveEnvironmentVariable string `protobuf:"bytes,12,opt,name=remove_environment_variable,json=removeEnvironmentVariable,proto3,oneof"` // Name of an environment variable to remove.
+	// Name of an environment variable to remove.
+	RemoveEnvironmentVariable string `protobuf:"bytes,12,opt,name=remove_environment_variable,json=removeEnvironmentVariable,proto3,oneof"`
 }
 
 type Change_SetEnvironmentSource struct {
-	SetEnvironmentSource *EnvironmentSource `protobuf:"bytes,13,opt,name=set_environment_source,json=setEnvironmentSource,proto3,oneof"` // Set or update an environment source.
+	// Set or update an environment source.
+	SetEnvironmentSource *EnvironmentSource `protobuf:"bytes,13,opt,name=set_environment_source,json=setEnvironmentSource,proto3,oneof"`
 }
 
 type Change_RemoveEnvironmentSource struct {
-	RemoveEnvironmentSource *EnvironmentSource `protobuf:"bytes,14,opt,name=remove_environment_source,json=removeEnvironmentSource,proto3,oneof"` // Remove an environment source.
+	// Remove an environment source.
+	RemoveEnvironmentSource *EnvironmentSource `protobuf:"bytes,14,opt,name=remove_environment_source,json=removeEnvironmentSource,proto3,oneof"`
 }
 
 type Change_CommandArguments_ struct {
-	CommandArguments *Change_CommandArguments `protobuf:"bytes,15,opt,name=command_arguments,json=commandArguments,proto3,oneof"` // Entrypoint for capsule instances.
+	// Entrypoint for capsule instances.
+	CommandArguments *Change_CommandArguments `protobuf:"bytes,15,opt,name=command_arguments,json=commandArguments,proto3,oneof"`
 }
 
 type Change_AddCronJob struct {
-	AddCronJob *CronJob `protobuf:"bytes,16,opt,name=add_cron_job,json=addCronJob,proto3,oneof"` // Add a cron job.
+	// Add a cron job.
+	AddCronJob *CronJob `protobuf:"bytes,16,opt,name=add_cron_job,json=addCronJob,proto3,oneof"`
 }
 
 type Change_RemoveCronJob_ struct {
-	RemoveCronJob *Change_RemoveCronJob `protobuf:"bytes,17,opt,name=remove_cron_job,json=removeCronJob,proto3,oneof"` // Remove a cron job.
+	// Remove a cron job.
+	RemoveCronJob *Change_RemoveCronJob `protobuf:"bytes,17,opt,name=remove_cron_job,json=removeCronJob,proto3,oneof"`
 }
 
 type Change_AddInterface struct {
-	AddInterface *Interface `protobuf:"bytes,18,opt,name=add_interface,json=addInterface,proto3,oneof"` // Add a network interface.
+	// Add a network interface.
+	AddInterface *Interface `protobuf:"bytes,18,opt,name=add_interface,json=addInterface,proto3,oneof"`
 }
 
 type Change_RemoveInterface_ struct {
-	RemoveInterface *Change_RemoveInterface `protobuf:"bytes,19,opt,name=remove_interface,json=removeInterface,proto3,oneof"` // Remove a network interface.
+	// Remove a network interface.
+	RemoveInterface *Change_RemoveInterface `protobuf:"bytes,19,opt,name=remove_interface,json=removeInterface,proto3,oneof"`
 }
 
 func (*Change_Replicas) isChange_Field() {}
@@ -383,11 +404,16 @@ type ContainerSettings struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	EnvironmentVariables map[string]string    `protobuf:"bytes,1,rep,name=environment_variables,json=environmentVariables,proto3" json:"environment_variables,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // Environment variables.
-	Command              string               `protobuf:"bytes,2,opt,name=command,proto3" json:"command,omitempty"`                                                                                                                                               // Entrypoint for the container.
-	Args                 []string             `protobuf:"bytes,3,rep,name=args,proto3" json:"args,omitempty"`                                                                                                                                                     // Arguments to the container.
-	Resources            *Resources           `protobuf:"bytes,4,opt,name=resources,proto3" json:"resources,omitempty"`                                                                                                                                           // Resource requests and limits.
-	EnvironmentSources   []*EnvironmentSource `protobuf:"bytes,5,rep,name=environment_sources,json=environmentSources,proto3" json:"environment_sources,omitempty"`                                                                                               // Environment sources.
+	// Environment variables.
+	EnvironmentVariables map[string]string `protobuf:"bytes,1,rep,name=environment_variables,json=environmentVariables,proto3" json:"environment_variables,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// Entrypoint for the container.
+	Command string `protobuf:"bytes,2,opt,name=command,proto3" json:"command,omitempty"`
+	// Arguments to the container.
+	Args []string `protobuf:"bytes,3,rep,name=args,proto3" json:"args,omitempty"`
+	// Resource requests and limits.
+	Resources *Resources `protobuf:"bytes,4,opt,name=resources,proto3" json:"resources,omitempty"`
+	// Environment sources.
+	EnvironmentSources []*EnvironmentSource `protobuf:"bytes,5,rep,name=environment_sources,json=environmentSources,proto3" json:"environment_sources,omitempty"`
 }
 
 func (x *ContainerSettings) Reset() {
@@ -463,9 +489,12 @@ type Resources struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Requests  *ResourceList `protobuf:"bytes,1,opt,name=requests,proto3" json:"requests,omitempty"`                    // CPU and memory requests.
-	Limits    *ResourceList `protobuf:"bytes,2,opt,name=limits,proto3" json:"limits,omitempty"`                        // CPU and memory limits
-	GpuLimits *GpuLimits    `protobuf:"bytes,3,opt,name=gpu_limits,json=gpuLimits,proto3" json:"gpu_limits,omitempty"` // GPU Limits
+	// CPU and memory requests.
+	Requests *ResourceList `protobuf:"bytes,1,opt,name=requests,proto3" json:"requests,omitempty"`
+	// CPU and memory limits
+	Limits *ResourceList `protobuf:"bytes,2,opt,name=limits,proto3" json:"limits,omitempty"`
+	// GPU Limits
+	GpuLimits *GpuLimits `protobuf:"bytes,3,opt,name=gpu_limits,json=gpuLimits,proto3" json:"gpu_limits,omitempty"`
 }
 
 func (x *Resources) Reset() {
@@ -643,8 +672,10 @@ type EnvironmentSource struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                                             // Name of the source
-	Kind EnvironmentSource_Kind `protobuf:"varint,2,opt,name=kind,proto3,enum=api.v1.capsule.EnvironmentSource_Kind" json:"kind,omitempty"` // Type of the source
+	// Name of the source
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Type of the source
+	Kind EnvironmentSource_Kind `protobuf:"varint,2,opt,name=kind,proto3,enum=api.v1.capsule.EnvironmentSource_Kind" json:"kind,omitempty"`
 }
 
 func (x *EnvironmentSource) Reset() {
@@ -699,7 +730,8 @@ type Network struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Interfaces []*Interface `protobuf:"bytes,1,rep,name=interfaces,proto3" json:"interfaces,omitempty"` // All the network interfaces.
+	// All the network interfaces.
+	Interfaces []*Interface `protobuf:"bytes,1,rep,name=interfaces,proto3" json:"interfaces,omitempty"`
 }
 
 func (x *Network) Reset() {
@@ -747,11 +779,16 @@ type Interface struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Port      uint32           `protobuf:"varint,1,opt,name=port,proto3" json:"port,omitempty"`          // Port of the interface.
-	Name      string           `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`           // Name of the interface.
-	Public    *PublicInterface `protobuf:"bytes,4,opt,name=public,proto3" json:"public,omitempty"`       // If public interface is enabled. Contains ingress or load balancer settings.
-	Liveness  *InterfaceProbe  `protobuf:"bytes,7,opt,name=liveness,proto3" json:"liveness,omitempty"`   // Liveness probe.
-	Readiness *InterfaceProbe  `protobuf:"bytes,8,opt,name=readiness,proto3" json:"readiness,omitempty"` // Readiness probe.
+	// Port of the interface.
+	Port uint32 `protobuf:"varint,1,opt,name=port,proto3" json:"port,omitempty"`
+	// Name of the interface.
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// If public interface is enabled. Contains ingress or load balancer settings.
+	Public *PublicInterface `protobuf:"bytes,4,opt,name=public,proto3" json:"public,omitempty"`
+	// Liveness probe.
+	Liveness *InterfaceProbe `protobuf:"bytes,7,opt,name=liveness,proto3" json:"liveness,omitempty"`
+	// Readiness probe.
+	Readiness *InterfaceProbe `protobuf:"bytes,8,opt,name=readiness,proto3" json:"readiness,omitempty"`
 }
 
 func (x *Interface) Reset() {
@@ -925,8 +962,10 @@ type PublicInterface struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Enabled bool           `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"` // True if the interface is public.
-	Method  *RoutingMethod `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`    // Routing method - Ingress or Load Balancer.
+	// True if the interface is public.
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// Routing method - Ingress or Load Balancer.
+	Method *RoutingMethod `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`
 }
 
 func (x *PublicInterface) Reset() {
@@ -1065,10 +1104,14 @@ type HorizontalScale struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	MaxReplicas   uint32          `protobuf:"varint,1,opt,name=max_replicas,json=maxReplicas,proto3" json:"max_replicas,omitempty"`      // Maximum number of replicas.
-	MinReplicas   uint32          `protobuf:"varint,2,opt,name=min_replicas,json=minReplicas,proto3" json:"min_replicas,omitempty"`      // Minimum number of replicas.
-	CpuTarget     *CPUTarget      `protobuf:"bytes,3,opt,name=cpu_target,json=cpuTarget,proto3" json:"cpu_target,omitempty"`             // CPU target for autoscaling.
-	CustomMetrics []*CustomMetric `protobuf:"bytes,4,rep,name=custom_metrics,json=customMetrics,proto3" json:"custom_metrics,omitempty"` // If scaling based on custom metrics.
+	// Maximum number of replicas.
+	MaxReplicas uint32 `protobuf:"varint,1,opt,name=max_replicas,json=maxReplicas,proto3" json:"max_replicas,omitempty"`
+	// Minimum number of replicas.
+	MinReplicas uint32 `protobuf:"varint,2,opt,name=min_replicas,json=minReplicas,proto3" json:"min_replicas,omitempty"`
+	// CPU target for autoscaling.
+	CpuTarget *CPUTarget `protobuf:"bytes,3,opt,name=cpu_target,json=cpuTarget,proto3" json:"cpu_target,omitempty"`
+	// If scaling based on custom metrics.
+	CustomMetrics []*CustomMetric `protobuf:"bytes,4,rep,name=custom_metrics,json=customMetrics,proto3" json:"custom_metrics,omitempty"`
 }
 
 func (x *HorizontalScale) Reset() {
@@ -1137,7 +1180,8 @@ type CPUTarget struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AverageUtilizationPercentage uint32 `protobuf:"varint,1,opt,name=average_utilization_percentage,json=averageUtilizationPercentage,proto3" json:"average_utilization_percentage,omitempty"` // Average CPU utilization target.
+	// Average CPU utilization target.
+	AverageUtilizationPercentage uint32 `protobuf:"varint,1,opt,name=average_utilization_percentage,json=averageUtilizationPercentage,proto3" json:"average_utilization_percentage,omitempty"`
 }
 
 func (x *CPUTarget) Reset() {
@@ -1252,11 +1296,13 @@ type isCustomMetric_Metric interface {
 }
 
 type CustomMetric_Instance struct {
-	Instance *InstanceMetric `protobuf:"bytes,1,opt,name=instance,proto3,oneof"` // If scaling based on metrics across all intstances / pods.
+	// If scaling based on metrics across all intstances / pods.
+	Instance *InstanceMetric `protobuf:"bytes,1,opt,name=instance,proto3,oneof"`
 }
 
 type CustomMetric_Object struct {
-	Object *ObjectMetric `protobuf:"bytes,2,opt,name=object,proto3,oneof"` // If scaling based on metrics for a specific kubernetes resource object.
+	// If scaling based on metrics for a specific kubernetes resource object.
+	Object *ObjectMetric `protobuf:"bytes,2,opt,name=object,proto3,oneof"`
 }
 
 func (*CustomMetric_Instance) isCustomMetric_Metric() {}
@@ -1269,9 +1315,12 @@ type InstanceMetric struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	MetricName   string            `protobuf:"bytes,1,opt,name=metric_name,json=metricName,proto3" json:"metric_name,omitempty"`                                                                                            // Name of the metric
-	MatchLabels  map[string]string `protobuf:"bytes,2,rep,name=match_labels,json=matchLabels,proto3" json:"match_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // Labels of the instances to match.
-	AverageValue string            `protobuf:"bytes,3,opt,name=average_value,json=averageValue,proto3" json:"average_value,omitempty"`                                                                                      // Average value target.
+	// Name of the metric
+	MetricName string `protobuf:"bytes,1,opt,name=metric_name,json=metricName,proto3" json:"metric_name,omitempty"`
+	// Labels of the instances to match.
+	MatchLabels map[string]string `protobuf:"bytes,2,rep,name=match_labels,json=matchLabels,proto3" json:"match_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// Average value target.
+	AverageValue string `protobuf:"bytes,3,opt,name=average_value,json=averageValue,proto3" json:"average_value,omitempty"`
 }
 
 func (x *InstanceMetric) Reset() {
@@ -1333,11 +1382,16 @@ type ObjectMetric struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	MetricName      string            `protobuf:"bytes,1,opt,name=metric_name,json=metricName,proto3" json:"metric_name,omitempty"`                                                                                            // Name of the metric.
-	MatchLabels     map[string]string `protobuf:"bytes,2,rep,name=match_labels,json=matchLabels,proto3" json:"match_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // Labels of the object to match.
-	AverageValue    string            `protobuf:"bytes,3,opt,name=average_value,json=averageValue,proto3" json:"average_value,omitempty"`                                                                                      // Average value target.
-	Value           string            `protobuf:"bytes,4,opt,name=value,proto3" json:"value,omitempty"`                                                                                                                        // Value target.
-	ObjectReference *ObjectReference  `protobuf:"bytes,5,opt,name=object_reference,json=objectReference,proto3" json:"object_reference,omitempty"`                                                                             // Reference to the object.
+	// Name of the metric.
+	MetricName string `protobuf:"bytes,1,opt,name=metric_name,json=metricName,proto3" json:"metric_name,omitempty"`
+	// Labels of the object to match.
+	MatchLabels map[string]string `protobuf:"bytes,2,rep,name=match_labels,json=matchLabels,proto3" json:"match_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// Average value target.
+	AverageValue string `protobuf:"bytes,3,opt,name=average_value,json=averageValue,proto3" json:"average_value,omitempty"`
+	// Value target.
+	Value string `protobuf:"bytes,4,opt,name=value,proto3" json:"value,omitempty"`
+	// Reference to the object.
+	ObjectReference *ObjectReference `protobuf:"bytes,5,opt,name=object_reference,json=objectReference,proto3" json:"object_reference,omitempty"`
 }
 
 func (x *ObjectMetric) Reset() {
@@ -1413,9 +1467,12 @@ type ObjectReference struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Kind       string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`                               // Type of object.
-	Name       string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`                               // Name of the object.
-	ApiVersion string `protobuf:"bytes,3,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"` // Api version of the object.
+	// Type of object.
+	Kind string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
+	// Name of the object.
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// Api version of the object.
+	ApiVersion string `protobuf:"bytes,3,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
 }
 
 func (x *ObjectReference) Reset() {
@@ -1477,9 +1534,12 @@ type Change_ConfigFile struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Path     string `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`                          // Path of the file in the instance.
-	Content  []byte `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`                    // Content of the config file.
-	IsSecret bool   `protobuf:"varint,3,opt,name=is_secret,json=isSecret,proto3" json:"is_secret,omitempty"` // True if the content is secret.
+	// Path of the file in the instance.
+	Path string `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	// Content of the config file.
+	Content []byte `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
+	// True if the content is secret.
+	IsSecret bool `protobuf:"varint,3,opt,name=is_secret,json=isSecret,proto3" json:"is_secret,omitempty"`
 }
 
 func (x *Change_ConfigFile) Reset() {
@@ -1541,7 +1601,8 @@ type Change_Rollback struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RollbackId uint64 `protobuf:"varint,1,opt,name=rollback_id,json=rollbackId,proto3" json:"rollback_id,omitempty"` // Rollout to roll back to.
+	// Rollout to roll back to.
+	RollbackId uint64 `protobuf:"varint,1,opt,name=rollback_id,json=rollbackId,proto3" json:"rollback_id,omitempty"`
 }
 
 func (x *Change_Rollback) Reset() {
@@ -1589,7 +1650,8 @@ type Change_CronJobs struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Jobs []*CronJob `protobuf:"bytes,1,rep,name=jobs,proto3" json:"jobs,omitempty"` // The jobs.
+	// The jobs.
+	Jobs []*CronJob `protobuf:"bytes,1,rep,name=jobs,proto3" json:"jobs,omitempty"`
 }
 
 func (x *Change_CronJobs) Reset() {
@@ -1637,8 +1699,10 @@ type Change_EnvironmentVariable struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name  string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`   // Name of the environment variable.
-	Value string `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"` // The value it takes.
+	// Name of the environment variable.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// The value it takes.
+	Value string `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 }
 
 func (x *Change_EnvironmentVariable) Reset() {
@@ -1693,8 +1757,10 @@ type Change_CommandArguments struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Command string   `protobuf:"bytes,2,opt,name=command,proto3" json:"command,omitempty"` // Command to run.
-	Args    []string `protobuf:"bytes,3,rep,name=args,proto3" json:"args,omitempty"`       // arguments to the command.
+	// Command to run.
+	Command string `protobuf:"bytes,2,opt,name=command,proto3" json:"command,omitempty"`
+	// arguments to the command.
+	Args []string `protobuf:"bytes,3,rep,name=args,proto3" json:"args,omitempty"`
 }
 
 func (x *Change_CommandArguments) Reset() {
@@ -1749,7 +1815,8 @@ type Change_RemoveCronJob struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	JobName string `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"` // Name of the job to remove
+	// Name of the job to remove
+	JobName string `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`
 }
 
 func (x *Change_RemoveCronJob) Reset() {
@@ -1979,8 +2046,10 @@ type RoutingMethod_LoadBalancer struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Port     uint32 `protobuf:"varint,1,opt,name=port,proto3" json:"port,omitempty"`                         // public port.
-	NodePort uint32 `protobuf:"varint,2,opt,name=node_port,json=nodePort,proto3" json:"node_port,omitempty"` // node port.
+	// public port.
+	Port uint32 `protobuf:"varint,1,opt,name=port,proto3" json:"port,omitempty"`
+	// node port.
+	NodePort uint32 `protobuf:"varint,2,opt,name=node_port,json=nodePort,proto3" json:"node_port,omitempty"`
 }
 
 func (x *RoutingMethod_LoadBalancer) Reset() {
@@ -2035,9 +2104,12 @@ type RoutingMethod_Ingress struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Host  string   `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"`   // Hostname of the ingress.
-	Tls   bool     `protobuf:"varint,2,opt,name=tls,proto3" json:"tls,omitempty"`    // True if TLS is enabled.
-	Paths []string `protobuf:"bytes,3,rep,name=paths,proto3" json:"paths,omitempty"` // Paths of the ingress.
+	// Hostname of the ingress.
+	Host string `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"`
+	// True if TLS is enabled.
+	Tls bool `protobuf:"varint,2,opt,name=tls,proto3" json:"tls,omitempty"`
+	// Paths of the ingress.
+	Paths []string `protobuf:"bytes,3,rep,name=paths,proto3" json:"paths,omitempty"`
 }
 
 func (x *RoutingMethod_Ingress) Reset() {

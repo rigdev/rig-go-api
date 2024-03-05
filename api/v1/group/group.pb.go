@@ -22,17 +22,23 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Group is a named collection of users and service accounts with optional metadata.
+// Group is a named collection of users and service accounts with optional
+// metadata.
 type Group struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GroupId    string                 `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`                                                                            // Unique name of the group.
-	NumMembers uint64                 `protobuf:"varint,5,opt,name=num_members,json=numMembers,proto3" json:"num_members,omitempty"`                                                                  // Number of members.
-	Metadata   map[string][]byte      `protobuf:"bytes,6,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // Metadata of the group.
-	CreatedAt  *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                                                                      // Creation time of the group.
-	UpdatedAt  *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                                                                      // Last update time of the group.
+	// Unique name of the group.
+	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	// Number of members.
+	NumMembers uint64 `protobuf:"varint,5,opt,name=num_members,json=numMembers,proto3" json:"num_members,omitempty"`
+	// Metadata of the group.
+	Metadata map[string][]byte `protobuf:"bytes,6,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// Creation time of the group.
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// Last update time of the group.
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 }
 
 func (x *Group) Reset() {
@@ -181,15 +187,18 @@ type isUpdate_Field interface {
 }
 
 type Update_GroupId struct {
-	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3,oneof"` // Update the unique group name.
+	// Update the unique group name.
+	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3,oneof"`
 }
 
 type Update_SetMetadata struct {
-	SetMetadata *model.Metadata `protobuf:"bytes,2,opt,name=set_metadata,json=setMetadata,proto3,oneof"` // Update or create a metadata entry.
+	// Update or create a metadata entry.
+	SetMetadata *model.Metadata `protobuf:"bytes,2,opt,name=set_metadata,json=setMetadata,proto3,oneof"`
 }
 
 type Update_DeleteMetadataKey struct {
-	DeleteMetadataKey string `protobuf:"bytes,3,opt,name=delete_metadata_key,json=deleteMetadataKey,proto3,oneof"` // Delete a metadata entry.
+	// Delete a metadata entry.
+	DeleteMetadataKey string `protobuf:"bytes,3,opt,name=delete_metadata_key,json=deleteMetadataKey,proto3,oneof"`
 }
 
 func (*Update_GroupId) isUpdate_Field() {}
@@ -269,11 +278,13 @@ type isMemberID_Kind interface {
 }
 
 type MemberID_ServiceAccountId struct {
-	ServiceAccountId string `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"` // ID of a service account.
+	// ID of a service account.
+	ServiceAccountId string `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"`
 }
 
 type MemberID_UserId struct {
-	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3,oneof"` // ID of a user.
+	// ID of a user.
+	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3,oneof"`
 }
 
 func (*MemberID_ServiceAccountId) isMemberID_Kind() {}

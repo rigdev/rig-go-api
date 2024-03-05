@@ -26,13 +26,19 @@ const (
 type TemplateType int32
 
 const (
-	TemplateType_TEMPLATE_TYPE_UNSPECIFIED          TemplateType = 0 // Unspecified template type.
-	TemplateType_TEMPLATE_TYPE_WELCOME_EMAIL        TemplateType = 1 // The welcome email template.
-	TemplateType_TEMPLATE_TYPE_EMAIL_VERIFICATION   TemplateType = 2 // The email verification template.
-	TemplateType_TEMPLATE_TYPE_EMAIL_RESET_PASSWORD TemplateType = 3 // The reset password email template.
+	// Unspecified template type.
+	TemplateType_TEMPLATE_TYPE_UNSPECIFIED TemplateType = 0
+	// The welcome email template.
+	TemplateType_TEMPLATE_TYPE_WELCOME_EMAIL TemplateType = 1
+	// The email verification template.
+	TemplateType_TEMPLATE_TYPE_EMAIL_VERIFICATION TemplateType = 2
+	// The reset password email template.
+	TemplateType_TEMPLATE_TYPE_EMAIL_RESET_PASSWORD TemplateType = 3
 	TemplateType_TEMPLATE_TYPE_WELCOME_TEXT         TemplateType = 4 // Deprecated: Text is not supported - The welcome text template.
-	TemplateType_TEMPLATE_TYPE_TEXT_VERIFICATION    TemplateType = 5 // Deprecated: Text is not supported - The text verification template.
-	TemplateType_TEMPLATE_TYPE_TEXT_RESET_PASSWORD  TemplateType = 6 // Deprecated: Text is not supported - The reset password text template.
+	// Deprecated: Text is not supported - The text verification template.
+	TemplateType_TEMPLATE_TYPE_TEXT_VERIFICATION TemplateType = 5
+	// Deprecated: Text is not supported - The reset password text template.
+	TemplateType_TEMPLATE_TYPE_TEXT_RESET_PASSWORD TemplateType = 6
 )
 
 // Enum value maps for TemplateType.
@@ -229,47 +235,58 @@ type isUpdate_Field interface {
 }
 
 type Update_AllowRegister struct {
-	AllowRegister bool `protobuf:"varint,1,opt,name=allow_register,json=allowRegister,proto3,oneof"` // If true, users can self register.
+	// If true, users can self register.
+	AllowRegister bool `protobuf:"varint,1,opt,name=allow_register,json=allowRegister,proto3,oneof"`
 }
 
 type Update_IsVerifiedEmailRequired struct {
-	IsVerifiedEmailRequired bool `protobuf:"varint,2,opt,name=is_verified_email_required,json=isVerifiedEmailRequired,proto3,oneof"` // If true, users must be verified via email to login.
+	// If true, users must be verified via email to login.
+	IsVerifiedEmailRequired bool `protobuf:"varint,2,opt,name=is_verified_email_required,json=isVerifiedEmailRequired,proto3,oneof"`
 }
 
 type Update_IsVerifiedPhoneRequired struct {
-	IsVerifiedPhoneRequired bool `protobuf:"varint,3,opt,name=is_verified_phone_required,json=isVerifiedPhoneRequired,proto3,oneof"` // If true, users must be verified via phone to login.
+	// If true, users must be verified via phone to login.
+	IsVerifiedPhoneRequired bool `protobuf:"varint,3,opt,name=is_verified_phone_required,json=isVerifiedPhoneRequired,proto3,oneof"`
 }
 
 type Update_AccessTokenTtl struct {
-	AccessTokenTtl *durationpb.Duration `protobuf:"bytes,4,opt,name=access_token_ttl,json=accessTokenTtl,proto3,oneof"` // Access token Time to Live.
+	// Access token Time to Live.
+	AccessTokenTtl *durationpb.Duration `protobuf:"bytes,4,opt,name=access_token_ttl,json=accessTokenTtl,proto3,oneof"`
 }
 
 type Update_RefreshTokenTtl struct {
-	RefreshTokenTtl *durationpb.Duration `protobuf:"bytes,5,opt,name=refresh_token_ttl,json=refreshTokenTtl,proto3,oneof"` // Refresh token Time to Live.
+	// Refresh token Time to Live.
+	RefreshTokenTtl *durationpb.Duration `protobuf:"bytes,5,opt,name=refresh_token_ttl,json=refreshTokenTtl,proto3,oneof"`
 }
 
 type Update_VerificationCodeTtl struct {
-	VerificationCodeTtl *durationpb.Duration `protobuf:"bytes,6,opt,name=verification_code_ttl,json=verificationCodeTtl,proto3,oneof"` // Verification code Time to Live.
+	// Verification code Time to Live.
+	VerificationCodeTtl *durationpb.Duration `protobuf:"bytes,6,opt,name=verification_code_ttl,json=verificationCodeTtl,proto3,oneof"`
 }
 
 type Update_PasswordHashing struct {
-	PasswordHashing *model.HashingConfig `protobuf:"bytes,7,opt,name=password_hashing,json=passwordHashing,proto3,oneof"` // The hashing config used to hash passwords.
+	// The hashing config used to hash passwords.
+	PasswordHashing *model.HashingConfig `protobuf:"bytes,7,opt,name=password_hashing,json=passwordHashing,proto3,oneof"`
 }
 
 type Update_LoginMechanisms_ struct {
-	LoginMechanisms *Update_LoginMechanisms `protobuf:"bytes,8,opt,name=login_mechanisms,json=loginMechanisms,proto3,oneof"` // The allowed login mechanisms.
+	// The allowed login mechanisms.
+	LoginMechanisms *Update_LoginMechanisms `protobuf:"bytes,8,opt,name=login_mechanisms,json=loginMechanisms,proto3,oneof"`
 }
 
 type Update_EmailProvider struct {
-	EmailProvider *EmailProvider `protobuf:"bytes,9,opt,name=email_provider,json=emailProvider,proto3,oneof"` // The email provider.
+	// The email provider.
+	EmailProvider *EmailProvider `protobuf:"bytes,9,opt,name=email_provider,json=emailProvider,proto3,oneof"`
 }
 
 type Update_TextProvider struct {
-	TextProvider *TextProvider `protobuf:"bytes,10,opt,name=text_provider,json=textProvider,proto3,oneof"` // The text provider.
+	// The text provider.
+	TextProvider *TextProvider `protobuf:"bytes,10,opt,name=text_provider,json=textProvider,proto3,oneof"`
 }
 
 type Update_Template struct {
-	Template *Template `protobuf:"bytes,11,opt,name=template,proto3,oneof"` // The templates used for sending emails and texts.
+	// The templates used for sending emails and texts.
+	Template *Template `protobuf:"bytes,11,opt,name=template,proto3,oneof"`
 }
 
 func (*Update_AllowRegister) isUpdate_Field() {}
@@ -367,11 +384,13 @@ type isRegisterMethod_Method interface {
 }
 
 type RegisterMethod_System_ struct {
-	System *RegisterMethod_System `protobuf:"bytes,1,opt,name=system,proto3,oneof"` // The user was created by the system.
+	// The user was created by the system.
+	System *RegisterMethod_System `protobuf:"bytes,1,opt,name=system,proto3,oneof"`
 }
 
 type RegisterMethod_Signup_ struct {
-	Signup *RegisterMethod_Signup `protobuf:"bytes,2,opt,name=signup,proto3,oneof"` // The user was self-registered with a login-type.
+	// The user was self-registered with a login-type.
+	Signup *RegisterMethod_Signup `protobuf:"bytes,2,opt,name=signup,proto3,oneof"`
 }
 
 func (*RegisterMethod_System_) isRegisterMethod_Method() {}
@@ -446,24 +465,38 @@ type AuthMethod_LoginType struct {
 
 func (*AuthMethod_LoginType) isAuthMethod_Method() {}
 
-// The users settings configuration. Settings of everything that has to do with users.
+// The users settings configuration. Settings of everything that has to do with
+// users.
 type Settings struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AllowRegister           bool                 `protobuf:"varint,1,opt,name=allow_register,json=allowRegister,proto3" json:"allow_register,omitempty"`                                   // If true, users can self register.
-	IsVerifiedEmailRequired bool                 `protobuf:"varint,2,opt,name=is_verified_email_required,json=isVerifiedEmailRequired,proto3" json:"is_verified_email_required,omitempty"` // If true, users must be verified via email to login.
-	IsVerifiedPhoneRequired bool                 `protobuf:"varint,3,opt,name=is_verified_phone_required,json=isVerifiedPhoneRequired,proto3" json:"is_verified_phone_required,omitempty"` // Deprecated: Text is not supported - If true, users must be verified via phone to login.
-	AccessTokenTtl          *durationpb.Duration `protobuf:"bytes,4,opt,name=access_token_ttl,json=accessTokenTtl,proto3" json:"access_token_ttl,omitempty"`                               // Access token Time to Live.
-	RefreshTokenTtl         *durationpb.Duration `protobuf:"bytes,5,opt,name=refresh_token_ttl,json=refreshTokenTtl,proto3" json:"refresh_token_ttl,omitempty"`                            // Refresh token Time to Live.
-	VerificationCodeTtl     *durationpb.Duration `protobuf:"bytes,6,opt,name=verification_code_ttl,json=verificationCodeTtl,proto3" json:"verification_code_ttl,omitempty"`                // Verification code Time to Live.
-	PasswordHashing         *model.HashingConfig `protobuf:"bytes,7,opt,name=password_hashing,json=passwordHashing,proto3" json:"password_hashing,omitempty"`                              // The hashing config used to hash passwords.
-	LoginMechanisms         []model.LoginType    `protobuf:"varint,8,rep,packed,name=login_mechanisms,json=loginMechanisms,proto3,enum=model.LoginType" json:"login_mechanisms,omitempty"` // The allowed login mechanisms.
-	SendWelcomeMail         bool                 `protobuf:"varint,10,opt,name=send_welcome_mail,json=sendWelcomeMail,proto3" json:"send_welcome_mail,omitempty"`                          // If true, send a welcome email to new users.
-	EmailProvider           *EmailProviderEntry  `protobuf:"bytes,11,opt,name=email_provider,json=emailProvider,proto3" json:"email_provider,omitempty"`                                   // The email provider.
-	TextProvider            *TextProviderEntry   `protobuf:"bytes,12,opt,name=text_provider,json=textProvider,proto3" json:"text_provider,omitempty"`                                      // Deprecated: Text is not supported - The text provider.
-	Templates               *Templates           `protobuf:"bytes,13,opt,name=templates,proto3" json:"templates,omitempty"`                                                                // The templates used for sending emails and texts.
+	// If true, users can self register.
+	AllowRegister bool `protobuf:"varint,1,opt,name=allow_register,json=allowRegister,proto3" json:"allow_register,omitempty"`
+	// If true, users must be verified via email to login.
+	IsVerifiedEmailRequired bool `protobuf:"varint,2,opt,name=is_verified_email_required,json=isVerifiedEmailRequired,proto3" json:"is_verified_email_required,omitempty"`
+	// Deprecated: Text is not supported - If true, users must be verified via
+	// phone to login.
+	IsVerifiedPhoneRequired bool `protobuf:"varint,3,opt,name=is_verified_phone_required,json=isVerifiedPhoneRequired,proto3" json:"is_verified_phone_required,omitempty"`
+	// Access token Time to Live.
+	AccessTokenTtl *durationpb.Duration `protobuf:"bytes,4,opt,name=access_token_ttl,json=accessTokenTtl,proto3" json:"access_token_ttl,omitempty"`
+	// Refresh token Time to Live.
+	RefreshTokenTtl *durationpb.Duration `protobuf:"bytes,5,opt,name=refresh_token_ttl,json=refreshTokenTtl,proto3" json:"refresh_token_ttl,omitempty"`
+	// Verification code Time to Live.
+	VerificationCodeTtl *durationpb.Duration `protobuf:"bytes,6,opt,name=verification_code_ttl,json=verificationCodeTtl,proto3" json:"verification_code_ttl,omitempty"`
+	// The hashing config used to hash passwords.
+	PasswordHashing *model.HashingConfig `protobuf:"bytes,7,opt,name=password_hashing,json=passwordHashing,proto3" json:"password_hashing,omitempty"`
+	// The allowed login mechanisms.
+	LoginMechanisms []model.LoginType `protobuf:"varint,8,rep,packed,name=login_mechanisms,json=loginMechanisms,proto3,enum=model.LoginType" json:"login_mechanisms,omitempty"`
+	// If true, send a welcome email to new users.
+	SendWelcomeMail bool `protobuf:"varint,10,opt,name=send_welcome_mail,json=sendWelcomeMail,proto3" json:"send_welcome_mail,omitempty"`
+	// The email provider.
+	EmailProvider *EmailProviderEntry `protobuf:"bytes,11,opt,name=email_provider,json=emailProvider,proto3" json:"email_provider,omitempty"`
+	// Deprecated: Text is not supported - The text provider.
+	TextProvider *TextProviderEntry `protobuf:"bytes,12,opt,name=text_provider,json=textProvider,proto3" json:"text_provider,omitempty"`
+	// The templates used for sending emails and texts.
+	Templates *Templates `protobuf:"bytes,13,opt,name=templates,proto3" json:"templates,omitempty"`
 }
 
 func (x *Settings) Reset() {
@@ -836,11 +869,13 @@ type isEmailInstance_Instance interface {
 }
 
 type EmailInstance_Default struct {
-	Default *DefaultInstance `protobuf:"bytes,1,opt,name=default,proto3,oneof"` // default from platform config.
+	// default from platform config.
+	Default *DefaultInstance `protobuf:"bytes,1,opt,name=default,proto3,oneof"`
 }
 
 type EmailInstance_Mailjet struct {
-	Mailjet *MailjetInstance `protobuf:"bytes,2,opt,name=mailjet,proto3,oneof"` // Mailjet instance.
+	// Mailjet instance.
+	Mailjet *MailjetInstance `protobuf:"bytes,2,opt,name=mailjet,proto3,oneof"`
 }
 
 type EmailInstance_Smtp struct {
@@ -924,11 +959,13 @@ type isTextInstance_Instance interface {
 }
 
 type TextInstance_Default struct {
-	Default *DefaultInstance `protobuf:"bytes,1,opt,name=default,proto3,oneof"` // default from platform config.
+	// default from platform config.
+	Default *DefaultInstance `protobuf:"bytes,1,opt,name=default,proto3,oneof"`
 }
 
 type TextInstance_Twilio struct {
-	Twilio *TwilioInstance `protobuf:"bytes,2,opt,name=twilio,proto3,oneof"` // Twilio instance.
+	// Twilio instance.
+	Twilio *TwilioInstance `protobuf:"bytes,2,opt,name=twilio,proto3,oneof"`
 }
 
 func (*TextInstance_Default) isTextInstance_Instance() {}
@@ -941,9 +978,12 @@ type EmailProvider struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	From        string                     `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`               // The email-address that the provider sends emails from.
-	Credentials *model.ProviderCredentials `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"` // The credentials for the provider.
-	Instance    *EmailInstance             `protobuf:"bytes,3,opt,name=instance,proto3" json:"instance,omitempty"`       // The instance of the provider.
+	// The email-address that the provider sends emails from.
+	From string `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
+	// The credentials for the provider.
+	Credentials *model.ProviderCredentials `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"`
+	// The instance of the provider.
+	Instance *EmailInstance `protobuf:"bytes,3,opt,name=instance,proto3" json:"instance,omitempty"`
 }
 
 func (x *EmailProvider) Reset() {
@@ -1005,10 +1045,14 @@ type EmailProviderEntry struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	From     string         `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`                         // The email-address that the provider sends emails from.
-	ClientId string         `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"` // The client id for the provider.
-	SecretId string         `protobuf:"bytes,3,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"` // The secret id for the provider.
-	Instance *EmailInstance `protobuf:"bytes,4,opt,name=instance,proto3" json:"instance,omitempty"`                 // The instance of the provider.
+	// The email-address that the provider sends emails from.
+	From string `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
+	// The client id for the provider.
+	ClientId string `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	// The secret id for the provider.
+	SecretId string `protobuf:"bytes,3,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
+	// The instance of the provider.
+	Instance *EmailInstance `protobuf:"bytes,4,opt,name=instance,proto3" json:"instance,omitempty"`
 }
 
 func (x *EmailProviderEntry) Reset() {
@@ -1077,9 +1121,11 @@ type TextProvider struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	From        string                     `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`               // The phone number that the provider sends texts from.
-	Credentials *model.ProviderCredentials `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"` // The credentials for the provider.
-	Instance    *TextInstance              `protobuf:"bytes,3,opt,name=instance,proto3" json:"instance,omitempty"`       // The instance of the provider.
+	// The phone number that the provider sends texts from.
+	From string `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
+	// The credentials for the provider.
+	Credentials *model.ProviderCredentials `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"`
+	Instance    *TextInstance              `protobuf:"bytes,3,opt,name=instance,proto3" json:"instance,omitempty"` // The instance of the provider.
 }
 
 func (x *TextProvider) Reset() {
@@ -1141,10 +1187,14 @@ type TextProviderEntry struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	From     string        `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`                         // The phone number that the provider sends texts from.
-	ClientId string        `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"` // The client id for the provider.
-	SecretId string        `protobuf:"bytes,3,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"` // The secret id for the provider.
-	Instance *TextInstance `protobuf:"bytes,4,opt,name=instance,proto3" json:"instance,omitempty"`                 // The instance of the provider.
+	// The phone number that the provider sends texts from.
+	From string `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
+	// The client id for the provider.
+	ClientId string `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	// The secret id for the provider.
+	SecretId string `protobuf:"bytes,3,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
+	// The instance of the provider.
+	Instance *TextInstance `protobuf:"bytes,4,opt,name=instance,proto3" json:"instance,omitempty"`
 }
 
 func (x *TextProviderEntry) Reset() {
@@ -1213,10 +1263,14 @@ type Template struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Body    string       `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`                                         // The body of the template.
-	Subject string       `protobuf:"bytes,2,opt,name=subject,proto3" json:"subject,omitempty"`                                   // The subject of the template.
-	Type    TemplateType `protobuf:"varint,3,opt,name=type,proto3,enum=api.v1.user.settings.TemplateType" json:"type,omitempty"` // The type of the template.
-	Format  []string     `protobuf:"bytes,4,rep,name=format,proto3" json:"format,omitempty"`                                     // The format of the template.
+	// The body of the template.
+	Body string `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
+	// The subject of the template.
+	Subject string `protobuf:"bytes,2,opt,name=subject,proto3" json:"subject,omitempty"`
+	// The type of the template.
+	Type TemplateType `protobuf:"varint,3,opt,name=type,proto3,enum=api.v1.user.settings.TemplateType" json:"type,omitempty"`
+	// The format of the template.
+	Format []string `protobuf:"bytes,4,rep,name=format,proto3" json:"format,omitempty"`
 }
 
 func (x *Template) Reset() {
@@ -1284,12 +1338,18 @@ type Templates struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	WelcomeEmail       *Template `protobuf:"bytes,1,opt,name=welcome_email,json=welcomeEmail,proto3" json:"welcome_email,omitempty"`                     // The welcome email template.
-	WelcomeText        *Template `protobuf:"bytes,2,opt,name=welcome_text,json=welcomeText,proto3" json:"welcome_text,omitempty"`                        // Deprecated: Text is not supported - The welcome text template.
-	ResetPasswordEmail *Template `protobuf:"bytes,3,opt,name=reset_password_email,json=resetPasswordEmail,proto3" json:"reset_password_email,omitempty"` // The reset password email template.
-	ResetPasswordText  *Template `protobuf:"bytes,4,opt,name=reset_password_text,json=resetPasswordText,proto3" json:"reset_password_text,omitempty"`    // Deprecated: Text is not supported - The reset password text template.
-	VerifyEmail        *Template `protobuf:"bytes,5,opt,name=verify_email,json=verifyEmail,proto3" json:"verify_email,omitempty"`                        // The email verification template.
-	VerifyPhoneNumber  *Template `protobuf:"bytes,6,opt,name=verify_phone_number,json=verifyPhoneNumber,proto3" json:"verify_phone_number,omitempty"`    // Deprecated: Text is not supported - The text verification template.
+	// The welcome email template.
+	WelcomeEmail *Template `protobuf:"bytes,1,opt,name=welcome_email,json=welcomeEmail,proto3" json:"welcome_email,omitempty"`
+	// Deprecated: Text is not supported - The welcome text template.
+	WelcomeText *Template `protobuf:"bytes,2,opt,name=welcome_text,json=welcomeText,proto3" json:"welcome_text,omitempty"`
+	// The reset password email template.
+	ResetPasswordEmail *Template `protobuf:"bytes,3,opt,name=reset_password_email,json=resetPasswordEmail,proto3" json:"reset_password_email,omitempty"`
+	// Deprecated: Text is not supported - The reset password text template.
+	ResetPasswordText *Template `protobuf:"bytes,4,opt,name=reset_password_text,json=resetPasswordText,proto3" json:"reset_password_text,omitempty"`
+	// The email verification template.
+	VerifyEmail *Template `protobuf:"bytes,5,opt,name=verify_email,json=verifyEmail,proto3" json:"verify_email,omitempty"`
+	// Deprecated: Text is not supported - The text verification template.
+	VerifyPhoneNumber *Template `protobuf:"bytes,6,opt,name=verify_phone_number,json=verifyPhoneNumber,proto3" json:"verify_phone_number,omitempty"`
 }
 
 func (x *Templates) Reset() {
@@ -1459,7 +1519,8 @@ type RegisterMethod_Signup struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	LoginType model.LoginType `protobuf:"varint,1,opt,name=login_type,json=loginType,proto3,enum=model.LoginType" json:"login_type,omitempty"` // The login type used to register.
+	// The login type used to register.
+	LoginType model.LoginType `protobuf:"varint,1,opt,name=login_type,json=loginType,proto3,enum=model.LoginType" json:"login_type,omitempty"`
 }
 
 func (x *RegisterMethod_Signup) Reset() {

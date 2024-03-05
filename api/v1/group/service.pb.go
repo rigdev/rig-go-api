@@ -27,7 +27,8 @@ type CreateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Initializers []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"` // The group to create.
+	// The group to create.
+	Initializers []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"`
 }
 
 func (x *CreateRequest) Reset() {
@@ -75,7 +76,8 @@ type CreateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Group *Group `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"` // The created group.
+	// The created group.
+	Group *Group `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"`
 }
 
 func (x *CreateResponse) Reset() {
@@ -123,8 +125,10 @@ type ListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"` // Pagination options.
-	Search     string            `protobuf:"bytes,2,opt,name=search,proto3" json:"search,omitempty"`         // Search string.
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	// Search string.
+	Search string `protobuf:"bytes,2,opt,name=search,proto3" json:"search,omitempty"`
 }
 
 func (x *ListRequest) Reset() {
@@ -179,8 +183,10 @@ type ListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Groups []*Group `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"` // list of groups.
-	Total  uint64   `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`  // total amount of groups.
+	// list of groups.
+	Groups []*Group `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
+	// total amount of groups.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListResponse) Reset() {
@@ -235,7 +241,8 @@ type DeleteRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // The group to delete.
+	// The group to delete.
+	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
 }
 
 func (x *DeleteRequest) Reset() {
@@ -322,8 +329,10 @@ type UpdateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Updates []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"`                // The updates to apply.
-	GroupId string    `protobuf:"bytes,2,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // The group id.
+	// The updates to apply.
+	Updates []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"`
+	// The group id.
+	GroupId string `protobuf:"bytes,2,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
 }
 
 func (x *UpdateRequest) Reset() {
@@ -417,7 +426,8 @@ type GetRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // The group id.
+	// The group id.
+	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
 }
 
 func (x *GetRequest) Reset() {
@@ -465,7 +475,8 @@ type GetResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Group *Group `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"` // The group.
+	// The group.
+	Group *Group `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"`
 }
 
 func (x *GetResponse) Reset() {
@@ -513,8 +524,10 @@ type AddMemberRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GroupId   string      `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`       // The group to add members to.
-	MemberIds []*MemberID `protobuf:"bytes,2,rep,name=member_ids,json=memberIds,proto3" json:"member_ids,omitempty"` // The members to add.
+	// The group to add members to.
+	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	// The members to add.
+	MemberIds []*MemberID `protobuf:"bytes,2,rep,name=member_ids,json=memberIds,proto3" json:"member_ids,omitempty"`
 }
 
 func (x *AddMemberRequest) Reset() {
@@ -608,8 +621,10 @@ type RemoveMemberRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GroupId  string    `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`    // The group to remove the member from.
-	MemberId *MemberID `protobuf:"bytes,2,opt,name=member_id,json=memberId,proto3" json:"member_id,omitempty"` // The member to remove.
+	// The group to remove the member from.
+	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	// The member to remove.
+	MemberId *MemberID `protobuf:"bytes,2,opt,name=member_id,json=memberId,proto3" json:"member_id,omitempty"`
 }
 
 func (x *RemoveMemberRequest) Reset() {
@@ -703,8 +718,10 @@ type ListMembersRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GroupId    string            `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"` // The group to list members of.
-	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`          // Pagination options.
+	// The group to list members of.
+	GroupId string `protobuf:"bytes,1,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
 func (x *ListMembersRequest) Reset() {
@@ -759,8 +776,10 @@ type ListMembersResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Members []*model.MemberEntry `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"` // The members in the group.
-	Total   uint64               `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`    // The total amount of members in the group.
+	// The members in the group.
+	Members []*model.MemberEntry `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"`
+	// The total amount of members in the group.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListMembersResponse) Reset() {
@@ -815,8 +834,10 @@ type ListGroupsForMemberRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	MemberId   *MemberID         `protobuf:"bytes,1,opt,name=member_id,json=memberId,proto3" json:"member_id,omitempty"` // The member to list groups for.
-	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`             // Pagination options.
+	// The member to list groups for.
+	MemberId *MemberID `protobuf:"bytes,1,opt,name=member_id,json=memberId,proto3" json:"member_id,omitempty"`
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
 func (x *ListGroupsForMemberRequest) Reset() {
@@ -871,8 +892,10 @@ type ListGroupsForMemberResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Groups []*Group `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"` // The groups the member is in.
-	Total  uint64   `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`  // The total amount of groups the member is in.
+	// The groups the member is in.
+	Groups []*Group `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
+	// The total amount of groups the member is in.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListGroupsForMemberResponse) Reset() {

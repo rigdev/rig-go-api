@@ -28,8 +28,10 @@ type CreateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Initializers []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"`            // The initializers of the project.
-	ProjectId    string    `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // ID of the project to create.
+	// The initializers of the project.
+	Initializers []*Update `protobuf:"bytes,1,rep,name=initializers,proto3" json:"initializers,omitempty"`
+	// ID of the project to create.
+	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *CreateRequest) Reset() {
@@ -84,7 +86,8 @@ type CreateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Project *Project `protobuf:"bytes,1,opt,name=project,proto3" json:"project,omitempty"` // The created project.
+	// The created project.
+	Project *Project `protobuf:"bytes,1,opt,name=project,proto3" json:"project,omitempty"`
 }
 
 func (x *CreateResponse) Reset() {
@@ -132,7 +135,8 @@ type DeleteRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // Id of the project to delete
+	// Id of the project to delete
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *DeleteRequest) Reset() {
@@ -219,8 +223,10 @@ type UpdateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Updates   []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"`                      // the updates to apply.
-	ProjectId string    `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // The project to update.
+	// the updates to apply.
+	Updates []*Update `protobuf:"bytes,1,rep,name=updates,proto3" json:"updates,omitempty"`
+	// The project to update.
+	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *UpdateRequest) Reset() {
@@ -314,7 +320,8 @@ type GetRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // The project to get.
+	// The project to get.
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *GetRequest) Reset() {
@@ -362,7 +369,8 @@ type GetResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Project *Project `protobuf:"bytes,1,opt,name=project,proto3" json:"project,omitempty"` // The retrieved project.
+	// The retrieved project.
+	Project *Project `protobuf:"bytes,1,opt,name=project,proto3" json:"project,omitempty"`
 }
 
 func (x *GetResponse) Reset() {
@@ -410,7 +418,8 @@ type ListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"` // Pagination options.
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
 func (x *ListRequest) Reset() {
@@ -458,8 +467,10 @@ type ListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Projects []*Project `protobuf:"bytes,1,rep,name=projects,proto3" json:"projects,omitempty"` // The retrieved projects.
-	Total    int64      `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`      // Total number of projects.
+	// The retrieved projects.
+	Projects []*Project `protobuf:"bytes,1,rep,name=projects,proto3" json:"projects,omitempty"`
+	// Total number of projects.
+	Total int64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListResponse) Reset() {
@@ -514,7 +525,8 @@ type PublicKeyRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // The project to get the key from.
+	// The project to get the key from.
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *PublicKeyRequest) Reset() {
@@ -562,7 +574,8 @@ type PublicKeyResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	PublicKey string `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"` // the retrieved public key.
+	// the retrieved public key.
+	PublicKey string `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
 }
 
 func (x *PublicKeyResponse) Reset() {
@@ -610,9 +623,12 @@ type GetCustomObjectMetricsRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ObjectReference *capsule.ObjectReference `protobuf:"bytes,1,opt,name=object_reference,json=objectReference,proto3" json:"object_reference,omitempty"` // The object to get metrics for.
-	ProjectId       string                   `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`                   // The project to get metrics for.
-	EnvironmentId   string                   `protobuf:"bytes,3,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`       // The environment to get metrics for.
+	// The object to get metrics for.
+	ObjectReference *capsule.ObjectReference `protobuf:"bytes,1,opt,name=object_reference,json=objectReference,proto3" json:"object_reference,omitempty"`
+	// The project to get metrics for.
+	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment to get metrics for.
+	EnvironmentId string `protobuf:"bytes,3,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *GetCustomObjectMetricsRequest) Reset() {
@@ -674,9 +690,12 @@ type GetCustomObjectMetricsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Metrics       []*capsule.Metric `protobuf:"bytes,1,rep,name=metrics,proto3" json:"metrics,omitempty"`                                  // The metrics for the given object.
-	ProjectId     string            `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project the metrics are for.
-	EnvironmentId string            `protobuf:"bytes,3,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment the metrics are for.
+	// The metrics for the given object.
+	Metrics []*capsule.Metric `protobuf:"bytes,1,rep,name=metrics,proto3" json:"metrics,omitempty"`
+	// The project the metrics are for.
+	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment the metrics are for.
+	EnvironmentId string `protobuf:"bytes,3,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *GetCustomObjectMetricsResponse) Reset() {
@@ -738,8 +757,10 @@ type KubernetesObject struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Kind string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"` // Type / kind of the object.
-	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"` // Name of the object.
+	// Type / kind of the object.
+	Kind string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
+	// Name of the object.
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 }
 
 func (x *KubernetesObject) Reset() {
@@ -794,10 +815,14 @@ type GetObjectsByKindRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Kind          string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`                                        // The kind of the objects to get.
-	ApiVersion    string `protobuf:"bytes,2,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`          // The api version of the objects to get.
-	ProjectId     string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`             // The project to get the objects for.
-	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"` // The environment to get the objects for.
+	// The kind of the objects to get.
+	Kind string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
+	// The api version of the objects to get.
+	ApiVersion string `protobuf:"bytes,2,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
+	// The project to get the objects for.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// The environment to get the objects for.
+	EnvironmentId string `protobuf:"bytes,4,opt,name=environment_id,json=environmentId,proto3" json:"environment_id,omitempty"`
 }
 
 func (x *GetObjectsByKindRequest) Reset() {
@@ -860,13 +885,15 @@ func (x *GetObjectsByKindRequest) GetEnvironmentId() string {
 	return ""
 }
 
-// Response for getting all objects of a given kind in a project and environment.
+// Response for getting all objects of a given kind in a project and
+// environment.
 type GetObjectsByKindResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Objects []*KubernetesObject `protobuf:"bytes,1,rep,name=objects,proto3" json:"objects,omitempty"` // The objects of the given kind.
+	// The objects of the given kind.
+	Objects []*KubernetesObject `protobuf:"bytes,1,rep,name=objects,proto3" json:"objects,omitempty"`
 }
 
 func (x *GetObjectsByKindResponse) Reset() {

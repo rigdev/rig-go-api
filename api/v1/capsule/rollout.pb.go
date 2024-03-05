@@ -75,9 +75,12 @@ type Rollout struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RolloutId uint64          `protobuf:"varint,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"` // Unique indentifier for the rollout.
-	Config    *RolloutConfig  `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`                         // The rollout config.
-	Status    *rollout.Status `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`                         // The rollout status.
+	// Unique indentifier for the rollout.
+	RolloutId uint64 `protobuf:"varint,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
+	// The rollout config.
+	Config *RolloutConfig `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
+	// The rollout status.
+	Status *rollout.Status `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`
 }
 
 func (x *Rollout) Reset() {

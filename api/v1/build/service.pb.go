@@ -29,7 +29,8 @@ type GetImageInfoRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Image string `protobuf:"bytes,1,opt,name=image,proto3" json:"image,omitempty"` // The image to get information about.
+	// The image to get information about.
+	Image string `protobuf:"bytes,1,opt,name=image,proto3" json:"image,omitempty"`
 }
 
 func (x *GetImageInfoRequest) Reset() {
@@ -77,10 +78,14 @@ type GetImageInfoResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ImageId     *ImageId               `protobuf:"bytes,1,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`             // Image ID.
-	ImageString string                 `protobuf:"bytes,2,opt,name=image_string,json=imageString,proto3" json:"image_string,omitempty"` // Image from the request.
-	CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`       // When the image was created.
-	Origin      *capsule.Origin        `protobuf:"bytes,4,opt,name=origin,proto3" json:"origin,omitempty"`                              // Origin of the image.
+	// Image ID.
+	ImageId *ImageId `protobuf:"bytes,1,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
+	// Image from the request.
+	ImageString string `protobuf:"bytes,2,opt,name=image_string,json=imageString,proto3" json:"image_string,omitempty"`
+	// When the image was created.
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// Origin of the image.
+	Origin *capsule.Origin `protobuf:"bytes,4,opt,name=origin,proto3" json:"origin,omitempty"`
 }
 
 func (x *GetImageInfoResponse) Reset() {
@@ -149,10 +154,14 @@ type ImageId struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Registry   string `protobuf:"bytes,1,opt,name=registry,proto3" json:"registry,omitempty"`     // Docker Registry.
-	Repository string `protobuf:"bytes,2,opt,name=repository,proto3" json:"repository,omitempty"` // Docker Repository.
-	Tag        string `protobuf:"bytes,3,opt,name=tag,proto3" json:"tag,omitempty"`               // Tag of the image.
-	Digest     string `protobuf:"bytes,4,opt,name=digest,proto3" json:"digest,omitempty"`         // Digest of the image.
+	// Docker Registry.
+	Registry string `protobuf:"bytes,1,opt,name=registry,proto3" json:"registry,omitempty"`
+	// Docker Repository.
+	Repository string `protobuf:"bytes,2,opt,name=repository,proto3" json:"repository,omitempty"`
+	// Tag of the image.
+	Tag string `protobuf:"bytes,3,opt,name=tag,proto3" json:"tag,omitempty"`
+	// Digest of the image.
+	Digest string `protobuf:"bytes,4,opt,name=digest,proto3" json:"digest,omitempty"`
 }
 
 func (x *ImageId) Reset() {
@@ -221,8 +230,10 @@ type GetRepositoryInfoRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Registry   string `protobuf:"bytes,1,opt,name=registry,proto3" json:"registry,omitempty"`     // Docker Registry
-	Repository string `protobuf:"bytes,2,opt,name=repository,proto3" json:"repository,omitempty"` // Docker Repository
+	// Docker Registry
+	Registry string `protobuf:"bytes,1,opt,name=registry,proto3" json:"registry,omitempty"`
+	// Docker Repository
+	Repository string `protobuf:"bytes,2,opt,name=repository,proto3" json:"repository,omitempty"`
 }
 
 func (x *GetRepositoryInfoRequest) Reset() {
@@ -277,7 +288,8 @@ type GetRepositoryInfoResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Tags []*Tag `protobuf:"bytes,1,rep,name=tags,proto3" json:"tags,omitempty"` // Image Tags in the repository.
+	// Image Tags in the repository.
+	Tags []*Tag `protobuf:"bytes,1,rep,name=tags,proto3" json:"tags,omitempty"`
 }
 
 func (x *GetRepositoryInfoResponse) Reset() {
@@ -325,8 +337,10 @@ type Tag struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Tag            string                 `protobuf:"bytes,1,opt,name=tag,proto3" json:"tag,omitempty"`                                               // Tag of the image.
-	ImageCreatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=image_created_at,json=imageCreatedAt,proto3" json:"image_created_at,omitempty"` // When the image was created.
+	// Tag of the image.
+	Tag string `protobuf:"bytes,1,opt,name=tag,proto3" json:"tag,omitempty"`
+	// When the image was created.
+	ImageCreatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=image_created_at,json=imageCreatedAt,proto3" json:"image_created_at,omitempty"`
 }
 
 func (x *Tag) Reset() {
@@ -381,13 +395,20 @@ type CreateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId      string            `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`                                                                  // Capsule to create the build in.
-	Image          string            `protobuf:"bytes,2,opt,name=image,proto3" json:"image,omitempty"`                                                                                           // Image to create the build from.
-	Digest         string            `protobuf:"bytes,3,opt,name=digest,proto3" json:"digest,omitempty"`                                                                                         // Digest of the image.
-	Origin         *capsule.Origin   `protobuf:"bytes,4,opt,name=origin,proto3" json:"origin,omitempty"`                                                                                         // Origin of the image
-	Labels         map[string]string `protobuf:"bytes,5,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // Meta data to attach to the build.
-	SkipImageCheck bool              `protobuf:"varint,6,opt,name=skip_image_check,json=skipImageCheck,proto3" json:"skip_image_check,omitempty"`                                                // if true skip check if image exists.
-	ProjectId      string            `protobuf:"bytes,7,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`                                                                  // Project ID.
+	// Capsule to create the build in.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Image to create the build from.
+	Image string `protobuf:"bytes,2,opt,name=image,proto3" json:"image,omitempty"`
+	// Digest of the image.
+	Digest string `protobuf:"bytes,3,opt,name=digest,proto3" json:"digest,omitempty"`
+	// Origin of the image
+	Origin *capsule.Origin `protobuf:"bytes,4,opt,name=origin,proto3" json:"origin,omitempty"`
+	// Meta data to attach to the build.
+	Labels map[string]string `protobuf:"bytes,5,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// if true skip check if image exists.
+	SkipImageCheck bool `protobuf:"varint,6,opt,name=skip_image_check,json=skipImageCheck,proto3" json:"skip_image_check,omitempty"`
+	// Project ID.
+	ProjectId string `protobuf:"bytes,7,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *CreateRequest) Reset() {
@@ -477,8 +498,10 @@ type CreateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	BuildId         string `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`                            // ID of the build.
-	CreatedNewBuild bool   `protobuf:"varint,2,opt,name=created_new_build,json=createdNewBuild,proto3" json:"created_new_build,omitempty"` // True if a new build was created.
+	// ID of the build.
+	BuildId string `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	// True if a new build was created.
+	CreatedNewBuild bool `protobuf:"varint,2,opt,name=created_new_build,json=createdNewBuild,proto3" json:"created_new_build,omitempty"`
 }
 
 func (x *CreateResponse) Reset() {
@@ -533,9 +556,12 @@ type ListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId  string            `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"` // Capsule to list builds in.
-	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`                // Pagination options.
-	ProjectId  string            `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // Project ID.
+	// Capsule to list builds in.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Pagination options.
+	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	// Project ID.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *ListRequest) Reset() {
@@ -597,8 +623,10 @@ type ListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Builds []*capsule.Build `protobuf:"bytes,1,rep,name=builds,proto3" json:"builds,omitempty"` // Builds in the capsule.
-	Total  uint64           `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`  // Total number of builds in the capsule.
+	// Builds in the capsule.
+	Builds []*capsule.Build `protobuf:"bytes,1,rep,name=builds,proto3" json:"builds,omitempty"`
+	// Total number of builds in the capsule.
+	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListResponse) Reset() {
@@ -653,9 +681,12 @@ type DeleteRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"` // Capsule to delete the build from.
-	BuildId   string `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`       // Build to delete.
-	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // Project ID.
+	// Capsule to delete the build from.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Build to delete.
+	BuildId string `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	// Project ID.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *DeleteRequest) Reset() {
@@ -756,9 +787,12 @@ type GetRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"` // Capsule to get the build from.
-	BuildId   string `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`       // Build to get.
-	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // Project ID.
+	// Capsule to get the build from.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Build to get.
+	BuildId string `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	// Project ID.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
 
 func (x *GetRequest) Reset() {
@@ -820,7 +854,8 @@ type GetResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Build *capsule.Build `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"` // The build to retrieve
+	// The build to retrieve
+	Build *capsule.Build `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
 }
 
 func (x *GetResponse) Reset() {

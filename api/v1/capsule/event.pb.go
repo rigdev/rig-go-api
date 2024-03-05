@@ -28,11 +28,16 @@ type Event struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CreatedBy *model.Author          `protobuf:"bytes,1,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`  // Potential author associated with the event.
-	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`  // When the event was created.
-	RolloutId uint64                 `protobuf:"varint,3,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"` // The rollout that created the event.
-	Message   string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`                       // A message associated with the event.
-	EventData *EventData             `protobuf:"bytes,5,opt,name=event_data,json=eventData,proto3" json:"event_data,omitempty"`  // The data associated with the event.
+	// Potential author associated with the event.
+	CreatedBy *model.Author `protobuf:"bytes,1,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`
+	// When the event was created.
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// The rollout that created the event.
+	RolloutId uint64 `protobuf:"varint,3,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
+	// A message associated with the event.
+	Message string `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+	// The data associated with the event.
+	EventData *EventData `protobuf:"bytes,5,opt,name=event_data,json=eventData,proto3" json:"event_data,omitempty"`
 }
 
 func (x *Event) Reset() {
@@ -298,15 +303,18 @@ type isEventData_Kind interface {
 }
 
 type EventData_Rollout struct {
-	Rollout *RolloutEvent `protobuf:"bytes,1,opt,name=rollout,proto3,oneof"` // If event is a rollout.
+	// If event is a rollout.
+	Rollout *RolloutEvent `protobuf:"bytes,1,opt,name=rollout,proto3,oneof"`
 }
 
 type EventData_Error struct {
-	Error *ErrorEvent `protobuf:"bytes,2,opt,name=error,proto3,oneof"` // if event is an error event.
+	// if event is an error event.
+	Error *ErrorEvent `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
 }
 
 type EventData_Abort struct {
-	Abort *AbortEvent `protobuf:"bytes,3,opt,name=abort,proto3,oneof"` // If event is an abort event.
+	// If event is an abort event.
+	Abort *AbortEvent `protobuf:"bytes,3,opt,name=abort,proto3,oneof"`
 }
 
 func (*EventData_Rollout) isEventData_Kind() {}

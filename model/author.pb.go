@@ -114,11 +114,13 @@ type isAuthor_Account interface {
 }
 
 type Author_UserId struct {
-	UserId string `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3,oneof"` // if a user did the change
+	// if a user did the change
+	UserId string `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3,oneof"`
 }
 
 type Author_ServiceAccountId struct {
-	ServiceAccountId string `protobuf:"bytes,4,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"` // if a service account did the change
+	// if a service account did the change
+	ServiceAccountId string `protobuf:"bytes,4,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"`
 }
 
 func (*Author_UserId) isAuthor_Account() {}

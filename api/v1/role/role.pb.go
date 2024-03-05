@@ -28,11 +28,16 @@ type Role struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RoleId      string                 `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`                                                                               // Unique ID of the role.
-	Permissions []*Permission          `protobuf:"bytes,2,rep,name=permissions,proto3" json:"permissions,omitempty"`                                                                                   // The permissions granted to the role.
-	Metadata    map[string][]byte      `protobuf:"bytes,3,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // Metadata associated with the role.
-	CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                                                                      // Timestamp when the role was created.
-	UpdatedAt   *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                                                                      // Timestamp when the role was last updated.
+	// Unique ID of the role.
+	RoleId string `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	// The permissions granted to the role.
+	Permissions []*Permission `protobuf:"bytes,2,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	// Metadata associated with the role.
+	Metadata map[string][]byte `protobuf:"bytes,3,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// Timestamp when the role was created.
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// Timestamp when the role was last updated.
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 }
 
 func (x *Role) Reset() {
@@ -102,7 +107,8 @@ func (x *Role) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-// EntityID is a oneof type that can be used to represent a user, service account or group.
+// EntityID is a oneof type that can be used to represent a user, service
+// account or group.
 type EntityID struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -183,15 +189,18 @@ type isEntityID_Kind interface {
 }
 
 type EntityID_UserId struct {
-	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3,oneof"` // User entity.
+	// User entity.
+	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3,oneof"`
 }
 
 type EntityID_ServiceAccountId struct {
-	ServiceAccountId string `protobuf:"bytes,2,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"` // Service account entity.
+	// Service account entity.
+	ServiceAccountId string `protobuf:"bytes,2,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"`
 }
 
 type EntityID_GroupId struct {
-	GroupId string `protobuf:"bytes,3,opt,name=group_id,json=groupId,proto3,oneof"` // Group entity.
+	// Group entity.
+	GroupId string `protobuf:"bytes,3,opt,name=group_id,json=groupId,proto3,oneof"`
 }
 
 func (*EntityID_UserId) isEntityID_Kind() {}
@@ -206,8 +215,10 @@ type Permission struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Action string `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"` // The action that is action permission to perform.
-	Scope  *Scope `protobuf:"bytes,2,opt,name=scope,proto3" json:"scope,omitempty"`   // The scope in which the action can be performed.
+	// The action that is action permission to perform.
+	Action string `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"`
+	// The scope in which the action can be performed.
+	Scope *Scope `protobuf:"bytes,2,opt,name=scope,proto3" json:"scope,omitempty"`
 }
 
 func (x *Permission) Reset() {
@@ -262,9 +273,14 @@ type Scope struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Resource    string `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`       // The resource on which the action can be performed. This consists of a type, and an optional ID. fx. "user/*", "group/admin"
-	Environment string `protobuf:"bytes,2,opt,name=environment,proto3" json:"environment,omitempty"` // The environment in which the action can be performed. This can be a wildcard.
-	Project     string `protobuf:"bytes,3,opt,name=project,proto3" json:"project,omitempty"`         // The project in which the action can be performed. This can be a wildcard.
+	// The resource on which the action can be performed. This consists of a type,
+	// and an optional ID. fx. "user/*", "group/admin"
+	Resource string `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
+	// The environment in which the action can be performed. This can be a
+	// wildcard.
+	Environment string `protobuf:"bytes,2,opt,name=environment,proto3" json:"environment,omitempty"`
+	// The project in which the action can be performed. This can be a wildcard.
+	Project string `protobuf:"bytes,3,opt,name=project,proto3" json:"project,omitempty"`
 }
 
 func (x *Scope) Reset() {
@@ -407,19 +423,23 @@ type isUpdate_Update interface {
 }
 
 type Update_AddPermission struct {
-	AddPermission *Permission `protobuf:"bytes,1,opt,name=add_permission,json=addPermission,proto3,oneof"` // Adding a permission to the role.
+	// Adding a permission to the role.
+	AddPermission *Permission `protobuf:"bytes,1,opt,name=add_permission,json=addPermission,proto3,oneof"`
 }
 
 type Update_RemovePermission struct {
-	RemovePermission *Permission `protobuf:"bytes,2,opt,name=remove_permission,json=removePermission,proto3,oneof"` // Removing a permission from the role.
+	// Removing a permission from the role.
+	RemovePermission *Permission `protobuf:"bytes,2,opt,name=remove_permission,json=removePermission,proto3,oneof"`
 }
 
 type Update_SetMetadata struct {
-	SetMetadata *model.Metadata `protobuf:"bytes,3,opt,name=set_metadata,json=setMetadata,proto3,oneof"` // Update or create a metadata field on the role.
+	// Update or create a metadata field on the role.
+	SetMetadata *model.Metadata `protobuf:"bytes,3,opt,name=set_metadata,json=setMetadata,proto3,oneof"`
 }
 
 type Update_DeleteMetadataKey struct {
-	DeleteMetadataKey string `protobuf:"bytes,4,opt,name=delete_metadata_key,json=deleteMetadataKey,proto3,oneof"` // Delete a metadata field on the role.
+	// Delete a metadata field on the role.
+	DeleteMetadataKey string `protobuf:"bytes,4,opt,name=delete_metadata_key,json=deleteMetadataKey,proto3,oneof"`
 }
 
 func (*Update_AddPermission) isUpdate_Update() {}
