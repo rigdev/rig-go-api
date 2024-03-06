@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.32.0
 // 	protoc        (unknown)
-// source: api/v1/build/service.proto
+// source: api/v1/image/service.proto
 
-package build
+package image
 
 import (
 	capsule "github.com/rigdev/rig-go-api/api/v1/capsule"
@@ -36,7 +36,7 @@ type GetImageInfoRequest struct {
 func (x *GetImageInfoRequest) Reset() {
 	*x = GetImageInfoRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[0]
+		mi := &file_api_v1_image_service_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -49,7 +49,7 @@ func (x *GetImageInfoRequest) String() string {
 func (*GetImageInfoRequest) ProtoMessage() {}
 
 func (x *GetImageInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[0]
+	mi := &file_api_v1_image_service_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -62,7 +62,7 @@ func (x *GetImageInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetImageInfoRequest.ProtoReflect.Descriptor instead.
 func (*GetImageInfoRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{0}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GetImageInfoRequest) GetImage() string {
@@ -91,7 +91,7 @@ type GetImageInfoResponse struct {
 func (x *GetImageInfoResponse) Reset() {
 	*x = GetImageInfoResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[1]
+		mi := &file_api_v1_image_service_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -104,7 +104,7 @@ func (x *GetImageInfoResponse) String() string {
 func (*GetImageInfoResponse) ProtoMessage() {}
 
 func (x *GetImageInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[1]
+	mi := &file_api_v1_image_service_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -117,7 +117,7 @@ func (x *GetImageInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetImageInfoResponse.ProtoReflect.Descriptor instead.
 func (*GetImageInfoResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{1}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetImageInfoResponse) GetImageId() *ImageId {
@@ -167,7 +167,7 @@ type ImageId struct {
 func (x *ImageId) Reset() {
 	*x = ImageId{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[2]
+		mi := &file_api_v1_image_service_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -180,7 +180,7 @@ func (x *ImageId) String() string {
 func (*ImageId) ProtoMessage() {}
 
 func (x *ImageId) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[2]
+	mi := &file_api_v1_image_service_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -193,7 +193,7 @@ func (x *ImageId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImageId.ProtoReflect.Descriptor instead.
 func (*ImageId) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{2}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ImageId) GetRegistry() string {
@@ -239,7 +239,7 @@ type GetRepositoryInfoRequest struct {
 func (x *GetRepositoryInfoRequest) Reset() {
 	*x = GetRepositoryInfoRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[3]
+		mi := &file_api_v1_image_service_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -252,7 +252,7 @@ func (x *GetRepositoryInfoRequest) String() string {
 func (*GetRepositoryInfoRequest) ProtoMessage() {}
 
 func (x *GetRepositoryInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[3]
+	mi := &file_api_v1_image_service_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -265,7 +265,7 @@ func (x *GetRepositoryInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRepositoryInfoRequest.ProtoReflect.Descriptor instead.
 func (*GetRepositoryInfoRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{3}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetRepositoryInfoRequest) GetRegistry() string {
@@ -295,7 +295,7 @@ type GetRepositoryInfoResponse struct {
 func (x *GetRepositoryInfoResponse) Reset() {
 	*x = GetRepositoryInfoResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[4]
+		mi := &file_api_v1_image_service_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -308,7 +308,7 @@ func (x *GetRepositoryInfoResponse) String() string {
 func (*GetRepositoryInfoResponse) ProtoMessage() {}
 
 func (x *GetRepositoryInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[4]
+	mi := &file_api_v1_image_service_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -321,7 +321,7 @@ func (x *GetRepositoryInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRepositoryInfoResponse.ProtoReflect.Descriptor instead.
 func (*GetRepositoryInfoResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{4}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetRepositoryInfoResponse) GetTags() []*Tag {
@@ -346,7 +346,7 @@ type Tag struct {
 func (x *Tag) Reset() {
 	*x = Tag{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[5]
+		mi := &file_api_v1_image_service_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -359,7 +359,7 @@ func (x *Tag) String() string {
 func (*Tag) ProtoMessage() {}
 
 func (x *Tag) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[5]
+	mi := &file_api_v1_image_service_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -372,7 +372,7 @@ func (x *Tag) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Tag.ProtoReflect.Descriptor instead.
 func (*Tag) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{5}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Tag) GetTag() string {
@@ -389,21 +389,21 @@ func (x *Tag) GetImageCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-// Request to create a new build in a capsule.
+// Request to create a new image in a capsule.
 type CreateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Capsule to create the build in.
+	// Capsule to create the image in.
 	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
-	// Image to create the build from.
+	// Container image to create the image from.
 	Image string `protobuf:"bytes,2,opt,name=image,proto3" json:"image,omitempty"`
 	// Digest of the image.
 	Digest string `protobuf:"bytes,3,opt,name=digest,proto3" json:"digest,omitempty"`
 	// Origin of the image
 	Origin *capsule.Origin `protobuf:"bytes,4,opt,name=origin,proto3" json:"origin,omitempty"`
-	// Meta data to attach to the build.
+	// Meta data to attach to the image.
 	Labels map[string]string `protobuf:"bytes,5,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// if true skip check if image exists.
 	SkipImageCheck bool `protobuf:"varint,6,opt,name=skip_image_check,json=skipImageCheck,proto3" json:"skip_image_check,omitempty"`
@@ -414,7 +414,7 @@ type CreateRequest struct {
 func (x *CreateRequest) Reset() {
 	*x = CreateRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[6]
+		mi := &file_api_v1_image_service_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -427,7 +427,7 @@ func (x *CreateRequest) String() string {
 func (*CreateRequest) ProtoMessage() {}
 
 func (x *CreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[6]
+	mi := &file_api_v1_image_service_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -440,7 +440,7 @@ func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
 func (*CreateRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{6}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateRequest) GetCapsuleId() string {
@@ -492,22 +492,22 @@ func (x *CreateRequest) GetProjectId() string {
 	return ""
 }
 
-// Response to create a new build in a capsule.
+// Response to create a new image in a capsule.
 type CreateResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// ID of the build.
-	BuildId string `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
-	// True if a new build was created.
-	CreatedNewBuild bool `protobuf:"varint,2,opt,name=created_new_build,json=createdNewBuild,proto3" json:"created_new_build,omitempty"`
+	// ID of the image.
+	ImageId string `protobuf:"bytes,1,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
+	// True if a new image was created.
+	CreatedNewImage bool `protobuf:"varint,2,opt,name=created_new_image,json=createdNewImage,proto3" json:"created_new_image,omitempty"`
 }
 
 func (x *CreateResponse) Reset() {
 	*x = CreateResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[7]
+		mi := &file_api_v1_image_service_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -520,7 +520,7 @@ func (x *CreateResponse) String() string {
 func (*CreateResponse) ProtoMessage() {}
 
 func (x *CreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[7]
+	mi := &file_api_v1_image_service_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -533,30 +533,30 @@ func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
 func (*CreateResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{7}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *CreateResponse) GetBuildId() string {
+func (x *CreateResponse) GetImageId() string {
 	if x != nil {
-		return x.BuildId
+		return x.ImageId
 	}
 	return ""
 }
 
-func (x *CreateResponse) GetCreatedNewBuild() bool {
+func (x *CreateResponse) GetCreatedNewImage() bool {
 	if x != nil {
-		return x.CreatedNewBuild
+		return x.CreatedNewImage
 	}
 	return false
 }
 
-// Request to list builds.
+// Request to list images.
 type ListRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Capsule to list builds in.
+	// Capsule to list images in.
 	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
 	// Pagination options.
 	Pagination *model.Pagination `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
@@ -567,7 +567,7 @@ type ListRequest struct {
 func (x *ListRequest) Reset() {
 	*x = ListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[8]
+		mi := &file_api_v1_image_service_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -580,7 +580,7 @@ func (x *ListRequest) String() string {
 func (*ListRequest) ProtoMessage() {}
 
 func (x *ListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[8]
+	mi := &file_api_v1_image_service_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -593,7 +593,7 @@ func (x *ListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
 func (*ListRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{8}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ListRequest) GetCapsuleId() string {
@@ -617,22 +617,22 @@ func (x *ListRequest) GetProjectId() string {
 	return ""
 }
 
-// Reponse to list builds.
+// Reponse to list images.
 type ListResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Builds in the capsule.
-	Builds []*capsule.Build `protobuf:"bytes,1,rep,name=builds,proto3" json:"builds,omitempty"`
-	// Total number of builds in the capsule.
+	// Images in the capsule.
+	Images []*capsule.Image `protobuf:"bytes,1,rep,name=images,proto3" json:"images,omitempty"`
+	// Total number of images in the capsule.
 	Total uint64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *ListResponse) Reset() {
 	*x = ListResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[9]
+		mi := &file_api_v1_image_service_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -645,7 +645,7 @@ func (x *ListResponse) String() string {
 func (*ListResponse) ProtoMessage() {}
 
 func (x *ListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[9]
+	mi := &file_api_v1_image_service_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -658,12 +658,12 @@ func (x *ListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
 func (*ListResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{9}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *ListResponse) GetBuilds() []*capsule.Build {
+func (x *ListResponse) GetImages() []*capsule.Image {
 	if x != nil {
-		return x.Builds
+		return x.Images
 	}
 	return nil
 }
@@ -675,16 +675,16 @@ func (x *ListResponse) GetTotal() uint64 {
 	return 0
 }
 
-// Request to delete a build.
+// Request to delete a image.
 type DeleteRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Capsule to delete the build from.
+	// Capsule to delete the image from.
 	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
-	// Build to delete.
-	BuildId string `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	// Image to delete.
+	ImageId string `protobuf:"bytes,2,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
 	// Project ID.
 	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
@@ -692,7 +692,7 @@ type DeleteRequest struct {
 func (x *DeleteRequest) Reset() {
 	*x = DeleteRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[10]
+		mi := &file_api_v1_image_service_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -705,7 +705,7 @@ func (x *DeleteRequest) String() string {
 func (*DeleteRequest) ProtoMessage() {}
 
 func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[10]
+	mi := &file_api_v1_image_service_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -718,7 +718,7 @@ func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{10}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *DeleteRequest) GetCapsuleId() string {
@@ -728,9 +728,9 @@ func (x *DeleteRequest) GetCapsuleId() string {
 	return ""
 }
 
-func (x *DeleteRequest) GetBuildId() string {
+func (x *DeleteRequest) GetImageId() string {
 	if x != nil {
-		return x.BuildId
+		return x.ImageId
 	}
 	return ""
 }
@@ -742,7 +742,7 @@ func (x *DeleteRequest) GetProjectId() string {
 	return ""
 }
 
-// Empty response to delete a build.
+// Empty response to delete a image.
 type DeleteResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -752,7 +752,7 @@ type DeleteResponse struct {
 func (x *DeleteResponse) Reset() {
 	*x = DeleteResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[11]
+		mi := &file_api_v1_image_service_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -765,7 +765,7 @@ func (x *DeleteResponse) String() string {
 func (*DeleteResponse) ProtoMessage() {}
 
 func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[11]
+	mi := &file_api_v1_image_service_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -778,19 +778,19 @@ func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
 func (*DeleteResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{11}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{11}
 }
 
-// Request to get a build.
+// Request to get a image.
 type GetRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Capsule to get the build from.
+	// Capsule to get the image from.
 	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
-	// Build to get.
-	BuildId string `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	// Image to get.
+	ImageId string `protobuf:"bytes,2,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
 	// Project ID.
 	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 }
@@ -798,7 +798,7 @@ type GetRequest struct {
 func (x *GetRequest) Reset() {
 	*x = GetRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[12]
+		mi := &file_api_v1_image_service_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -811,7 +811,7 @@ func (x *GetRequest) String() string {
 func (*GetRequest) ProtoMessage() {}
 
 func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[12]
+	mi := &file_api_v1_image_service_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -824,7 +824,7 @@ func (x *GetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
 func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{12}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *GetRequest) GetCapsuleId() string {
@@ -834,9 +834,9 @@ func (x *GetRequest) GetCapsuleId() string {
 	return ""
 }
 
-func (x *GetRequest) GetBuildId() string {
+func (x *GetRequest) GetImageId() string {
 	if x != nil {
-		return x.BuildId
+		return x.ImageId
 	}
 	return ""
 }
@@ -848,20 +848,20 @@ func (x *GetRequest) GetProjectId() string {
 	return ""
 }
 
-// Response to get a build.
+// Response to get a image.
 type GetResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The build to retrieve
-	Build *capsule.Build `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+	// The image to retrieve
+	Image *capsule.Image `protobuf:"bytes,1,opt,name=image,proto3" json:"image,omitempty"`
 }
 
 func (x *GetResponse) Reset() {
 	*x = GetResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_build_service_proto_msgTypes[13]
+		mi := &file_api_v1_image_service_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -874,7 +874,7 @@ func (x *GetResponse) String() string {
 func (*GetResponse) ProtoMessage() {}
 
 func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_build_service_proto_msgTypes[13]
+	mi := &file_api_v1_image_service_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -887,34 +887,34 @@ func (x *GetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
 func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_build_service_proto_rawDescGZIP(), []int{13}
+	return file_api_v1_image_service_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *GetResponse) GetBuild() *capsule.Build {
+func (x *GetResponse) GetImage() *capsule.Image {
 	if x != nil {
-		return x.Build
+		return x.Image
 	}
 	return nil
 }
 
-var File_api_v1_build_service_proto protoreflect.FileDescriptor
+var File_api_v1_image_service_proto protoreflect.FileDescriptor
 
-var file_api_v1_build_service_proto_rawDesc = []byte{
-	0x0a, 0x1a, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2f, 0x73,
+var file_api_v1_image_service_proto_rawDesc = []byte{
+	0x0a, 0x1a, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2f, 0x73,
 	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0c, 0x61, 0x70,
-	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67,
+	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67,
 	0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65,
 	0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1a, 0x61, 0x70, 0x69,
-	0x2f, 0x76, 0x31, 0x2f, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2f, 0x62, 0x75, 0x69, 0x6c,
-	0x64, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x12, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2f, 0x63,
+	0x2f, 0x76, 0x31, 0x2f, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2f, 0x69, 0x6d, 0x61, 0x67,
+	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x12, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2f, 0x63,
 	0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x2b, 0x0a, 0x13, 0x47,
 	0x65, 0x74, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x05, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x22, 0xd6, 0x01, 0x0a, 0x14, 0x47, 0x65, 0x74,
 	0x49, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
 	0x65, 0x12, 0x30, 0x0a, 0x08, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69,
-	0x6c, 0x64, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x64, 0x52, 0x07, 0x69, 0x6d, 0x61, 0x67,
+	0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61,
+	0x67, 0x65, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x64, 0x52, 0x07, 0x69, 0x6d, 0x61, 0x67,
 	0x65, 0x49, 0x64, 0x12, 0x21, 0x0a, 0x0c, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x5f, 0x73, 0x74, 0x72,
 	0x69, 0x6e, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x69, 0x6d, 0x61, 0x67, 0x65,
 	0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x12, 0x39, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65,
@@ -939,8 +939,8 @@ var file_api_v1_build_service_proto_rawDesc = []byte{
 	0x72, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79, 0x22, 0x42, 0x0a, 0x19, 0x47, 0x65,
 	0x74, 0x52, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79, 0x49, 0x6e, 0x66, 0x6f, 0x52,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x25, 0x0a, 0x04, 0x74, 0x61, 0x67, 0x73, 0x18,
-	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x11, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62,
-	0x75, 0x69, 0x6c, 0x64, 0x2e, 0x54, 0x61, 0x67, 0x52, 0x04, 0x74, 0x61, 0x67, 0x73, 0x22, 0x5d,
+	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x11, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69,
+	0x6d, 0x61, 0x67, 0x65, 0x2e, 0x54, 0x61, 0x67, 0x52, 0x04, 0x74, 0x61, 0x67, 0x73, 0x22, 0x5d,
 	0x0a, 0x03, 0x54, 0x61, 0x67, 0x12, 0x10, 0x0a, 0x03, 0x74, 0x61, 0x67, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x03, 0x74, 0x61, 0x67, 0x12, 0x44, 0x0a, 0x10, 0x69, 0x6d, 0x61, 0x67, 0x65,
 	0x5f, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28,
@@ -957,7 +957,7 @@ var file_api_v1_build_service_proto_rawDesc = []byte{
 	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4f, 0x72,
 	0x69, 0x67, 0x69, 0x6e, 0x52, 0x06, 0x6f, 0x72, 0x69, 0x67, 0x69, 0x6e, 0x12, 0x3f, 0x0a, 0x06,
 	0x6c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x61,
-	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2e, 0x43, 0x72, 0x65, 0x61,
+	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x43, 0x72, 0x65, 0x61,
 	0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73,
 	0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x06, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x12, 0x28, 0x0a,
 	0x10, 0x73, 0x6b, 0x69, 0x70, 0x5f, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x5f, 0x63, 0x68, 0x65, 0x63,
@@ -969,11 +969,11 @@ var file_api_v1_build_service_proto_rawDesc = []byte{
 	0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
 	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38,
 	0x01, 0x22, 0x57, 0x0a, 0x0e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x5f, 0x69, 0x64, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x49, 0x64, 0x12, 0x2a,
-	0x0a, 0x11, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x6e, 0x65, 0x77, 0x5f, 0x62, 0x75,
-	0x69, 0x6c, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0f, 0x63, 0x72, 0x65, 0x61, 0x74,
-	0x65, 0x64, 0x4e, 0x65, 0x77, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x22, 0x7e, 0x0a, 0x0b, 0x4c, 0x69,
+	0x6e, 0x73, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x5f, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x64, 0x12, 0x2a,
+	0x0a, 0x11, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x6e, 0x65, 0x77, 0x5f, 0x69, 0x6d,
+	0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0f, 0x63, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x64, 0x4e, 0x65, 0x77, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x22, 0x7e, 0x0a, 0x0b, 0x4c, 0x69,
 	0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61, 0x70,
 	0x73, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63,
 	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x31, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69,
@@ -982,128 +982,128 @@ var file_api_v1_build_service_proto_rawDesc = []byte{
 	0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1d, 0x0a, 0x0a, 0x70,
 	0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x09, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x64, 0x22, 0x53, 0x0a, 0x0c, 0x4c, 0x69,
-	0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2d, 0x0a, 0x06, 0x62, 0x75,
-	0x69, 0x6c, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x61, 0x70, 0x69,
-	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x42, 0x75, 0x69, 0x6c,
-	0x64, 0x52, 0x06, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x74,
+	0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2d, 0x0a, 0x06, 0x69, 0x6d,
+	0x61, 0x67, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x61, 0x70, 0x69,
+	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x49, 0x6d, 0x61, 0x67,
+	0x65, 0x52, 0x06, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x74,
 	0x61, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x22,
 	0x68, 0x0a, 0x0d, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12,
-	0x19, 0x0a, 0x08, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x07, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72,
+	0x19, 0x0a, 0x08, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x07, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72,
 	0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
 	0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x64, 0x22, 0x10, 0x0a, 0x0e, 0x44, 0x65, 0x6c,
 	0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x65, 0x0a, 0x0a, 0x47,
 	0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61, 0x70,
 	0x73, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63,
-	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x19, 0x0a, 0x08, 0x62, 0x75, 0x69, 0x6c,
-	0x64, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x62, 0x75, 0x69, 0x6c,
-	0x64, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69,
+	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x19, 0x0a, 0x08, 0x69, 0x6d, 0x61, 0x67,
+	0x65, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x69, 0x6d, 0x61, 0x67,
+	0x65, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69,
 	0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74,
 	0x49, 0x64, 0x22, 0x3a, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x2b, 0x0a, 0x05, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
+	0x65, 0x12, 0x2b, 0x0a, 0x05, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
 	0x32, 0x15, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c,
-	0x65, 0x2e, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x52, 0x05, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x32, 0xd7,
+	0x65, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x52, 0x05, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x32, 0xd7,
 	0x03, 0x0a, 0x07, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x57, 0x0a, 0x0c, 0x47, 0x65,
 	0x74, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x21, 0x2e, 0x61, 0x70, 0x69,
-	0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2e, 0x47, 0x65, 0x74, 0x49, 0x6d, 0x61,
+	0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x49, 0x6d, 0x61,
 	0x67, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e,
-	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2e, 0x47, 0x65, 0x74,
+	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x47, 0x65, 0x74,
 	0x49, 0x6d, 0x61, 0x67, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
 	0x65, 0x22, 0x00, 0x12, 0x66, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x73, 0x69,
 	0x74, 0x6f, 0x72, 0x79, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x26, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
-	0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x73,
+	0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x73,
 	0x69, 0x74, 0x6f, 0x72, 0x79, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x27, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2e,
+	0x1a, 0x27, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e,
 	0x47, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79, 0x49, 0x6e, 0x66,
 	0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x3c, 0x0a, 0x03, 0x47,
-	0x65, 0x74, 0x12, 0x18, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c,
-	0x64, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x61,
-	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2e, 0x47, 0x65, 0x74, 0x52,
+	0x65, 0x74, 0x12, 0x18, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67,
+	0x65, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x61,
+	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x52,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x45, 0x0a, 0x06, 0x43, 0x72, 0x65,
-	0x61, 0x74, 0x65, 0x12, 0x1b, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69,
-	0x6c, 0x64, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x1c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2e,
+	0x61, 0x74, 0x65, 0x12, 0x1b, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61,
+	0x67, 0x65, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x1c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e,
 	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
 	0x12, 0x3f, 0x0a, 0x04, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x19, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
-	0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69,
-	0x6c, 0x64, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61,
+	0x67, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
 	0x00, 0x12, 0x45, 0x0a, 0x06, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x1b, 0x2e, 0x61, 0x70,
-	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74,
+	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74,
 	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
-	0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65,
+	0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x9d, 0x01, 0x0a, 0x10, 0x63, 0x6f, 0x6d,
-	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x42, 0x0c, 0x53,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x42, 0x0c, 0x53,
 	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x29, 0x67,
 	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x69, 0x67, 0x64, 0x65, 0x76,
 	0x2f, 0x72, 0x69, 0x67, 0x2d, 0x67, 0x6f, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x76, 0x31, 0x2f, 0x62, 0x75, 0x69, 0x6c, 0x64, 0xa2, 0x02, 0x03, 0x41, 0x56, 0x42, 0xaa, 0x02,
-	0x0c, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0x2e, 0x42, 0x75, 0x69, 0x6c, 0x64, 0xca, 0x02, 0x0c,
-	0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x42, 0x75, 0x69, 0x6c, 0x64, 0xe2, 0x02, 0x18, 0x41,
-	0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x5c, 0x47, 0x50, 0x42, 0x4d,
+	0x76, 0x31, 0x2f, 0x69, 0x6d, 0x61, 0x67, 0x65, 0xa2, 0x02, 0x03, 0x41, 0x56, 0x49, 0xaa, 0x02,
+	0x0c, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0x2e, 0x49, 0x6d, 0x61, 0x67, 0x65, 0xca, 0x02, 0x0c,
+	0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x49, 0x6d, 0x61, 0x67, 0x65, 0xe2, 0x02, 0x18, 0x41,
+	0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d,
 	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56,
-	0x31, 0x3a, 0x3a, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x31, 0x3a, 0x3a, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_api_v1_build_service_proto_rawDescOnce sync.Once
-	file_api_v1_build_service_proto_rawDescData = file_api_v1_build_service_proto_rawDesc
+	file_api_v1_image_service_proto_rawDescOnce sync.Once
+	file_api_v1_image_service_proto_rawDescData = file_api_v1_image_service_proto_rawDesc
 )
 
-func file_api_v1_build_service_proto_rawDescGZIP() []byte {
-	file_api_v1_build_service_proto_rawDescOnce.Do(func() {
-		file_api_v1_build_service_proto_rawDescData = protoimpl.X.CompressGZIP(file_api_v1_build_service_proto_rawDescData)
+func file_api_v1_image_service_proto_rawDescGZIP() []byte {
+	file_api_v1_image_service_proto_rawDescOnce.Do(func() {
+		file_api_v1_image_service_proto_rawDescData = protoimpl.X.CompressGZIP(file_api_v1_image_service_proto_rawDescData)
 	})
-	return file_api_v1_build_service_proto_rawDescData
+	return file_api_v1_image_service_proto_rawDescData
 }
 
-var file_api_v1_build_service_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
-var file_api_v1_build_service_proto_goTypes = []interface{}{
-	(*GetImageInfoRequest)(nil),       // 0: api.v1.build.GetImageInfoRequest
-	(*GetImageInfoResponse)(nil),      // 1: api.v1.build.GetImageInfoResponse
-	(*ImageId)(nil),                   // 2: api.v1.build.ImageId
-	(*GetRepositoryInfoRequest)(nil),  // 3: api.v1.build.GetRepositoryInfoRequest
-	(*GetRepositoryInfoResponse)(nil), // 4: api.v1.build.GetRepositoryInfoResponse
-	(*Tag)(nil),                       // 5: api.v1.build.Tag
-	(*CreateRequest)(nil),             // 6: api.v1.build.CreateRequest
-	(*CreateResponse)(nil),            // 7: api.v1.build.CreateResponse
-	(*ListRequest)(nil),               // 8: api.v1.build.ListRequest
-	(*ListResponse)(nil),              // 9: api.v1.build.ListResponse
-	(*DeleteRequest)(nil),             // 10: api.v1.build.DeleteRequest
-	(*DeleteResponse)(nil),            // 11: api.v1.build.DeleteResponse
-	(*GetRequest)(nil),                // 12: api.v1.build.GetRequest
-	(*GetResponse)(nil),               // 13: api.v1.build.GetResponse
-	nil,                               // 14: api.v1.build.CreateRequest.LabelsEntry
+var file_api_v1_image_service_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_api_v1_image_service_proto_goTypes = []interface{}{
+	(*GetImageInfoRequest)(nil),       // 0: api.v1.image.GetImageInfoRequest
+	(*GetImageInfoResponse)(nil),      // 1: api.v1.image.GetImageInfoResponse
+	(*ImageId)(nil),                   // 2: api.v1.image.ImageId
+	(*GetRepositoryInfoRequest)(nil),  // 3: api.v1.image.GetRepositoryInfoRequest
+	(*GetRepositoryInfoResponse)(nil), // 4: api.v1.image.GetRepositoryInfoResponse
+	(*Tag)(nil),                       // 5: api.v1.image.Tag
+	(*CreateRequest)(nil),             // 6: api.v1.image.CreateRequest
+	(*CreateResponse)(nil),            // 7: api.v1.image.CreateResponse
+	(*ListRequest)(nil),               // 8: api.v1.image.ListRequest
+	(*ListResponse)(nil),              // 9: api.v1.image.ListResponse
+	(*DeleteRequest)(nil),             // 10: api.v1.image.DeleteRequest
+	(*DeleteResponse)(nil),            // 11: api.v1.image.DeleteResponse
+	(*GetRequest)(nil),                // 12: api.v1.image.GetRequest
+	(*GetResponse)(nil),               // 13: api.v1.image.GetResponse
+	nil,                               // 14: api.v1.image.CreateRequest.LabelsEntry
 	(*timestamppb.Timestamp)(nil),     // 15: google.protobuf.Timestamp
 	(*capsule.Origin)(nil),            // 16: api.v1.capsule.Origin
 	(*model.Pagination)(nil),          // 17: model.Pagination
-	(*capsule.Build)(nil),             // 18: api.v1.capsule.Build
+	(*capsule.Image)(nil),             // 18: api.v1.capsule.Image
 }
-var file_api_v1_build_service_proto_depIdxs = []int32{
-	2,  // 0: api.v1.build.GetImageInfoResponse.image_id:type_name -> api.v1.build.ImageId
-	15, // 1: api.v1.build.GetImageInfoResponse.created_at:type_name -> google.protobuf.Timestamp
-	16, // 2: api.v1.build.GetImageInfoResponse.origin:type_name -> api.v1.capsule.Origin
-	5,  // 3: api.v1.build.GetRepositoryInfoResponse.tags:type_name -> api.v1.build.Tag
-	15, // 4: api.v1.build.Tag.image_created_at:type_name -> google.protobuf.Timestamp
-	16, // 5: api.v1.build.CreateRequest.origin:type_name -> api.v1.capsule.Origin
-	14, // 6: api.v1.build.CreateRequest.labels:type_name -> api.v1.build.CreateRequest.LabelsEntry
-	17, // 7: api.v1.build.ListRequest.pagination:type_name -> model.Pagination
-	18, // 8: api.v1.build.ListResponse.builds:type_name -> api.v1.capsule.Build
-	18, // 9: api.v1.build.GetResponse.build:type_name -> api.v1.capsule.Build
-	0,  // 10: api.v1.build.Service.GetImageInfo:input_type -> api.v1.build.GetImageInfoRequest
-	3,  // 11: api.v1.build.Service.GetRepositoryInfo:input_type -> api.v1.build.GetRepositoryInfoRequest
-	12, // 12: api.v1.build.Service.Get:input_type -> api.v1.build.GetRequest
-	6,  // 13: api.v1.build.Service.Create:input_type -> api.v1.build.CreateRequest
-	8,  // 14: api.v1.build.Service.List:input_type -> api.v1.build.ListRequest
-	10, // 15: api.v1.build.Service.Delete:input_type -> api.v1.build.DeleteRequest
-	1,  // 16: api.v1.build.Service.GetImageInfo:output_type -> api.v1.build.GetImageInfoResponse
-	4,  // 17: api.v1.build.Service.GetRepositoryInfo:output_type -> api.v1.build.GetRepositoryInfoResponse
-	13, // 18: api.v1.build.Service.Get:output_type -> api.v1.build.GetResponse
-	7,  // 19: api.v1.build.Service.Create:output_type -> api.v1.build.CreateResponse
-	9,  // 20: api.v1.build.Service.List:output_type -> api.v1.build.ListResponse
-	11, // 21: api.v1.build.Service.Delete:output_type -> api.v1.build.DeleteResponse
+var file_api_v1_image_service_proto_depIdxs = []int32{
+	2,  // 0: api.v1.image.GetImageInfoResponse.image_id:type_name -> api.v1.image.ImageId
+	15, // 1: api.v1.image.GetImageInfoResponse.created_at:type_name -> google.protobuf.Timestamp
+	16, // 2: api.v1.image.GetImageInfoResponse.origin:type_name -> api.v1.capsule.Origin
+	5,  // 3: api.v1.image.GetRepositoryInfoResponse.tags:type_name -> api.v1.image.Tag
+	15, // 4: api.v1.image.Tag.image_created_at:type_name -> google.protobuf.Timestamp
+	16, // 5: api.v1.image.CreateRequest.origin:type_name -> api.v1.capsule.Origin
+	14, // 6: api.v1.image.CreateRequest.labels:type_name -> api.v1.image.CreateRequest.LabelsEntry
+	17, // 7: api.v1.image.ListRequest.pagination:type_name -> model.Pagination
+	18, // 8: api.v1.image.ListResponse.images:type_name -> api.v1.capsule.Image
+	18, // 9: api.v1.image.GetResponse.image:type_name -> api.v1.capsule.Image
+	0,  // 10: api.v1.image.Service.GetImageInfo:input_type -> api.v1.image.GetImageInfoRequest
+	3,  // 11: api.v1.image.Service.GetRepositoryInfo:input_type -> api.v1.image.GetRepositoryInfoRequest
+	12, // 12: api.v1.image.Service.Get:input_type -> api.v1.image.GetRequest
+	6,  // 13: api.v1.image.Service.Create:input_type -> api.v1.image.CreateRequest
+	8,  // 14: api.v1.image.Service.List:input_type -> api.v1.image.ListRequest
+	10, // 15: api.v1.image.Service.Delete:input_type -> api.v1.image.DeleteRequest
+	1,  // 16: api.v1.image.Service.GetImageInfo:output_type -> api.v1.image.GetImageInfoResponse
+	4,  // 17: api.v1.image.Service.GetRepositoryInfo:output_type -> api.v1.image.GetRepositoryInfoResponse
+	13, // 18: api.v1.image.Service.Get:output_type -> api.v1.image.GetResponse
+	7,  // 19: api.v1.image.Service.Create:output_type -> api.v1.image.CreateResponse
+	9,  // 20: api.v1.image.Service.List:output_type -> api.v1.image.ListResponse
+	11, // 21: api.v1.image.Service.Delete:output_type -> api.v1.image.DeleteResponse
 	16, // [16:22] is the sub-list for method output_type
 	10, // [10:16] is the sub-list for method input_type
 	10, // [10:10] is the sub-list for extension type_name
@@ -1111,13 +1111,13 @@ var file_api_v1_build_service_proto_depIdxs = []int32{
 	0,  // [0:10] is the sub-list for field type_name
 }
 
-func init() { file_api_v1_build_service_proto_init() }
-func file_api_v1_build_service_proto_init() {
-	if File_api_v1_build_service_proto != nil {
+func init() { file_api_v1_image_service_proto_init() }
+func file_api_v1_image_service_proto_init() {
+	if File_api_v1_image_service_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_api_v1_build_service_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetImageInfoRequest); i {
 			case 0:
 				return &v.state
@@ -1129,7 +1129,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetImageInfoResponse); i {
 			case 0:
 				return &v.state
@@ -1141,7 +1141,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ImageId); i {
 			case 0:
 				return &v.state
@@ -1153,7 +1153,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetRepositoryInfoRequest); i {
 			case 0:
 				return &v.state
@@ -1165,7 +1165,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetRepositoryInfoResponse); i {
 			case 0:
 				return &v.state
@@ -1177,7 +1177,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Tag); i {
 			case 0:
 				return &v.state
@@ -1189,7 +1189,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateRequest); i {
 			case 0:
 				return &v.state
@@ -1201,7 +1201,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateResponse); i {
 			case 0:
 				return &v.state
@@ -1213,7 +1213,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListRequest); i {
 			case 0:
 				return &v.state
@@ -1225,7 +1225,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListResponse); i {
 			case 0:
 				return &v.state
@@ -1237,7 +1237,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteRequest); i {
 			case 0:
 				return &v.state
@@ -1249,7 +1249,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteResponse); i {
 			case 0:
 				return &v.state
@@ -1261,7 +1261,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetRequest); i {
 			case 0:
 				return &v.state
@@ -1273,7 +1273,7 @@ func file_api_v1_build_service_proto_init() {
 				return nil
 			}
 		}
-		file_api_v1_build_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_api_v1_image_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetResponse); i {
 			case 0:
 				return &v.state
@@ -1290,18 +1290,18 @@ func file_api_v1_build_service_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_api_v1_build_service_proto_rawDesc,
+			RawDescriptor: file_api_v1_image_service_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_api_v1_build_service_proto_goTypes,
-		DependencyIndexes: file_api_v1_build_service_proto_depIdxs,
-		MessageInfos:      file_api_v1_build_service_proto_msgTypes,
+		GoTypes:           file_api_v1_image_service_proto_goTypes,
+		DependencyIndexes: file_api_v1_image_service_proto_depIdxs,
+		MessageInfos:      file_api_v1_image_service_proto_msgTypes,
 	}.Build()
-	File_api_v1_build_service_proto = out.File
-	file_api_v1_build_service_proto_rawDesc = nil
-	file_api_v1_build_service_proto_goTypes = nil
-	file_api_v1_build_service_proto_depIdxs = nil
+	File_api_v1_image_service_proto = out.File
+	file_api_v1_image_service_proto_rawDesc = nil
+	file_api_v1_image_service_proto_goTypes = nil
+	file_api_v1_image_service_proto_depIdxs = nil
 }
