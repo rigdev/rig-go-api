@@ -24,10 +24,10 @@ type ServiceClient interface {
 	GetRepositoryInfo(ctx context.Context, in *GetRepositoryInfoRequest, opts ...grpc.CallOption) (*GetRepositoryInfoResponse, error)
 	// Get a image.
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
-	// Create a new image.
-	// Images are immutable and cannot change. Create a new image to make
+	// Add a new image.
+	// Images are immutable and cannot change. Add a new image to make
 	// changes from an existing one.
-	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
 	// List images for a capsule.
 	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
 	// Delete a image.
@@ -69,9 +69,9 @@ func (c *serviceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *serviceClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
-	out := new(CreateResponse)
-	err := c.cc.Invoke(ctx, "/api.v1.image.Service/Create", in, out, opts...)
+func (c *serviceClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error) {
+	out := new(AddResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.image.Service/Add", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -106,10 +106,10 @@ type ServiceServer interface {
 	GetRepositoryInfo(context.Context, *GetRepositoryInfoRequest) (*GetRepositoryInfoResponse, error)
 	// Get a image.
 	Get(context.Context, *GetRequest) (*GetResponse, error)
-	// Create a new image.
-	// Images are immutable and cannot change. Create a new image to make
+	// Add a new image.
+	// Images are immutable and cannot change. Add a new image to make
 	// changes from an existing one.
-	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+	Add(context.Context, *AddRequest) (*AddResponse, error)
 	// List images for a capsule.
 	List(context.Context, *ListRequest) (*ListResponse, error)
 	// Delete a image.
@@ -130,8 +130,8 @@ func (UnimplementedServiceServer) GetRepositoryInfo(context.Context, *GetReposit
 func (UnimplementedServiceServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedServiceServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+func (UnimplementedServiceServer) Add(context.Context, *AddRequest) (*AddResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
 func (UnimplementedServiceServer) List(context.Context, *ListRequest) (*ListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
@@ -206,20 +206,20 @@ func _Service_Get_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Service_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateRequest)
+func _Service_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ServiceServer).Create(ctx, in)
+		return srv.(ServiceServer).Add(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.v1.image.Service/Create",
+		FullMethod: "/api.v1.image.Service/Add",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServiceServer).Create(ctx, req.(*CreateRequest))
+		return srv.(ServiceServer).Add(ctx, req.(*AddRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -280,8 +280,8 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Service_Get_Handler,
 		},
 		{
-			MethodName: "Create",
-			Handler:    _Service_Create_Handler,
+			MethodName: "Add",
+			Handler:    _Service_Add_Handler,
 		},
 		{
 			MethodName: "List",

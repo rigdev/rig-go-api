@@ -40,8 +40,8 @@ const (
 	ServiceGetRepositoryInfoProcedure = "/api.v1.image.Service/GetRepositoryInfo"
 	// ServiceGetProcedure is the fully-qualified name of the Service's Get RPC.
 	ServiceGetProcedure = "/api.v1.image.Service/Get"
-	// ServiceCreateProcedure is the fully-qualified name of the Service's Create RPC.
-	ServiceCreateProcedure = "/api.v1.image.Service/Create"
+	// ServiceAddProcedure is the fully-qualified name of the Service's Add RPC.
+	ServiceAddProcedure = "/api.v1.image.Service/Add"
 	// ServiceListProcedure is the fully-qualified name of the Service's List RPC.
 	ServiceListProcedure = "/api.v1.image.Service/List"
 	// ServiceDeleteProcedure is the fully-qualified name of the Service's Delete RPC.
@@ -54,7 +54,7 @@ var (
 	serviceGetImageInfoMethodDescriptor      = serviceServiceDescriptor.Methods().ByName("GetImageInfo")
 	serviceGetRepositoryInfoMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetRepositoryInfo")
 	serviceGetMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("Get")
-	serviceCreateMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceAddMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("Add")
 	serviceListMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("List")
 	serviceDeleteMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("Delete")
 )
@@ -67,10 +67,10 @@ type ServiceClient interface {
 	GetRepositoryInfo(context.Context, *connect.Request[image.GetRepositoryInfoRequest]) (*connect.Response[image.GetRepositoryInfoResponse], error)
 	// Get a image.
 	Get(context.Context, *connect.Request[image.GetRequest]) (*connect.Response[image.GetResponse], error)
-	// Create a new image.
-	// Images are immutable and cannot change. Create a new image to make
+	// Add a new image.
+	// Images are immutable and cannot change. Add a new image to make
 	// changes from an existing one.
-	Create(context.Context, *connect.Request[image.CreateRequest]) (*connect.Response[image.CreateResponse], error)
+	Add(context.Context, *connect.Request[image.AddRequest]) (*connect.Response[image.AddResponse], error)
 	// List images for a capsule.
 	List(context.Context, *connect.Request[image.ListRequest]) (*connect.Response[image.ListResponse], error)
 	// Delete a image.
@@ -105,10 +105,10 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		create: connect.NewClient[image.CreateRequest, image.CreateResponse](
+		add: connect.NewClient[image.AddRequest, image.AddResponse](
 			httpClient,
-			baseURL+ServiceCreateProcedure,
-			connect.WithSchema(serviceCreateMethodDescriptor),
+			baseURL+ServiceAddProcedure,
+			connect.WithSchema(serviceAddMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		list: connect.NewClient[image.ListRequest, image.ListResponse](
@@ -131,7 +131,7 @@ type serviceClient struct {
 	getImageInfo      *connect.Client[image.GetImageInfoRequest, image.GetImageInfoResponse]
 	getRepositoryInfo *connect.Client[image.GetRepositoryInfoRequest, image.GetRepositoryInfoResponse]
 	get               *connect.Client[image.GetRequest, image.GetResponse]
-	create            *connect.Client[image.CreateRequest, image.CreateResponse]
+	add               *connect.Client[image.AddRequest, image.AddResponse]
 	list              *connect.Client[image.ListRequest, image.ListResponse]
 	delete            *connect.Client[image.DeleteRequest, image.DeleteResponse]
 }
@@ -151,9 +151,9 @@ func (c *serviceClient) Get(ctx context.Context, req *connect.Request[image.GetR
 	return c.get.CallUnary(ctx, req)
 }
 
-// Create calls api.v1.image.Service.Create.
-func (c *serviceClient) Create(ctx context.Context, req *connect.Request[image.CreateRequest]) (*connect.Response[image.CreateResponse], error) {
-	return c.create.CallUnary(ctx, req)
+// Add calls api.v1.image.Service.Add.
+func (c *serviceClient) Add(ctx context.Context, req *connect.Request[image.AddRequest]) (*connect.Response[image.AddResponse], error) {
+	return c.add.CallUnary(ctx, req)
 }
 
 // List calls api.v1.image.Service.List.
@@ -174,10 +174,10 @@ type ServiceHandler interface {
 	GetRepositoryInfo(context.Context, *connect.Request[image.GetRepositoryInfoRequest]) (*connect.Response[image.GetRepositoryInfoResponse], error)
 	// Get a image.
 	Get(context.Context, *connect.Request[image.GetRequest]) (*connect.Response[image.GetResponse], error)
-	// Create a new image.
-	// Images are immutable and cannot change. Create a new image to make
+	// Add a new image.
+	// Images are immutable and cannot change. Add a new image to make
 	// changes from an existing one.
-	Create(context.Context, *connect.Request[image.CreateRequest]) (*connect.Response[image.CreateResponse], error)
+	Add(context.Context, *connect.Request[image.AddRequest]) (*connect.Response[image.AddResponse], error)
 	// List images for a capsule.
 	List(context.Context, *connect.Request[image.ListRequest]) (*connect.Response[image.ListResponse], error)
 	// Delete a image.
@@ -208,10 +208,10 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	serviceCreateHandler := connect.NewUnaryHandler(
-		ServiceCreateProcedure,
-		svc.Create,
-		connect.WithSchema(serviceCreateMethodDescriptor),
+	serviceAddHandler := connect.NewUnaryHandler(
+		ServiceAddProcedure,
+		svc.Add,
+		connect.WithSchema(serviceAddMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	serviceListHandler := connect.NewUnaryHandler(
@@ -234,8 +234,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetRepositoryInfoHandler.ServeHTTP(w, r)
 		case ServiceGetProcedure:
 			serviceGetHandler.ServeHTTP(w, r)
-		case ServiceCreateProcedure:
-			serviceCreateHandler.ServeHTTP(w, r)
+		case ServiceAddProcedure:
+			serviceAddHandler.ServeHTTP(w, r)
 		case ServiceListProcedure:
 			serviceListHandler.ServeHTTP(w, r)
 		case ServiceDeleteProcedure:
@@ -261,8 +261,8 @@ func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[image.G
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.image.Service.Get is not implemented"))
 }
 
-func (UnimplementedServiceHandler) Create(context.Context, *connect.Request[image.CreateRequest]) (*connect.Response[image.CreateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.image.Service.Create is not implemented"))
+func (UnimplementedServiceHandler) Add(context.Context, *connect.Request[image.AddRequest]) (*connect.Response[image.AddResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.image.Service.Add is not implemented"))
 }
 
 func (UnimplementedServiceHandler) List(context.Context, *connect.Request[image.ListRequest]) (*connect.Response[image.ListResponse], error) {
