@@ -142,6 +142,8 @@ var PluginService_ServiceDesc = grpc.ServiceDesc{
 type RequestServiceClient interface {
 	GetObject(ctx context.Context, in *GetObjectRequest, opts ...grpc.CallOption) (*GetObjectResponse, error)
 	SetObject(ctx context.Context, in *SetObjectRequest, opts ...grpc.CallOption) (*SetObjectResponse, error)
+	DeleteObject(ctx context.Context, in *DeleteObjectRequest, opts ...grpc.CallOption) (*DeleteObjectResponse, error)
+	MarkUsedObject(ctx context.Context, in *MarkUsedObjectRequest, opts ...grpc.CallOption) (*MarkUsedObjectResponse, error)
 }
 
 type requestServiceClient struct {
@@ -170,12 +172,32 @@ func (c *requestServiceClient) SetObject(ctx context.Context, in *SetObjectReque
 	return out, nil
 }
 
+func (c *requestServiceClient) DeleteObject(ctx context.Context, in *DeleteObjectRequest, opts ...grpc.CallOption) (*DeleteObjectResponse, error) {
+	out := new(DeleteObjectResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.plugin.RequestService/DeleteObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *requestServiceClient) MarkUsedObject(ctx context.Context, in *MarkUsedObjectRequest, opts ...grpc.CallOption) (*MarkUsedObjectResponse, error) {
+	out := new(MarkUsedObjectResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.plugin.RequestService/MarkUsedObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RequestServiceServer is the server API for RequestService service.
 // All implementations must embed UnimplementedRequestServiceServer
 // for forward compatibility
 type RequestServiceServer interface {
 	GetObject(context.Context, *GetObjectRequest) (*GetObjectResponse, error)
 	SetObject(context.Context, *SetObjectRequest) (*SetObjectResponse, error)
+	DeleteObject(context.Context, *DeleteObjectRequest) (*DeleteObjectResponse, error)
+	MarkUsedObject(context.Context, *MarkUsedObjectRequest) (*MarkUsedObjectResponse, error)
 	mustEmbedUnimplementedRequestServiceServer()
 }
 
@@ -188,6 +210,12 @@ func (UnimplementedRequestServiceServer) GetObject(context.Context, *GetObjectRe
 }
 func (UnimplementedRequestServiceServer) SetObject(context.Context, *SetObjectRequest) (*SetObjectResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetObject not implemented")
+}
+func (UnimplementedRequestServiceServer) DeleteObject(context.Context, *DeleteObjectRequest) (*DeleteObjectResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteObject not implemented")
+}
+func (UnimplementedRequestServiceServer) MarkUsedObject(context.Context, *MarkUsedObjectRequest) (*MarkUsedObjectResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MarkUsedObject not implemented")
 }
 func (UnimplementedRequestServiceServer) mustEmbedUnimplementedRequestServiceServer() {}
 
@@ -238,6 +266,42 @@ func _RequestService_SetObject_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RequestService_DeleteObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RequestServiceServer).DeleteObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.plugin.RequestService/DeleteObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RequestServiceServer).DeleteObject(ctx, req.(*DeleteObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RequestService_MarkUsedObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MarkUsedObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RequestServiceServer).MarkUsedObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.plugin.RequestService/MarkUsedObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RequestServiceServer).MarkUsedObject(ctx, req.(*MarkUsedObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RequestService_ServiceDesc is the grpc.ServiceDesc for RequestService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -252,6 +316,14 @@ var RequestService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetObject",
 			Handler:    _RequestService_SetObject_Handler,
+		},
+		{
+			MethodName: "DeleteObject",
+			Handler:    _RequestService_DeleteObject_Handler,
+		},
+		{
+			MethodName: "MarkUsedObject",
+			Handler:    _RequestService_MarkUsedObject_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
