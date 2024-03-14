@@ -33,6 +33,12 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// ServiceCreateProcedure is the fully-qualified name of the Service's Create RPC.
+	ServiceCreateProcedure = "/api.v1.environment.Service/Create"
+	// ServiceUpdateProcedure is the fully-qualified name of the Service's Update RPC.
+	ServiceUpdateProcedure = "/api.v1.environment.Service/Update"
+	// ServiceDeleteProcedure is the fully-qualified name of the Service's Delete RPC.
+	ServiceDeleteProcedure = "/api.v1.environment.Service/Delete"
 	// ServiceListProcedure is the fully-qualified name of the Service's List RPC.
 	ServiceListProcedure = "/api.v1.environment.Service/List"
 	// ServiceGetNamespacesProcedure is the fully-qualified name of the Service's GetNamespaces RPC.
@@ -42,12 +48,18 @@ const (
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
 	serviceServiceDescriptor             = environment.File_api_v1_environment_service_proto.Services().ByName("Service")
+	serviceCreateMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceUpdateMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Update")
+	serviceDeleteMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Delete")
 	serviceListMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("List")
 	serviceGetNamespacesMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetNamespaces")
 )
 
 // ServiceClient is a client for the api.v1.environment.Service service.
 type ServiceClient interface {
+	Create(context.Context, *connect.Request[environment.CreateRequest]) (*connect.Response[environment.CreateResponse], error)
+	Update(context.Context, *connect.Request[environment.UpdateRequest]) (*connect.Response[environment.UpdateResponse], error)
+	Delete(context.Context, *connect.Request[environment.DeleteRequest]) (*connect.Response[environment.DeleteResponse], error)
 	// List available environments.
 	List(context.Context, *connect.Request[environment.ListRequest]) (*connect.Response[environment.ListResponse], error)
 	GetNamespaces(context.Context, *connect.Request[environment.GetNamespacesRequest]) (*connect.Response[environment.GetNamespacesResponse], error)
@@ -63,6 +75,24 @@ type ServiceClient interface {
 func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
+		create: connect.NewClient[environment.CreateRequest, environment.CreateResponse](
+			httpClient,
+			baseURL+ServiceCreateProcedure,
+			connect.WithSchema(serviceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		update: connect.NewClient[environment.UpdateRequest, environment.UpdateResponse](
+			httpClient,
+			baseURL+ServiceUpdateProcedure,
+			connect.WithSchema(serviceUpdateMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		delete: connect.NewClient[environment.DeleteRequest, environment.DeleteResponse](
+			httpClient,
+			baseURL+ServiceDeleteProcedure,
+			connect.WithSchema(serviceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 		list: connect.NewClient[environment.ListRequest, environment.ListResponse](
 			httpClient,
 			baseURL+ServiceListProcedure,
@@ -80,8 +110,26 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
+	create        *connect.Client[environment.CreateRequest, environment.CreateResponse]
+	update        *connect.Client[environment.UpdateRequest, environment.UpdateResponse]
+	delete        *connect.Client[environment.DeleteRequest, environment.DeleteResponse]
 	list          *connect.Client[environment.ListRequest, environment.ListResponse]
 	getNamespaces *connect.Client[environment.GetNamespacesRequest, environment.GetNamespacesResponse]
+}
+
+// Create calls api.v1.environment.Service.Create.
+func (c *serviceClient) Create(ctx context.Context, req *connect.Request[environment.CreateRequest]) (*connect.Response[environment.CreateResponse], error) {
+	return c.create.CallUnary(ctx, req)
+}
+
+// Update calls api.v1.environment.Service.Update.
+func (c *serviceClient) Update(ctx context.Context, req *connect.Request[environment.UpdateRequest]) (*connect.Response[environment.UpdateResponse], error) {
+	return c.update.CallUnary(ctx, req)
+}
+
+// Delete calls api.v1.environment.Service.Delete.
+func (c *serviceClient) Delete(ctx context.Context, req *connect.Request[environment.DeleteRequest]) (*connect.Response[environment.DeleteResponse], error) {
+	return c.delete.CallUnary(ctx, req)
 }
 
 // List calls api.v1.environment.Service.List.
@@ -96,6 +144,9 @@ func (c *serviceClient) GetNamespaces(ctx context.Context, req *connect.Request[
 
 // ServiceHandler is an implementation of the api.v1.environment.Service service.
 type ServiceHandler interface {
+	Create(context.Context, *connect.Request[environment.CreateRequest]) (*connect.Response[environment.CreateResponse], error)
+	Update(context.Context, *connect.Request[environment.UpdateRequest]) (*connect.Response[environment.UpdateResponse], error)
+	Delete(context.Context, *connect.Request[environment.DeleteRequest]) (*connect.Response[environment.DeleteResponse], error)
 	// List available environments.
 	List(context.Context, *connect.Request[environment.ListRequest]) (*connect.Response[environment.ListResponse], error)
 	GetNamespaces(context.Context, *connect.Request[environment.GetNamespacesRequest]) (*connect.Response[environment.GetNamespacesResponse], error)
@@ -107,6 +158,24 @@ type ServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceCreateHandler := connect.NewUnaryHandler(
+		ServiceCreateProcedure,
+		svc.Create,
+		connect.WithSchema(serviceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceUpdateHandler := connect.NewUnaryHandler(
+		ServiceUpdateProcedure,
+		svc.Update,
+		connect.WithSchema(serviceUpdateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceDeleteHandler := connect.NewUnaryHandler(
+		ServiceDeleteProcedure,
+		svc.Delete,
+		connect.WithSchema(serviceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	serviceListHandler := connect.NewUnaryHandler(
 		ServiceListProcedure,
 		svc.List,
@@ -121,6 +190,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 	)
 	return "/api.v1.environment.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case ServiceCreateProcedure:
+			serviceCreateHandler.ServeHTTP(w, r)
+		case ServiceUpdateProcedure:
+			serviceUpdateHandler.ServeHTTP(w, r)
+		case ServiceDeleteProcedure:
+			serviceDeleteHandler.ServeHTTP(w, r)
 		case ServiceListProcedure:
 			serviceListHandler.ServeHTTP(w, r)
 		case ServiceGetNamespacesProcedure:
@@ -133,6 +208,18 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
+
+func (UnimplementedServiceHandler) Create(context.Context, *connect.Request[environment.CreateRequest]) (*connect.Response[environment.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.environment.Service.Create is not implemented"))
+}
+
+func (UnimplementedServiceHandler) Update(context.Context, *connect.Request[environment.UpdateRequest]) (*connect.Response[environment.UpdateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.environment.Service.Update is not implemented"))
+}
+
+func (UnimplementedServiceHandler) Delete(context.Context, *connect.Request[environment.DeleteRequest]) (*connect.Response[environment.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.environment.Service.Delete is not implemented"))
+}
 
 func (UnimplementedServiceHandler) List(context.Context, *connect.Request[environment.ListRequest]) (*connect.Response[environment.ListResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.environment.Service.List is not implemented"))
