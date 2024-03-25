@@ -3,7 +3,7 @@ module github.com/rigdev/rig-go-api
 go 1.20
 
 require (
-	connectrpc.com/connect v1.15.0
+	connectrpc.com/connect v1.16.0
 	google.golang.org/grpc v1.62.1
 	google.golang.org/protobuf v1.33.0
 )
