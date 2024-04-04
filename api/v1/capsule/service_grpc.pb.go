@@ -45,6 +45,8 @@ type ServiceClient interface {
 	ListRollouts(ctx context.Context, in *ListRolloutsRequest, opts ...grpc.CallOption) (*ListRolloutsResponse, error)
 	// Abort the rollout.
 	AbortRollout(ctx context.Context, in *AbortRolloutRequest, opts ...grpc.CallOption) (*AbortRolloutResponse, error)
+	// Stop a Rollout, removing all resources associated with it.
+	StopRollout(ctx context.Context, in *StopRolloutRequest, opts ...grpc.CallOption) (*StopRolloutResponse, error)
 	// List capsule events.
 	ListEvents(ctx context.Context, in *ListEventsRequest, opts ...grpc.CallOption) (*ListEventsResponse, error)
 	// Get metrics for a capsule
@@ -200,6 +202,15 @@ func (c *serviceClient) AbortRollout(ctx context.Context, in *AbortRolloutReques
 	return out, nil
 }
 
+func (c *serviceClient) StopRollout(ctx context.Context, in *StopRolloutRequest, opts ...grpc.CallOption) (*StopRolloutResponse, error) {
+	out := new(StopRolloutResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/StopRollout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *serviceClient) ListEvents(ctx context.Context, in *ListEventsRequest, opts ...grpc.CallOption) (*ListEventsResponse, error) {
 	out := new(ListEventsResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ListEvents", in, out, opts...)
@@ -316,6 +327,8 @@ type ServiceServer interface {
 	ListRollouts(context.Context, *ListRolloutsRequest) (*ListRolloutsResponse, error)
 	// Abort the rollout.
 	AbortRollout(context.Context, *AbortRolloutRequest) (*AbortRolloutResponse, error)
+	// Stop a Rollout, removing all resources associated with it.
+	StopRollout(context.Context, *StopRolloutRequest) (*StopRolloutResponse, error)
 	// List capsule events.
 	ListEvents(context.Context, *ListEventsRequest) (*ListEventsResponse, error)
 	// Get metrics for a capsule
@@ -372,6 +385,9 @@ func (UnimplementedServiceServer) ListRollouts(context.Context, *ListRolloutsReq
 }
 func (UnimplementedServiceServer) AbortRollout(context.Context, *AbortRolloutRequest) (*AbortRolloutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AbortRollout not implemented")
+}
+func (UnimplementedServiceServer) StopRollout(context.Context, *StopRolloutRequest) (*StopRolloutResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StopRollout not implemented")
 }
 func (UnimplementedServiceServer) ListEvents(context.Context, *ListEventsRequest) (*ListEventsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListEvents not implemented")
@@ -626,6 +642,24 @@ func _Service_AbortRollout_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_StopRollout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StopRolloutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).StopRollout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/StopRollout",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).StopRollout(ctx, req.(*StopRolloutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Service_ListEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListEventsRequest)
 	if err := dec(in); err != nil {
@@ -810,6 +844,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AbortRollout",
 			Handler:    _Service_AbortRollout_Handler,
+		},
+		{
+			MethodName: "StopRollout",
+			Handler:    _Service_StopRollout_Handler,
 		},
 		{
 			MethodName: "ListEvents",

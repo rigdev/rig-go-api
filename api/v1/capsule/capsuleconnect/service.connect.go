@@ -57,6 +57,8 @@ const (
 	ServiceListRolloutsProcedure = "/api.v1.capsule.Service/ListRollouts"
 	// ServiceAbortRolloutProcedure is the fully-qualified name of the Service's AbortRollout RPC.
 	ServiceAbortRolloutProcedure = "/api.v1.capsule.Service/AbortRollout"
+	// ServiceStopRolloutProcedure is the fully-qualified name of the Service's StopRollout RPC.
+	ServiceStopRolloutProcedure = "/api.v1.capsule.Service/StopRollout"
 	// ServiceListEventsProcedure is the fully-qualified name of the Service's ListEvents RPC.
 	ServiceListEventsProcedure = "/api.v1.capsule.Service/ListEvents"
 	// ServiceCapsuleMetricsProcedure is the fully-qualified name of the Service's CapsuleMetrics RPC.
@@ -92,6 +94,7 @@ var (
 	serviceGetRolloutMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("GetRollout")
 	serviceListRolloutsMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("ListRollouts")
 	serviceAbortRolloutMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("AbortRollout")
+	serviceStopRolloutMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("StopRollout")
 	serviceListEventsMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("ListEvents")
 	serviceCapsuleMetricsMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("CapsuleMetrics")
 	serviceGetInstanceStatusMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("GetInstanceStatus")
@@ -130,6 +133,8 @@ type ServiceClient interface {
 	ListRollouts(context.Context, *connect.Request[capsule.ListRolloutsRequest]) (*connect.Response[capsule.ListRolloutsResponse], error)
 	// Abort the rollout.
 	AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error)
+	// Stop a Rollout, removing all resources associated with it.
+	StopRollout(context.Context, *connect.Request[capsule.StopRolloutRequest]) (*connect.Response[capsule.StopRolloutResponse], error)
 	// List capsule events.
 	ListEvents(context.Context, *connect.Request[capsule.ListEventsRequest]) (*connect.Response[capsule.ListEventsResponse], error)
 	// Get metrics for a capsule
@@ -228,6 +233,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceAbortRolloutMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		stopRollout: connect.NewClient[capsule.StopRolloutRequest, capsule.StopRolloutResponse](
+			httpClient,
+			baseURL+ServiceStopRolloutProcedure,
+			connect.WithSchema(serviceStopRolloutMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 		listEvents: connect.NewClient[capsule.ListEventsRequest, capsule.ListEventsResponse](
 			httpClient,
 			baseURL+ServiceListEventsProcedure,
@@ -287,6 +298,7 @@ type serviceClient struct {
 	getRollout               *connect.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
 	listRollouts             *connect.Client[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse]
 	abortRollout             *connect.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
+	stopRollout              *connect.Client[capsule.StopRolloutRequest, capsule.StopRolloutResponse]
 	listEvents               *connect.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
 	capsuleMetrics           *connect.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
 	getInstanceStatus        *connect.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
@@ -356,6 +368,11 @@ func (c *serviceClient) AbortRollout(ctx context.Context, req *connect.Request[c
 	return c.abortRollout.CallUnary(ctx, req)
 }
 
+// StopRollout calls api.v1.capsule.Service.StopRollout.
+func (c *serviceClient) StopRollout(ctx context.Context, req *connect.Request[capsule.StopRolloutRequest]) (*connect.Response[capsule.StopRolloutResponse], error) {
+	return c.stopRollout.CallUnary(ctx, req)
+}
+
 // ListEvents calls api.v1.capsule.Service.ListEvents.
 func (c *serviceClient) ListEvents(ctx context.Context, req *connect.Request[capsule.ListEventsRequest]) (*connect.Response[capsule.ListEventsResponse], error) {
 	return c.listEvents.CallUnary(ctx, req)
@@ -420,6 +437,8 @@ type ServiceHandler interface {
 	ListRollouts(context.Context, *connect.Request[capsule.ListRolloutsRequest]) (*connect.Response[capsule.ListRolloutsResponse], error)
 	// Abort the rollout.
 	AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error)
+	// Stop a Rollout, removing all resources associated with it.
+	StopRollout(context.Context, *connect.Request[capsule.StopRolloutRequest]) (*connect.Response[capsule.StopRolloutResponse], error)
 	// List capsule events.
 	ListEvents(context.Context, *connect.Request[capsule.ListEventsRequest]) (*connect.Response[capsule.ListEventsResponse], error)
 	// Get metrics for a capsule
@@ -514,6 +533,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceAbortRolloutMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceStopRolloutHandler := connect.NewUnaryHandler(
+		ServiceStopRolloutProcedure,
+		svc.StopRollout,
+		connect.WithSchema(serviceStopRolloutMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	serviceListEventsHandler := connect.NewUnaryHandler(
 		ServiceListEventsProcedure,
 		svc.ListEvents,
@@ -582,6 +607,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceListRolloutsHandler.ServeHTTP(w, r)
 		case ServiceAbortRolloutProcedure:
 			serviceAbortRolloutHandler.ServeHTTP(w, r)
+		case ServiceStopRolloutProcedure:
+			serviceStopRolloutHandler.ServeHTTP(w, r)
 		case ServiceListEventsProcedure:
 			serviceListEventsHandler.ServeHTTP(w, r)
 		case ServiceCapsuleMetricsProcedure:
@@ -651,6 +678,10 @@ func (UnimplementedServiceHandler) ListRollouts(context.Context, *connect.Reques
 
 func (UnimplementedServiceHandler) AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.AbortRollout is not implemented"))
+}
+
+func (UnimplementedServiceHandler) StopRollout(context.Context, *connect.Request[capsule.StopRolloutRequest]) (*connect.Response[capsule.StopRolloutResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.StopRollout is not implemented"))
 }
 
 func (UnimplementedServiceHandler) ListEvents(context.Context, *connect.Request[capsule.ListEventsRequest]) (*connect.Response[capsule.ListEventsResponse], error) {
