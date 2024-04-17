@@ -53,6 +53,9 @@ const (
 	// RequestServiceMarkUsedObjectProcedure is the fully-qualified name of the RequestService's
 	// MarkUsedObject RPC.
 	RequestServiceMarkUsedObjectProcedure = "/api.v1.plugin.RequestService/MarkUsedObject"
+	// RequestServiceListObjectsProcedure is the fully-qualified name of the RequestService's
+	// ListObjects RPC.
+	RequestServiceListObjectsProcedure = "/api.v1.plugin.RequestService/ListObjects"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -65,6 +68,7 @@ var (
 	requestServiceSetObjectMethodDescriptor      = requestServiceServiceDescriptor.Methods().ByName("SetObject")
 	requestServiceDeleteObjectMethodDescriptor   = requestServiceServiceDescriptor.Methods().ByName("DeleteObject")
 	requestServiceMarkUsedObjectMethodDescriptor = requestServiceServiceDescriptor.Methods().ByName("MarkUsedObject")
+	requestServiceListObjectsMethodDescriptor    = requestServiceServiceDescriptor.Methods().ByName("ListObjects")
 )
 
 // PluginServiceClient is a client for the api.v1.plugin.PluginService service.
@@ -167,6 +171,7 @@ type RequestServiceClient interface {
 	SetObject(context.Context, *connect.Request[plugin.SetObjectRequest]) (*connect.Response[plugin.SetObjectResponse], error)
 	DeleteObject(context.Context, *connect.Request[plugin.DeleteObjectRequest]) (*connect.Response[plugin.DeleteObjectResponse], error)
 	MarkUsedObject(context.Context, *connect.Request[plugin.MarkUsedObjectRequest]) (*connect.Response[plugin.MarkUsedObjectResponse], error)
+	ListObjects(context.Context, *connect.Request[plugin.ListObjectsRequest]) (*connect.Response[plugin.ListObjectsResponse], error)
 }
 
 // NewRequestServiceClient constructs a client for the api.v1.plugin.RequestService service. By
@@ -203,6 +208,12 @@ func NewRequestServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(requestServiceMarkUsedObjectMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		listObjects: connect.NewClient[plugin.ListObjectsRequest, plugin.ListObjectsResponse](
+			httpClient,
+			baseURL+RequestServiceListObjectsProcedure,
+			connect.WithSchema(requestServiceListObjectsMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -212,6 +223,7 @@ type requestServiceClient struct {
 	setObject      *connect.Client[plugin.SetObjectRequest, plugin.SetObjectResponse]
 	deleteObject   *connect.Client[plugin.DeleteObjectRequest, plugin.DeleteObjectResponse]
 	markUsedObject *connect.Client[plugin.MarkUsedObjectRequest, plugin.MarkUsedObjectResponse]
+	listObjects    *connect.Client[plugin.ListObjectsRequest, plugin.ListObjectsResponse]
 }
 
 // GetObject calls api.v1.plugin.RequestService.GetObject.
@@ -234,12 +246,18 @@ func (c *requestServiceClient) MarkUsedObject(ctx context.Context, req *connect.
 	return c.markUsedObject.CallUnary(ctx, req)
 }
 
+// ListObjects calls api.v1.plugin.RequestService.ListObjects.
+func (c *requestServiceClient) ListObjects(ctx context.Context, req *connect.Request[plugin.ListObjectsRequest]) (*connect.Response[plugin.ListObjectsResponse], error) {
+	return c.listObjects.CallUnary(ctx, req)
+}
+
 // RequestServiceHandler is an implementation of the api.v1.plugin.RequestService service.
 type RequestServiceHandler interface {
 	GetObject(context.Context, *connect.Request[plugin.GetObjectRequest]) (*connect.Response[plugin.GetObjectResponse], error)
 	SetObject(context.Context, *connect.Request[plugin.SetObjectRequest]) (*connect.Response[plugin.SetObjectResponse], error)
 	DeleteObject(context.Context, *connect.Request[plugin.DeleteObjectRequest]) (*connect.Response[plugin.DeleteObjectResponse], error)
 	MarkUsedObject(context.Context, *connect.Request[plugin.MarkUsedObjectRequest]) (*connect.Response[plugin.MarkUsedObjectResponse], error)
+	ListObjects(context.Context, *connect.Request[plugin.ListObjectsRequest]) (*connect.Response[plugin.ListObjectsResponse], error)
 }
 
 // NewRequestServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -272,6 +290,12 @@ func NewRequestServiceHandler(svc RequestServiceHandler, opts ...connect.Handler
 		connect.WithSchema(requestServiceMarkUsedObjectMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	requestServiceListObjectsHandler := connect.NewUnaryHandler(
+		RequestServiceListObjectsProcedure,
+		svc.ListObjects,
+		connect.WithSchema(requestServiceListObjectsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.plugin.RequestService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case RequestServiceGetObjectProcedure:
@@ -282,6 +306,8 @@ func NewRequestServiceHandler(svc RequestServiceHandler, opts ...connect.Handler
 			requestServiceDeleteObjectHandler.ServeHTTP(w, r)
 		case RequestServiceMarkUsedObjectProcedure:
 			requestServiceMarkUsedObjectHandler.ServeHTTP(w, r)
+		case RequestServiceListObjectsProcedure:
+			requestServiceListObjectsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -305,4 +331,8 @@ func (UnimplementedRequestServiceHandler) DeleteObject(context.Context, *connect
 
 func (UnimplementedRequestServiceHandler) MarkUsedObject(context.Context, *connect.Request[plugin.MarkUsedObjectRequest]) (*connect.Response[plugin.MarkUsedObjectResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.plugin.RequestService.MarkUsedObject is not implemented"))
+}
+
+func (UnimplementedRequestServiceHandler) ListObjects(context.Context, *connect.Request[plugin.ListObjectsRequest]) (*connect.Response[plugin.ListObjectsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.plugin.RequestService.ListObjects is not implemented"))
 }
