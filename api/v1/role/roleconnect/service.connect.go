@@ -47,18 +47,21 @@ const (
 	ServiceAssignProcedure = "/api.v1.role.Service/Assign"
 	// ServiceRevokeProcedure is the fully-qualified name of the Service's Revoke RPC.
 	ServiceRevokeProcedure = "/api.v1.role.Service/Revoke"
+	// ServiceListForEntityProcedure is the fully-qualified name of the Service's ListForEntity RPC.
+	ServiceListForEntityProcedure = "/api.v1.role.Service/ListForEntity"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor      = role.File_api_v1_role_service_proto.Services().ByName("Service")
-	serviceCreateMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Create")
-	serviceDeleteMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Delete")
-	serviceListMethodDescriptor   = serviceServiceDescriptor.Methods().ByName("List")
-	serviceUpdateMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Update")
-	serviceGetMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("Get")
-	serviceAssignMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Assign")
-	serviceRevokeMethodDescriptor = serviceServiceDescriptor.Methods().ByName("Revoke")
+	serviceServiceDescriptor             = role.File_api_v1_role_service_proto.Services().ByName("Service")
+	serviceCreateMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceDeleteMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Delete")
+	serviceListMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("List")
+	serviceUpdateMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Update")
+	serviceGetMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceAssignMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Assign")
+	serviceRevokeMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Revoke")
+	serviceListForEntityMethodDescriptor = serviceServiceDescriptor.Methods().ByName("ListForEntity")
 )
 
 // ServiceClient is a client for the api.v1.role.Service service.
@@ -77,6 +80,8 @@ type ServiceClient interface {
 	Assign(context.Context, *connect.Request[role.AssignRequest]) (*connect.Response[role.AssignResponse], error)
 	// Revoke a role.
 	Revoke(context.Context, *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error)
+	// List roles for an entity.
+	ListForEntity(context.Context, *connect.Request[role.ListForEntityRequest]) (*connect.Response[role.ListForEntityResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.role.Service service. By default, it uses the
@@ -131,18 +136,25 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceRevokeMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		listForEntity: connect.NewClient[role.ListForEntityRequest, role.ListForEntityResponse](
+			httpClient,
+			baseURL+ServiceListForEntityProcedure,
+			connect.WithSchema(serviceListForEntityMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create *connect.Client[role.CreateRequest, role.CreateResponse]
-	delete *connect.Client[role.DeleteRequest, role.DeleteResponse]
-	list   *connect.Client[role.ListRequest, role.ListResponse]
-	update *connect.Client[role.UpdateRequest, role.UpdateResponse]
-	get    *connect.Client[role.GetRequest, role.GetResponse]
-	assign *connect.Client[role.AssignRequest, role.AssignResponse]
-	revoke *connect.Client[role.RevokeRequest, role.RevokeResponse]
+	create        *connect.Client[role.CreateRequest, role.CreateResponse]
+	delete        *connect.Client[role.DeleteRequest, role.DeleteResponse]
+	list          *connect.Client[role.ListRequest, role.ListResponse]
+	update        *connect.Client[role.UpdateRequest, role.UpdateResponse]
+	get           *connect.Client[role.GetRequest, role.GetResponse]
+	assign        *connect.Client[role.AssignRequest, role.AssignResponse]
+	revoke        *connect.Client[role.RevokeRequest, role.RevokeResponse]
+	listForEntity *connect.Client[role.ListForEntityRequest, role.ListForEntityResponse]
 }
 
 // Create calls api.v1.role.Service.Create.
@@ -180,6 +192,11 @@ func (c *serviceClient) Revoke(ctx context.Context, req *connect.Request[role.Re
 	return c.revoke.CallUnary(ctx, req)
 }
 
+// ListForEntity calls api.v1.role.Service.ListForEntity.
+func (c *serviceClient) ListForEntity(ctx context.Context, req *connect.Request[role.ListForEntityRequest]) (*connect.Response[role.ListForEntityResponse], error) {
+	return c.listForEntity.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.role.Service service.
 type ServiceHandler interface {
 	// Create a new role.
@@ -196,6 +213,8 @@ type ServiceHandler interface {
 	Assign(context.Context, *connect.Request[role.AssignRequest]) (*connect.Response[role.AssignResponse], error)
 	// Revoke a role.
 	Revoke(context.Context, *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error)
+	// List roles for an entity.
+	ListForEntity(context.Context, *connect.Request[role.ListForEntityRequest]) (*connect.Response[role.ListForEntityResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -246,6 +265,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceRevokeMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceListForEntityHandler := connect.NewUnaryHandler(
+		ServiceListForEntityProcedure,
+		svc.ListForEntity,
+		connect.WithSchema(serviceListForEntityMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.role.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -262,6 +287,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceAssignHandler.ServeHTTP(w, r)
 		case ServiceRevokeProcedure:
 			serviceRevokeHandler.ServeHTTP(w, r)
+		case ServiceListForEntityProcedure:
+			serviceListForEntityHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -297,4 +324,8 @@ func (UnimplementedServiceHandler) Assign(context.Context, *connect.Request[role
 
 func (UnimplementedServiceHandler) Revoke(context.Context, *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.Revoke is not implemented"))
+}
+
+func (UnimplementedServiceHandler) ListForEntity(context.Context, *connect.Request[role.ListForEntityRequest]) (*connect.Response[role.ListForEntityResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.ListForEntity is not implemented"))
 }
