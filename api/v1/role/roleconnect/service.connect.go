@@ -49,6 +49,8 @@ const (
 	ServiceRevokeProcedure = "/api.v1.role.Service/Revoke"
 	// ServiceListForEntityProcedure is the fully-qualified name of the Service's ListForEntity RPC.
 	ServiceListForEntityProcedure = "/api.v1.role.Service/ListForEntity"
+	// ServiceListAssigneesProcedure is the fully-qualified name of the Service's ListAssignees RPC.
+	ServiceListAssigneesProcedure = "/api.v1.role.Service/ListAssignees"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -62,6 +64,7 @@ var (
 	serviceAssignMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Assign")
 	serviceRevokeMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Revoke")
 	serviceListForEntityMethodDescriptor = serviceServiceDescriptor.Methods().ByName("ListForEntity")
+	serviceListAssigneesMethodDescriptor = serviceServiceDescriptor.Methods().ByName("ListAssignees")
 )
 
 // ServiceClient is a client for the api.v1.role.Service service.
@@ -82,6 +85,8 @@ type ServiceClient interface {
 	Revoke(context.Context, *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error)
 	// List roles for an entity.
 	ListForEntity(context.Context, *connect.Request[role.ListForEntityRequest]) (*connect.Response[role.ListForEntityResponse], error)
+	// List Assignees.
+	ListAssignees(context.Context, *connect.Request[role.ListAssigneesRequest]) (*connect.Response[role.ListAssigneesResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.role.Service service. By default, it uses the
@@ -142,6 +147,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceListForEntityMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		listAssignees: connect.NewClient[role.ListAssigneesRequest, role.ListAssigneesResponse](
+			httpClient,
+			baseURL+ServiceListAssigneesProcedure,
+			connect.WithSchema(serviceListAssigneesMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -155,6 +166,7 @@ type serviceClient struct {
 	assign        *connect.Client[role.AssignRequest, role.AssignResponse]
 	revoke        *connect.Client[role.RevokeRequest, role.RevokeResponse]
 	listForEntity *connect.Client[role.ListForEntityRequest, role.ListForEntityResponse]
+	listAssignees *connect.Client[role.ListAssigneesRequest, role.ListAssigneesResponse]
 }
 
 // Create calls api.v1.role.Service.Create.
@@ -197,6 +209,11 @@ func (c *serviceClient) ListForEntity(ctx context.Context, req *connect.Request[
 	return c.listForEntity.CallUnary(ctx, req)
 }
 
+// ListAssignees calls api.v1.role.Service.ListAssignees.
+func (c *serviceClient) ListAssignees(ctx context.Context, req *connect.Request[role.ListAssigneesRequest]) (*connect.Response[role.ListAssigneesResponse], error) {
+	return c.listAssignees.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.role.Service service.
 type ServiceHandler interface {
 	// Create a new role.
@@ -215,6 +232,8 @@ type ServiceHandler interface {
 	Revoke(context.Context, *connect.Request[role.RevokeRequest]) (*connect.Response[role.RevokeResponse], error)
 	// List roles for an entity.
 	ListForEntity(context.Context, *connect.Request[role.ListForEntityRequest]) (*connect.Response[role.ListForEntityResponse], error)
+	// List Assignees.
+	ListAssignees(context.Context, *connect.Request[role.ListAssigneesRequest]) (*connect.Response[role.ListAssigneesResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -271,6 +290,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceListForEntityMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceListAssigneesHandler := connect.NewUnaryHandler(
+		ServiceListAssigneesProcedure,
+		svc.ListAssignees,
+		connect.WithSchema(serviceListAssigneesMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.role.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -289,6 +314,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceRevokeHandler.ServeHTTP(w, r)
 		case ServiceListForEntityProcedure:
 			serviceListForEntityHandler.ServeHTTP(w, r)
+		case ServiceListAssigneesProcedure:
+			serviceListAssigneesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -328,4 +355,8 @@ func (UnimplementedServiceHandler) Revoke(context.Context, *connect.Request[role
 
 func (UnimplementedServiceHandler) ListForEntity(context.Context, *connect.Request[role.ListForEntityRequest]) (*connect.Response[role.ListForEntityResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.ListForEntity is not implemented"))
+}
+
+func (UnimplementedServiceHandler) ListAssignees(context.Context, *connect.Request[role.ListAssigneesRequest]) (*connect.Response[role.ListAssigneesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.role.Service.ListAssignees is not implemented"))
 }
