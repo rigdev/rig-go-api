@@ -41,6 +41,9 @@ const (
 	// PluginServiceRunCapsuleProcedure is the fully-qualified name of the PluginService's RunCapsule
 	// RPC.
 	PluginServiceRunCapsuleProcedure = "/api.v1.plugin.PluginService/RunCapsule"
+	// PluginServiceWatchObjectStatusProcedure is the fully-qualified name of the PluginService's
+	// WatchObjectStatus RPC.
+	PluginServiceWatchObjectStatusProcedure = "/api.v1.plugin.PluginService/WatchObjectStatus"
 	// RequestServiceGetObjectProcedure is the fully-qualified name of the RequestService's GetObject
 	// RPC.
 	RequestServiceGetObjectProcedure = "/api.v1.plugin.RequestService/GetObject"
@@ -60,21 +63,23 @@ const (
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	pluginServiceServiceDescriptor               = plugin.File_operator_api_v1_plugin_service_proto.Services().ByName("PluginService")
-	pluginServiceInitializeMethodDescriptor      = pluginServiceServiceDescriptor.Methods().ByName("Initialize")
-	pluginServiceRunCapsuleMethodDescriptor      = pluginServiceServiceDescriptor.Methods().ByName("RunCapsule")
-	requestServiceServiceDescriptor              = plugin.File_operator_api_v1_plugin_service_proto.Services().ByName("RequestService")
-	requestServiceGetObjectMethodDescriptor      = requestServiceServiceDescriptor.Methods().ByName("GetObject")
-	requestServiceSetObjectMethodDescriptor      = requestServiceServiceDescriptor.Methods().ByName("SetObject")
-	requestServiceDeleteObjectMethodDescriptor   = requestServiceServiceDescriptor.Methods().ByName("DeleteObject")
-	requestServiceMarkUsedObjectMethodDescriptor = requestServiceServiceDescriptor.Methods().ByName("MarkUsedObject")
-	requestServiceListObjectsMethodDescriptor    = requestServiceServiceDescriptor.Methods().ByName("ListObjects")
+	pluginServiceServiceDescriptor                 = plugin.File_operator_api_v1_plugin_service_proto.Services().ByName("PluginService")
+	pluginServiceInitializeMethodDescriptor        = pluginServiceServiceDescriptor.Methods().ByName("Initialize")
+	pluginServiceRunCapsuleMethodDescriptor        = pluginServiceServiceDescriptor.Methods().ByName("RunCapsule")
+	pluginServiceWatchObjectStatusMethodDescriptor = pluginServiceServiceDescriptor.Methods().ByName("WatchObjectStatus")
+	requestServiceServiceDescriptor                = plugin.File_operator_api_v1_plugin_service_proto.Services().ByName("RequestService")
+	requestServiceGetObjectMethodDescriptor        = requestServiceServiceDescriptor.Methods().ByName("GetObject")
+	requestServiceSetObjectMethodDescriptor        = requestServiceServiceDescriptor.Methods().ByName("SetObject")
+	requestServiceDeleteObjectMethodDescriptor     = requestServiceServiceDescriptor.Methods().ByName("DeleteObject")
+	requestServiceMarkUsedObjectMethodDescriptor   = requestServiceServiceDescriptor.Methods().ByName("MarkUsedObject")
+	requestServiceListObjectsMethodDescriptor      = requestServiceServiceDescriptor.Methods().ByName("ListObjects")
 )
 
 // PluginServiceClient is a client for the api.v1.plugin.PluginService service.
 type PluginServiceClient interface {
 	Initialize(context.Context, *connect.Request[plugin.InitializeRequest]) (*connect.Response[plugin.InitializeResponse], error)
 	RunCapsule(context.Context, *connect.Request[plugin.RunCapsuleRequest]) (*connect.Response[plugin.RunCapsuleResponse], error)
+	WatchObjectStatus(context.Context, *connect.Request[plugin.WatchObjectStatusRequest]) (*connect.ServerStreamForClient[plugin.WatchObjectStatusResponse], error)
 }
 
 // NewPluginServiceClient constructs a client for the api.v1.plugin.PluginService service. By
@@ -99,13 +104,20 @@ func NewPluginServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(pluginServiceRunCapsuleMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		watchObjectStatus: connect.NewClient[plugin.WatchObjectStatusRequest, plugin.WatchObjectStatusResponse](
+			httpClient,
+			baseURL+PluginServiceWatchObjectStatusProcedure,
+			connect.WithSchema(pluginServiceWatchObjectStatusMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // pluginServiceClient implements PluginServiceClient.
 type pluginServiceClient struct {
-	initialize *connect.Client[plugin.InitializeRequest, plugin.InitializeResponse]
-	runCapsule *connect.Client[plugin.RunCapsuleRequest, plugin.RunCapsuleResponse]
+	initialize        *connect.Client[plugin.InitializeRequest, plugin.InitializeResponse]
+	runCapsule        *connect.Client[plugin.RunCapsuleRequest, plugin.RunCapsuleResponse]
+	watchObjectStatus *connect.Client[plugin.WatchObjectStatusRequest, plugin.WatchObjectStatusResponse]
 }
 
 // Initialize calls api.v1.plugin.PluginService.Initialize.
@@ -118,10 +130,16 @@ func (c *pluginServiceClient) RunCapsule(ctx context.Context, req *connect.Reque
 	return c.runCapsule.CallUnary(ctx, req)
 }
 
+// WatchObjectStatus calls api.v1.plugin.PluginService.WatchObjectStatus.
+func (c *pluginServiceClient) WatchObjectStatus(ctx context.Context, req *connect.Request[plugin.WatchObjectStatusRequest]) (*connect.ServerStreamForClient[plugin.WatchObjectStatusResponse], error) {
+	return c.watchObjectStatus.CallServerStream(ctx, req)
+}
+
 // PluginServiceHandler is an implementation of the api.v1.plugin.PluginService service.
 type PluginServiceHandler interface {
 	Initialize(context.Context, *connect.Request[plugin.InitializeRequest]) (*connect.Response[plugin.InitializeResponse], error)
 	RunCapsule(context.Context, *connect.Request[plugin.RunCapsuleRequest]) (*connect.Response[plugin.RunCapsuleResponse], error)
+	WatchObjectStatus(context.Context, *connect.Request[plugin.WatchObjectStatusRequest], *connect.ServerStream[plugin.WatchObjectStatusResponse]) error
 }
 
 // NewPluginServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -142,12 +160,20 @@ func NewPluginServiceHandler(svc PluginServiceHandler, opts ...connect.HandlerOp
 		connect.WithSchema(pluginServiceRunCapsuleMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	pluginServiceWatchObjectStatusHandler := connect.NewServerStreamHandler(
+		PluginServiceWatchObjectStatusProcedure,
+		svc.WatchObjectStatus,
+		connect.WithSchema(pluginServiceWatchObjectStatusMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.plugin.PluginService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PluginServiceInitializeProcedure:
 			pluginServiceInitializeHandler.ServeHTTP(w, r)
 		case PluginServiceRunCapsuleProcedure:
 			pluginServiceRunCapsuleHandler.ServeHTTP(w, r)
+		case PluginServiceWatchObjectStatusProcedure:
+			pluginServiceWatchObjectStatusHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -163,6 +189,10 @@ func (UnimplementedPluginServiceHandler) Initialize(context.Context, *connect.Re
 
 func (UnimplementedPluginServiceHandler) RunCapsule(context.Context, *connect.Request[plugin.RunCapsuleRequest]) (*connect.Response[plugin.RunCapsuleResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.plugin.PluginService.RunCapsule is not implemented"))
+}
+
+func (UnimplementedPluginServiceHandler) WatchObjectStatus(context.Context, *connect.Request[plugin.WatchObjectStatusRequest], *connect.ServerStream[plugin.WatchObjectStatusResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.plugin.PluginService.WatchObjectStatus is not implemented"))
 }
 
 // RequestServiceClient is a client for the api.v1.plugin.RequestService service.

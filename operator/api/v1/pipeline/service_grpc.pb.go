@@ -18,6 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServiceClient interface {
+	WatchObjectStatus(ctx context.Context, in *WatchObjectStatusRequest, opts ...grpc.CallOption) (Service_WatchObjectStatusClient, error)
 	DryRun(ctx context.Context, in *DryRunRequest, opts ...grpc.CallOption) (*DryRunResponse, error)
 }
 
@@ -27,6 +28,38 @@ type serviceClient struct {
 
 func NewServiceClient(cc grpc.ClientConnInterface) ServiceClient {
 	return &serviceClient{cc}
+}
+
+func (c *serviceClient) WatchObjectStatus(ctx context.Context, in *WatchObjectStatusRequest, opts ...grpc.CallOption) (Service_WatchObjectStatusClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[0], "/api.v1.pipeline.Service/WatchObjectStatus", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &serviceWatchObjectStatusClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Service_WatchObjectStatusClient interface {
+	Recv() (*WatchObjectStatusResponse, error)
+	grpc.ClientStream
+}
+
+type serviceWatchObjectStatusClient struct {
+	grpc.ClientStream
+}
+
+func (x *serviceWatchObjectStatusClient) Recv() (*WatchObjectStatusResponse, error) {
+	m := new(WatchObjectStatusResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 func (c *serviceClient) DryRun(ctx context.Context, in *DryRunRequest, opts ...grpc.CallOption) (*DryRunResponse, error) {
@@ -42,6 +75,7 @@ func (c *serviceClient) DryRun(ctx context.Context, in *DryRunRequest, opts ...g
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
 type ServiceServer interface {
+	WatchObjectStatus(*WatchObjectStatusRequest, Service_WatchObjectStatusServer) error
 	DryRun(context.Context, *DryRunRequest) (*DryRunResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
@@ -50,6 +84,9 @@ type ServiceServer interface {
 type UnimplementedServiceServer struct {
 }
 
+func (UnimplementedServiceServer) WatchObjectStatus(*WatchObjectStatusRequest, Service_WatchObjectStatusServer) error {
+	return status.Errorf(codes.Unimplemented, "method WatchObjectStatus not implemented")
+}
 func (UnimplementedServiceServer) DryRun(context.Context, *DryRunRequest) (*DryRunResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DryRun not implemented")
 }
@@ -64,6 +101,27 @@ type UnsafeServiceServer interface {
 
 func RegisterServiceServer(s grpc.ServiceRegistrar, srv ServiceServer) {
 	s.RegisterService(&Service_ServiceDesc, srv)
+}
+
+func _Service_WatchObjectStatus_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WatchObjectStatusRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ServiceServer).WatchObjectStatus(m, &serviceWatchObjectStatusServer{stream})
+}
+
+type Service_WatchObjectStatusServer interface {
+	Send(*WatchObjectStatusResponse) error
+	grpc.ServerStream
+}
+
+type serviceWatchObjectStatusServer struct {
+	grpc.ServerStream
+}
+
+func (x *serviceWatchObjectStatusServer) Send(m *WatchObjectStatusResponse) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 func _Service_DryRun_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -96,6 +154,12 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Service_DryRun_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "WatchObjectStatus",
+			Handler:       _Service_WatchObjectStatus_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "operator/api/v1/pipeline/service.proto",
 }

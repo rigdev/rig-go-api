@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type PluginServiceClient interface {
 	Initialize(ctx context.Context, in *InitializeRequest, opts ...grpc.CallOption) (*InitializeResponse, error)
 	RunCapsule(ctx context.Context, in *RunCapsuleRequest, opts ...grpc.CallOption) (*RunCapsuleResponse, error)
+	WatchObjectStatus(ctx context.Context, in *WatchObjectStatusRequest, opts ...grpc.CallOption) (PluginService_WatchObjectStatusClient, error)
 }
 
 type pluginServiceClient struct {
@@ -48,12 +49,45 @@ func (c *pluginServiceClient) RunCapsule(ctx context.Context, in *RunCapsuleRequ
 	return out, nil
 }
 
+func (c *pluginServiceClient) WatchObjectStatus(ctx context.Context, in *WatchObjectStatusRequest, opts ...grpc.CallOption) (PluginService_WatchObjectStatusClient, error) {
+	stream, err := c.cc.NewStream(ctx, &PluginService_ServiceDesc.Streams[0], "/api.v1.plugin.PluginService/WatchObjectStatus", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &pluginServiceWatchObjectStatusClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type PluginService_WatchObjectStatusClient interface {
+	Recv() (*WatchObjectStatusResponse, error)
+	grpc.ClientStream
+}
+
+type pluginServiceWatchObjectStatusClient struct {
+	grpc.ClientStream
+}
+
+func (x *pluginServiceWatchObjectStatusClient) Recv() (*WatchObjectStatusResponse, error) {
+	m := new(WatchObjectStatusResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // PluginServiceServer is the server API for PluginService service.
 // All implementations must embed UnimplementedPluginServiceServer
 // for forward compatibility
 type PluginServiceServer interface {
 	Initialize(context.Context, *InitializeRequest) (*InitializeResponse, error)
 	RunCapsule(context.Context, *RunCapsuleRequest) (*RunCapsuleResponse, error)
+	WatchObjectStatus(*WatchObjectStatusRequest, PluginService_WatchObjectStatusServer) error
 	mustEmbedUnimplementedPluginServiceServer()
 }
 
@@ -66,6 +100,9 @@ func (UnimplementedPluginServiceServer) Initialize(context.Context, *InitializeR
 }
 func (UnimplementedPluginServiceServer) RunCapsule(context.Context, *RunCapsuleRequest) (*RunCapsuleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RunCapsule not implemented")
+}
+func (UnimplementedPluginServiceServer) WatchObjectStatus(*WatchObjectStatusRequest, PluginService_WatchObjectStatusServer) error {
+	return status.Errorf(codes.Unimplemented, "method WatchObjectStatus not implemented")
 }
 func (UnimplementedPluginServiceServer) mustEmbedUnimplementedPluginServiceServer() {}
 
@@ -116,6 +153,27 @@ func _PluginService_RunCapsule_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PluginService_WatchObjectStatus_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WatchObjectStatusRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(PluginServiceServer).WatchObjectStatus(m, &pluginServiceWatchObjectStatusServer{stream})
+}
+
+type PluginService_WatchObjectStatusServer interface {
+	Send(*WatchObjectStatusResponse) error
+	grpc.ServerStream
+}
+
+type pluginServiceWatchObjectStatusServer struct {
+	grpc.ServerStream
+}
+
+func (x *pluginServiceWatchObjectStatusServer) Send(m *WatchObjectStatusResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // PluginService_ServiceDesc is the grpc.ServiceDesc for PluginService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -132,7 +190,13 @@ var PluginService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PluginService_RunCapsule_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "WatchObjectStatus",
+			Handler:       _PluginService_WatchObjectStatus_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "operator/api/v1/plugin/service.proto",
 }
 

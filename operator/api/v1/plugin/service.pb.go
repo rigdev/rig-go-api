@@ -7,6 +7,7 @@
 package plugin
 
 import (
+	pipeline "github.com/rigdev/rig-go-api/operator/api/v1/pipeline"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -19,6 +20,203 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+type WatchObjectStatusRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	Capsule   string `protobuf:"bytes,2,opt,name=capsule,proto3" json:"capsule,omitempty"`
+}
+
+func (x *WatchObjectStatusRequest) Reset() {
+	*x = WatchObjectStatusRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WatchObjectStatusRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WatchObjectStatusRequest) ProtoMessage() {}
+
+func (x *WatchObjectStatusRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WatchObjectStatusRequest.ProtoReflect.Descriptor instead.
+func (*WatchObjectStatusRequest) Descriptor() ([]byte, []int) {
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *WatchObjectStatusRequest) GetNamespace() string {
+	if x != nil {
+		return x.Namespace
+	}
+	return ""
+}
+
+func (x *WatchObjectStatusRequest) GetCapsule() string {
+	if x != nil {
+		return x.Capsule
+	}
+	return ""
+}
+
+type WatchObjectStatusResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Change *ObjectStatusChange `protobuf:"bytes,1,opt,name=change,proto3" json:"change,omitempty"`
+}
+
+func (x *WatchObjectStatusResponse) Reset() {
+	*x = WatchObjectStatusResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WatchObjectStatusResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WatchObjectStatusResponse) ProtoMessage() {}
+
+func (x *WatchObjectStatusResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WatchObjectStatusResponse.ProtoReflect.Descriptor instead.
+func (*WatchObjectStatusResponse) Descriptor() ([]byte, []int) {
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *WatchObjectStatusResponse) GetChange() *ObjectStatusChange {
+	if x != nil {
+		return x.Change
+	}
+	return nil
+}
+
+type ObjectStatusChange struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Change:
+	//
+	//	*ObjectStatusChange_AllObjects_
+	//	*ObjectStatusChange_Updated
+	//	*ObjectStatusChange_Deleted
+	Change isObjectStatusChange_Change `protobuf_oneof:"change"`
+}
+
+func (x *ObjectStatusChange) Reset() {
+	*x = ObjectStatusChange{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ObjectStatusChange) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ObjectStatusChange) ProtoMessage() {}
+
+func (x *ObjectStatusChange) ProtoReflect() protoreflect.Message {
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ObjectStatusChange.ProtoReflect.Descriptor instead.
+func (*ObjectStatusChange) Descriptor() ([]byte, []int) {
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (m *ObjectStatusChange) GetChange() isObjectStatusChange_Change {
+	if m != nil {
+		return m.Change
+	}
+	return nil
+}
+
+func (x *ObjectStatusChange) GetAllObjects() *ObjectStatusChange_AllObjects {
+	if x, ok := x.GetChange().(*ObjectStatusChange_AllObjects_); ok {
+		return x.AllObjects
+	}
+	return nil
+}
+
+func (x *ObjectStatusChange) GetUpdated() *pipeline.ObjectStatus {
+	if x, ok := x.GetChange().(*ObjectStatusChange_Updated); ok {
+		return x.Updated
+	}
+	return nil
+}
+
+func (x *ObjectStatusChange) GetDeleted() *pipeline.ObjectRef {
+	if x, ok := x.GetChange().(*ObjectStatusChange_Deleted); ok {
+		return x.Deleted
+	}
+	return nil
+}
+
+type isObjectStatusChange_Change interface {
+	isObjectStatusChange_Change()
+}
+
+type ObjectStatusChange_AllObjects_ struct {
+	AllObjects *ObjectStatusChange_AllObjects `protobuf:"bytes,1,opt,name=all_objects,json=allObjects,proto3,oneof"`
+}
+
+type ObjectStatusChange_Updated struct {
+	Updated *pipeline.ObjectStatus `protobuf:"bytes,2,opt,name=updated,proto3,oneof"`
+}
+
+type ObjectStatusChange_Deleted struct {
+	Deleted *pipeline.ObjectRef `protobuf:"bytes,3,opt,name=deleted,proto3,oneof"`
+}
+
+func (*ObjectStatusChange_AllObjects_) isObjectStatusChange_Change() {}
+
+func (*ObjectStatusChange_Updated) isObjectStatusChange_Change() {}
+
+func (*ObjectStatusChange_Deleted) isObjectStatusChange_Change() {}
 
 type InitializeRequest struct {
 	state         protoimpl.MessageState
@@ -35,7 +233,7 @@ type InitializeRequest struct {
 func (x *InitializeRequest) Reset() {
 	*x = InitializeRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[0]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -48,7 +246,7 @@ func (x *InitializeRequest) String() string {
 func (*InitializeRequest) ProtoMessage() {}
 
 func (x *InitializeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[0]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -61,7 +259,7 @@ func (x *InitializeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InitializeRequest.ProtoReflect.Descriptor instead.
 func (*InitializeRequest) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{0}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *InitializeRequest) GetPluginConfig() string {
@@ -101,7 +299,7 @@ type InitializeResponse struct {
 func (x *InitializeResponse) Reset() {
 	*x = InitializeResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[1]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -114,7 +312,7 @@ func (x *InitializeResponse) String() string {
 func (*InitializeResponse) ProtoMessage() {}
 
 func (x *InitializeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[1]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -127,7 +325,7 @@ func (x *InitializeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InitializeResponse.ProtoReflect.Descriptor instead.
 func (*InitializeResponse) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{1}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{4}
 }
 
 type RunCapsuleRequest struct {
@@ -142,7 +340,7 @@ type RunCapsuleRequest struct {
 func (x *RunCapsuleRequest) Reset() {
 	*x = RunCapsuleRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[2]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -155,7 +353,7 @@ func (x *RunCapsuleRequest) String() string {
 func (*RunCapsuleRequest) ProtoMessage() {}
 
 func (x *RunCapsuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[2]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -168,7 +366,7 @@ func (x *RunCapsuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RunCapsuleRequest.ProtoReflect.Descriptor instead.
 func (*RunCapsuleRequest) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{2}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *RunCapsuleRequest) GetRunServer() uint32 {
@@ -194,7 +392,7 @@ type RunCapsuleResponse struct {
 func (x *RunCapsuleResponse) Reset() {
 	*x = RunCapsuleResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[3]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -207,7 +405,7 @@ func (x *RunCapsuleResponse) String() string {
 func (*RunCapsuleResponse) ProtoMessage() {}
 
 func (x *RunCapsuleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[3]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -220,7 +418,7 @@ func (x *RunCapsuleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RunCapsuleResponse.ProtoReflect.Descriptor instead.
 func (*RunCapsuleResponse) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{3}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{6}
 }
 
 type GetObjectRequest struct {
@@ -236,7 +434,7 @@ type GetObjectRequest struct {
 func (x *GetObjectRequest) Reset() {
 	*x = GetObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[4]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -249,7 +447,7 @@ func (x *GetObjectRequest) String() string {
 func (*GetObjectRequest) ProtoMessage() {}
 
 func (x *GetObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[4]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -262,7 +460,7 @@ func (x *GetObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetObjectRequest.ProtoReflect.Descriptor instead.
 func (*GetObjectRequest) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{4}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetObjectRequest) GetGvk() *GVK {
@@ -297,7 +495,7 @@ type GetObjectResponse struct {
 func (x *GetObjectResponse) Reset() {
 	*x = GetObjectResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[5]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -310,7 +508,7 @@ func (x *GetObjectResponse) String() string {
 func (*GetObjectResponse) ProtoMessage() {}
 
 func (x *GetObjectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[5]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -323,7 +521,7 @@ func (x *GetObjectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetObjectResponse.ProtoReflect.Descriptor instead.
 func (*GetObjectResponse) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{5}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetObjectResponse) GetObject() []byte {
@@ -345,7 +543,7 @@ type SetObjectRequest struct {
 func (x *SetObjectRequest) Reset() {
 	*x = SetObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[6]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -358,7 +556,7 @@ func (x *SetObjectRequest) String() string {
 func (*SetObjectRequest) ProtoMessage() {}
 
 func (x *SetObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[6]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -371,7 +569,7 @@ func (x *SetObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetObjectRequest.ProtoReflect.Descriptor instead.
 func (*SetObjectRequest) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{6}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *SetObjectRequest) GetGvk() *GVK {
@@ -397,7 +595,7 @@ type SetObjectResponse struct {
 func (x *SetObjectResponse) Reset() {
 	*x = SetObjectResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[7]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -410,7 +608,7 @@ func (x *SetObjectResponse) String() string {
 func (*SetObjectResponse) ProtoMessage() {}
 
 func (x *SetObjectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[7]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -423,7 +621,7 @@ func (x *SetObjectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetObjectResponse.ProtoReflect.Descriptor instead.
 func (*SetObjectResponse) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{7}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{10}
 }
 
 type GVK struct {
@@ -439,7 +637,7 @@ type GVK struct {
 func (x *GVK) Reset() {
 	*x = GVK{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[8]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -452,7 +650,7 @@ func (x *GVK) String() string {
 func (*GVK) ProtoMessage() {}
 
 func (x *GVK) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[8]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -465,7 +663,7 @@ func (x *GVK) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GVK.ProtoReflect.Descriptor instead.
 func (*GVK) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{8}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *GVK) GetGroup() string {
@@ -501,7 +699,7 @@ type DeleteObjectRequest struct {
 func (x *DeleteObjectRequest) Reset() {
 	*x = DeleteObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[9]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -514,7 +712,7 @@ func (x *DeleteObjectRequest) String() string {
 func (*DeleteObjectRequest) ProtoMessage() {}
 
 func (x *DeleteObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[9]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -527,7 +725,7 @@ func (x *DeleteObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteObjectRequest.ProtoReflect.Descriptor instead.
 func (*DeleteObjectRequest) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{9}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *DeleteObjectRequest) GetGvk() *GVK {
@@ -553,7 +751,7 @@ type DeleteObjectResponse struct {
 func (x *DeleteObjectResponse) Reset() {
 	*x = DeleteObjectResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[10]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -566,7 +764,7 @@ func (x *DeleteObjectResponse) String() string {
 func (*DeleteObjectResponse) ProtoMessage() {}
 
 func (x *DeleteObjectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[10]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -579,7 +777,7 @@ func (x *DeleteObjectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteObjectResponse.ProtoReflect.Descriptor instead.
 func (*DeleteObjectResponse) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{10}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{13}
 }
 
 type MarkUsedObjectRequest struct {
@@ -596,7 +794,7 @@ type MarkUsedObjectRequest struct {
 func (x *MarkUsedObjectRequest) Reset() {
 	*x = MarkUsedObjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[11]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -609,7 +807,7 @@ func (x *MarkUsedObjectRequest) String() string {
 func (*MarkUsedObjectRequest) ProtoMessage() {}
 
 func (x *MarkUsedObjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[11]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -622,7 +820,7 @@ func (x *MarkUsedObjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarkUsedObjectRequest.ProtoReflect.Descriptor instead.
 func (*MarkUsedObjectRequest) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{11}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *MarkUsedObjectRequest) GetGvk() *GVK {
@@ -662,7 +860,7 @@ type MarkUsedObjectResponse struct {
 func (x *MarkUsedObjectResponse) Reset() {
 	*x = MarkUsedObjectResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[12]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -675,7 +873,7 @@ func (x *MarkUsedObjectResponse) String() string {
 func (*MarkUsedObjectResponse) ProtoMessage() {}
 
 func (x *MarkUsedObjectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[12]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -688,7 +886,7 @@ func (x *MarkUsedObjectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarkUsedObjectResponse.ProtoReflect.Descriptor instead.
 func (*MarkUsedObjectResponse) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{12}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{15}
 }
 
 type ListObjectsRequest struct {
@@ -703,7 +901,7 @@ type ListObjectsRequest struct {
 func (x *ListObjectsRequest) Reset() {
 	*x = ListObjectsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[13]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -716,7 +914,7 @@ func (x *ListObjectsRequest) String() string {
 func (*ListObjectsRequest) ProtoMessage() {}
 
 func (x *ListObjectsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[13]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -729,7 +927,7 @@ func (x *ListObjectsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListObjectsRequest.ProtoReflect.Descriptor instead.
 func (*ListObjectsRequest) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{13}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ListObjectsRequest) GetGvk() *GVK {
@@ -757,7 +955,7 @@ type ListObjectsResponse struct {
 func (x *ListObjectsResponse) Reset() {
 	*x = ListObjectsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[14]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -770,7 +968,7 @@ func (x *ListObjectsResponse) String() string {
 func (*ListObjectsResponse) ProtoMessage() {}
 
 func (x *ListObjectsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[14]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -783,7 +981,7 @@ func (x *ListObjectsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListObjectsResponse.ProtoReflect.Descriptor instead.
 func (*ListObjectsResponse) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{14}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ListObjectsResponse) GetObjects() [][]byte {
@@ -806,7 +1004,7 @@ type RestConfig struct {
 func (x *RestConfig) Reset() {
 	*x = RestConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[15]
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -819,7 +1017,7 @@ func (x *RestConfig) String() string {
 func (*RestConfig) ProtoMessage() {}
 
 func (x *RestConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[15]
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -832,7 +1030,7 @@ func (x *RestConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestConfig.ProtoReflect.Descriptor instead.
 func (*RestConfig) Descriptor() ([]byte, []int) {
-	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{15}
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *RestConfig) GetHost() string {
@@ -856,13 +1054,92 @@ func (x *RestConfig) GetTlsConfig() []byte {
 	return nil
 }
 
+type ObjectStatusChange_AllObjects struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Objects []*pipeline.ObjectStatus `protobuf:"bytes,1,rep,name=objects,proto3" json:"objects,omitempty"`
+}
+
+func (x *ObjectStatusChange_AllObjects) Reset() {
+	*x = ObjectStatusChange_AllObjects{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_operator_api_v1_plugin_service_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ObjectStatusChange_AllObjects) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ObjectStatusChange_AllObjects) ProtoMessage() {}
+
+func (x *ObjectStatusChange_AllObjects) ProtoReflect() protoreflect.Message {
+	mi := &file_operator_api_v1_plugin_service_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ObjectStatusChange_AllObjects.ProtoReflect.Descriptor instead.
+func (*ObjectStatusChange_AllObjects) Descriptor() ([]byte, []int) {
+	return file_operator_api_v1_plugin_service_proto_rawDescGZIP(), []int{2, 0}
+}
+
+func (x *ObjectStatusChange_AllObjects) GetObjects() []*pipeline.ObjectStatus {
+	if x != nil {
+		return x.Objects
+	}
+	return nil
+}
+
 var File_operator_api_v1_plugin_service_proto protoreflect.FileDescriptor
 
 var file_operator_api_v1_plugin_service_proto_rawDesc = []byte{
 	0x0a, 0x24, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76,
 	0x31, 0x2f, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70,
-	0x6c, 0x75, 0x67, 0x69, 0x6e, 0x22, 0xaf, 0x01, 0x0a, 0x11, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61,
+	0x6c, 0x75, 0x67, 0x69, 0x6e, 0x1a, 0x26, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x2f,
+	0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2f,
+	0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x52, 0x0a,
+	0x18, 0x57, 0x61, 0x74, 0x63, 0x68, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x74, 0x61, 0x74,
+	0x75, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1c, 0x0a, 0x09, 0x6e, 0x61, 0x6d,
+	0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6e, 0x61,
+	0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x61, 0x70, 0x73, 0x75,
+	0x6c, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c,
+	0x65, 0x22, 0x56, 0x0a, 0x19, 0x57, 0x61, 0x74, 0x63, 0x68, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x39,
+	0x0a, 0x06, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x4f,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x68, 0x61, 0x6e, 0x67,
+	0x65, 0x52, 0x06, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x22, 0xa9, 0x02, 0x0a, 0x12, 0x4f, 0x62,
+	0x6a, 0x65, 0x63, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65,
+	0x12, 0x4f, 0x0a, 0x0b, 0x61, 0x6c, 0x6c, 0x5f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70,
+	0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x74, 0x61, 0x74,
+	0x75, 0x73, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2e, 0x41, 0x6c, 0x6c, 0x4f, 0x62, 0x6a, 0x65,
+	0x63, 0x74, 0x73, 0x48, 0x00, 0x52, 0x0a, 0x61, 0x6c, 0x6c, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x73, 0x12, 0x39, 0x0a, 0x07, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x69, 0x70, 0x65,
+	0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75,
+	0x73, 0x48, 0x00, 0x52, 0x07, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x12, 0x36, 0x0a, 0x07,
+	0x64, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e,
+	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e,
+	0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x66, 0x48, 0x00, 0x52, 0x07, 0x64, 0x65, 0x6c,
+	0x65, 0x74, 0x65, 0x64, 0x1a, 0x45, 0x0a, 0x0a, 0x41, 0x6c, 0x6c, 0x4f, 0x62, 0x6a, 0x65, 0x63,
+	0x74, 0x73, 0x12, 0x37, 0x0a, 0x07, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x18, 0x01, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x69, 0x70,
+	0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x74, 0x61, 0x74,
+	0x75, 0x73, 0x52, 0x07, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x08, 0x0a, 0x06, 0x63,
+	0x68, 0x61, 0x6e, 0x67, 0x65, 0x22, 0xaf, 0x01, 0x0a, 0x11, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61,
 	0x6c, 0x69, 0x7a, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x70,
 	0x6c, 0x75, 0x67, 0x69, 0x6e, 0x5f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x0c, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67,
@@ -933,7 +1210,7 @@ var file_operator_api_v1_plugin_service_proto_rawDesc = []byte{
 	0x72, 0x65, 0x72, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x0b, 0x62, 0x65, 0x61, 0x72, 0x65, 0x72, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x1d, 0x0a, 0x0a,
 	0x74, 0x6c, 0x73, 0x5f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c,
-	0x52, 0x09, 0x74, 0x6c, 0x73, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x32, 0xb9, 0x01, 0x0a, 0x0d,
+	0x52, 0x09, 0x74, 0x6c, 0x73, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x32, 0xa5, 0x02, 0x0a, 0x0d,
 	0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x53, 0x0a,
 	0x0a, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x12, 0x20, 0x2e, 0x61, 0x70,
 	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x49, 0x6e, 0x69, 0x74,
@@ -945,47 +1222,54 @@ var file_operator_api_v1_plugin_service_proto_rawDesc = []byte{
 	0x2e, 0x52, 0x75, 0x6e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x1a, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67,
 	0x69, 0x6e, 0x2e, 0x52, 0x75, 0x6e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x32, 0xc8, 0x03, 0x0a, 0x0e, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x50, 0x0a, 0x09, 0x47, 0x65,
-	0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x1f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31,
-	0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63,
-	0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
-	0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65,
-	0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x50, 0x0a, 0x09,
-	0x53, 0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x1f, 0x2e, 0x61, 0x70, 0x69, 0x2e,
-	0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x53, 0x65, 0x74, 0x4f, 0x62, 0x6a,
-	0x65, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x61, 0x70, 0x69,
-	0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x53, 0x65, 0x74, 0x4f, 0x62,
-	0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x59,
-	0x0a, 0x0c, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x22,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x6a, 0x0a, 0x11, 0x57, 0x61, 0x74, 0x63, 0x68,
+	0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x27, 0x2e, 0x61,
+	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x57, 0x61, 0x74,
+	0x63, 0x68, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x28, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70,
+	0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x57, 0x61, 0x74, 0x63, 0x68, 0x4f, 0x62, 0x6a, 0x65, 0x63,
+	0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x00, 0x30, 0x01, 0x32, 0xc8, 0x03, 0x0a, 0x0e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x53,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x50, 0x0a, 0x09, 0x47, 0x65, 0x74, 0x4f, 0x62, 0x6a,
+	0x65, 0x63, 0x74, 0x12, 0x1f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75,
+	0x67, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c,
+	0x75, 0x67, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x50, 0x0a, 0x09, 0x53, 0x65, 0x74, 0x4f,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x1f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70,
+	0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x53, 0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
+	0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x53, 0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x59, 0x0a, 0x0c, 0x44, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x22, 0x2e, 0x61, 0x70, 0x69,
+	0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74,
+	0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x23,
 	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x44,
-	0x65, 0x6c, 0x65, 0x74, 0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x23, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67,
-	0x69, 0x6e, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5f, 0x0a, 0x0e, 0x4d, 0x61, 0x72,
-	0x6b, 0x55, 0x73, 0x65, 0x64, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x24, 0x2e, 0x61, 0x70,
-	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x4d, 0x61, 0x72, 0x6b,
-	0x55, 0x73, 0x65, 0x64, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x25, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69,
-	0x6e, 0x2e, 0x4d, 0x61, 0x72, 0x6b, 0x55, 0x73, 0x65, 0x64, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x56, 0x0a, 0x0b, 0x4c, 0x69,
-	0x73, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x12, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e,
-	0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x4f, 0x62,
-	0x6a, 0x65, 0x63, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x61,
-	0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x4c, 0x69, 0x73,
-	0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x00, 0x42, 0xac, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
-	0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x42, 0x0c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
-	0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x33, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
-	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x69, 0x67, 0x64, 0x65, 0x76, 0x2f, 0x72, 0x69, 0x67, 0x2d,
-	0x67, 0x6f, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x2f,
-	0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0xa2, 0x02, 0x03,
-	0x41, 0x56, 0x50, 0xaa, 0x02, 0x0d, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0x2e, 0x50, 0x6c, 0x75,
-	0x67, 0x69, 0x6e, 0xca, 0x02, 0x0d, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x50, 0x6c, 0x75,
-	0x67, 0x69, 0x6e, 0xe2, 0x02, 0x19, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x50, 0x6c, 0x75,
-	0x67, 0x69, 0x6e, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
-	0x02, 0x0f, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0x3a, 0x3a, 0x50, 0x6c, 0x75, 0x67, 0x69,
-	0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x6c, 0x65, 0x74, 0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5f, 0x0a, 0x0e, 0x4d, 0x61, 0x72, 0x6b, 0x55, 0x73, 0x65,
+	0x64, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x24, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31,
+	0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x4d, 0x61, 0x72, 0x6b, 0x55, 0x73, 0x65, 0x64,
+	0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x25, 0x2e,
+	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x4d, 0x61,
+	0x72, 0x6b, 0x55, 0x73, 0x65, 0x64, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x56, 0x0a, 0x0b, 0x4c, 0x69, 0x73, 0x74, 0x4f, 0x62,
+	0x6a, 0x65, 0x63, 0x74, 0x73, 0x12, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70,
+	0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
+	0x31, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x4f, 0x62, 0x6a,
+	0x65, 0x63, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0xac,
+	0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x6c,
+	0x75, 0x67, 0x69, 0x6e, 0x42, 0x0c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x50, 0x72, 0x6f,
+	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x33, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
+	0x2f, 0x72, 0x69, 0x67, 0x64, 0x65, 0x76, 0x2f, 0x72, 0x69, 0x67, 0x2d, 0x67, 0x6f, 0x2d, 0x61,
+	0x70, 0x69, 0x2f, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x61, 0x70, 0x69, 0x2f,
+	0x76, 0x31, 0x2f, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0xa2, 0x02, 0x03, 0x41, 0x56, 0x50, 0xaa,
+	0x02, 0x0d, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0x2e, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0xca,
+	0x02, 0x0d, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0xe2,
+	0x02, 0x19, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x5c,
+	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0f, 0x41, 0x70,
+	0x69, 0x3a, 0x3a, 0x56, 0x31, 0x3a, 0x3a, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1000,51 +1284,64 @@ func file_operator_api_v1_plugin_service_proto_rawDescGZIP() []byte {
 	return file_operator_api_v1_plugin_service_proto_rawDescData
 }
 
-var file_operator_api_v1_plugin_service_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_operator_api_v1_plugin_service_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_operator_api_v1_plugin_service_proto_goTypes = []interface{}{
-	(*InitializeRequest)(nil),      // 0: api.v1.plugin.InitializeRequest
-	(*InitializeResponse)(nil),     // 1: api.v1.plugin.InitializeResponse
-	(*RunCapsuleRequest)(nil),      // 2: api.v1.plugin.RunCapsuleRequest
-	(*RunCapsuleResponse)(nil),     // 3: api.v1.plugin.RunCapsuleResponse
-	(*GetObjectRequest)(nil),       // 4: api.v1.plugin.GetObjectRequest
-	(*GetObjectResponse)(nil),      // 5: api.v1.plugin.GetObjectResponse
-	(*SetObjectRequest)(nil),       // 6: api.v1.plugin.SetObjectRequest
-	(*SetObjectResponse)(nil),      // 7: api.v1.plugin.SetObjectResponse
-	(*GVK)(nil),                    // 8: api.v1.plugin.GVK
-	(*DeleteObjectRequest)(nil),    // 9: api.v1.plugin.DeleteObjectRequest
-	(*DeleteObjectResponse)(nil),   // 10: api.v1.plugin.DeleteObjectResponse
-	(*MarkUsedObjectRequest)(nil),  // 11: api.v1.plugin.MarkUsedObjectRequest
-	(*MarkUsedObjectResponse)(nil), // 12: api.v1.plugin.MarkUsedObjectResponse
-	(*ListObjectsRequest)(nil),     // 13: api.v1.plugin.ListObjectsRequest
-	(*ListObjectsResponse)(nil),    // 14: api.v1.plugin.ListObjectsResponse
-	(*RestConfig)(nil),             // 15: api.v1.plugin.RestConfig
+	(*WatchObjectStatusRequest)(nil),      // 0: api.v1.plugin.WatchObjectStatusRequest
+	(*WatchObjectStatusResponse)(nil),     // 1: api.v1.plugin.WatchObjectStatusResponse
+	(*ObjectStatusChange)(nil),            // 2: api.v1.plugin.ObjectStatusChange
+	(*InitializeRequest)(nil),             // 3: api.v1.plugin.InitializeRequest
+	(*InitializeResponse)(nil),            // 4: api.v1.plugin.InitializeResponse
+	(*RunCapsuleRequest)(nil),             // 5: api.v1.plugin.RunCapsuleRequest
+	(*RunCapsuleResponse)(nil),            // 6: api.v1.plugin.RunCapsuleResponse
+	(*GetObjectRequest)(nil),              // 7: api.v1.plugin.GetObjectRequest
+	(*GetObjectResponse)(nil),             // 8: api.v1.plugin.GetObjectResponse
+	(*SetObjectRequest)(nil),              // 9: api.v1.plugin.SetObjectRequest
+	(*SetObjectResponse)(nil),             // 10: api.v1.plugin.SetObjectResponse
+	(*GVK)(nil),                           // 11: api.v1.plugin.GVK
+	(*DeleteObjectRequest)(nil),           // 12: api.v1.plugin.DeleteObjectRequest
+	(*DeleteObjectResponse)(nil),          // 13: api.v1.plugin.DeleteObjectResponse
+	(*MarkUsedObjectRequest)(nil),         // 14: api.v1.plugin.MarkUsedObjectRequest
+	(*MarkUsedObjectResponse)(nil),        // 15: api.v1.plugin.MarkUsedObjectResponse
+	(*ListObjectsRequest)(nil),            // 16: api.v1.plugin.ListObjectsRequest
+	(*ListObjectsResponse)(nil),           // 17: api.v1.plugin.ListObjectsResponse
+	(*RestConfig)(nil),                    // 18: api.v1.plugin.RestConfig
+	(*ObjectStatusChange_AllObjects)(nil), // 19: api.v1.plugin.ObjectStatusChange.AllObjects
+	(*pipeline.ObjectStatus)(nil),         // 20: api.v1.pipeline.ObjectStatus
+	(*pipeline.ObjectRef)(nil),            // 21: api.v1.pipeline.ObjectRef
 }
 var file_operator_api_v1_plugin_service_proto_depIdxs = []int32{
-	15, // 0: api.v1.plugin.InitializeRequest.rest_config:type_name -> api.v1.plugin.RestConfig
-	8,  // 1: api.v1.plugin.GetObjectRequest.gvk:type_name -> api.v1.plugin.GVK
-	8,  // 2: api.v1.plugin.SetObjectRequest.gvk:type_name -> api.v1.plugin.GVK
-	8,  // 3: api.v1.plugin.DeleteObjectRequest.gvk:type_name -> api.v1.plugin.GVK
-	8,  // 4: api.v1.plugin.MarkUsedObjectRequest.gvk:type_name -> api.v1.plugin.GVK
-	8,  // 5: api.v1.plugin.ListObjectsRequest.gvk:type_name -> api.v1.plugin.GVK
-	0,  // 6: api.v1.plugin.PluginService.Initialize:input_type -> api.v1.plugin.InitializeRequest
-	2,  // 7: api.v1.plugin.PluginService.RunCapsule:input_type -> api.v1.plugin.RunCapsuleRequest
-	4,  // 8: api.v1.plugin.RequestService.GetObject:input_type -> api.v1.plugin.GetObjectRequest
-	6,  // 9: api.v1.plugin.RequestService.SetObject:input_type -> api.v1.plugin.SetObjectRequest
-	9,  // 10: api.v1.plugin.RequestService.DeleteObject:input_type -> api.v1.plugin.DeleteObjectRequest
-	11, // 11: api.v1.plugin.RequestService.MarkUsedObject:input_type -> api.v1.plugin.MarkUsedObjectRequest
-	13, // 12: api.v1.plugin.RequestService.ListObjects:input_type -> api.v1.plugin.ListObjectsRequest
-	1,  // 13: api.v1.plugin.PluginService.Initialize:output_type -> api.v1.plugin.InitializeResponse
-	3,  // 14: api.v1.plugin.PluginService.RunCapsule:output_type -> api.v1.plugin.RunCapsuleResponse
-	5,  // 15: api.v1.plugin.RequestService.GetObject:output_type -> api.v1.plugin.GetObjectResponse
-	7,  // 16: api.v1.plugin.RequestService.SetObject:output_type -> api.v1.plugin.SetObjectResponse
-	10, // 17: api.v1.plugin.RequestService.DeleteObject:output_type -> api.v1.plugin.DeleteObjectResponse
-	12, // 18: api.v1.plugin.RequestService.MarkUsedObject:output_type -> api.v1.plugin.MarkUsedObjectResponse
-	14, // 19: api.v1.plugin.RequestService.ListObjects:output_type -> api.v1.plugin.ListObjectsResponse
-	13, // [13:20] is the sub-list for method output_type
-	6,  // [6:13] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	2,  // 0: api.v1.plugin.WatchObjectStatusResponse.change:type_name -> api.v1.plugin.ObjectStatusChange
+	19, // 1: api.v1.plugin.ObjectStatusChange.all_objects:type_name -> api.v1.plugin.ObjectStatusChange.AllObjects
+	20, // 2: api.v1.plugin.ObjectStatusChange.updated:type_name -> api.v1.pipeline.ObjectStatus
+	21, // 3: api.v1.plugin.ObjectStatusChange.deleted:type_name -> api.v1.pipeline.ObjectRef
+	18, // 4: api.v1.plugin.InitializeRequest.rest_config:type_name -> api.v1.plugin.RestConfig
+	11, // 5: api.v1.plugin.GetObjectRequest.gvk:type_name -> api.v1.plugin.GVK
+	11, // 6: api.v1.plugin.SetObjectRequest.gvk:type_name -> api.v1.plugin.GVK
+	11, // 7: api.v1.plugin.DeleteObjectRequest.gvk:type_name -> api.v1.plugin.GVK
+	11, // 8: api.v1.plugin.MarkUsedObjectRequest.gvk:type_name -> api.v1.plugin.GVK
+	11, // 9: api.v1.plugin.ListObjectsRequest.gvk:type_name -> api.v1.plugin.GVK
+	20, // 10: api.v1.plugin.ObjectStatusChange.AllObjects.objects:type_name -> api.v1.pipeline.ObjectStatus
+	3,  // 11: api.v1.plugin.PluginService.Initialize:input_type -> api.v1.plugin.InitializeRequest
+	5,  // 12: api.v1.plugin.PluginService.RunCapsule:input_type -> api.v1.plugin.RunCapsuleRequest
+	0,  // 13: api.v1.plugin.PluginService.WatchObjectStatus:input_type -> api.v1.plugin.WatchObjectStatusRequest
+	7,  // 14: api.v1.plugin.RequestService.GetObject:input_type -> api.v1.plugin.GetObjectRequest
+	9,  // 15: api.v1.plugin.RequestService.SetObject:input_type -> api.v1.plugin.SetObjectRequest
+	12, // 16: api.v1.plugin.RequestService.DeleteObject:input_type -> api.v1.plugin.DeleteObjectRequest
+	14, // 17: api.v1.plugin.RequestService.MarkUsedObject:input_type -> api.v1.plugin.MarkUsedObjectRequest
+	16, // 18: api.v1.plugin.RequestService.ListObjects:input_type -> api.v1.plugin.ListObjectsRequest
+	4,  // 19: api.v1.plugin.PluginService.Initialize:output_type -> api.v1.plugin.InitializeResponse
+	6,  // 20: api.v1.plugin.PluginService.RunCapsule:output_type -> api.v1.plugin.RunCapsuleResponse
+	1,  // 21: api.v1.plugin.PluginService.WatchObjectStatus:output_type -> api.v1.plugin.WatchObjectStatusResponse
+	8,  // 22: api.v1.plugin.RequestService.GetObject:output_type -> api.v1.plugin.GetObjectResponse
+	10, // 23: api.v1.plugin.RequestService.SetObject:output_type -> api.v1.plugin.SetObjectResponse
+	13, // 24: api.v1.plugin.RequestService.DeleteObject:output_type -> api.v1.plugin.DeleteObjectResponse
+	15, // 25: api.v1.plugin.RequestService.MarkUsedObject:output_type -> api.v1.plugin.MarkUsedObjectResponse
+	17, // 26: api.v1.plugin.RequestService.ListObjects:output_type -> api.v1.plugin.ListObjectsResponse
+	19, // [19:27] is the sub-list for method output_type
+	11, // [11:19] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_operator_api_v1_plugin_service_proto_init() }
@@ -1054,7 +1351,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_operator_api_v1_plugin_service_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InitializeRequest); i {
+			switch v := v.(*WatchObjectStatusRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1066,7 +1363,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InitializeResponse); i {
+			switch v := v.(*WatchObjectStatusResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1078,7 +1375,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RunCapsuleRequest); i {
+			switch v := v.(*ObjectStatusChange); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1090,7 +1387,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RunCapsuleResponse); i {
+			switch v := v.(*InitializeRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1102,7 +1399,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetObjectRequest); i {
+			switch v := v.(*InitializeResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1114,7 +1411,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetObjectResponse); i {
+			switch v := v.(*RunCapsuleRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1126,7 +1423,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SetObjectRequest); i {
+			switch v := v.(*RunCapsuleResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1138,7 +1435,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SetObjectResponse); i {
+			switch v := v.(*GetObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1150,7 +1447,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GVK); i {
+			switch v := v.(*GetObjectResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1162,7 +1459,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteObjectRequest); i {
+			switch v := v.(*SetObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1174,7 +1471,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteObjectResponse); i {
+			switch v := v.(*SetObjectResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1186,7 +1483,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MarkUsedObjectRequest); i {
+			switch v := v.(*GVK); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1198,7 +1495,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MarkUsedObjectResponse); i {
+			switch v := v.(*DeleteObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1210,7 +1507,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListObjectsRequest); i {
+			switch v := v.(*DeleteObjectResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1222,7 +1519,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListObjectsResponse); i {
+			switch v := v.(*MarkUsedObjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1234,6 +1531,42 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			}
 		}
 		file_operator_api_v1_plugin_service_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*MarkUsedObjectResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_operator_api_v1_plugin_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListObjectsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_operator_api_v1_plugin_service_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListObjectsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_operator_api_v1_plugin_service_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RestConfig); i {
 			case 0:
 				return &v.state
@@ -1245,6 +1578,23 @@ func file_operator_api_v1_plugin_service_proto_init() {
 				return nil
 			}
 		}
+		file_operator_api_v1_plugin_service_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ObjectStatusChange_AllObjects); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+	}
+	file_operator_api_v1_plugin_service_proto_msgTypes[2].OneofWrappers = []interface{}{
+		(*ObjectStatusChange_AllObjects_)(nil),
+		(*ObjectStatusChange_Updated)(nil),
+		(*ObjectStatusChange_Deleted)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1252,7 +1602,7 @@ func file_operator_api_v1_plugin_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_operator_api_v1_plugin_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   16,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

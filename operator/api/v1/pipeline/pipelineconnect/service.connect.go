@@ -33,18 +33,23 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// ServiceWatchObjectStatusProcedure is the fully-qualified name of the Service's WatchObjectStatus
+	// RPC.
+	ServiceWatchObjectStatusProcedure = "/api.v1.pipeline.Service/WatchObjectStatus"
 	// ServiceDryRunProcedure is the fully-qualified name of the Service's DryRun RPC.
 	ServiceDryRunProcedure = "/api.v1.pipeline.Service/DryRun"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor      = pipeline.File_operator_api_v1_pipeline_service_proto.Services().ByName("Service")
-	serviceDryRunMethodDescriptor = serviceServiceDescriptor.Methods().ByName("DryRun")
+	serviceServiceDescriptor                 = pipeline.File_operator_api_v1_pipeline_service_proto.Services().ByName("Service")
+	serviceWatchObjectStatusMethodDescriptor = serviceServiceDescriptor.Methods().ByName("WatchObjectStatus")
+	serviceDryRunMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("DryRun")
 )
 
 // ServiceClient is a client for the api.v1.pipeline.Service service.
 type ServiceClient interface {
+	WatchObjectStatus(context.Context, *connect.Request[pipeline.WatchObjectStatusRequest]) (*connect.ServerStreamForClient[pipeline.WatchObjectStatusResponse], error)
 	DryRun(context.Context, *connect.Request[pipeline.DryRunRequest]) (*connect.Response[pipeline.DryRunResponse], error)
 }
 
@@ -58,6 +63,12 @@ type ServiceClient interface {
 func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
+		watchObjectStatus: connect.NewClient[pipeline.WatchObjectStatusRequest, pipeline.WatchObjectStatusResponse](
+			httpClient,
+			baseURL+ServiceWatchObjectStatusProcedure,
+			connect.WithSchema(serviceWatchObjectStatusMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 		dryRun: connect.NewClient[pipeline.DryRunRequest, pipeline.DryRunResponse](
 			httpClient,
 			baseURL+ServiceDryRunProcedure,
@@ -69,7 +80,13 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	dryRun *connect.Client[pipeline.DryRunRequest, pipeline.DryRunResponse]
+	watchObjectStatus *connect.Client[pipeline.WatchObjectStatusRequest, pipeline.WatchObjectStatusResponse]
+	dryRun            *connect.Client[pipeline.DryRunRequest, pipeline.DryRunResponse]
+}
+
+// WatchObjectStatus calls api.v1.pipeline.Service.WatchObjectStatus.
+func (c *serviceClient) WatchObjectStatus(ctx context.Context, req *connect.Request[pipeline.WatchObjectStatusRequest]) (*connect.ServerStreamForClient[pipeline.WatchObjectStatusResponse], error) {
+	return c.watchObjectStatus.CallServerStream(ctx, req)
 }
 
 // DryRun calls api.v1.pipeline.Service.DryRun.
@@ -79,6 +96,7 @@ func (c *serviceClient) DryRun(ctx context.Context, req *connect.Request[pipelin
 
 // ServiceHandler is an implementation of the api.v1.pipeline.Service service.
 type ServiceHandler interface {
+	WatchObjectStatus(context.Context, *connect.Request[pipeline.WatchObjectStatusRequest], *connect.ServerStream[pipeline.WatchObjectStatusResponse]) error
 	DryRun(context.Context, *connect.Request[pipeline.DryRunRequest]) (*connect.Response[pipeline.DryRunResponse], error)
 }
 
@@ -88,6 +106,12 @@ type ServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serviceWatchObjectStatusHandler := connect.NewServerStreamHandler(
+		ServiceWatchObjectStatusProcedure,
+		svc.WatchObjectStatus,
+		connect.WithSchema(serviceWatchObjectStatusMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	serviceDryRunHandler := connect.NewUnaryHandler(
 		ServiceDryRunProcedure,
 		svc.DryRun,
@@ -96,6 +120,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 	)
 	return "/api.v1.pipeline.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case ServiceWatchObjectStatusProcedure:
+			serviceWatchObjectStatusHandler.ServeHTTP(w, r)
 		case ServiceDryRunProcedure:
 			serviceDryRunHandler.ServeHTTP(w, r)
 		default:
@@ -106,6 +132,10 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
+
+func (UnimplementedServiceHandler) WatchObjectStatus(context.Context, *connect.Request[pipeline.WatchObjectStatusRequest], *connect.ServerStream[pipeline.WatchObjectStatusResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.pipeline.Service.WatchObjectStatus is not implemented"))
+}
 
 func (UnimplementedServiceHandler) DryRun(context.Context, *connect.Request[pipeline.DryRunRequest]) (*connect.Response[pipeline.DryRunResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.pipeline.Service.DryRun is not implemented"))
