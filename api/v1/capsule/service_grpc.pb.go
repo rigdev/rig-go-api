@@ -61,6 +61,7 @@ type ServiceClient interface {
 	GetCustomInstanceMetrics(ctx context.Context, in *GetCustomInstanceMetricsRequest, opts ...grpc.CallOption) (*GetCustomInstanceMetricsResponse, error)
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(ctx context.Context, in *GetJobExecutionsRequest, opts ...grpc.CallOption) (*GetJobExecutionsResponse, error)
+	GetStatus(ctx context.Context, in *GetStatusRequest, opts ...grpc.CallOption) (*GetStatusResponse, error)
 }
 
 type serviceClient struct {
@@ -296,6 +297,15 @@ func (c *serviceClient) GetJobExecutions(ctx context.Context, in *GetJobExecutio
 	return out, nil
 }
 
+func (c *serviceClient) GetStatus(ctx context.Context, in *GetStatusRequest, opts ...grpc.CallOption) (*GetStatusResponse, error) {
+	out := new(GetStatusResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/GetStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -343,6 +353,7 @@ type ServiceServer interface {
 	GetCustomInstanceMetrics(context.Context, *GetCustomInstanceMetricsRequest) (*GetCustomInstanceMetricsResponse, error)
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(context.Context, *GetJobExecutionsRequest) (*GetJobExecutionsResponse, error)
+	GetStatus(context.Context, *GetStatusRequest) (*GetStatusResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -409,6 +420,9 @@ func (UnimplementedServiceServer) GetCustomInstanceMetrics(context.Context, *Get
 }
 func (UnimplementedServiceServer) GetJobExecutions(context.Context, *GetJobExecutionsRequest) (*GetJobExecutionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetJobExecutions not implemented")
+}
+func (UnimplementedServiceServer) GetStatus(context.Context, *GetStatusRequest) (*GetStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetStatus not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -794,6 +808,24 @@ func _Service_GetJobExecutions_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_GetStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/GetStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetStatus(ctx, req.(*GetStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -872,6 +904,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetJobExecutions",
 			Handler:    _Service_GetJobExecutions_Handler,
+		},
+		{
+			MethodName: "GetStatus",
+			Handler:    _Service_GetStatus_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

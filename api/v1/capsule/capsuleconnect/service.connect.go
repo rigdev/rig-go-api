@@ -77,6 +77,8 @@ const (
 	// ServiceGetJobExecutionsProcedure is the fully-qualified name of the Service's GetJobExecutions
 	// RPC.
 	ServiceGetJobExecutionsProcedure = "/api.v1.capsule.Service/GetJobExecutions"
+	// ServiceGetStatusProcedure is the fully-qualified name of the Service's GetStatus RPC.
+	ServiceGetStatusProcedure = "/api.v1.capsule.Service/GetStatus"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -102,6 +104,7 @@ var (
 	serviceExecuteMethodDescriptor                  = serviceServiceDescriptor.Methods().ByName("Execute")
 	serviceGetCustomInstanceMetricsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetCustomInstanceMetrics")
 	serviceGetJobExecutionsMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetJobExecutions")
+	serviceGetStatusMethodDescriptor                = serviceServiceDescriptor.Methods().ByName("GetStatus")
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -149,6 +152,7 @@ type ServiceClient interface {
 	GetCustomInstanceMetrics(context.Context, *connect.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect.Response[capsule.GetCustomInstanceMetricsResponse], error)
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
+	GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -281,6 +285,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetJobExecutionsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getStatus: connect.NewClient[capsule.GetStatusRequest, capsule.GetStatusResponse](
+			httpClient,
+			baseURL+ServiceGetStatusProcedure,
+			connect.WithSchema(serviceGetStatusMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -306,6 +316,7 @@ type serviceClient struct {
 	execute                  *connect.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
 	getCustomInstanceMetrics *connect.Client[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse]
 	getJobExecutions         *connect.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
+	getStatus                *connect.Client[capsule.GetStatusRequest, capsule.GetStatusResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -408,6 +419,11 @@ func (c *serviceClient) GetJobExecutions(ctx context.Context, req *connect.Reque
 	return c.getJobExecutions.CallUnary(ctx, req)
 }
 
+// GetStatus calls api.v1.capsule.Service.GetStatus.
+func (c *serviceClient) GetStatus(ctx context.Context, req *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error) {
+	return c.getStatus.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -453,6 +469,7 @@ type ServiceHandler interface {
 	GetCustomInstanceMetrics(context.Context, *connect.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect.Response[capsule.GetCustomInstanceMetricsResponse], error)
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
+	GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -581,6 +598,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetJobExecutionsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetStatusHandler := connect.NewUnaryHandler(
+		ServiceGetStatusProcedure,
+		svc.GetStatus,
+		connect.WithSchema(serviceGetStatusMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -623,6 +646,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetCustomInstanceMetricsHandler.ServeHTTP(w, r)
 		case ServiceGetJobExecutionsProcedure:
 			serviceGetJobExecutionsHandler.ServeHTTP(w, r)
+		case ServiceGetStatusProcedure:
+			serviceGetStatusHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -710,4 +735,8 @@ func (UnimplementedServiceHandler) GetCustomInstanceMetrics(context.Context, *co
 
 func (UnimplementedServiceHandler) GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetJobExecutions is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetStatus is not implemented"))
 }
