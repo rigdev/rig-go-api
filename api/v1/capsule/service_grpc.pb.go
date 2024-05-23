@@ -35,6 +35,8 @@ type ServiceClient interface {
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
 	Deploy(ctx context.Context, in *DeployRequest, opts ...grpc.CallOption) (*DeployResponse, error)
+	// Applies a Capsule spec in an environment which will be rolled out
+	ApplyCapsuleSpec(ctx context.Context, in *ApplyCapsuleSpecRequest, opts ...grpc.CallOption) (*ApplyCapsuleSpecResponse, error)
 	// Lists all instances for the capsule.
 	ListInstances(ctx context.Context, in *ListInstancesRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error)
 	// Restart a single capsule instance.
@@ -62,6 +64,7 @@ type ServiceClient interface {
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(ctx context.Context, in *GetJobExecutionsRequest, opts ...grpc.CallOption) (*GetJobExecutionsResponse, error)
 	GetStatus(ctx context.Context, in *GetStatusRequest, opts ...grpc.CallOption) (*GetStatusResponse, error)
+	GetRevision(ctx context.Context, in *GetRevisionRequest, opts ...grpc.CallOption) (*GetRevisionResponse, error)
 }
 
 type serviceClient struct {
@@ -152,6 +155,15 @@ func (c *serviceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.
 func (c *serviceClient) Deploy(ctx context.Context, in *DeployRequest, opts ...grpc.CallOption) (*DeployResponse, error) {
 	out := new(DeployResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/Deploy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) ApplyCapsuleSpec(ctx context.Context, in *ApplyCapsuleSpecRequest, opts ...grpc.CallOption) (*ApplyCapsuleSpecResponse, error) {
+	out := new(ApplyCapsuleSpecResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ApplyCapsuleSpec", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -306,6 +318,15 @@ func (c *serviceClient) GetStatus(ctx context.Context, in *GetStatusRequest, opt
 	return out, nil
 }
 
+func (c *serviceClient) GetRevision(ctx context.Context, in *GetRevisionRequest, opts ...grpc.CallOption) (*GetRevisionResponse, error) {
+	out := new(GetRevisionResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/GetRevision", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -327,6 +348,8 @@ type ServiceServer interface {
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
 	Deploy(context.Context, *DeployRequest) (*DeployResponse, error)
+	// Applies a Capsule spec in an environment which will be rolled out
+	ApplyCapsuleSpec(context.Context, *ApplyCapsuleSpecRequest) (*ApplyCapsuleSpecResponse, error)
 	// Lists all instances for the capsule.
 	ListInstances(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error)
 	// Restart a single capsule instance.
@@ -354,6 +377,7 @@ type ServiceServer interface {
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(context.Context, *GetJobExecutionsRequest) (*GetJobExecutionsResponse, error)
 	GetStatus(context.Context, *GetStatusRequest) (*GetStatusResponse, error)
+	GetRevision(context.Context, *GetRevisionRequest) (*GetRevisionResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -381,6 +405,9 @@ func (UnimplementedServiceServer) List(context.Context, *ListRequest) (*ListResp
 }
 func (UnimplementedServiceServer) Deploy(context.Context, *DeployRequest) (*DeployResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Deploy not implemented")
+}
+func (UnimplementedServiceServer) ApplyCapsuleSpec(context.Context, *ApplyCapsuleSpecRequest) (*ApplyCapsuleSpecResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApplyCapsuleSpec not implemented")
 }
 func (UnimplementedServiceServer) ListInstances(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListInstances not implemented")
@@ -423,6 +450,9 @@ func (UnimplementedServiceServer) GetJobExecutions(context.Context, *GetJobExecu
 }
 func (UnimplementedServiceServer) GetStatus(context.Context, *GetStatusRequest) (*GetStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStatus not implemented")
+}
+func (UnimplementedServiceServer) GetRevision(context.Context, *GetRevisionRequest) (*GetRevisionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRevision not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -562,6 +592,24 @@ func _Service_Deploy_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceServer).Deploy(ctx, req.(*DeployRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_ApplyCapsuleSpec_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApplyCapsuleSpecRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).ApplyCapsuleSpec(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/ApplyCapsuleSpec",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).ApplyCapsuleSpec(ctx, req.(*ApplyCapsuleSpecRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -826,6 +874,24 @@ func _Service_GetStatus_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_GetRevision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRevisionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetRevision(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/GetRevision",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetRevision(ctx, req.(*GetRevisionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -856,6 +922,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Deploy",
 			Handler:    _Service_Deploy_Handler,
+		},
+		{
+			MethodName: "ApplyCapsuleSpec",
+			Handler:    _Service_ApplyCapsuleSpec_Handler,
 		},
 		{
 			MethodName: "ListInstances",
@@ -908,6 +978,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetStatus",
 			Handler:    _Service_GetStatus_Handler,
+		},
+		{
+			MethodName: "GetRevision",
+			Handler:    _Service_GetRevision_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

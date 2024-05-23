@@ -47,6 +47,9 @@ const (
 	ServiceListProcedure = "/api.v1.capsule.Service/List"
 	// ServiceDeployProcedure is the fully-qualified name of the Service's Deploy RPC.
 	ServiceDeployProcedure = "/api.v1.capsule.Service/Deploy"
+	// ServiceApplyCapsuleSpecProcedure is the fully-qualified name of the Service's ApplyCapsuleSpec
+	// RPC.
+	ServiceApplyCapsuleSpecProcedure = "/api.v1.capsule.Service/ApplyCapsuleSpec"
 	// ServiceListInstancesProcedure is the fully-qualified name of the Service's ListInstances RPC.
 	ServiceListInstancesProcedure = "/api.v1.capsule.Service/ListInstances"
 	// ServiceRestartInstanceProcedure is the fully-qualified name of the Service's RestartInstance RPC.
@@ -79,6 +82,8 @@ const (
 	ServiceGetJobExecutionsProcedure = "/api.v1.capsule.Service/GetJobExecutions"
 	// ServiceGetStatusProcedure is the fully-qualified name of the Service's GetStatus RPC.
 	ServiceGetStatusProcedure = "/api.v1.capsule.Service/GetStatus"
+	// ServiceGetRevisionProcedure is the fully-qualified name of the Service's GetRevision RPC.
+	ServiceGetRevisionProcedure = "/api.v1.capsule.Service/GetRevision"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -91,6 +96,7 @@ var (
 	serviceUpdateMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Update")
 	serviceListMethodDescriptor                     = serviceServiceDescriptor.Methods().ByName("List")
 	serviceDeployMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Deploy")
+	serviceApplyCapsuleSpecMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("ApplyCapsuleSpec")
 	serviceListInstancesMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ListInstances")
 	serviceRestartInstanceMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("RestartInstance")
 	serviceGetRolloutMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("GetRollout")
@@ -105,6 +111,7 @@ var (
 	serviceGetCustomInstanceMetricsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetCustomInstanceMetrics")
 	serviceGetJobExecutionsMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetJobExecutions")
 	serviceGetStatusMethodDescriptor                = serviceServiceDescriptor.Methods().ByName("GetStatus")
+	serviceGetRevisionMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("GetRevision")
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -126,6 +133,8 @@ type ServiceClient interface {
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
 	Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error)
+	// Applies a Capsule spec in an environment which will be rolled out
+	ApplyCapsuleSpec(context.Context, *connect.Request[capsule.ApplyCapsuleSpecRequest]) (*connect.Response[capsule.ApplyCapsuleSpecResponse], error)
 	// Lists all instances for the capsule.
 	ListInstances(context.Context, *connect.Request[capsule.ListInstancesRequest]) (*connect.Response[capsule.ListInstancesResponse], error)
 	// Restart a single capsule instance.
@@ -153,6 +162,7 @@ type ServiceClient interface {
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
 	GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error)
+	GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -205,6 +215,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			httpClient,
 			baseURL+ServiceDeployProcedure,
 			connect.WithSchema(serviceDeployMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		applyCapsuleSpec: connect.NewClient[capsule.ApplyCapsuleSpecRequest, capsule.ApplyCapsuleSpecResponse](
+			httpClient,
+			baseURL+ServiceApplyCapsuleSpecProcedure,
+			connect.WithSchema(serviceApplyCapsuleSpecMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		listInstances: connect.NewClient[capsule.ListInstancesRequest, capsule.ListInstancesResponse](
@@ -291,6 +307,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetStatusMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getRevision: connect.NewClient[capsule.GetRevisionRequest, capsule.GetRevisionResponse](
+			httpClient,
+			baseURL+ServiceGetRevisionProcedure,
+			connect.WithSchema(serviceGetRevisionMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -303,6 +325,7 @@ type serviceClient struct {
 	update                   *connect.Client[capsule.UpdateRequest, capsule.UpdateResponse]
 	list                     *connect.Client[capsule.ListRequest, capsule.ListResponse]
 	deploy                   *connect.Client[capsule.DeployRequest, capsule.DeployResponse]
+	applyCapsuleSpec         *connect.Client[capsule.ApplyCapsuleSpecRequest, capsule.ApplyCapsuleSpecResponse]
 	listInstances            *connect.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
 	restartInstance          *connect.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
 	getRollout               *connect.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
@@ -317,6 +340,7 @@ type serviceClient struct {
 	getCustomInstanceMetrics *connect.Client[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse]
 	getJobExecutions         *connect.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
 	getStatus                *connect.Client[capsule.GetStatusRequest, capsule.GetStatusResponse]
+	getRevision              *connect.Client[capsule.GetRevisionRequest, capsule.GetRevisionResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -352,6 +376,11 @@ func (c *serviceClient) List(ctx context.Context, req *connect.Request[capsule.L
 // Deploy calls api.v1.capsule.Service.Deploy.
 func (c *serviceClient) Deploy(ctx context.Context, req *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error) {
 	return c.deploy.CallUnary(ctx, req)
+}
+
+// ApplyCapsuleSpec calls api.v1.capsule.Service.ApplyCapsuleSpec.
+func (c *serviceClient) ApplyCapsuleSpec(ctx context.Context, req *connect.Request[capsule.ApplyCapsuleSpecRequest]) (*connect.Response[capsule.ApplyCapsuleSpecResponse], error) {
+	return c.applyCapsuleSpec.CallUnary(ctx, req)
 }
 
 // ListInstances calls api.v1.capsule.Service.ListInstances.
@@ -424,6 +453,11 @@ func (c *serviceClient) GetStatus(ctx context.Context, req *connect.Request[caps
 	return c.getStatus.CallUnary(ctx, req)
 }
 
+// GetRevision calls api.v1.capsule.Service.GetRevision.
+func (c *serviceClient) GetRevision(ctx context.Context, req *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error) {
+	return c.getRevision.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -443,6 +477,8 @@ type ServiceHandler interface {
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
 	Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error)
+	// Applies a Capsule spec in an environment which will be rolled out
+	ApplyCapsuleSpec(context.Context, *connect.Request[capsule.ApplyCapsuleSpecRequest]) (*connect.Response[capsule.ApplyCapsuleSpecResponse], error)
 	// Lists all instances for the capsule.
 	ListInstances(context.Context, *connect.Request[capsule.ListInstancesRequest]) (*connect.Response[capsule.ListInstancesResponse], error)
 	// Restart a single capsule instance.
@@ -470,6 +506,7 @@ type ServiceHandler interface {
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
 	GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error)
+	GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -518,6 +555,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		ServiceDeployProcedure,
 		svc.Deploy,
 		connect.WithSchema(serviceDeployMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceApplyCapsuleSpecHandler := connect.NewUnaryHandler(
+		ServiceApplyCapsuleSpecProcedure,
+		svc.ApplyCapsuleSpec,
+		connect.WithSchema(serviceApplyCapsuleSpecMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	serviceListInstancesHandler := connect.NewUnaryHandler(
@@ -604,6 +647,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetStatusMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetRevisionHandler := connect.NewUnaryHandler(
+		ServiceGetRevisionProcedure,
+		svc.GetRevision,
+		connect.WithSchema(serviceGetRevisionMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -620,6 +669,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceListHandler.ServeHTTP(w, r)
 		case ServiceDeployProcedure:
 			serviceDeployHandler.ServeHTTP(w, r)
+		case ServiceApplyCapsuleSpecProcedure:
+			serviceApplyCapsuleSpecHandler.ServeHTTP(w, r)
 		case ServiceListInstancesProcedure:
 			serviceListInstancesHandler.ServeHTTP(w, r)
 		case ServiceRestartInstanceProcedure:
@@ -648,6 +699,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetJobExecutionsHandler.ServeHTTP(w, r)
 		case ServiceGetStatusProcedure:
 			serviceGetStatusHandler.ServeHTTP(w, r)
+		case ServiceGetRevisionProcedure:
+			serviceGetRevisionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -683,6 +736,10 @@ func (UnimplementedServiceHandler) List(context.Context, *connect.Request[capsul
 
 func (UnimplementedServiceHandler) Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Deploy is not implemented"))
+}
+
+func (UnimplementedServiceHandler) ApplyCapsuleSpec(context.Context, *connect.Request[capsule.ApplyCapsuleSpecRequest]) (*connect.Response[capsule.ApplyCapsuleSpecResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ApplyCapsuleSpec is not implemented"))
 }
 
 func (UnimplementedServiceHandler) ListInstances(context.Context, *connect.Request[capsule.ListInstancesRequest]) (*connect.Response[capsule.ListInstancesResponse], error) {
@@ -739,4 +796,8 @@ func (UnimplementedServiceHandler) GetJobExecutions(context.Context, *connect.Re
 
 func (UnimplementedServiceHandler) GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetStatus is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetRevision is not implemented"))
 }
