@@ -65,6 +65,7 @@ type ServiceClient interface {
 	GetJobExecutions(ctx context.Context, in *GetJobExecutionsRequest, opts ...grpc.CallOption) (*GetJobExecutionsResponse, error)
 	GetStatus(ctx context.Context, in *GetStatusRequest, opts ...grpc.CallOption) (*GetStatusResponse, error)
 	GetRevision(ctx context.Context, in *GetRevisionRequest, opts ...grpc.CallOption) (*GetRevisionResponse, error)
+	GetRolloutOfRevisions(ctx context.Context, in *GetRolloutOfRevisionsRequest, opts ...grpc.CallOption) (*GetRolloutOfRevisionsResponse, error)
 	WatchStatus(ctx context.Context, in *WatchStatusRequest, opts ...grpc.CallOption) (Service_WatchStatusClient, error)
 }
 
@@ -328,6 +329,15 @@ func (c *serviceClient) GetRevision(ctx context.Context, in *GetRevisionRequest,
 	return out, nil
 }
 
+func (c *serviceClient) GetRolloutOfRevisions(ctx context.Context, in *GetRolloutOfRevisionsRequest, opts ...grpc.CallOption) (*GetRolloutOfRevisionsResponse, error) {
+	out := new(GetRolloutOfRevisionsResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/GetRolloutOfRevisions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *serviceClient) WatchStatus(ctx context.Context, in *WatchStatusRequest, opts ...grpc.CallOption) (Service_WatchStatusClient, error) {
 	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[2], "/api.v1.capsule.Service/WatchStatus", opts...)
 	if err != nil {
@@ -411,6 +421,7 @@ type ServiceServer interface {
 	GetJobExecutions(context.Context, *GetJobExecutionsRequest) (*GetJobExecutionsResponse, error)
 	GetStatus(context.Context, *GetStatusRequest) (*GetStatusResponse, error)
 	GetRevision(context.Context, *GetRevisionRequest) (*GetRevisionResponse, error)
+	GetRolloutOfRevisions(context.Context, *GetRolloutOfRevisionsRequest) (*GetRolloutOfRevisionsResponse, error)
 	WatchStatus(*WatchStatusRequest, Service_WatchStatusServer) error
 	mustEmbedUnimplementedServiceServer()
 }
@@ -487,6 +498,9 @@ func (UnimplementedServiceServer) GetStatus(context.Context, *GetStatusRequest) 
 }
 func (UnimplementedServiceServer) GetRevision(context.Context, *GetRevisionRequest) (*GetRevisionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRevision not implemented")
+}
+func (UnimplementedServiceServer) GetRolloutOfRevisions(context.Context, *GetRolloutOfRevisionsRequest) (*GetRolloutOfRevisionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRolloutOfRevisions not implemented")
 }
 func (UnimplementedServiceServer) WatchStatus(*WatchStatusRequest, Service_WatchStatusServer) error {
 	return status.Errorf(codes.Unimplemented, "method WatchStatus not implemented")
@@ -929,6 +943,24 @@ func _Service_GetRevision_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_GetRolloutOfRevisions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRolloutOfRevisionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetRolloutOfRevisions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/GetRolloutOfRevisions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetRolloutOfRevisions(ctx, req.(*GetRolloutOfRevisionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Service_WatchStatus_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(WatchStatusRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -1040,6 +1072,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRevision",
 			Handler:    _Service_GetRevision_Handler,
+		},
+		{
+			MethodName: "GetRolloutOfRevisions",
+			Handler:    _Service_GetRolloutOfRevisions_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

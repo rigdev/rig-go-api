@@ -84,6 +84,9 @@ const (
 	ServiceGetStatusProcedure = "/api.v1.capsule.Service/GetStatus"
 	// ServiceGetRevisionProcedure is the fully-qualified name of the Service's GetRevision RPC.
 	ServiceGetRevisionProcedure = "/api.v1.capsule.Service/GetRevision"
+	// ServiceGetRolloutOfRevisionsProcedure is the fully-qualified name of the Service's
+	// GetRolloutOfRevisions RPC.
+	ServiceGetRolloutOfRevisionsProcedure = "/api.v1.capsule.Service/GetRolloutOfRevisions"
 	// ServiceWatchStatusProcedure is the fully-qualified name of the Service's WatchStatus RPC.
 	ServiceWatchStatusProcedure = "/api.v1.capsule.Service/WatchStatus"
 )
@@ -114,6 +117,7 @@ var (
 	serviceGetJobExecutionsMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetJobExecutions")
 	serviceGetStatusMethodDescriptor                = serviceServiceDescriptor.Methods().ByName("GetStatus")
 	serviceGetRevisionMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("GetRevision")
+	serviceGetRolloutOfRevisionsMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("GetRolloutOfRevisions")
 	serviceWatchStatusMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("WatchStatus")
 )
 
@@ -166,6 +170,7 @@ type ServiceClient interface {
 	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
 	GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error)
 	GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error)
+	GetRolloutOfRevisions(context.Context, *connect.Request[capsule.GetRolloutOfRevisionsRequest]) (*connect.Response[capsule.GetRolloutOfRevisionsResponse], error)
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest]) (*connect.ServerStreamForClient[capsule.WatchStatusResponse], error)
 }
 
@@ -317,6 +322,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetRevisionMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getRolloutOfRevisions: connect.NewClient[capsule.GetRolloutOfRevisionsRequest, capsule.GetRolloutOfRevisionsResponse](
+			httpClient,
+			baseURL+ServiceGetRolloutOfRevisionsProcedure,
+			connect.WithSchema(serviceGetRolloutOfRevisionsMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 		watchStatus: connect.NewClient[capsule.WatchStatusRequest, capsule.WatchStatusResponse](
 			httpClient,
 			baseURL+ServiceWatchStatusProcedure,
@@ -351,6 +362,7 @@ type serviceClient struct {
 	getJobExecutions         *connect.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
 	getStatus                *connect.Client[capsule.GetStatusRequest, capsule.GetStatusResponse]
 	getRevision              *connect.Client[capsule.GetRevisionRequest, capsule.GetRevisionResponse]
+	getRolloutOfRevisions    *connect.Client[capsule.GetRolloutOfRevisionsRequest, capsule.GetRolloutOfRevisionsResponse]
 	watchStatus              *connect.Client[capsule.WatchStatusRequest, capsule.WatchStatusResponse]
 }
 
@@ -469,6 +481,11 @@ func (c *serviceClient) GetRevision(ctx context.Context, req *connect.Request[ca
 	return c.getRevision.CallUnary(ctx, req)
 }
 
+// GetRolloutOfRevisions calls api.v1.capsule.Service.GetRolloutOfRevisions.
+func (c *serviceClient) GetRolloutOfRevisions(ctx context.Context, req *connect.Request[capsule.GetRolloutOfRevisionsRequest]) (*connect.Response[capsule.GetRolloutOfRevisionsResponse], error) {
+	return c.getRolloutOfRevisions.CallUnary(ctx, req)
+}
+
 // WatchStatus calls api.v1.capsule.Service.WatchStatus.
 func (c *serviceClient) WatchStatus(ctx context.Context, req *connect.Request[capsule.WatchStatusRequest]) (*connect.ServerStreamForClient[capsule.WatchStatusResponse], error) {
 	return c.watchStatus.CallServerStream(ctx, req)
@@ -523,6 +540,7 @@ type ServiceHandler interface {
 	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
 	GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error)
 	GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error)
+	GetRolloutOfRevisions(context.Context, *connect.Request[capsule.GetRolloutOfRevisionsRequest]) (*connect.Response[capsule.GetRolloutOfRevisionsResponse], error)
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest], *connect.ServerStream[capsule.WatchStatusResponse]) error
 }
 
@@ -670,6 +688,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetRevisionMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetRolloutOfRevisionsHandler := connect.NewUnaryHandler(
+		ServiceGetRolloutOfRevisionsProcedure,
+		svc.GetRolloutOfRevisions,
+		connect.WithSchema(serviceGetRolloutOfRevisionsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	serviceWatchStatusHandler := connect.NewServerStreamHandler(
 		ServiceWatchStatusProcedure,
 		svc.WatchStatus,
@@ -724,6 +748,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetStatusHandler.ServeHTTP(w, r)
 		case ServiceGetRevisionProcedure:
 			serviceGetRevisionHandler.ServeHTTP(w, r)
+		case ServiceGetRolloutOfRevisionsProcedure:
+			serviceGetRolloutOfRevisionsHandler.ServeHTTP(w, r)
 		case ServiceWatchStatusProcedure:
 			serviceWatchStatusHandler.ServeHTTP(w, r)
 		default:
@@ -825,6 +851,10 @@ func (UnimplementedServiceHandler) GetStatus(context.Context, *connect.Request[c
 
 func (UnimplementedServiceHandler) GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetRevision is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetRolloutOfRevisions(context.Context, *connect.Request[capsule.GetRolloutOfRevisionsRequest]) (*connect.Response[capsule.GetRolloutOfRevisionsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetRolloutOfRevisions is not implemented"))
 }
 
 func (UnimplementedServiceHandler) WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest], *connect.ServerStream[capsule.WatchStatusResponse]) error {
