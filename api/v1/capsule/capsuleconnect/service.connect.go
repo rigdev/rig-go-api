@@ -84,6 +84,8 @@ const (
 	ServiceGetStatusProcedure = "/api.v1.capsule.Service/GetStatus"
 	// ServiceGetRevisionProcedure is the fully-qualified name of the Service's GetRevision RPC.
 	ServiceGetRevisionProcedure = "/api.v1.capsule.Service/GetRevision"
+	// ServiceWatchStatusProcedure is the fully-qualified name of the Service's WatchStatus RPC.
+	ServiceWatchStatusProcedure = "/api.v1.capsule.Service/WatchStatus"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -112,6 +114,7 @@ var (
 	serviceGetJobExecutionsMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetJobExecutions")
 	serviceGetStatusMethodDescriptor                = serviceServiceDescriptor.Methods().ByName("GetStatus")
 	serviceGetRevisionMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("GetRevision")
+	serviceWatchStatusMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("WatchStatus")
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -163,6 +166,7 @@ type ServiceClient interface {
 	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
 	GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error)
 	GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error)
+	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest]) (*connect.ServerStreamForClient[capsule.WatchStatusResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -313,6 +317,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetRevisionMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		watchStatus: connect.NewClient[capsule.WatchStatusRequest, capsule.WatchStatusResponse](
+			httpClient,
+			baseURL+ServiceWatchStatusProcedure,
+			connect.WithSchema(serviceWatchStatusMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -341,6 +351,7 @@ type serviceClient struct {
 	getJobExecutions         *connect.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
 	getStatus                *connect.Client[capsule.GetStatusRequest, capsule.GetStatusResponse]
 	getRevision              *connect.Client[capsule.GetRevisionRequest, capsule.GetRevisionResponse]
+	watchStatus              *connect.Client[capsule.WatchStatusRequest, capsule.WatchStatusResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -458,6 +469,11 @@ func (c *serviceClient) GetRevision(ctx context.Context, req *connect.Request[ca
 	return c.getRevision.CallUnary(ctx, req)
 }
 
+// WatchStatus calls api.v1.capsule.Service.WatchStatus.
+func (c *serviceClient) WatchStatus(ctx context.Context, req *connect.Request[capsule.WatchStatusRequest]) (*connect.ServerStreamForClient[capsule.WatchStatusResponse], error) {
+	return c.watchStatus.CallServerStream(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -507,6 +523,7 @@ type ServiceHandler interface {
 	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
 	GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error)
 	GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error)
+	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest], *connect.ServerStream[capsule.WatchStatusResponse]) error
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -653,6 +670,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetRevisionMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceWatchStatusHandler := connect.NewServerStreamHandler(
+		ServiceWatchStatusProcedure,
+		svc.WatchStatus,
+		connect.WithSchema(serviceWatchStatusMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -701,6 +724,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetStatusHandler.ServeHTTP(w, r)
 		case ServiceGetRevisionProcedure:
 			serviceGetRevisionHandler.ServeHTTP(w, r)
+		case ServiceWatchStatusProcedure:
+			serviceWatchStatusHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -800,4 +825,8 @@ func (UnimplementedServiceHandler) GetStatus(context.Context, *connect.Request[c
 
 func (UnimplementedServiceHandler) GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetRevision is not implemented"))
+}
+
+func (UnimplementedServiceHandler) WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest], *connect.ServerStream[capsule.WatchStatusResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.WatchStatus is not implemented"))
 }

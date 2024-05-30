@@ -65,6 +65,7 @@ type ServiceClient interface {
 	GetJobExecutions(ctx context.Context, in *GetJobExecutionsRequest, opts ...grpc.CallOption) (*GetJobExecutionsResponse, error)
 	GetStatus(ctx context.Context, in *GetStatusRequest, opts ...grpc.CallOption) (*GetStatusResponse, error)
 	GetRevision(ctx context.Context, in *GetRevisionRequest, opts ...grpc.CallOption) (*GetRevisionResponse, error)
+	WatchStatus(ctx context.Context, in *WatchStatusRequest, opts ...grpc.CallOption) (Service_WatchStatusClient, error)
 }
 
 type serviceClient struct {
@@ -327,6 +328,38 @@ func (c *serviceClient) GetRevision(ctx context.Context, in *GetRevisionRequest,
 	return out, nil
 }
 
+func (c *serviceClient) WatchStatus(ctx context.Context, in *WatchStatusRequest, opts ...grpc.CallOption) (Service_WatchStatusClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[2], "/api.v1.capsule.Service/WatchStatus", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &serviceWatchStatusClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Service_WatchStatusClient interface {
+	Recv() (*WatchStatusResponse, error)
+	grpc.ClientStream
+}
+
+type serviceWatchStatusClient struct {
+	grpc.ClientStream
+}
+
+func (x *serviceWatchStatusClient) Recv() (*WatchStatusResponse, error) {
+	m := new(WatchStatusResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -378,6 +411,7 @@ type ServiceServer interface {
 	GetJobExecutions(context.Context, *GetJobExecutionsRequest) (*GetJobExecutionsResponse, error)
 	GetStatus(context.Context, *GetStatusRequest) (*GetStatusResponse, error)
 	GetRevision(context.Context, *GetRevisionRequest) (*GetRevisionResponse, error)
+	WatchStatus(*WatchStatusRequest, Service_WatchStatusServer) error
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -453,6 +487,9 @@ func (UnimplementedServiceServer) GetStatus(context.Context, *GetStatusRequest) 
 }
 func (UnimplementedServiceServer) GetRevision(context.Context, *GetRevisionRequest) (*GetRevisionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRevision not implemented")
+}
+func (UnimplementedServiceServer) WatchStatus(*WatchStatusRequest, Service_WatchStatusServer) error {
+	return status.Errorf(codes.Unimplemented, "method WatchStatus not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -892,6 +929,27 @@ func _Service_GetRevision_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_WatchStatus_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WatchStatusRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ServiceServer).WatchStatus(m, &serviceWatchStatusServer{stream})
+}
+
+type Service_WatchStatusServer interface {
+	Send(*WatchStatusResponse) error
+	grpc.ServerStream
+}
+
+type serviceWatchStatusServer struct {
+	grpc.ServerStream
+}
+
+func (x *serviceWatchStatusServer) Send(m *WatchStatusResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -995,6 +1053,11 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 			Handler:       _Service_Execute_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
+		},
+		{
+			StreamName:    "WatchStatus",
+			Handler:       _Service_WatchStatus_Handler,
+			ServerStreams: true,
 		},
 	},
 	Metadata: "api/v1/capsule/service.proto",
