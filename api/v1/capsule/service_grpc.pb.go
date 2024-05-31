@@ -45,6 +45,8 @@ type ServiceClient interface {
 	GetRollout(ctx context.Context, in *GetRolloutRequest, opts ...grpc.CallOption) (*GetRolloutResponse, error)
 	// Lists all rollouts for the capsule.
 	ListRollouts(ctx context.Context, in *ListRolloutsRequest, opts ...grpc.CallOption) (*ListRolloutsResponse, error)
+	// Stream rollouts for a capsule.
+	WatchRollouts(ctx context.Context, in *WatchRolloutsRequest, opts ...grpc.CallOption) (Service_WatchRolloutsClient, error)
 	// Abort the rollout.
 	AbortRollout(ctx context.Context, in *AbortRolloutRequest, opts ...grpc.CallOption) (*AbortRolloutResponse, error)
 	// Stop a Rollout, removing all resources associated with it.
@@ -57,6 +59,8 @@ type ServiceClient interface {
 	GetInstanceStatus(ctx context.Context, in *GetInstanceStatusRequest, opts ...grpc.CallOption) (*GetInstanceStatusResponse, error)
 	// ListInstanceStatuses lists the status of all instances.
 	ListInstanceStatuses(ctx context.Context, in *ListInstanceStatusesRequest, opts ...grpc.CallOption) (*ListInstanceStatusesResponse, error)
+	// Stream Instance Statuses of a capsule.
+	WatchInstanceStatuses(ctx context.Context, in *WatchInstanceStatusesRequest, opts ...grpc.CallOption) (Service_WatchInstanceStatusesClient, error)
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
 	Execute(ctx context.Context, opts ...grpc.CallOption) (Service_ExecuteClient, error)
@@ -66,6 +70,7 @@ type ServiceClient interface {
 	GetStatus(ctx context.Context, in *GetStatusRequest, opts ...grpc.CallOption) (*GetStatusResponse, error)
 	GetRevision(ctx context.Context, in *GetRevisionRequest, opts ...grpc.CallOption) (*GetRevisionResponse, error)
 	GetRolloutOfRevisions(ctx context.Context, in *GetRolloutOfRevisionsRequest, opts ...grpc.CallOption) (*GetRolloutOfRevisionsResponse, error)
+	// Stream the status of a capsule.
 	WatchStatus(ctx context.Context, in *WatchStatusRequest, opts ...grpc.CallOption) (Service_WatchStatusClient, error)
 }
 
@@ -208,6 +213,38 @@ func (c *serviceClient) ListRollouts(ctx context.Context, in *ListRolloutsReques
 	return out, nil
 }
 
+func (c *serviceClient) WatchRollouts(ctx context.Context, in *WatchRolloutsRequest, opts ...grpc.CallOption) (Service_WatchRolloutsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[1], "/api.v1.capsule.Service/WatchRollouts", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &serviceWatchRolloutsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Service_WatchRolloutsClient interface {
+	Recv() (*WatchRolloutsResponse, error)
+	grpc.ClientStream
+}
+
+type serviceWatchRolloutsClient struct {
+	grpc.ClientStream
+}
+
+func (x *serviceWatchRolloutsClient) Recv() (*WatchRolloutsResponse, error) {
+	m := new(WatchRolloutsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *serviceClient) AbortRollout(ctx context.Context, in *AbortRolloutRequest, opts ...grpc.CallOption) (*AbortRolloutResponse, error) {
 	out := new(AbortRolloutResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/AbortRollout", in, out, opts...)
@@ -262,8 +299,40 @@ func (c *serviceClient) ListInstanceStatuses(ctx context.Context, in *ListInstan
 	return out, nil
 }
 
+func (c *serviceClient) WatchInstanceStatuses(ctx context.Context, in *WatchInstanceStatusesRequest, opts ...grpc.CallOption) (Service_WatchInstanceStatusesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[2], "/api.v1.capsule.Service/WatchInstanceStatuses", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &serviceWatchInstanceStatusesClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Service_WatchInstanceStatusesClient interface {
+	Recv() (*WatchInstanceStatusesResponse, error)
+	grpc.ClientStream
+}
+
+type serviceWatchInstanceStatusesClient struct {
+	grpc.ClientStream
+}
+
+func (x *serviceWatchInstanceStatusesClient) Recv() (*WatchInstanceStatusesResponse, error) {
+	m := new(WatchInstanceStatusesResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *serviceClient) Execute(ctx context.Context, opts ...grpc.CallOption) (Service_ExecuteClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[1], "/api.v1.capsule.Service/Execute", opts...)
+	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[3], "/api.v1.capsule.Service/Execute", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -339,7 +408,7 @@ func (c *serviceClient) GetRolloutOfRevisions(ctx context.Context, in *GetRollou
 }
 
 func (c *serviceClient) WatchStatus(ctx context.Context, in *WatchStatusRequest, opts ...grpc.CallOption) (Service_WatchStatusClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[2], "/api.v1.capsule.Service/WatchStatus", opts...)
+	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[4], "/api.v1.capsule.Service/WatchStatus", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -401,6 +470,8 @@ type ServiceServer interface {
 	GetRollout(context.Context, *GetRolloutRequest) (*GetRolloutResponse, error)
 	// Lists all rollouts for the capsule.
 	ListRollouts(context.Context, *ListRolloutsRequest) (*ListRolloutsResponse, error)
+	// Stream rollouts for a capsule.
+	WatchRollouts(*WatchRolloutsRequest, Service_WatchRolloutsServer) error
 	// Abort the rollout.
 	AbortRollout(context.Context, *AbortRolloutRequest) (*AbortRolloutResponse, error)
 	// Stop a Rollout, removing all resources associated with it.
@@ -413,6 +484,8 @@ type ServiceServer interface {
 	GetInstanceStatus(context.Context, *GetInstanceStatusRequest) (*GetInstanceStatusResponse, error)
 	// ListInstanceStatuses lists the status of all instances.
 	ListInstanceStatuses(context.Context, *ListInstanceStatusesRequest) (*ListInstanceStatusesResponse, error)
+	// Stream Instance Statuses of a capsule.
+	WatchInstanceStatuses(*WatchInstanceStatusesRequest, Service_WatchInstanceStatusesServer) error
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
 	Execute(Service_ExecuteServer) error
@@ -422,6 +495,7 @@ type ServiceServer interface {
 	GetStatus(context.Context, *GetStatusRequest) (*GetStatusResponse, error)
 	GetRevision(context.Context, *GetRevisionRequest) (*GetRevisionResponse, error)
 	GetRolloutOfRevisions(context.Context, *GetRolloutOfRevisionsRequest) (*GetRolloutOfRevisionsResponse, error)
+	// Stream the status of a capsule.
 	WatchStatus(*WatchStatusRequest, Service_WatchStatusServer) error
 	mustEmbedUnimplementedServiceServer()
 }
@@ -466,6 +540,9 @@ func (UnimplementedServiceServer) GetRollout(context.Context, *GetRolloutRequest
 func (UnimplementedServiceServer) ListRollouts(context.Context, *ListRolloutsRequest) (*ListRolloutsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRollouts not implemented")
 }
+func (UnimplementedServiceServer) WatchRollouts(*WatchRolloutsRequest, Service_WatchRolloutsServer) error {
+	return status.Errorf(codes.Unimplemented, "method WatchRollouts not implemented")
+}
 func (UnimplementedServiceServer) AbortRollout(context.Context, *AbortRolloutRequest) (*AbortRolloutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AbortRollout not implemented")
 }
@@ -483,6 +560,9 @@ func (UnimplementedServiceServer) GetInstanceStatus(context.Context, *GetInstanc
 }
 func (UnimplementedServiceServer) ListInstanceStatuses(context.Context, *ListInstanceStatusesRequest) (*ListInstanceStatusesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListInstanceStatuses not implemented")
+}
+func (UnimplementedServiceServer) WatchInstanceStatuses(*WatchInstanceStatusesRequest, Service_WatchInstanceStatusesServer) error {
+	return status.Errorf(codes.Unimplemented, "method WatchInstanceStatuses not implemented")
 }
 func (UnimplementedServiceServer) Execute(Service_ExecuteServer) error {
 	return status.Errorf(codes.Unimplemented, "method Execute not implemented")
@@ -737,6 +817,27 @@ func _Service_ListRollouts_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_WatchRollouts_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WatchRolloutsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ServiceServer).WatchRollouts(m, &serviceWatchRolloutsServer{stream})
+}
+
+type Service_WatchRolloutsServer interface {
+	Send(*WatchRolloutsResponse) error
+	grpc.ServerStream
+}
+
+type serviceWatchRolloutsServer struct {
+	grpc.ServerStream
+}
+
+func (x *serviceWatchRolloutsServer) Send(m *WatchRolloutsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 func _Service_AbortRollout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AbortRolloutRequest)
 	if err := dec(in); err != nil {
@@ -843,6 +944,27 @@ func _Service_ListInstanceStatuses_Handler(srv interface{}, ctx context.Context,
 		return srv.(ServiceServer).ListInstanceStatuses(ctx, req.(*ListInstanceStatusesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_WatchInstanceStatuses_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WatchInstanceStatusesRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ServiceServer).WatchInstanceStatuses(m, &serviceWatchInstanceStatusesServer{stream})
+}
+
+type Service_WatchInstanceStatusesServer interface {
+	Send(*WatchInstanceStatusesResponse) error
+	grpc.ServerStream
+}
+
+type serviceWatchInstanceStatusesServer struct {
+	grpc.ServerStream
+}
+
+func (x *serviceWatchInstanceStatusesServer) Send(m *WatchInstanceStatusesResponse) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 func _Service_Execute_Handler(srv interface{}, stream grpc.ServerStream) error {
@@ -1082,6 +1204,16 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "Logs",
 			Handler:       _Service_Logs_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "WatchRollouts",
+			Handler:       _Service_WatchRollouts_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "WatchInstanceStatuses",
+			Handler:       _Service_WatchInstanceStatuses_Handler,
 			ServerStreams: true,
 		},
 		{

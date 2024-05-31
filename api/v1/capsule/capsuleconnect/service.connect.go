@@ -58,6 +58,8 @@ const (
 	ServiceGetRolloutProcedure = "/api.v1.capsule.Service/GetRollout"
 	// ServiceListRolloutsProcedure is the fully-qualified name of the Service's ListRollouts RPC.
 	ServiceListRolloutsProcedure = "/api.v1.capsule.Service/ListRollouts"
+	// ServiceWatchRolloutsProcedure is the fully-qualified name of the Service's WatchRollouts RPC.
+	ServiceWatchRolloutsProcedure = "/api.v1.capsule.Service/WatchRollouts"
 	// ServiceAbortRolloutProcedure is the fully-qualified name of the Service's AbortRollout RPC.
 	ServiceAbortRolloutProcedure = "/api.v1.capsule.Service/AbortRollout"
 	// ServiceStopRolloutProcedure is the fully-qualified name of the Service's StopRollout RPC.
@@ -72,6 +74,9 @@ const (
 	// ServiceListInstanceStatusesProcedure is the fully-qualified name of the Service's
 	// ListInstanceStatuses RPC.
 	ServiceListInstanceStatusesProcedure = "/api.v1.capsule.Service/ListInstanceStatuses"
+	// ServiceWatchInstanceStatusesProcedure is the fully-qualified name of the Service's
+	// WatchInstanceStatuses RPC.
+	ServiceWatchInstanceStatusesProcedure = "/api.v1.capsule.Service/WatchInstanceStatuses"
 	// ServiceExecuteProcedure is the fully-qualified name of the Service's Execute RPC.
 	ServiceExecuteProcedure = "/api.v1.capsule.Service/Execute"
 	// ServiceGetCustomInstanceMetricsProcedure is the fully-qualified name of the Service's
@@ -106,12 +111,14 @@ var (
 	serviceRestartInstanceMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("RestartInstance")
 	serviceGetRolloutMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("GetRollout")
 	serviceListRolloutsMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("ListRollouts")
+	serviceWatchRolloutsMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("WatchRollouts")
 	serviceAbortRolloutMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("AbortRollout")
 	serviceStopRolloutMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("StopRollout")
 	serviceListEventsMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("ListEvents")
 	serviceCapsuleMetricsMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("CapsuleMetrics")
 	serviceGetInstanceStatusMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("GetInstanceStatus")
 	serviceListInstanceStatusesMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("ListInstanceStatuses")
+	serviceWatchInstanceStatusesMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("WatchInstanceStatuses")
 	serviceExecuteMethodDescriptor                  = serviceServiceDescriptor.Methods().ByName("Execute")
 	serviceGetCustomInstanceMetricsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetCustomInstanceMetrics")
 	serviceGetJobExecutionsMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetJobExecutions")
@@ -150,6 +157,8 @@ type ServiceClient interface {
 	GetRollout(context.Context, *connect.Request[capsule.GetRolloutRequest]) (*connect.Response[capsule.GetRolloutResponse], error)
 	// Lists all rollouts for the capsule.
 	ListRollouts(context.Context, *connect.Request[capsule.ListRolloutsRequest]) (*connect.Response[capsule.ListRolloutsResponse], error)
+	// Stream rollouts for a capsule.
+	WatchRollouts(context.Context, *connect.Request[capsule.WatchRolloutsRequest]) (*connect.ServerStreamForClient[capsule.WatchRolloutsResponse], error)
 	// Abort the rollout.
 	AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error)
 	// Stop a Rollout, removing all resources associated with it.
@@ -162,6 +171,8 @@ type ServiceClient interface {
 	GetInstanceStatus(context.Context, *connect.Request[capsule.GetInstanceStatusRequest]) (*connect.Response[capsule.GetInstanceStatusResponse], error)
 	// ListInstanceStatuses lists the status of all instances.
 	ListInstanceStatuses(context.Context, *connect.Request[capsule.ListInstanceStatusesRequest]) (*connect.Response[capsule.ListInstanceStatusesResponse], error)
+	// Stream Instance Statuses of a capsule.
+	WatchInstanceStatuses(context.Context, *connect.Request[capsule.WatchInstanceStatusesRequest]) (*connect.ServerStreamForClient[capsule.WatchInstanceStatusesResponse], error)
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
 	Execute(context.Context) *connect.BidiStreamForClient[capsule.ExecuteRequest, capsule.ExecuteResponse]
@@ -171,6 +182,7 @@ type ServiceClient interface {
 	GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error)
 	GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error)
 	GetRolloutOfRevisions(context.Context, *connect.Request[capsule.GetRolloutOfRevisionsRequest]) (*connect.Response[capsule.GetRolloutOfRevisionsResponse], error)
+	// Stream the status of a capsule.
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest]) (*connect.ServerStreamForClient[capsule.WatchStatusResponse], error)
 }
 
@@ -256,6 +268,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceListRolloutsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		watchRollouts: connect.NewClient[capsule.WatchRolloutsRequest, capsule.WatchRolloutsResponse](
+			httpClient,
+			baseURL+ServiceWatchRolloutsProcedure,
+			connect.WithSchema(serviceWatchRolloutsMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 		abortRollout: connect.NewClient[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse](
 			httpClient,
 			baseURL+ServiceAbortRolloutProcedure,
@@ -290,6 +308,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			httpClient,
 			baseURL+ServiceListInstanceStatusesProcedure,
 			connect.WithSchema(serviceListInstanceStatusesMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		watchInstanceStatuses: connect.NewClient[capsule.WatchInstanceStatusesRequest, capsule.WatchInstanceStatusesResponse](
+			httpClient,
+			baseURL+ServiceWatchInstanceStatusesProcedure,
+			connect.WithSchema(serviceWatchInstanceStatusesMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		execute: connect.NewClient[capsule.ExecuteRequest, capsule.ExecuteResponse](
@@ -351,12 +375,14 @@ type serviceClient struct {
 	restartInstance          *connect.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
 	getRollout               *connect.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
 	listRollouts             *connect.Client[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse]
+	watchRollouts            *connect.Client[capsule.WatchRolloutsRequest, capsule.WatchRolloutsResponse]
 	abortRollout             *connect.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
 	stopRollout              *connect.Client[capsule.StopRolloutRequest, capsule.StopRolloutResponse]
 	listEvents               *connect.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
 	capsuleMetrics           *connect.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
 	getInstanceStatus        *connect.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
 	listInstanceStatuses     *connect.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
+	watchInstanceStatuses    *connect.Client[capsule.WatchInstanceStatusesRequest, capsule.WatchInstanceStatusesResponse]
 	execute                  *connect.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
 	getCustomInstanceMetrics *connect.Client[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse]
 	getJobExecutions         *connect.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
@@ -426,6 +452,11 @@ func (c *serviceClient) ListRollouts(ctx context.Context, req *connect.Request[c
 	return c.listRollouts.CallUnary(ctx, req)
 }
 
+// WatchRollouts calls api.v1.capsule.Service.WatchRollouts.
+func (c *serviceClient) WatchRollouts(ctx context.Context, req *connect.Request[capsule.WatchRolloutsRequest]) (*connect.ServerStreamForClient[capsule.WatchRolloutsResponse], error) {
+	return c.watchRollouts.CallServerStream(ctx, req)
+}
+
 // AbortRollout calls api.v1.capsule.Service.AbortRollout.
 func (c *serviceClient) AbortRollout(ctx context.Context, req *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error) {
 	return c.abortRollout.CallUnary(ctx, req)
@@ -454,6 +485,11 @@ func (c *serviceClient) GetInstanceStatus(ctx context.Context, req *connect.Requ
 // ListInstanceStatuses calls api.v1.capsule.Service.ListInstanceStatuses.
 func (c *serviceClient) ListInstanceStatuses(ctx context.Context, req *connect.Request[capsule.ListInstanceStatusesRequest]) (*connect.Response[capsule.ListInstanceStatusesResponse], error) {
 	return c.listInstanceStatuses.CallUnary(ctx, req)
+}
+
+// WatchInstanceStatuses calls api.v1.capsule.Service.WatchInstanceStatuses.
+func (c *serviceClient) WatchInstanceStatuses(ctx context.Context, req *connect.Request[capsule.WatchInstanceStatusesRequest]) (*connect.ServerStreamForClient[capsule.WatchInstanceStatusesResponse], error) {
+	return c.watchInstanceStatuses.CallServerStream(ctx, req)
 }
 
 // Execute calls api.v1.capsule.Service.Execute.
@@ -520,6 +556,8 @@ type ServiceHandler interface {
 	GetRollout(context.Context, *connect.Request[capsule.GetRolloutRequest]) (*connect.Response[capsule.GetRolloutResponse], error)
 	// Lists all rollouts for the capsule.
 	ListRollouts(context.Context, *connect.Request[capsule.ListRolloutsRequest]) (*connect.Response[capsule.ListRolloutsResponse], error)
+	// Stream rollouts for a capsule.
+	WatchRollouts(context.Context, *connect.Request[capsule.WatchRolloutsRequest], *connect.ServerStream[capsule.WatchRolloutsResponse]) error
 	// Abort the rollout.
 	AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error)
 	// Stop a Rollout, removing all resources associated with it.
@@ -532,6 +570,8 @@ type ServiceHandler interface {
 	GetInstanceStatus(context.Context, *connect.Request[capsule.GetInstanceStatusRequest]) (*connect.Response[capsule.GetInstanceStatusResponse], error)
 	// ListInstanceStatuses lists the status of all instances.
 	ListInstanceStatuses(context.Context, *connect.Request[capsule.ListInstanceStatusesRequest]) (*connect.Response[capsule.ListInstanceStatusesResponse], error)
+	// Stream Instance Statuses of a capsule.
+	WatchInstanceStatuses(context.Context, *connect.Request[capsule.WatchInstanceStatusesRequest], *connect.ServerStream[capsule.WatchInstanceStatusesResponse]) error
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
 	Execute(context.Context, *connect.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error
@@ -541,6 +581,7 @@ type ServiceHandler interface {
 	GetStatus(context.Context, *connect.Request[capsule.GetStatusRequest]) (*connect.Response[capsule.GetStatusResponse], error)
 	GetRevision(context.Context, *connect.Request[capsule.GetRevisionRequest]) (*connect.Response[capsule.GetRevisionResponse], error)
 	GetRolloutOfRevisions(context.Context, *connect.Request[capsule.GetRolloutOfRevisionsRequest]) (*connect.Response[capsule.GetRolloutOfRevisionsResponse], error)
+	// Stream the status of a capsule.
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest], *connect.ServerStream[capsule.WatchStatusResponse]) error
 }
 
@@ -622,6 +663,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceListRolloutsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceWatchRolloutsHandler := connect.NewServerStreamHandler(
+		ServiceWatchRolloutsProcedure,
+		svc.WatchRollouts,
+		connect.WithSchema(serviceWatchRolloutsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	serviceAbortRolloutHandler := connect.NewUnaryHandler(
 		ServiceAbortRolloutProcedure,
 		svc.AbortRollout,
@@ -656,6 +703,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		ServiceListInstanceStatusesProcedure,
 		svc.ListInstanceStatuses,
 		connect.WithSchema(serviceListInstanceStatusesMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceWatchInstanceStatusesHandler := connect.NewServerStreamHandler(
+		ServiceWatchInstanceStatusesProcedure,
+		svc.WatchInstanceStatuses,
+		connect.WithSchema(serviceWatchInstanceStatusesMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	serviceExecuteHandler := connect.NewBidiStreamHandler(
@@ -726,6 +779,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetRolloutHandler.ServeHTTP(w, r)
 		case ServiceListRolloutsProcedure:
 			serviceListRolloutsHandler.ServeHTTP(w, r)
+		case ServiceWatchRolloutsProcedure:
+			serviceWatchRolloutsHandler.ServeHTTP(w, r)
 		case ServiceAbortRolloutProcedure:
 			serviceAbortRolloutHandler.ServeHTTP(w, r)
 		case ServiceStopRolloutProcedure:
@@ -738,6 +793,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetInstanceStatusHandler.ServeHTTP(w, r)
 		case ServiceListInstanceStatusesProcedure:
 			serviceListInstanceStatusesHandler.ServeHTTP(w, r)
+		case ServiceWatchInstanceStatusesProcedure:
+			serviceWatchInstanceStatusesHandler.ServeHTTP(w, r)
 		case ServiceExecuteProcedure:
 			serviceExecuteHandler.ServeHTTP(w, r)
 		case ServiceGetCustomInstanceMetricsProcedure:
@@ -809,6 +866,10 @@ func (UnimplementedServiceHandler) ListRollouts(context.Context, *connect.Reques
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListRollouts is not implemented"))
 }
 
+func (UnimplementedServiceHandler) WatchRollouts(context.Context, *connect.Request[capsule.WatchRolloutsRequest], *connect.ServerStream[capsule.WatchRolloutsResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.WatchRollouts is not implemented"))
+}
+
 func (UnimplementedServiceHandler) AbortRollout(context.Context, *connect.Request[capsule.AbortRolloutRequest]) (*connect.Response[capsule.AbortRolloutResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.AbortRollout is not implemented"))
 }
@@ -831,6 +892,10 @@ func (UnimplementedServiceHandler) GetInstanceStatus(context.Context, *connect.R
 
 func (UnimplementedServiceHandler) ListInstanceStatuses(context.Context, *connect.Request[capsule.ListInstanceStatusesRequest]) (*connect.Response[capsule.ListInstanceStatusesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListInstanceStatuses is not implemented"))
+}
+
+func (UnimplementedServiceHandler) WatchInstanceStatuses(context.Context, *connect.Request[capsule.WatchInstanceStatusesRequest], *connect.ServerStream[capsule.WatchInstanceStatusesResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.WatchInstanceStatuses is not implemented"))
 }
 
 func (UnimplementedServiceHandler) Execute(context.Context, *connect.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error {
