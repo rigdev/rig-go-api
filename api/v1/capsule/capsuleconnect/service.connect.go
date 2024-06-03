@@ -79,6 +79,8 @@ const (
 	ServiceWatchInstanceStatusesProcedure = "/api.v1.capsule.Service/WatchInstanceStatuses"
 	// ServiceExecuteProcedure is the fully-qualified name of the Service's Execute RPC.
 	ServiceExecuteProcedure = "/api.v1.capsule.Service/Execute"
+	// ServicePortForwardProcedure is the fully-qualified name of the Service's PortForward RPC.
+	ServicePortForwardProcedure = "/api.v1.capsule.Service/PortForward"
 	// ServiceGetCustomInstanceMetricsProcedure is the fully-qualified name of the Service's
 	// GetCustomInstanceMetrics RPC.
 	ServiceGetCustomInstanceMetricsProcedure = "/api.v1.capsule.Service/GetCustomInstanceMetrics"
@@ -120,6 +122,7 @@ var (
 	serviceListInstanceStatusesMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("ListInstanceStatuses")
 	serviceWatchInstanceStatusesMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("WatchInstanceStatuses")
 	serviceExecuteMethodDescriptor                  = serviceServiceDescriptor.Methods().ByName("Execute")
+	servicePortForwardMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("PortForward")
 	serviceGetCustomInstanceMetricsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetCustomInstanceMetrics")
 	serviceGetJobExecutionsMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetJobExecutions")
 	serviceGetStatusMethodDescriptor                = serviceServiceDescriptor.Methods().ByName("GetStatus")
@@ -176,6 +179,9 @@ type ServiceClient interface {
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
 	Execute(context.Context) *connect.BidiStreamForClient[capsule.ExecuteRequest, capsule.ExecuteResponse]
+	// PortForward establishes a port-forwarding for the port to the given
+	// instance.
+	PortForward(context.Context) *connect.BidiStreamForClient[capsule.PortForwardRequest, capsule.PortForwardResponse]
 	GetCustomInstanceMetrics(context.Context, *connect.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect.Response[capsule.GetCustomInstanceMetricsResponse], error)
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
@@ -322,6 +328,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceExecuteMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		portForward: connect.NewClient[capsule.PortForwardRequest, capsule.PortForwardResponse](
+			httpClient,
+			baseURL+ServicePortForwardProcedure,
+			connect.WithSchema(servicePortForwardMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 		getCustomInstanceMetrics: connect.NewClient[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse](
 			httpClient,
 			baseURL+ServiceGetCustomInstanceMetricsProcedure,
@@ -384,6 +396,7 @@ type serviceClient struct {
 	listInstanceStatuses     *connect.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
 	watchInstanceStatuses    *connect.Client[capsule.WatchInstanceStatusesRequest, capsule.WatchInstanceStatusesResponse]
 	execute                  *connect.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
+	portForward              *connect.Client[capsule.PortForwardRequest, capsule.PortForwardResponse]
 	getCustomInstanceMetrics *connect.Client[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse]
 	getJobExecutions         *connect.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
 	getStatus                *connect.Client[capsule.GetStatusRequest, capsule.GetStatusResponse]
@@ -497,6 +510,11 @@ func (c *serviceClient) Execute(ctx context.Context) *connect.BidiStreamForClien
 	return c.execute.CallBidiStream(ctx)
 }
 
+// PortForward calls api.v1.capsule.Service.PortForward.
+func (c *serviceClient) PortForward(ctx context.Context) *connect.BidiStreamForClient[capsule.PortForwardRequest, capsule.PortForwardResponse] {
+	return c.portForward.CallBidiStream(ctx)
+}
+
 // GetCustomInstanceMetrics calls api.v1.capsule.Service.GetCustomInstanceMetrics.
 func (c *serviceClient) GetCustomInstanceMetrics(ctx context.Context, req *connect.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect.Response[capsule.GetCustomInstanceMetricsResponse], error) {
 	return c.getCustomInstanceMetrics.CallUnary(ctx, req)
@@ -575,6 +593,9 @@ type ServiceHandler interface {
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
 	Execute(context.Context, *connect.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error
+	// PortForward establishes a port-forwarding for the port to the given
+	// instance.
+	PortForward(context.Context, *connect.BidiStream[capsule.PortForwardRequest, capsule.PortForwardResponse]) error
 	GetCustomInstanceMetrics(context.Context, *connect.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect.Response[capsule.GetCustomInstanceMetricsResponse], error)
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(context.Context, *connect.Request[capsule.GetJobExecutionsRequest]) (*connect.Response[capsule.GetJobExecutionsResponse], error)
@@ -717,6 +738,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceExecuteMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	servicePortForwardHandler := connect.NewBidiStreamHandler(
+		ServicePortForwardProcedure,
+		svc.PortForward,
+		connect.WithSchema(servicePortForwardMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	serviceGetCustomInstanceMetricsHandler := connect.NewUnaryHandler(
 		ServiceGetCustomInstanceMetricsProcedure,
 		svc.GetCustomInstanceMetrics,
@@ -797,6 +824,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceWatchInstanceStatusesHandler.ServeHTTP(w, r)
 		case ServiceExecuteProcedure:
 			serviceExecuteHandler.ServeHTTP(w, r)
+		case ServicePortForwardProcedure:
+			servicePortForwardHandler.ServeHTTP(w, r)
 		case ServiceGetCustomInstanceMetricsProcedure:
 			serviceGetCustomInstanceMetricsHandler.ServeHTTP(w, r)
 		case ServiceGetJobExecutionsProcedure:
@@ -900,6 +929,10 @@ func (UnimplementedServiceHandler) WatchInstanceStatuses(context.Context, *conne
 
 func (UnimplementedServiceHandler) Execute(context.Context, *connect.BidiStream[capsule.ExecuteRequest, capsule.ExecuteResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Execute is not implemented"))
+}
+
+func (UnimplementedServiceHandler) PortForward(context.Context, *connect.BidiStream[capsule.PortForwardRequest, capsule.PortForwardResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.PortForward is not implemented"))
 }
 
 func (UnimplementedServiceHandler) GetCustomInstanceMetrics(context.Context, *connect.Request[capsule.GetCustomInstanceMetricsRequest]) (*connect.Response[capsule.GetCustomInstanceMetricsResponse], error) {

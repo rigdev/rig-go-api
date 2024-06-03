@@ -64,6 +64,9 @@ type ServiceClient interface {
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
 	Execute(ctx context.Context, opts ...grpc.CallOption) (Service_ExecuteClient, error)
+	// PortForward establishes a port-forwarding for the port to the given
+	// instance.
+	PortForward(ctx context.Context, opts ...grpc.CallOption) (Service_PortForwardClient, error)
 	GetCustomInstanceMetrics(ctx context.Context, in *GetCustomInstanceMetricsRequest, opts ...grpc.CallOption) (*GetCustomInstanceMetricsResponse, error)
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(ctx context.Context, in *GetJobExecutionsRequest, opts ...grpc.CallOption) (*GetJobExecutionsResponse, error)
@@ -362,6 +365,37 @@ func (x *serviceExecuteClient) Recv() (*ExecuteResponse, error) {
 	return m, nil
 }
 
+func (c *serviceClient) PortForward(ctx context.Context, opts ...grpc.CallOption) (Service_PortForwardClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[4], "/api.v1.capsule.Service/PortForward", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &servicePortForwardClient{stream}
+	return x, nil
+}
+
+type Service_PortForwardClient interface {
+	Send(*PortForwardRequest) error
+	Recv() (*PortForwardResponse, error)
+	grpc.ClientStream
+}
+
+type servicePortForwardClient struct {
+	grpc.ClientStream
+}
+
+func (x *servicePortForwardClient) Send(m *PortForwardRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *servicePortForwardClient) Recv() (*PortForwardResponse, error) {
+	m := new(PortForwardResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *serviceClient) GetCustomInstanceMetrics(ctx context.Context, in *GetCustomInstanceMetricsRequest, opts ...grpc.CallOption) (*GetCustomInstanceMetricsResponse, error) {
 	out := new(GetCustomInstanceMetricsResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/GetCustomInstanceMetrics", in, out, opts...)
@@ -408,7 +442,7 @@ func (c *serviceClient) GetRolloutOfRevisions(ctx context.Context, in *GetRollou
 }
 
 func (c *serviceClient) WatchStatus(ctx context.Context, in *WatchStatusRequest, opts ...grpc.CallOption) (Service_WatchStatusClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[4], "/api.v1.capsule.Service/WatchStatus", opts...)
+	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[5], "/api.v1.capsule.Service/WatchStatus", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -489,6 +523,9 @@ type ServiceServer interface {
 	// Execute executes a command in a given in instance,
 	// and returns the output along with an exit code.
 	Execute(Service_ExecuteServer) error
+	// PortForward establishes a port-forwarding for the port to the given
+	// instance.
+	PortForward(Service_PortForwardServer) error
 	GetCustomInstanceMetrics(context.Context, *GetCustomInstanceMetricsRequest) (*GetCustomInstanceMetricsResponse, error)
 	// Get list of job executions performed by the Capsule.
 	GetJobExecutions(context.Context, *GetJobExecutionsRequest) (*GetJobExecutionsResponse, error)
@@ -566,6 +603,9 @@ func (UnimplementedServiceServer) WatchInstanceStatuses(*WatchInstanceStatusesRe
 }
 func (UnimplementedServiceServer) Execute(Service_ExecuteServer) error {
 	return status.Errorf(codes.Unimplemented, "method Execute not implemented")
+}
+func (UnimplementedServiceServer) PortForward(Service_PortForwardServer) error {
+	return status.Errorf(codes.Unimplemented, "method PortForward not implemented")
 }
 func (UnimplementedServiceServer) GetCustomInstanceMetrics(context.Context, *GetCustomInstanceMetricsRequest) (*GetCustomInstanceMetricsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCustomInstanceMetrics not implemented")
@@ -993,6 +1033,32 @@ func (x *serviceExecuteServer) Recv() (*ExecuteRequest, error) {
 	return m, nil
 }
 
+func _Service_PortForward_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ServiceServer).PortForward(&servicePortForwardServer{stream})
+}
+
+type Service_PortForwardServer interface {
+	Send(*PortForwardResponse) error
+	Recv() (*PortForwardRequest, error)
+	grpc.ServerStream
+}
+
+type servicePortForwardServer struct {
+	grpc.ServerStream
+}
+
+func (x *servicePortForwardServer) Send(m *PortForwardResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *servicePortForwardServer) Recv() (*PortForwardRequest, error) {
+	m := new(PortForwardRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func _Service_GetCustomInstanceMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetCustomInstanceMetricsRequest)
 	if err := dec(in); err != nil {
@@ -1219,6 +1285,12 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "Execute",
 			Handler:       _Service_Execute_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "PortForward",
+			Handler:       _Service_PortForward_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
