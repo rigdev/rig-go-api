@@ -35,6 +35,8 @@ type ServiceClient interface {
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
 	Deploy(ctx context.Context, in *DeployRequest, opts ...grpc.CallOption) (*DeployResponse, error)
+	ProposeRollout(ctx context.Context, in *ProposeRolloutRequest, opts ...grpc.CallOption) (*ProposeRolloutResponse, error)
+	ListRolloutProposals(ctx context.Context, in *ListRolloutProposalsRequest, opts ...grpc.CallOption) (*ListRolloutProposalsResponse, error)
 	// Applies a Capsule spec in an environment which will be rolled out
 	ApplyCapsuleSpec(ctx context.Context, in *ApplyCapsuleSpecRequest, opts ...grpc.CallOption) (*ApplyCapsuleSpecResponse, error)
 	// Lists all instances for the capsule.
@@ -165,6 +167,24 @@ func (c *serviceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.
 func (c *serviceClient) Deploy(ctx context.Context, in *DeployRequest, opts ...grpc.CallOption) (*DeployResponse, error) {
 	out := new(DeployResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/Deploy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) ProposeRollout(ctx context.Context, in *ProposeRolloutRequest, opts ...grpc.CallOption) (*ProposeRolloutResponse, error) {
+	out := new(ProposeRolloutResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ProposeRollout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) ListRolloutProposals(ctx context.Context, in *ListRolloutProposalsRequest, opts ...grpc.CallOption) (*ListRolloutProposalsResponse, error) {
+	out := new(ListRolloutProposalsResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ListRolloutProposals", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -494,6 +514,8 @@ type ServiceServer interface {
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
 	Deploy(context.Context, *DeployRequest) (*DeployResponse, error)
+	ProposeRollout(context.Context, *ProposeRolloutRequest) (*ProposeRolloutResponse, error)
+	ListRolloutProposals(context.Context, *ListRolloutProposalsRequest) (*ListRolloutProposalsResponse, error)
 	// Applies a Capsule spec in an environment which will be rolled out
 	ApplyCapsuleSpec(context.Context, *ApplyCapsuleSpecRequest) (*ApplyCapsuleSpecResponse, error)
 	// Lists all instances for the capsule.
@@ -561,6 +583,12 @@ func (UnimplementedServiceServer) List(context.Context, *ListRequest) (*ListResp
 }
 func (UnimplementedServiceServer) Deploy(context.Context, *DeployRequest) (*DeployResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Deploy not implemented")
+}
+func (UnimplementedServiceServer) ProposeRollout(context.Context, *ProposeRolloutRequest) (*ProposeRolloutResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProposeRollout not implemented")
+}
+func (UnimplementedServiceServer) ListRolloutProposals(context.Context, *ListRolloutProposalsRequest) (*ListRolloutProposalsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRolloutProposals not implemented")
 }
 func (UnimplementedServiceServer) ApplyCapsuleSpec(context.Context, *ApplyCapsuleSpecRequest) (*ApplyCapsuleSpecResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApplyCapsuleSpec not implemented")
@@ -763,6 +791,42 @@ func _Service_Deploy_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceServer).Deploy(ctx, req.(*DeployRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_ProposeRollout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProposeRolloutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).ProposeRollout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/ProposeRollout",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).ProposeRollout(ctx, req.(*ProposeRolloutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_ListRolloutProposals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRolloutProposalsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).ListRolloutProposals(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/ListRolloutProposals",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).ListRolloutProposals(ctx, req.(*ListRolloutProposalsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1200,6 +1264,14 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Deploy",
 			Handler:    _Service_Deploy_Handler,
+		},
+		{
+			MethodName: "ProposeRollout",
+			Handler:    _Service_ProposeRollout_Handler,
+		},
+		{
+			MethodName: "ListRolloutProposals",
+			Handler:    _Service_ListRolloutProposals_Handler,
 		},
 		{
 			MethodName: "ApplyCapsuleSpec",

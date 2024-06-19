@@ -47,6 +47,11 @@ const (
 	ServiceListProcedure = "/api.v1.capsule.Service/List"
 	// ServiceDeployProcedure is the fully-qualified name of the Service's Deploy RPC.
 	ServiceDeployProcedure = "/api.v1.capsule.Service/Deploy"
+	// ServiceProposeRolloutProcedure is the fully-qualified name of the Service's ProposeRollout RPC.
+	ServiceProposeRolloutProcedure = "/api.v1.capsule.Service/ProposeRollout"
+	// ServiceListRolloutProposalsProcedure is the fully-qualified name of the Service's
+	// ListRolloutProposals RPC.
+	ServiceListRolloutProposalsProcedure = "/api.v1.capsule.Service/ListRolloutProposals"
 	// ServiceApplyCapsuleSpecProcedure is the fully-qualified name of the Service's ApplyCapsuleSpec
 	// RPC.
 	ServiceApplyCapsuleSpecProcedure = "/api.v1.capsule.Service/ApplyCapsuleSpec"
@@ -108,6 +113,8 @@ var (
 	serviceUpdateMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Update")
 	serviceListMethodDescriptor                     = serviceServiceDescriptor.Methods().ByName("List")
 	serviceDeployMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Deploy")
+	serviceProposeRolloutMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("ProposeRollout")
+	serviceListRolloutProposalsMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("ListRolloutProposals")
 	serviceApplyCapsuleSpecMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("ApplyCapsuleSpec")
 	serviceListInstancesMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ListInstances")
 	serviceRestartInstanceMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("RestartInstance")
@@ -150,6 +157,8 @@ type ServiceClient interface {
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
 	Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error)
+	ProposeRollout(context.Context, *connect.Request[capsule.ProposeRolloutRequest]) (*connect.Response[capsule.ProposeRolloutResponse], error)
+	ListRolloutProposals(context.Context, *connect.Request[capsule.ListRolloutProposalsRequest]) (*connect.Response[capsule.ListRolloutProposalsResponse], error)
 	// Applies a Capsule spec in an environment which will be rolled out
 	ApplyCapsuleSpec(context.Context, *connect.Request[capsule.ApplyCapsuleSpecRequest]) (*connect.Response[capsule.ApplyCapsuleSpecResponse], error)
 	// Lists all instances for the capsule.
@@ -242,6 +251,18 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			httpClient,
 			baseURL+ServiceDeployProcedure,
 			connect.WithSchema(serviceDeployMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		proposeRollout: connect.NewClient[capsule.ProposeRolloutRequest, capsule.ProposeRolloutResponse](
+			httpClient,
+			baseURL+ServiceProposeRolloutProcedure,
+			connect.WithSchema(serviceProposeRolloutMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		listRolloutProposals: connect.NewClient[capsule.ListRolloutProposalsRequest, capsule.ListRolloutProposalsResponse](
+			httpClient,
+			baseURL+ServiceListRolloutProposalsProcedure,
+			connect.WithSchema(serviceListRolloutProposalsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		applyCapsuleSpec: connect.NewClient[capsule.ApplyCapsuleSpecRequest, capsule.ApplyCapsuleSpecResponse](
@@ -382,6 +403,8 @@ type serviceClient struct {
 	update                   *connect.Client[capsule.UpdateRequest, capsule.UpdateResponse]
 	list                     *connect.Client[capsule.ListRequest, capsule.ListResponse]
 	deploy                   *connect.Client[capsule.DeployRequest, capsule.DeployResponse]
+	proposeRollout           *connect.Client[capsule.ProposeRolloutRequest, capsule.ProposeRolloutResponse]
+	listRolloutProposals     *connect.Client[capsule.ListRolloutProposalsRequest, capsule.ListRolloutProposalsResponse]
 	applyCapsuleSpec         *connect.Client[capsule.ApplyCapsuleSpecRequest, capsule.ApplyCapsuleSpecResponse]
 	listInstances            *connect.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
 	restartInstance          *connect.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
@@ -438,6 +461,16 @@ func (c *serviceClient) List(ctx context.Context, req *connect.Request[capsule.L
 // Deploy calls api.v1.capsule.Service.Deploy.
 func (c *serviceClient) Deploy(ctx context.Context, req *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error) {
 	return c.deploy.CallUnary(ctx, req)
+}
+
+// ProposeRollout calls api.v1.capsule.Service.ProposeRollout.
+func (c *serviceClient) ProposeRollout(ctx context.Context, req *connect.Request[capsule.ProposeRolloutRequest]) (*connect.Response[capsule.ProposeRolloutResponse], error) {
+	return c.proposeRollout.CallUnary(ctx, req)
+}
+
+// ListRolloutProposals calls api.v1.capsule.Service.ListRolloutProposals.
+func (c *serviceClient) ListRolloutProposals(ctx context.Context, req *connect.Request[capsule.ListRolloutProposalsRequest]) (*connect.Response[capsule.ListRolloutProposalsResponse], error) {
+	return c.listRolloutProposals.CallUnary(ctx, req)
 }
 
 // ApplyCapsuleSpec calls api.v1.capsule.Service.ApplyCapsuleSpec.
@@ -564,6 +597,8 @@ type ServiceHandler interface {
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
 	Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error)
+	ProposeRollout(context.Context, *connect.Request[capsule.ProposeRolloutRequest]) (*connect.Response[capsule.ProposeRolloutResponse], error)
+	ListRolloutProposals(context.Context, *connect.Request[capsule.ListRolloutProposalsRequest]) (*connect.Response[capsule.ListRolloutProposalsResponse], error)
 	// Applies a Capsule spec in an environment which will be rolled out
 	ApplyCapsuleSpec(context.Context, *connect.Request[capsule.ApplyCapsuleSpecRequest]) (*connect.Response[capsule.ApplyCapsuleSpecResponse], error)
 	// Lists all instances for the capsule.
@@ -652,6 +687,18 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		ServiceDeployProcedure,
 		svc.Deploy,
 		connect.WithSchema(serviceDeployMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceProposeRolloutHandler := connect.NewUnaryHandler(
+		ServiceProposeRolloutProcedure,
+		svc.ProposeRollout,
+		connect.WithSchema(serviceProposeRolloutMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceListRolloutProposalsHandler := connect.NewUnaryHandler(
+		ServiceListRolloutProposalsProcedure,
+		svc.ListRolloutProposals,
+		connect.WithSchema(serviceListRolloutProposalsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	serviceApplyCapsuleSpecHandler := connect.NewUnaryHandler(
@@ -796,6 +843,10 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceListHandler.ServeHTTP(w, r)
 		case ServiceDeployProcedure:
 			serviceDeployHandler.ServeHTTP(w, r)
+		case ServiceProposeRolloutProcedure:
+			serviceProposeRolloutHandler.ServeHTTP(w, r)
+		case ServiceListRolloutProposalsProcedure:
+			serviceListRolloutProposalsHandler.ServeHTTP(w, r)
 		case ServiceApplyCapsuleSpecProcedure:
 			serviceApplyCapsuleSpecHandler.ServeHTTP(w, r)
 		case ServiceListInstancesProcedure:
@@ -873,6 +924,14 @@ func (UnimplementedServiceHandler) List(context.Context, *connect.Request[capsul
 
 func (UnimplementedServiceHandler) Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Deploy is not implemented"))
+}
+
+func (UnimplementedServiceHandler) ProposeRollout(context.Context, *connect.Request[capsule.ProposeRolloutRequest]) (*connect.Response[capsule.ProposeRolloutResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ProposeRollout is not implemented"))
+}
+
+func (UnimplementedServiceHandler) ListRolloutProposals(context.Context, *connect.Request[capsule.ListRolloutProposalsRequest]) (*connect.Response[capsule.ListRolloutProposalsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListRolloutProposals is not implemented"))
 }
 
 func (UnimplementedServiceHandler) ApplyCapsuleSpec(context.Context, *connect.Request[capsule.ApplyCapsuleSpecRequest]) (*connect.Response[capsule.ApplyCapsuleSpecResponse], error) {
