@@ -42,15 +42,19 @@ const (
 	ServiceUpdateSettingsProcedure = "/api.v1.settings.Service/UpdateSettings"
 	// ServiceGetLicenseInfoProcedure is the fully-qualified name of the Service's GetLicenseInfo RPC.
 	ServiceGetLicenseInfoProcedure = "/api.v1.settings.Service/GetLicenseInfo"
+	// ServiceGetGitStoreStatusProcedure is the fully-qualified name of the Service's GetGitStoreStatus
+	// RPC.
+	ServiceGetGitStoreStatusProcedure = "/api.v1.settings.Service/GetGitStoreStatus"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor                = settings.File_api_v1_settings_service_proto.Services().ByName("Service")
-	serviceGetConfigurationMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetConfiguration")
-	serviceGetSettingsMethodDescriptor      = serviceServiceDescriptor.Methods().ByName("GetSettings")
-	serviceUpdateSettingsMethodDescriptor   = serviceServiceDescriptor.Methods().ByName("UpdateSettings")
-	serviceGetLicenseInfoMethodDescriptor   = serviceServiceDescriptor.Methods().ByName("GetLicenseInfo")
+	serviceServiceDescriptor                 = settings.File_api_v1_settings_service_proto.Services().ByName("Service")
+	serviceGetConfigurationMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetConfiguration")
+	serviceGetSettingsMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("GetSettings")
+	serviceUpdateSettingsMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("UpdateSettings")
+	serviceGetLicenseInfoMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("GetLicenseInfo")
+	serviceGetGitStoreStatusMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetGitStoreStatus")
 )
 
 // ServiceClient is a client for the api.v1.settings.Service service.
@@ -59,6 +63,7 @@ type ServiceClient interface {
 	GetSettings(context.Context, *connect.Request[settings.GetSettingsRequest]) (*connect.Response[settings.GetSettingsResponse], error)
 	UpdateSettings(context.Context, *connect.Request[settings.UpdateSettingsRequest]) (*connect.Response[settings.UpdateSettingsResponse], error)
 	GetLicenseInfo(context.Context, *connect.Request[settings.GetLicenseInfoRequest]) (*connect.Response[settings.GetLicenseInfoResponse], error)
+	GetGitStoreStatus(context.Context, *connect.Request[settings.GetGitStoreStatusRequest]) (*connect.Response[settings.GetGitStoreStatusResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.settings.Service service. By default, it uses
@@ -95,15 +100,22 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetLicenseInfoMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getGitStoreStatus: connect.NewClient[settings.GetGitStoreStatusRequest, settings.GetGitStoreStatusResponse](
+			httpClient,
+			baseURL+ServiceGetGitStoreStatusProcedure,
+			connect.WithSchema(serviceGetGitStoreStatusMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	getConfiguration *connect.Client[settings.GetConfigurationRequest, settings.GetConfigurationResponse]
-	getSettings      *connect.Client[settings.GetSettingsRequest, settings.GetSettingsResponse]
-	updateSettings   *connect.Client[settings.UpdateSettingsRequest, settings.UpdateSettingsResponse]
-	getLicenseInfo   *connect.Client[settings.GetLicenseInfoRequest, settings.GetLicenseInfoResponse]
+	getConfiguration  *connect.Client[settings.GetConfigurationRequest, settings.GetConfigurationResponse]
+	getSettings       *connect.Client[settings.GetSettingsRequest, settings.GetSettingsResponse]
+	updateSettings    *connect.Client[settings.UpdateSettingsRequest, settings.UpdateSettingsResponse]
+	getLicenseInfo    *connect.Client[settings.GetLicenseInfoRequest, settings.GetLicenseInfoResponse]
+	getGitStoreStatus *connect.Client[settings.GetGitStoreStatusRequest, settings.GetGitStoreStatusResponse]
 }
 
 // GetConfiguration calls api.v1.settings.Service.GetConfiguration.
@@ -126,12 +138,18 @@ func (c *serviceClient) GetLicenseInfo(ctx context.Context, req *connect.Request
 	return c.getLicenseInfo.CallUnary(ctx, req)
 }
 
+// GetGitStoreStatus calls api.v1.settings.Service.GetGitStoreStatus.
+func (c *serviceClient) GetGitStoreStatus(ctx context.Context, req *connect.Request[settings.GetGitStoreStatusRequest]) (*connect.Response[settings.GetGitStoreStatusResponse], error) {
+	return c.getGitStoreStatus.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.settings.Service service.
 type ServiceHandler interface {
 	GetConfiguration(context.Context, *connect.Request[settings.GetConfigurationRequest]) (*connect.Response[settings.GetConfigurationResponse], error)
 	GetSettings(context.Context, *connect.Request[settings.GetSettingsRequest]) (*connect.Response[settings.GetSettingsResponse], error)
 	UpdateSettings(context.Context, *connect.Request[settings.UpdateSettingsRequest]) (*connect.Response[settings.UpdateSettingsResponse], error)
 	GetLicenseInfo(context.Context, *connect.Request[settings.GetLicenseInfoRequest]) (*connect.Response[settings.GetLicenseInfoResponse], error)
+	GetGitStoreStatus(context.Context, *connect.Request[settings.GetGitStoreStatusRequest]) (*connect.Response[settings.GetGitStoreStatusResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -164,6 +182,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetLicenseInfoMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetGitStoreStatusHandler := connect.NewUnaryHandler(
+		ServiceGetGitStoreStatusProcedure,
+		svc.GetGitStoreStatus,
+		connect.WithSchema(serviceGetGitStoreStatusMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.settings.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceGetConfigurationProcedure:
@@ -174,6 +198,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceUpdateSettingsHandler.ServeHTTP(w, r)
 		case ServiceGetLicenseInfoProcedure:
 			serviceGetLicenseInfoHandler.ServeHTTP(w, r)
+		case ServiceGetGitStoreStatusProcedure:
+			serviceGetGitStoreStatusHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -197,4 +223,8 @@ func (UnimplementedServiceHandler) UpdateSettings(context.Context, *connect.Requ
 
 func (UnimplementedServiceHandler) GetLicenseInfo(context.Context, *connect.Request[settings.GetLicenseInfoRequest]) (*connect.Response[settings.GetLicenseInfoResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.settings.Service.GetLicenseInfo is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetGitStoreStatus(context.Context, *connect.Request[settings.GetGitStoreStatusRequest]) (*connect.Response[settings.GetGitStoreStatusResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.settings.Service.GetGitStoreStatus is not implemented"))
 }

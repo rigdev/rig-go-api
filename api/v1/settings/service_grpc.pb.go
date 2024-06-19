@@ -22,6 +22,7 @@ type ServiceClient interface {
 	GetSettings(ctx context.Context, in *GetSettingsRequest, opts ...grpc.CallOption) (*GetSettingsResponse, error)
 	UpdateSettings(ctx context.Context, in *UpdateSettingsRequest, opts ...grpc.CallOption) (*UpdateSettingsResponse, error)
 	GetLicenseInfo(ctx context.Context, in *GetLicenseInfoRequest, opts ...grpc.CallOption) (*GetLicenseInfoResponse, error)
+	GetGitStoreStatus(ctx context.Context, in *GetGitStoreStatusRequest, opts ...grpc.CallOption) (*GetGitStoreStatusResponse, error)
 }
 
 type serviceClient struct {
@@ -68,6 +69,15 @@ func (c *serviceClient) GetLicenseInfo(ctx context.Context, in *GetLicenseInfoRe
 	return out, nil
 }
 
+func (c *serviceClient) GetGitStoreStatus(ctx context.Context, in *GetGitStoreStatusRequest, opts ...grpc.CallOption) (*GetGitStoreStatusResponse, error) {
+	out := new(GetGitStoreStatusResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.settings.Service/GetGitStoreStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -76,6 +86,7 @@ type ServiceServer interface {
 	GetSettings(context.Context, *GetSettingsRequest) (*GetSettingsResponse, error)
 	UpdateSettings(context.Context, *UpdateSettingsRequest) (*UpdateSettingsResponse, error)
 	GetLicenseInfo(context.Context, *GetLicenseInfoRequest) (*GetLicenseInfoResponse, error)
+	GetGitStoreStatus(context.Context, *GetGitStoreStatusRequest) (*GetGitStoreStatusResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -94,6 +105,9 @@ func (UnimplementedServiceServer) UpdateSettings(context.Context, *UpdateSetting
 }
 func (UnimplementedServiceServer) GetLicenseInfo(context.Context, *GetLicenseInfoRequest) (*GetLicenseInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLicenseInfo not implemented")
+}
+func (UnimplementedServiceServer) GetGitStoreStatus(context.Context, *GetGitStoreStatusRequest) (*GetGitStoreStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGitStoreStatus not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -180,6 +194,24 @@ func _Service_GetLicenseInfo_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_GetGitStoreStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGitStoreStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetGitStoreStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.settings.Service/GetGitStoreStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetGitStoreStatus(ctx, req.(*GetGitStoreStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -202,6 +234,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetLicenseInfo",
 			Handler:    _Service_GetLicenseInfo_Handler,
+		},
+		{
+			MethodName: "GetGitStoreStatus",
+			Handler:    _Service_GetGitStoreStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
