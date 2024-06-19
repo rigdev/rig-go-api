@@ -2056,7 +2056,7 @@ type ProposeRolloutResponse struct {
 	ResourceYaml map[string]string `protobuf:"bytes,2,rep,name=resource_yaml,json=resourceYaml,proto3" json:"resource_yaml,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// The rollout config.
 	RolloutConfig *RolloutConfig   `protobuf:"bytes,3,opt,name=rollout_config,json=rolloutConfig,proto3" json:"rollout_config,omitempty"`
-	Deploy        *RolloutProposal `protobuf:"bytes,4,opt,name=deploy,proto3" json:"deploy,omitempty"`
+	Deploy        *CapsuleProposal `protobuf:"bytes,4,opt,name=deploy,proto3" json:"deploy,omitempty"`
 }
 
 func (x *ProposeRolloutResponse) Reset() {
@@ -2112,14 +2112,14 @@ func (x *ProposeRolloutResponse) GetRolloutConfig() *RolloutConfig {
 	return nil
 }
 
-func (x *ProposeRolloutResponse) GetDeploy() *RolloutProposal {
+func (x *ProposeRolloutResponse) GetDeploy() *CapsuleProposal {
 	if x != nil {
 		return x.Deploy
 	}
 	return nil
 }
 
-type ListRolloutProposalsRequest struct {
+type ListCapsuleProposalsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -2129,8 +2129,8 @@ type ListRolloutProposalsRequest struct {
 	CapsuleId     string `protobuf:"bytes,3,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
 }
 
-func (x *ListRolloutProposalsRequest) Reset() {
-	*x = ListRolloutProposalsRequest{}
+func (x *ListCapsuleProposalsRequest) Reset() {
+	*x = ListCapsuleProposalsRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_v1_capsule_service_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2138,13 +2138,13 @@ func (x *ListRolloutProposalsRequest) Reset() {
 	}
 }
 
-func (x *ListRolloutProposalsRequest) String() string {
+func (x *ListCapsuleProposalsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListRolloutProposalsRequest) ProtoMessage() {}
+func (*ListCapsuleProposalsRequest) ProtoMessage() {}
 
-func (x *ListRolloutProposalsRequest) ProtoReflect() protoreflect.Message {
+func (x *ListCapsuleProposalsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_api_v1_capsule_service_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2156,42 +2156,42 @@ func (x *ListRolloutProposalsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListRolloutProposalsRequest.ProtoReflect.Descriptor instead.
-func (*ListRolloutProposalsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListCapsuleProposalsRequest.ProtoReflect.Descriptor instead.
+func (*ListCapsuleProposalsRequest) Descriptor() ([]byte, []int) {
 	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{29}
 }
 
-func (x *ListRolloutProposalsRequest) GetProjectId() string {
+func (x *ListCapsuleProposalsRequest) GetProjectId() string {
 	if x != nil {
 		return x.ProjectId
 	}
 	return ""
 }
 
-func (x *ListRolloutProposalsRequest) GetEnvironmentId() string {
+func (x *ListCapsuleProposalsRequest) GetEnvironmentId() string {
 	if x != nil {
 		return x.EnvironmentId
 	}
 	return ""
 }
 
-func (x *ListRolloutProposalsRequest) GetCapsuleId() string {
+func (x *ListCapsuleProposalsRequest) GetCapsuleId() string {
 	if x != nil {
 		return x.CapsuleId
 	}
 	return ""
 }
 
-type ListRolloutProposalsResponse struct {
+type ListCapsuleProposalsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Proposals []*RolloutProposal `protobuf:"bytes,1,rep,name=proposals,proto3" json:"proposals,omitempty"`
+	Proposals []*CapsuleProposal `protobuf:"bytes,1,rep,name=proposals,proto3" json:"proposals,omitempty"`
 }
 
-func (x *ListRolloutProposalsResponse) Reset() {
-	*x = ListRolloutProposalsResponse{}
+func (x *ListCapsuleProposalsResponse) Reset() {
+	*x = ListCapsuleProposalsResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_v1_capsule_service_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2199,13 +2199,13 @@ func (x *ListRolloutProposalsResponse) Reset() {
 	}
 }
 
-func (x *ListRolloutProposalsResponse) String() string {
+func (x *ListCapsuleProposalsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListRolloutProposalsResponse) ProtoMessage() {}
+func (*ListCapsuleProposalsResponse) ProtoMessage() {}
 
-func (x *ListRolloutProposalsResponse) ProtoReflect() protoreflect.Message {
+func (x *ListCapsuleProposalsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_api_v1_capsule_service_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2217,12 +2217,12 @@ func (x *ListRolloutProposalsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListRolloutProposalsResponse.ProtoReflect.Descriptor instead.
-func (*ListRolloutProposalsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListCapsuleProposalsResponse.ProtoReflect.Descriptor instead.
+func (*ListCapsuleProposalsResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{30}
 }
 
-func (x *ListRolloutProposalsResponse) GetProposals() []*RolloutProposal {
+func (x *ListCapsuleProposalsResponse) GetProposals() []*CapsuleProposal {
 	if x != nil {
 		return x.Proposals
 	}
@@ -4932,13 +4932,13 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x0d, 0x72, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74,
 	0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x37, 0x0a, 0x06, 0x64, 0x65, 0x70, 0x6c, 0x6f, 0x79,
 	0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
-	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x50,
+	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x50,
 	0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x52, 0x06, 0x64, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x1a,
 	0x3f, 0x0a, 0x11, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x59, 0x61, 0x6d, 0x6c, 0x45,
 	0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18,
 	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01,
-	0x22, 0x82, 0x01, 0x0a, 0x1b, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74,
+	0x22, 0x82, 0x01, 0x0a, 0x1b, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
 	0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x64, 0x12,
@@ -4946,12 +4946,12 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x65, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e,
 	0x6d, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c,
 	0x65, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x61, 0x70, 0x73,
-	0x75, 0x6c, 0x65, 0x49, 0x64, 0x22, 0x5d, 0x0a, 0x1c, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x6f, 0x6c,
-	0x6c, 0x6f, 0x75, 0x74, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x73, 0x52, 0x65, 0x73,
+	0x75, 0x6c, 0x65, 0x49, 0x64, 0x22, 0x5d, 0x0a, 0x1c, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x70,
+	0x73, 0x75, 0x6c, 0x65, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x73, 0x52, 0x65, 0x73,
 	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3d, 0x0a, 0x09, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61,
 	0x6c, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
-	0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75,
-	0x74, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x70, 0x6f,
+	0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c,
+	0x65, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x70, 0x6f,
 	0x73, 0x61, 0x6c, 0x73, 0x22, 0x8a, 0x02, 0x0a, 0x17, 0x41, 0x70, 0x70, 0x6c, 0x79, 0x43, 0x61,
 	0x70, 0x73, 0x75, 0x6c, 0x65, 0x53, 0x70, 0x65, 0x63, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x12, 0x2c, 0x0a, 0x04, 0x73, 0x70, 0x65, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18,
@@ -5263,12 +5263,12 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70,
 	0x73, 0x75, 0x6c, 0x65, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x6f, 0x6c, 0x6c,
 	0x6f, 0x75, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x73, 0x0a,
-	0x14, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x50, 0x72, 0x6f, 0x70,
+	0x14, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x50, 0x72, 0x6f, 0x70,
 	0x6f, 0x73, 0x61, 0x6c, 0x73, 0x12, 0x2b, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63,
-	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f,
-	0x75, 0x74, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x70, 0x73, 0x75,
+	0x6c, 0x65, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x1a, 0x2c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73,
-	0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x50,
+	0x75, 0x6c, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x50,
 	0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
 	0x22, 0x00, 0x12, 0x67, 0x0a, 0x10, 0x41, 0x70, 0x70, 0x6c, 0x79, 0x43, 0x61, 0x70, 0x73, 0x75,
 	0x6c, 0x65, 0x53, 0x70, 0x65, 0x63, 0x12, 0x27, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
@@ -5458,8 +5458,8 @@ var file_api_v1_capsule_service_proto_goTypes = []interface{}{
 	(*DeployResponse)(nil),                          // 26: api.v1.capsule.DeployResponse
 	(*ProposeRolloutRequest)(nil),                   // 27: api.v1.capsule.ProposeRolloutRequest
 	(*ProposeRolloutResponse)(nil),                  // 28: api.v1.capsule.ProposeRolloutResponse
-	(*ListRolloutProposalsRequest)(nil),             // 29: api.v1.capsule.ListRolloutProposalsRequest
-	(*ListRolloutProposalsResponse)(nil),            // 30: api.v1.capsule.ListRolloutProposalsResponse
+	(*ListCapsuleProposalsRequest)(nil),             // 29: api.v1.capsule.ListCapsuleProposalsRequest
+	(*ListCapsuleProposalsResponse)(nil),            // 30: api.v1.capsule.ListCapsuleProposalsResponse
 	(*ApplyCapsuleSpecRequest)(nil),                 // 31: api.v1.capsule.ApplyCapsuleSpecRequest
 	(*ApplyCapsuleSpecResponse)(nil),                // 32: api.v1.capsule.ApplyCapsuleSpecResponse
 	(*ListInstancesRequest)(nil),                    // 33: api.v1.capsule.ListInstancesRequest
@@ -5511,7 +5511,7 @@ var file_api_v1_capsule_service_proto_goTypes = []interface{}{
 	(*Change)(nil),                                  // 79: api.v1.capsule.Change
 	(*RolloutConfig)(nil),                           // 80: api.v1.capsule.RolloutConfig
 	(*Revision)(nil),                                // 81: api.v1.capsule.Revision
-	(*RolloutProposal)(nil),                         // 82: api.v1.capsule.RolloutProposal
+	(*CapsuleProposal)(nil),                         // 82: api.v1.capsule.CapsuleProposal
 	(*v1.CapsuleSpec)(nil),                          // 83: platform.v1.CapsuleSpec
 	(*model.Fingerprint)(nil),                       // 84: model.Fingerprint
 	(*Instance)(nil),                                // 85: api.v1.capsule.Instance
@@ -5554,8 +5554,8 @@ var file_api_v1_capsule_service_proto_depIdxs = []int32{
 	79, // 27: api.v1.capsule.ProposeRolloutRequest.changes:type_name -> api.v1.capsule.Change
 	68, // 28: api.v1.capsule.ProposeRolloutResponse.resource_yaml:type_name -> api.v1.capsule.ProposeRolloutResponse.ResourceYamlEntry
 	80, // 29: api.v1.capsule.ProposeRolloutResponse.rollout_config:type_name -> api.v1.capsule.RolloutConfig
-	82, // 30: api.v1.capsule.ProposeRolloutResponse.deploy:type_name -> api.v1.capsule.RolloutProposal
-	82, // 31: api.v1.capsule.ListRolloutProposalsResponse.proposals:type_name -> api.v1.capsule.RolloutProposal
+	82, // 30: api.v1.capsule.ProposeRolloutResponse.deploy:type_name -> api.v1.capsule.CapsuleProposal
+	82, // 31: api.v1.capsule.ListCapsuleProposalsResponse.proposals:type_name -> api.v1.capsule.CapsuleProposal
 	83, // 32: api.v1.capsule.ApplyCapsuleSpecRequest.spec:type_name -> platform.v1.CapsuleSpec
 	84, // 33: api.v1.capsule.ApplyCapsuleSpecRequest.current_fingerprint:type_name -> model.Fingerprint
 	84, // 34: api.v1.capsule.ApplyCapsuleSpecResponse.fingerprint:type_name -> model.Fingerprint
@@ -5592,7 +5592,7 @@ var file_api_v1_capsule_service_proto_depIdxs = []int32{
 	23, // 65: api.v1.capsule.Service.List:input_type -> api.v1.capsule.ListRequest
 	25, // 66: api.v1.capsule.Service.Deploy:input_type -> api.v1.capsule.DeployRequest
 	27, // 67: api.v1.capsule.Service.ProposeRollout:input_type -> api.v1.capsule.ProposeRolloutRequest
-	29, // 68: api.v1.capsule.Service.ListRolloutProposals:input_type -> api.v1.capsule.ListRolloutProposalsRequest
+	29, // 68: api.v1.capsule.Service.ListCapsuleProposals:input_type -> api.v1.capsule.ListCapsuleProposalsRequest
 	31, // 69: api.v1.capsule.Service.ApplyCapsuleSpec:input_type -> api.v1.capsule.ApplyCapsuleSpecRequest
 	33, // 70: api.v1.capsule.Service.ListInstances:input_type -> api.v1.capsule.ListInstancesRequest
 	39, // 71: api.v1.capsule.Service.RestartInstance:input_type -> api.v1.capsule.RestartInstanceRequest
@@ -5622,7 +5622,7 @@ var file_api_v1_capsule_service_proto_depIdxs = []int32{
 	24, // 95: api.v1.capsule.Service.List:output_type -> api.v1.capsule.ListResponse
 	26, // 96: api.v1.capsule.Service.Deploy:output_type -> api.v1.capsule.DeployResponse
 	28, // 97: api.v1.capsule.Service.ProposeRollout:output_type -> api.v1.capsule.ProposeRolloutResponse
-	30, // 98: api.v1.capsule.Service.ListRolloutProposals:output_type -> api.v1.capsule.ListRolloutProposalsResponse
+	30, // 98: api.v1.capsule.Service.ListCapsuleProposals:output_type -> api.v1.capsule.ListCapsuleProposalsResponse
 	32, // 99: api.v1.capsule.Service.ApplyCapsuleSpec:output_type -> api.v1.capsule.ApplyCapsuleSpecResponse
 	34, // 100: api.v1.capsule.Service.ListInstances:output_type -> api.v1.capsule.ListInstancesResponse
 	40, // 101: api.v1.capsule.Service.RestartInstance:output_type -> api.v1.capsule.RestartInstanceResponse
@@ -6015,7 +6015,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListRolloutProposalsRequest); i {
+			switch v := v.(*ListCapsuleProposalsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6027,7 +6027,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListRolloutProposalsResponse); i {
+			switch v := v.(*ListCapsuleProposalsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
