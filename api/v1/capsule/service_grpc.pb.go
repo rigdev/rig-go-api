@@ -78,6 +78,10 @@ type ServiceClient interface {
 	// Stream the status of a capsule.
 	WatchStatus(ctx context.Context, in *WatchStatusRequest, opts ...grpc.CallOption) (Service_WatchStatusClient, error)
 	GetEffectiveGitSettings(ctx context.Context, in *GetEffectiveGitSettingsRequest, opts ...grpc.CallOption) (*GetEffectiveGitSettingsResponse, error)
+	// Experimental: Get Environment differences between two environment in terms
+	// of capsule changes. This can be used with a subsequent deploy to promote a
+	// capsule from one environment to another.
+	GetEnvironmentDifferences(ctx context.Context, in *GetEnvironmentDifferencesRequest, opts ...grpc.CallOption) (*GetEnvironmentDifferencesResponse, error)
 }
 
 type serviceClient struct {
@@ -503,6 +507,15 @@ func (c *serviceClient) GetEffectiveGitSettings(ctx context.Context, in *GetEffe
 	return out, nil
 }
 
+func (c *serviceClient) GetEnvironmentDifferences(ctx context.Context, in *GetEnvironmentDifferencesRequest, opts ...grpc.CallOption) (*GetEnvironmentDifferencesResponse, error) {
+	out := new(GetEnvironmentDifferencesResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/GetEnvironmentDifferences", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -567,6 +580,10 @@ type ServiceServer interface {
 	// Stream the status of a capsule.
 	WatchStatus(*WatchStatusRequest, Service_WatchStatusServer) error
 	GetEffectiveGitSettings(context.Context, *GetEffectiveGitSettingsRequest) (*GetEffectiveGitSettingsResponse, error)
+	// Experimental: Get Environment differences between two environment in terms
+	// of capsule changes. This can be used with a subsequent deploy to promote a
+	// capsule from one environment to another.
+	GetEnvironmentDifferences(context.Context, *GetEnvironmentDifferencesRequest) (*GetEnvironmentDifferencesResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -666,6 +683,9 @@ func (UnimplementedServiceServer) WatchStatus(*WatchStatusRequest, Service_Watch
 }
 func (UnimplementedServiceServer) GetEffectiveGitSettings(context.Context, *GetEffectiveGitSettingsRequest) (*GetEffectiveGitSettingsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEffectiveGitSettings not implemented")
+}
+func (UnimplementedServiceServer) GetEnvironmentDifferences(context.Context, *GetEnvironmentDifferencesRequest) (*GetEnvironmentDifferencesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEnvironmentDifferences not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -1266,6 +1286,24 @@ func _Service_GetEffectiveGitSettings_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_GetEnvironmentDifferences_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEnvironmentDifferencesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetEnvironmentDifferences(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/GetEnvironmentDifferences",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetEnvironmentDifferences(ctx, req.(*GetEnvironmentDifferencesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1372,6 +1410,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetEffectiveGitSettings",
 			Handler:    _Service_GetEffectiveGitSettings_Handler,
+		},
+		{
+			MethodName: "GetEnvironmentDifferences",
+			Handler:    _Service_GetEnvironmentDifferences_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
