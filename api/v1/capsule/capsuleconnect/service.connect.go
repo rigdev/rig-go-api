@@ -49,9 +49,8 @@ const (
 	ServiceDeployProcedure = "/api.v1.capsule.Service/Deploy"
 	// ServiceProposeRolloutProcedure is the fully-qualified name of the Service's ProposeRollout RPC.
 	ServiceProposeRolloutProcedure = "/api.v1.capsule.Service/ProposeRollout"
-	// ServiceListCapsuleProposalsProcedure is the fully-qualified name of the Service's
-	// ListCapsuleProposals RPC.
-	ServiceListCapsuleProposalsProcedure = "/api.v1.capsule.Service/ListCapsuleProposals"
+	// ServiceListProposalsProcedure is the fully-qualified name of the Service's ListProposals RPC.
+	ServiceListProposalsProcedure = "/api.v1.capsule.Service/ListProposals"
 	// ServiceApplyCapsuleSpecProcedure is the fully-qualified name of the Service's ApplyCapsuleSpec
 	// RPC.
 	ServiceApplyCapsuleSpecProcedure = "/api.v1.capsule.Service/ApplyCapsuleSpec"
@@ -101,6 +100,9 @@ const (
 	ServiceGetRolloutOfRevisionsProcedure = "/api.v1.capsule.Service/GetRolloutOfRevisions"
 	// ServiceWatchStatusProcedure is the fully-qualified name of the Service's WatchStatus RPC.
 	ServiceWatchStatusProcedure = "/api.v1.capsule.Service/WatchStatus"
+	// ServiceGetEffectiveGitSettingsProcedure is the fully-qualified name of the Service's
+	// GetEffectiveGitSettings RPC.
+	ServiceGetEffectiveGitSettingsProcedure = "/api.v1.capsule.Service/GetEffectiveGitSettings"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -114,7 +116,7 @@ var (
 	serviceListMethodDescriptor                     = serviceServiceDescriptor.Methods().ByName("List")
 	serviceDeployMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Deploy")
 	serviceProposeRolloutMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("ProposeRollout")
-	serviceListCapsuleProposalsMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("ListCapsuleProposals")
+	serviceListProposalsMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ListProposals")
 	serviceApplyCapsuleSpecMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("ApplyCapsuleSpec")
 	serviceListInstancesMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ListInstances")
 	serviceRestartInstanceMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("RestartInstance")
@@ -136,6 +138,7 @@ var (
 	serviceGetRevisionMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("GetRevision")
 	serviceGetRolloutOfRevisionsMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("GetRolloutOfRevisions")
 	serviceWatchStatusMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("WatchStatus")
+	serviceGetEffectiveGitSettingsMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetEffectiveGitSettings")
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -158,7 +161,7 @@ type ServiceClient interface {
 	// Use `Abort` to abort an already running rollout.
 	Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error)
 	ProposeRollout(context.Context, *connect.Request[capsule.ProposeRolloutRequest]) (*connect.Response[capsule.ProposeRolloutResponse], error)
-	ListCapsuleProposals(context.Context, *connect.Request[capsule.ListCapsuleProposalsRequest]) (*connect.Response[capsule.ListCapsuleProposalsResponse], error)
+	ListProposals(context.Context, *connect.Request[capsule.ListProposalsRequest]) (*connect.Response[capsule.ListProposalsResponse], error)
 	// Applies a Capsule spec in an environment which will be rolled out
 	ApplyCapsuleSpec(context.Context, *connect.Request[capsule.ApplyCapsuleSpecRequest]) (*connect.Response[capsule.ApplyCapsuleSpecResponse], error)
 	// Lists all instances for the capsule.
@@ -199,6 +202,7 @@ type ServiceClient interface {
 	GetRolloutOfRevisions(context.Context, *connect.Request[capsule.GetRolloutOfRevisionsRequest]) (*connect.Response[capsule.GetRolloutOfRevisionsResponse], error)
 	// Stream the status of a capsule.
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest]) (*connect.ServerStreamForClient[capsule.WatchStatusResponse], error)
+	GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -259,10 +263,10 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceProposeRolloutMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		listCapsuleProposals: connect.NewClient[capsule.ListCapsuleProposalsRequest, capsule.ListCapsuleProposalsResponse](
+		listProposals: connect.NewClient[capsule.ListProposalsRequest, capsule.ListProposalsResponse](
 			httpClient,
-			baseURL+ServiceListCapsuleProposalsProcedure,
-			connect.WithSchema(serviceListCapsuleProposalsMethodDescriptor),
+			baseURL+ServiceListProposalsProcedure,
+			connect.WithSchema(serviceListProposalsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		applyCapsuleSpec: connect.NewClient[capsule.ApplyCapsuleSpecRequest, capsule.ApplyCapsuleSpecResponse](
@@ -391,6 +395,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceWatchStatusMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getEffectiveGitSettings: connect.NewClient[capsule.GetEffectiveGitSettingsRequest, capsule.GetEffectiveGitSettingsResponse](
+			httpClient,
+			baseURL+ServiceGetEffectiveGitSettingsProcedure,
+			connect.WithSchema(serviceGetEffectiveGitSettingsMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -404,7 +414,7 @@ type serviceClient struct {
 	list                     *connect.Client[capsule.ListRequest, capsule.ListResponse]
 	deploy                   *connect.Client[capsule.DeployRequest, capsule.DeployResponse]
 	proposeRollout           *connect.Client[capsule.ProposeRolloutRequest, capsule.ProposeRolloutResponse]
-	listCapsuleProposals     *connect.Client[capsule.ListCapsuleProposalsRequest, capsule.ListCapsuleProposalsResponse]
+	listProposals            *connect.Client[capsule.ListProposalsRequest, capsule.ListProposalsResponse]
 	applyCapsuleSpec         *connect.Client[capsule.ApplyCapsuleSpecRequest, capsule.ApplyCapsuleSpecResponse]
 	listInstances            *connect.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
 	restartInstance          *connect.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
@@ -426,6 +436,7 @@ type serviceClient struct {
 	getRevision              *connect.Client[capsule.GetRevisionRequest, capsule.GetRevisionResponse]
 	getRolloutOfRevisions    *connect.Client[capsule.GetRolloutOfRevisionsRequest, capsule.GetRolloutOfRevisionsResponse]
 	watchStatus              *connect.Client[capsule.WatchStatusRequest, capsule.WatchStatusResponse]
+	getEffectiveGitSettings  *connect.Client[capsule.GetEffectiveGitSettingsRequest, capsule.GetEffectiveGitSettingsResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -468,9 +479,9 @@ func (c *serviceClient) ProposeRollout(ctx context.Context, req *connect.Request
 	return c.proposeRollout.CallUnary(ctx, req)
 }
 
-// ListCapsuleProposals calls api.v1.capsule.Service.ListCapsuleProposals.
-func (c *serviceClient) ListCapsuleProposals(ctx context.Context, req *connect.Request[capsule.ListCapsuleProposalsRequest]) (*connect.Response[capsule.ListCapsuleProposalsResponse], error) {
-	return c.listCapsuleProposals.CallUnary(ctx, req)
+// ListProposals calls api.v1.capsule.Service.ListProposals.
+func (c *serviceClient) ListProposals(ctx context.Context, req *connect.Request[capsule.ListProposalsRequest]) (*connect.Response[capsule.ListProposalsResponse], error) {
+	return c.listProposals.CallUnary(ctx, req)
 }
 
 // ApplyCapsuleSpec calls api.v1.capsule.Service.ApplyCapsuleSpec.
@@ -578,6 +589,11 @@ func (c *serviceClient) WatchStatus(ctx context.Context, req *connect.Request[ca
 	return c.watchStatus.CallServerStream(ctx, req)
 }
 
+// GetEffectiveGitSettings calls api.v1.capsule.Service.GetEffectiveGitSettings.
+func (c *serviceClient) GetEffectiveGitSettings(ctx context.Context, req *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error) {
+	return c.getEffectiveGitSettings.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -598,7 +614,7 @@ type ServiceHandler interface {
 	// Use `Abort` to abort an already running rollout.
 	Deploy(context.Context, *connect.Request[capsule.DeployRequest]) (*connect.Response[capsule.DeployResponse], error)
 	ProposeRollout(context.Context, *connect.Request[capsule.ProposeRolloutRequest]) (*connect.Response[capsule.ProposeRolloutResponse], error)
-	ListCapsuleProposals(context.Context, *connect.Request[capsule.ListCapsuleProposalsRequest]) (*connect.Response[capsule.ListCapsuleProposalsResponse], error)
+	ListProposals(context.Context, *connect.Request[capsule.ListProposalsRequest]) (*connect.Response[capsule.ListProposalsResponse], error)
 	// Applies a Capsule spec in an environment which will be rolled out
 	ApplyCapsuleSpec(context.Context, *connect.Request[capsule.ApplyCapsuleSpecRequest]) (*connect.Response[capsule.ApplyCapsuleSpecResponse], error)
 	// Lists all instances for the capsule.
@@ -639,6 +655,7 @@ type ServiceHandler interface {
 	GetRolloutOfRevisions(context.Context, *connect.Request[capsule.GetRolloutOfRevisionsRequest]) (*connect.Response[capsule.GetRolloutOfRevisionsResponse], error)
 	// Stream the status of a capsule.
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest], *connect.ServerStream[capsule.WatchStatusResponse]) error
+	GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -695,10 +712,10 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceProposeRolloutMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	serviceListCapsuleProposalsHandler := connect.NewUnaryHandler(
-		ServiceListCapsuleProposalsProcedure,
-		svc.ListCapsuleProposals,
-		connect.WithSchema(serviceListCapsuleProposalsMethodDescriptor),
+	serviceListProposalsHandler := connect.NewUnaryHandler(
+		ServiceListProposalsProcedure,
+		svc.ListProposals,
+		connect.WithSchema(serviceListProposalsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	serviceApplyCapsuleSpecHandler := connect.NewUnaryHandler(
@@ -827,6 +844,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceWatchStatusMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetEffectiveGitSettingsHandler := connect.NewUnaryHandler(
+		ServiceGetEffectiveGitSettingsProcedure,
+		svc.GetEffectiveGitSettings,
+		connect.WithSchema(serviceGetEffectiveGitSettingsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -845,8 +868,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceDeployHandler.ServeHTTP(w, r)
 		case ServiceProposeRolloutProcedure:
 			serviceProposeRolloutHandler.ServeHTTP(w, r)
-		case ServiceListCapsuleProposalsProcedure:
-			serviceListCapsuleProposalsHandler.ServeHTTP(w, r)
+		case ServiceListProposalsProcedure:
+			serviceListProposalsHandler.ServeHTTP(w, r)
 		case ServiceApplyCapsuleSpecProcedure:
 			serviceApplyCapsuleSpecHandler.ServeHTTP(w, r)
 		case ServiceListInstancesProcedure:
@@ -889,6 +912,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetRolloutOfRevisionsHandler.ServeHTTP(w, r)
 		case ServiceWatchStatusProcedure:
 			serviceWatchStatusHandler.ServeHTTP(w, r)
+		case ServiceGetEffectiveGitSettingsProcedure:
+			serviceGetEffectiveGitSettingsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -930,8 +955,8 @@ func (UnimplementedServiceHandler) ProposeRollout(context.Context, *connect.Requ
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ProposeRollout is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ListCapsuleProposals(context.Context, *connect.Request[capsule.ListCapsuleProposalsRequest]) (*connect.Response[capsule.ListCapsuleProposalsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListCapsuleProposals is not implemented"))
+func (UnimplementedServiceHandler) ListProposals(context.Context, *connect.Request[capsule.ListProposalsRequest]) (*connect.Response[capsule.ListProposalsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListProposals is not implemented"))
 }
 
 func (UnimplementedServiceHandler) ApplyCapsuleSpec(context.Context, *connect.Request[capsule.ApplyCapsuleSpecRequest]) (*connect.Response[capsule.ApplyCapsuleSpecResponse], error) {
@@ -1016,4 +1041,8 @@ func (UnimplementedServiceHandler) GetRolloutOfRevisions(context.Context, *conne
 
 func (UnimplementedServiceHandler) WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest], *connect.ServerStream[capsule.WatchStatusResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.WatchStatus is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetEffectiveGitSettings is not implemented"))
 }

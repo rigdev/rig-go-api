@@ -36,7 +36,7 @@ type ServiceClient interface {
 	// Use `Abort` to abort an already running rollout.
 	Deploy(ctx context.Context, in *DeployRequest, opts ...grpc.CallOption) (*DeployResponse, error)
 	ProposeRollout(ctx context.Context, in *ProposeRolloutRequest, opts ...grpc.CallOption) (*ProposeRolloutResponse, error)
-	ListCapsuleProposals(ctx context.Context, in *ListCapsuleProposalsRequest, opts ...grpc.CallOption) (*ListCapsuleProposalsResponse, error)
+	ListProposals(ctx context.Context, in *ListProposalsRequest, opts ...grpc.CallOption) (*ListProposalsResponse, error)
 	// Applies a Capsule spec in an environment which will be rolled out
 	ApplyCapsuleSpec(ctx context.Context, in *ApplyCapsuleSpecRequest, opts ...grpc.CallOption) (*ApplyCapsuleSpecResponse, error)
 	// Lists all instances for the capsule.
@@ -77,6 +77,7 @@ type ServiceClient interface {
 	GetRolloutOfRevisions(ctx context.Context, in *GetRolloutOfRevisionsRequest, opts ...grpc.CallOption) (*GetRolloutOfRevisionsResponse, error)
 	// Stream the status of a capsule.
 	WatchStatus(ctx context.Context, in *WatchStatusRequest, opts ...grpc.CallOption) (Service_WatchStatusClient, error)
+	GetEffectiveGitSettings(ctx context.Context, in *GetEffectiveGitSettingsRequest, opts ...grpc.CallOption) (*GetEffectiveGitSettingsResponse, error)
 }
 
 type serviceClient struct {
@@ -182,9 +183,9 @@ func (c *serviceClient) ProposeRollout(ctx context.Context, in *ProposeRolloutRe
 	return out, nil
 }
 
-func (c *serviceClient) ListCapsuleProposals(ctx context.Context, in *ListCapsuleProposalsRequest, opts ...grpc.CallOption) (*ListCapsuleProposalsResponse, error) {
-	out := new(ListCapsuleProposalsResponse)
-	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ListCapsuleProposals", in, out, opts...)
+func (c *serviceClient) ListProposals(ctx context.Context, in *ListProposalsRequest, opts ...grpc.CallOption) (*ListProposalsResponse, error) {
+	out := new(ListProposalsResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ListProposals", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -493,6 +494,15 @@ func (x *serviceWatchStatusClient) Recv() (*WatchStatusResponse, error) {
 	return m, nil
 }
 
+func (c *serviceClient) GetEffectiveGitSettings(ctx context.Context, in *GetEffectiveGitSettingsRequest, opts ...grpc.CallOption) (*GetEffectiveGitSettingsResponse, error) {
+	out := new(GetEffectiveGitSettingsResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/GetEffectiveGitSettings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -515,7 +525,7 @@ type ServiceServer interface {
 	// Use `Abort` to abort an already running rollout.
 	Deploy(context.Context, *DeployRequest) (*DeployResponse, error)
 	ProposeRollout(context.Context, *ProposeRolloutRequest) (*ProposeRolloutResponse, error)
-	ListCapsuleProposals(context.Context, *ListCapsuleProposalsRequest) (*ListCapsuleProposalsResponse, error)
+	ListProposals(context.Context, *ListProposalsRequest) (*ListProposalsResponse, error)
 	// Applies a Capsule spec in an environment which will be rolled out
 	ApplyCapsuleSpec(context.Context, *ApplyCapsuleSpecRequest) (*ApplyCapsuleSpecResponse, error)
 	// Lists all instances for the capsule.
@@ -556,6 +566,7 @@ type ServiceServer interface {
 	GetRolloutOfRevisions(context.Context, *GetRolloutOfRevisionsRequest) (*GetRolloutOfRevisionsResponse, error)
 	// Stream the status of a capsule.
 	WatchStatus(*WatchStatusRequest, Service_WatchStatusServer) error
+	GetEffectiveGitSettings(context.Context, *GetEffectiveGitSettingsRequest) (*GetEffectiveGitSettingsResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -587,8 +598,8 @@ func (UnimplementedServiceServer) Deploy(context.Context, *DeployRequest) (*Depl
 func (UnimplementedServiceServer) ProposeRollout(context.Context, *ProposeRolloutRequest) (*ProposeRolloutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProposeRollout not implemented")
 }
-func (UnimplementedServiceServer) ListCapsuleProposals(context.Context, *ListCapsuleProposalsRequest) (*ListCapsuleProposalsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListCapsuleProposals not implemented")
+func (UnimplementedServiceServer) ListProposals(context.Context, *ListProposalsRequest) (*ListProposalsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProposals not implemented")
 }
 func (UnimplementedServiceServer) ApplyCapsuleSpec(context.Context, *ApplyCapsuleSpecRequest) (*ApplyCapsuleSpecResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApplyCapsuleSpec not implemented")
@@ -652,6 +663,9 @@ func (UnimplementedServiceServer) GetRolloutOfRevisions(context.Context, *GetRol
 }
 func (UnimplementedServiceServer) WatchStatus(*WatchStatusRequest, Service_WatchStatusServer) error {
 	return status.Errorf(codes.Unimplemented, "method WatchStatus not implemented")
+}
+func (UnimplementedServiceServer) GetEffectiveGitSettings(context.Context, *GetEffectiveGitSettingsRequest) (*GetEffectiveGitSettingsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEffectiveGitSettings not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -813,20 +827,20 @@ func _Service_ProposeRollout_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Service_ListCapsuleProposals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListCapsuleProposalsRequest)
+func _Service_ListProposals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProposalsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ServiceServer).ListCapsuleProposals(ctx, in)
+		return srv.(ServiceServer).ListProposals(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.v1.capsule.Service/ListCapsuleProposals",
+		FullMethod: "/api.v1.capsule.Service/ListProposals",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServiceServer).ListCapsuleProposals(ctx, req.(*ListCapsuleProposalsRequest))
+		return srv.(ServiceServer).ListProposals(ctx, req.(*ListProposalsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1234,6 +1248,24 @@ func (x *serviceWatchStatusServer) Send(m *WatchStatusResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _Service_GetEffectiveGitSettings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEffectiveGitSettingsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetEffectiveGitSettings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/GetEffectiveGitSettings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetEffectiveGitSettings(ctx, req.(*GetEffectiveGitSettingsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1270,8 +1302,8 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Service_ProposeRollout_Handler,
 		},
 		{
-			MethodName: "ListCapsuleProposals",
-			Handler:    _Service_ListCapsuleProposals_Handler,
+			MethodName: "ListProposals",
+			Handler:    _Service_ListProposals_Handler,
 		},
 		{
 			MethodName: "ApplyCapsuleSpec",
@@ -1336,6 +1368,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRolloutOfRevisions",
 			Handler:    _Service_GetRolloutOfRevisions_Handler,
+		},
+		{
+			MethodName: "GetEffectiveGitSettings",
+			Handler:    _Service_GetEffectiveGitSettings_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
