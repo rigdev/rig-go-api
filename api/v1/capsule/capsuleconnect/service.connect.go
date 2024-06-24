@@ -103,46 +103,42 @@ const (
 	// ServiceGetEffectiveGitSettingsProcedure is the fully-qualified name of the Service's
 	// GetEffectiveGitSettings RPC.
 	ServiceGetEffectiveGitSettingsProcedure = "/api.v1.capsule.Service/GetEffectiveGitSettings"
-	// ServiceGetEnvironmentDifferencesProcedure is the fully-qualified name of the Service's
-	// GetEnvironmentDifferences RPC.
-	ServiceGetEnvironmentDifferencesProcedure = "/api.v1.capsule.Service/GetEnvironmentDifferences"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor                         = capsule.File_api_v1_capsule_service_proto.Services().ByName("Service")
-	serviceCreateMethodDescriptor                    = serviceServiceDescriptor.Methods().ByName("Create")
-	serviceGetMethodDescriptor                       = serviceServiceDescriptor.Methods().ByName("Get")
-	serviceDeleteMethodDescriptor                    = serviceServiceDescriptor.Methods().ByName("Delete")
-	serviceLogsMethodDescriptor                      = serviceServiceDescriptor.Methods().ByName("Logs")
-	serviceUpdateMethodDescriptor                    = serviceServiceDescriptor.Methods().ByName("Update")
-	serviceListMethodDescriptor                      = serviceServiceDescriptor.Methods().ByName("List")
-	serviceDeployMethodDescriptor                    = serviceServiceDescriptor.Methods().ByName("Deploy")
-	serviceProposeRolloutMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ProposeRollout")
-	serviceListProposalsMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("ListProposals")
-	serviceApplyCapsuleSpecMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("ApplyCapsuleSpec")
-	serviceListInstancesMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("ListInstances")
-	serviceRestartInstanceMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("RestartInstance")
-	serviceGetRolloutMethodDescriptor                = serviceServiceDescriptor.Methods().ByName("GetRollout")
-	serviceListRolloutsMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("ListRollouts")
-	serviceWatchRolloutsMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("WatchRollouts")
-	serviceAbortRolloutMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("AbortRollout")
-	serviceStopRolloutMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("StopRollout")
-	serviceListEventsMethodDescriptor                = serviceServiceDescriptor.Methods().ByName("ListEvents")
-	serviceCapsuleMetricsMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("CapsuleMetrics")
-	serviceGetInstanceStatusMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetInstanceStatus")
-	serviceListInstanceStatusesMethodDescriptor      = serviceServiceDescriptor.Methods().ByName("ListInstanceStatuses")
-	serviceWatchInstanceStatusesMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("WatchInstanceStatuses")
-	serviceExecuteMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Execute")
-	servicePortForwardMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("PortForward")
-	serviceGetCustomInstanceMetricsMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetCustomInstanceMetrics")
-	serviceGetJobExecutionsMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("GetJobExecutions")
-	serviceGetStatusMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("GetStatus")
-	serviceGetRevisionMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("GetRevision")
-	serviceGetRolloutOfRevisionsMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("GetRolloutOfRevisions")
-	serviceWatchStatusMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("WatchStatus")
-	serviceGetEffectiveGitSettingsMethodDescriptor   = serviceServiceDescriptor.Methods().ByName("GetEffectiveGitSettings")
-	serviceGetEnvironmentDifferencesMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetEnvironmentDifferences")
+	serviceServiceDescriptor                        = capsule.File_api_v1_capsule_service_proto.Services().ByName("Service")
+	serviceCreateMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceGetMethodDescriptor                      = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceDeleteMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Delete")
+	serviceLogsMethodDescriptor                     = serviceServiceDescriptor.Methods().ByName("Logs")
+	serviceUpdateMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Update")
+	serviceListMethodDescriptor                     = serviceServiceDescriptor.Methods().ByName("List")
+	serviceDeployMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("Deploy")
+	serviceProposeRolloutMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("ProposeRollout")
+	serviceListProposalsMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ListProposals")
+	serviceApplyCapsuleSpecMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("ApplyCapsuleSpec")
+	serviceListInstancesMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ListInstances")
+	serviceRestartInstanceMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("RestartInstance")
+	serviceGetRolloutMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("GetRollout")
+	serviceListRolloutsMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("ListRollouts")
+	serviceWatchRolloutsMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("WatchRollouts")
+	serviceAbortRolloutMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("AbortRollout")
+	serviceStopRolloutMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("StopRollout")
+	serviceListEventsMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("ListEvents")
+	serviceCapsuleMetricsMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("CapsuleMetrics")
+	serviceGetInstanceStatusMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("GetInstanceStatus")
+	serviceListInstanceStatusesMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("ListInstanceStatuses")
+	serviceWatchInstanceStatusesMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("WatchInstanceStatuses")
+	serviceExecuteMethodDescriptor                  = serviceServiceDescriptor.Methods().ByName("Execute")
+	servicePortForwardMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("PortForward")
+	serviceGetCustomInstanceMetricsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetCustomInstanceMetrics")
+	serviceGetJobExecutionsMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("GetJobExecutions")
+	serviceGetStatusMethodDescriptor                = serviceServiceDescriptor.Methods().ByName("GetStatus")
+	serviceGetRevisionMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("GetRevision")
+	serviceGetRolloutOfRevisionsMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("GetRolloutOfRevisions")
+	serviceWatchStatusMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("WatchStatus")
+	serviceGetEffectiveGitSettingsMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetEffectiveGitSettings")
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -207,10 +203,6 @@ type ServiceClient interface {
 	// Stream the status of a capsule.
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest]) (*connect.ServerStreamForClient[capsule.WatchStatusResponse], error)
 	GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error)
-	// Experimental: Get Environment differences between two environment in terms
-	// of capsule changes. This can be used with a subsequent deploy to promote a
-	// capsule from one environment to another.
-	GetEnvironmentDifferences(context.Context, *connect.Request[capsule.GetEnvironmentDifferencesRequest]) (*connect.Response[capsule.GetEnvironmentDifferencesResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -409,49 +401,42 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetEffectiveGitSettingsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		getEnvironmentDifferences: connect.NewClient[capsule.GetEnvironmentDifferencesRequest, capsule.GetEnvironmentDifferencesResponse](
-			httpClient,
-			baseURL+ServiceGetEnvironmentDifferencesProcedure,
-			connect.WithSchema(serviceGetEnvironmentDifferencesMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create                    *connect.Client[capsule.CreateRequest, capsule.CreateResponse]
-	get                       *connect.Client[capsule.GetRequest, capsule.GetResponse]
-	delete                    *connect.Client[capsule.DeleteRequest, capsule.DeleteResponse]
-	logs                      *connect.Client[capsule.LogsRequest, capsule.LogsResponse]
-	update                    *connect.Client[capsule.UpdateRequest, capsule.UpdateResponse]
-	list                      *connect.Client[capsule.ListRequest, capsule.ListResponse]
-	deploy                    *connect.Client[capsule.DeployRequest, capsule.DeployResponse]
-	proposeRollout            *connect.Client[capsule.ProposeRolloutRequest, capsule.ProposeRolloutResponse]
-	listProposals             *connect.Client[capsule.ListProposalsRequest, capsule.ListProposalsResponse]
-	applyCapsuleSpec          *connect.Client[capsule.ApplyCapsuleSpecRequest, capsule.ApplyCapsuleSpecResponse]
-	listInstances             *connect.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
-	restartInstance           *connect.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
-	getRollout                *connect.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
-	listRollouts              *connect.Client[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse]
-	watchRollouts             *connect.Client[capsule.WatchRolloutsRequest, capsule.WatchRolloutsResponse]
-	abortRollout              *connect.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
-	stopRollout               *connect.Client[capsule.StopRolloutRequest, capsule.StopRolloutResponse]
-	listEvents                *connect.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
-	capsuleMetrics            *connect.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
-	getInstanceStatus         *connect.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
-	listInstanceStatuses      *connect.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
-	watchInstanceStatuses     *connect.Client[capsule.WatchInstanceStatusesRequest, capsule.WatchInstanceStatusesResponse]
-	execute                   *connect.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
-	portForward               *connect.Client[capsule.PortForwardRequest, capsule.PortForwardResponse]
-	getCustomInstanceMetrics  *connect.Client[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse]
-	getJobExecutions          *connect.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
-	getStatus                 *connect.Client[capsule.GetStatusRequest, capsule.GetStatusResponse]
-	getRevision               *connect.Client[capsule.GetRevisionRequest, capsule.GetRevisionResponse]
-	getRolloutOfRevisions     *connect.Client[capsule.GetRolloutOfRevisionsRequest, capsule.GetRolloutOfRevisionsResponse]
-	watchStatus               *connect.Client[capsule.WatchStatusRequest, capsule.WatchStatusResponse]
-	getEffectiveGitSettings   *connect.Client[capsule.GetEffectiveGitSettingsRequest, capsule.GetEffectiveGitSettingsResponse]
-	getEnvironmentDifferences *connect.Client[capsule.GetEnvironmentDifferencesRequest, capsule.GetEnvironmentDifferencesResponse]
+	create                   *connect.Client[capsule.CreateRequest, capsule.CreateResponse]
+	get                      *connect.Client[capsule.GetRequest, capsule.GetResponse]
+	delete                   *connect.Client[capsule.DeleteRequest, capsule.DeleteResponse]
+	logs                     *connect.Client[capsule.LogsRequest, capsule.LogsResponse]
+	update                   *connect.Client[capsule.UpdateRequest, capsule.UpdateResponse]
+	list                     *connect.Client[capsule.ListRequest, capsule.ListResponse]
+	deploy                   *connect.Client[capsule.DeployRequest, capsule.DeployResponse]
+	proposeRollout           *connect.Client[capsule.ProposeRolloutRequest, capsule.ProposeRolloutResponse]
+	listProposals            *connect.Client[capsule.ListProposalsRequest, capsule.ListProposalsResponse]
+	applyCapsuleSpec         *connect.Client[capsule.ApplyCapsuleSpecRequest, capsule.ApplyCapsuleSpecResponse]
+	listInstances            *connect.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
+	restartInstance          *connect.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
+	getRollout               *connect.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
+	listRollouts             *connect.Client[capsule.ListRolloutsRequest, capsule.ListRolloutsResponse]
+	watchRollouts            *connect.Client[capsule.WatchRolloutsRequest, capsule.WatchRolloutsResponse]
+	abortRollout             *connect.Client[capsule.AbortRolloutRequest, capsule.AbortRolloutResponse]
+	stopRollout              *connect.Client[capsule.StopRolloutRequest, capsule.StopRolloutResponse]
+	listEvents               *connect.Client[capsule.ListEventsRequest, capsule.ListEventsResponse]
+	capsuleMetrics           *connect.Client[capsule.CapsuleMetricsRequest, capsule.CapsuleMetricsResponse]
+	getInstanceStatus        *connect.Client[capsule.GetInstanceStatusRequest, capsule.GetInstanceStatusResponse]
+	listInstanceStatuses     *connect.Client[capsule.ListInstanceStatusesRequest, capsule.ListInstanceStatusesResponse]
+	watchInstanceStatuses    *connect.Client[capsule.WatchInstanceStatusesRequest, capsule.WatchInstanceStatusesResponse]
+	execute                  *connect.Client[capsule.ExecuteRequest, capsule.ExecuteResponse]
+	portForward              *connect.Client[capsule.PortForwardRequest, capsule.PortForwardResponse]
+	getCustomInstanceMetrics *connect.Client[capsule.GetCustomInstanceMetricsRequest, capsule.GetCustomInstanceMetricsResponse]
+	getJobExecutions         *connect.Client[capsule.GetJobExecutionsRequest, capsule.GetJobExecutionsResponse]
+	getStatus                *connect.Client[capsule.GetStatusRequest, capsule.GetStatusResponse]
+	getRevision              *connect.Client[capsule.GetRevisionRequest, capsule.GetRevisionResponse]
+	getRolloutOfRevisions    *connect.Client[capsule.GetRolloutOfRevisionsRequest, capsule.GetRolloutOfRevisionsResponse]
+	watchStatus              *connect.Client[capsule.WatchStatusRequest, capsule.WatchStatusResponse]
+	getEffectiveGitSettings  *connect.Client[capsule.GetEffectiveGitSettingsRequest, capsule.GetEffectiveGitSettingsResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -609,11 +594,6 @@ func (c *serviceClient) GetEffectiveGitSettings(ctx context.Context, req *connec
 	return c.getEffectiveGitSettings.CallUnary(ctx, req)
 }
 
-// GetEnvironmentDifferences calls api.v1.capsule.Service.GetEnvironmentDifferences.
-func (c *serviceClient) GetEnvironmentDifferences(ctx context.Context, req *connect.Request[capsule.GetEnvironmentDifferencesRequest]) (*connect.Response[capsule.GetEnvironmentDifferencesResponse], error) {
-	return c.getEnvironmentDifferences.CallUnary(ctx, req)
-}
-
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -676,10 +656,6 @@ type ServiceHandler interface {
 	// Stream the status of a capsule.
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest], *connect.ServerStream[capsule.WatchStatusResponse]) error
 	GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error)
-	// Experimental: Get Environment differences between two environment in terms
-	// of capsule changes. This can be used with a subsequent deploy to promote a
-	// capsule from one environment to another.
-	GetEnvironmentDifferences(context.Context, *connect.Request[capsule.GetEnvironmentDifferencesRequest]) (*connect.Response[capsule.GetEnvironmentDifferencesResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -874,12 +850,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetEffectiveGitSettingsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	serviceGetEnvironmentDifferencesHandler := connect.NewUnaryHandler(
-		ServiceGetEnvironmentDifferencesProcedure,
-		svc.GetEnvironmentDifferences,
-		connect.WithSchema(serviceGetEnvironmentDifferencesMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -944,8 +914,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceWatchStatusHandler.ServeHTTP(w, r)
 		case ServiceGetEffectiveGitSettingsProcedure:
 			serviceGetEffectiveGitSettingsHandler.ServeHTTP(w, r)
-		case ServiceGetEnvironmentDifferencesProcedure:
-			serviceGetEnvironmentDifferencesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -1077,8 +1045,4 @@ func (UnimplementedServiceHandler) WatchStatus(context.Context, *connect.Request
 
 func (UnimplementedServiceHandler) GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetEffectiveGitSettings is not implemented"))
-}
-
-func (UnimplementedServiceHandler) GetEnvironmentDifferences(context.Context, *connect.Request[capsule.GetEnvironmentDifferencesRequest]) (*connect.Response[capsule.GetEnvironmentDifferencesResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetEnvironmentDifferences is not implemented"))
 }
