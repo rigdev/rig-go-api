@@ -37,8 +37,6 @@ type ServiceClient interface {
 	Deploy(ctx context.Context, in *DeployRequest, opts ...grpc.CallOption) (*DeployResponse, error)
 	ProposeRollout(ctx context.Context, in *ProposeRolloutRequest, opts ...grpc.CallOption) (*ProposeRolloutResponse, error)
 	ListProposals(ctx context.Context, in *ListProposalsRequest, opts ...grpc.CallOption) (*ListProposalsResponse, error)
-	// Applies a Capsule spec in an environment which will be rolled out
-	ApplyCapsuleSpec(ctx context.Context, in *ApplyCapsuleSpecRequest, opts ...grpc.CallOption) (*ApplyCapsuleSpecResponse, error)
 	// Lists all instances for the capsule.
 	ListInstances(ctx context.Context, in *ListInstancesRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error)
 	// Restart a single capsule instance.
@@ -186,15 +184,6 @@ func (c *serviceClient) ProposeRollout(ctx context.Context, in *ProposeRolloutRe
 func (c *serviceClient) ListProposals(ctx context.Context, in *ListProposalsRequest, opts ...grpc.CallOption) (*ListProposalsResponse, error) {
 	out := new(ListProposalsResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ListProposals", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *serviceClient) ApplyCapsuleSpec(ctx context.Context, in *ApplyCapsuleSpecRequest, opts ...grpc.CallOption) (*ApplyCapsuleSpecResponse, error) {
-	out := new(ApplyCapsuleSpecResponse)
-	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ApplyCapsuleSpec", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -526,8 +515,6 @@ type ServiceServer interface {
 	Deploy(context.Context, *DeployRequest) (*DeployResponse, error)
 	ProposeRollout(context.Context, *ProposeRolloutRequest) (*ProposeRolloutResponse, error)
 	ListProposals(context.Context, *ListProposalsRequest) (*ListProposalsResponse, error)
-	// Applies a Capsule spec in an environment which will be rolled out
-	ApplyCapsuleSpec(context.Context, *ApplyCapsuleSpecRequest) (*ApplyCapsuleSpecResponse, error)
 	// Lists all instances for the capsule.
 	ListInstances(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error)
 	// Restart a single capsule instance.
@@ -600,9 +587,6 @@ func (UnimplementedServiceServer) ProposeRollout(context.Context, *ProposeRollou
 }
 func (UnimplementedServiceServer) ListProposals(context.Context, *ListProposalsRequest) (*ListProposalsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProposals not implemented")
-}
-func (UnimplementedServiceServer) ApplyCapsuleSpec(context.Context, *ApplyCapsuleSpecRequest) (*ApplyCapsuleSpecResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ApplyCapsuleSpec not implemented")
 }
 func (UnimplementedServiceServer) ListInstances(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListInstances not implemented")
@@ -841,24 +825,6 @@ func _Service_ListProposals_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceServer).ListProposals(ctx, req.(*ListProposalsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Service_ApplyCapsuleSpec_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ApplyCapsuleSpecRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ServiceServer).ApplyCapsuleSpec(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.v1.capsule.Service/ApplyCapsuleSpec",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServiceServer).ApplyCapsuleSpec(ctx, req.(*ApplyCapsuleSpecRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1304,10 +1270,6 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListProposals",
 			Handler:    _Service_ListProposals_Handler,
-		},
-		{
-			MethodName: "ApplyCapsuleSpec",
-			Handler:    _Service_ApplyCapsuleSpec_Handler,
 		},
 		{
 			MethodName: "ListInstances",
