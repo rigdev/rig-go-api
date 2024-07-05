@@ -51,19 +51,23 @@ const (
 	// ServiceGetCustomObjectMetricsProcedure is the fully-qualified name of the Service's
 	// GetCustomObjectMetrics RPC.
 	ServiceGetCustomObjectMetricsProcedure = "/api.v1.project.Service/GetCustomObjectMetrics"
+	// ServiceGetEffectiveGitSettingsProcedure is the fully-qualified name of the Service's
+	// GetEffectiveGitSettings RPC.
+	ServiceGetEffectiveGitSettingsProcedure = "/api.v1.project.Service/GetEffectiveGitSettings"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor                      = project.File_api_v1_project_service_proto.Services().ByName("Service")
-	serviceCreateMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("Create")
-	serviceDeleteMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("Delete")
-	serviceGetMethodDescriptor                    = serviceServiceDescriptor.Methods().ByName("Get")
-	serviceListMethodDescriptor                   = serviceServiceDescriptor.Methods().ByName("List")
-	serviceUpdateMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("Update")
-	servicePublicKeyMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("PublicKey")
-	serviceGetObjectsByKindMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("GetObjectsByKind")
-	serviceGetCustomObjectMetricsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetCustomObjectMetrics")
+	serviceServiceDescriptor                       = project.File_api_v1_project_service_proto.Services().ByName("Service")
+	serviceCreateMethodDescriptor                  = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceDeleteMethodDescriptor                  = serviceServiceDescriptor.Methods().ByName("Delete")
+	serviceGetMethodDescriptor                     = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceListMethodDescriptor                    = serviceServiceDescriptor.Methods().ByName("List")
+	serviceUpdateMethodDescriptor                  = serviceServiceDescriptor.Methods().ByName("Update")
+	servicePublicKeyMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("PublicKey")
+	serviceGetObjectsByKindMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("GetObjectsByKind")
+	serviceGetCustomObjectMetricsMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetCustomObjectMetrics")
+	serviceGetEffectiveGitSettingsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetEffectiveGitSettings")
 )
 
 // ServiceClient is a client for the api.v1.project.Service service.
@@ -84,6 +88,7 @@ type ServiceClient interface {
 	GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error)
 	// Returns all metrics of a given custom object.
 	GetCustomObjectMetrics(context.Context, *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error)
+	GetEffectiveGitSettings(context.Context, *connect.Request[project.GetEffectiveGitSettingsRequest]) (*connect.Response[project.GetEffectiveGitSettingsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.project.Service service. By default, it uses
@@ -144,19 +149,26 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetCustomObjectMetricsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getEffectiveGitSettings: connect.NewClient[project.GetEffectiveGitSettingsRequest, project.GetEffectiveGitSettingsResponse](
+			httpClient,
+			baseURL+ServiceGetEffectiveGitSettingsProcedure,
+			connect.WithSchema(serviceGetEffectiveGitSettingsMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create                 *connect.Client[project.CreateRequest, project.CreateResponse]
-	delete                 *connect.Client[project.DeleteRequest, project.DeleteResponse]
-	get                    *connect.Client[project.GetRequest, project.GetResponse]
-	list                   *connect.Client[project.ListRequest, project.ListResponse]
-	update                 *connect.Client[project.UpdateRequest, project.UpdateResponse]
-	publicKey              *connect.Client[project.PublicKeyRequest, project.PublicKeyResponse]
-	getObjectsByKind       *connect.Client[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse]
-	getCustomObjectMetrics *connect.Client[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse]
+	create                  *connect.Client[project.CreateRequest, project.CreateResponse]
+	delete                  *connect.Client[project.DeleteRequest, project.DeleteResponse]
+	get                     *connect.Client[project.GetRequest, project.GetResponse]
+	list                    *connect.Client[project.ListRequest, project.ListResponse]
+	update                  *connect.Client[project.UpdateRequest, project.UpdateResponse]
+	publicKey               *connect.Client[project.PublicKeyRequest, project.PublicKeyResponse]
+	getObjectsByKind        *connect.Client[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse]
+	getCustomObjectMetrics  *connect.Client[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse]
+	getEffectiveGitSettings *connect.Client[project.GetEffectiveGitSettingsRequest, project.GetEffectiveGitSettingsResponse]
 }
 
 // Create calls api.v1.project.Service.Create.
@@ -199,6 +211,11 @@ func (c *serviceClient) GetCustomObjectMetrics(ctx context.Context, req *connect
 	return c.getCustomObjectMetrics.CallUnary(ctx, req)
 }
 
+// GetEffectiveGitSettings calls api.v1.project.Service.GetEffectiveGitSettings.
+func (c *serviceClient) GetEffectiveGitSettings(ctx context.Context, req *connect.Request[project.GetEffectiveGitSettingsRequest]) (*connect.Response[project.GetEffectiveGitSettingsResponse], error) {
+	return c.getEffectiveGitSettings.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.project.Service service.
 type ServiceHandler interface {
 	// Create project.
@@ -217,6 +234,7 @@ type ServiceHandler interface {
 	GetObjectsByKind(context.Context, *connect.Request[project.GetObjectsByKindRequest]) (*connect.Response[project.GetObjectsByKindResponse], error)
 	// Returns all metrics of a given custom object.
 	GetCustomObjectMetrics(context.Context, *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error)
+	GetEffectiveGitSettings(context.Context, *connect.Request[project.GetEffectiveGitSettingsRequest]) (*connect.Response[project.GetEffectiveGitSettingsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -273,6 +291,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetCustomObjectMetricsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetEffectiveGitSettingsHandler := connect.NewUnaryHandler(
+		ServiceGetEffectiveGitSettingsProcedure,
+		svc.GetEffectiveGitSettings,
+		connect.WithSchema(serviceGetEffectiveGitSettingsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.project.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -291,6 +315,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetObjectsByKindHandler.ServeHTTP(w, r)
 		case ServiceGetCustomObjectMetricsProcedure:
 			serviceGetCustomObjectMetricsHandler.ServeHTTP(w, r)
+		case ServiceGetEffectiveGitSettingsProcedure:
+			serviceGetEffectiveGitSettingsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -330,4 +356,8 @@ func (UnimplementedServiceHandler) GetObjectsByKind(context.Context, *connect.Re
 
 func (UnimplementedServiceHandler) GetCustomObjectMetrics(context.Context, *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.GetCustomObjectMetrics is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetEffectiveGitSettings(context.Context, *connect.Request[project.GetEffectiveGitSettingsRequest]) (*connect.Response[project.GetEffectiveGitSettingsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.GetEffectiveGitSettings is not implemented"))
 }
