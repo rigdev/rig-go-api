@@ -35,7 +35,9 @@ type ServiceClient interface {
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
 	Deploy(ctx context.Context, in *DeployRequest, opts ...grpc.CallOption) (*DeployResponse, error)
+	DeploySet(ctx context.Context, in *DeploySetRequest, opts ...grpc.CallOption) (*DeploySetResponse, error)
 	ProposeRollout(ctx context.Context, in *ProposeRolloutRequest, opts ...grpc.CallOption) (*ProposeRolloutResponse, error)
+	ProposeSetRollout(ctx context.Context, in *ProposeSetRolloutRequest, opts ...grpc.CallOption) (*ProposeSetRolloutResponse, error)
 	ListProposals(ctx context.Context, in *ListProposalsRequest, opts ...grpc.CallOption) (*ListProposalsResponse, error)
 	// Lists all instances for the capsule.
 	ListInstances(ctx context.Context, in *ListInstancesRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error)
@@ -172,9 +174,27 @@ func (c *serviceClient) Deploy(ctx context.Context, in *DeployRequest, opts ...g
 	return out, nil
 }
 
+func (c *serviceClient) DeploySet(ctx context.Context, in *DeploySetRequest, opts ...grpc.CallOption) (*DeploySetResponse, error) {
+	out := new(DeploySetResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/DeploySet", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *serviceClient) ProposeRollout(ctx context.Context, in *ProposeRolloutRequest, opts ...grpc.CallOption) (*ProposeRolloutResponse, error) {
 	out := new(ProposeRolloutResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ProposeRollout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) ProposeSetRollout(ctx context.Context, in *ProposeSetRolloutRequest, opts ...grpc.CallOption) (*ProposeSetRolloutResponse, error) {
+	out := new(ProposeSetRolloutResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ProposeSetRollout", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -513,7 +533,9 @@ type ServiceServer interface {
 	// running at a single point in time.
 	// Use `Abort` to abort an already running rollout.
 	Deploy(context.Context, *DeployRequest) (*DeployResponse, error)
+	DeploySet(context.Context, *DeploySetRequest) (*DeploySetResponse, error)
 	ProposeRollout(context.Context, *ProposeRolloutRequest) (*ProposeRolloutResponse, error)
+	ProposeSetRollout(context.Context, *ProposeSetRolloutRequest) (*ProposeSetRolloutResponse, error)
 	ListProposals(context.Context, *ListProposalsRequest) (*ListProposalsResponse, error)
 	// Lists all instances for the capsule.
 	ListInstances(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error)
@@ -582,8 +604,14 @@ func (UnimplementedServiceServer) List(context.Context, *ListRequest) (*ListResp
 func (UnimplementedServiceServer) Deploy(context.Context, *DeployRequest) (*DeployResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Deploy not implemented")
 }
+func (UnimplementedServiceServer) DeploySet(context.Context, *DeploySetRequest) (*DeploySetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeploySet not implemented")
+}
 func (UnimplementedServiceServer) ProposeRollout(context.Context, *ProposeRolloutRequest) (*ProposeRolloutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProposeRollout not implemented")
+}
+func (UnimplementedServiceServer) ProposeSetRollout(context.Context, *ProposeSetRolloutRequest) (*ProposeSetRolloutResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProposeSetRollout not implemented")
 }
 func (UnimplementedServiceServer) ListProposals(context.Context, *ListProposalsRequest) (*ListProposalsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProposals not implemented")
@@ -793,6 +821,24 @@ func _Service_Deploy_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_DeploySet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeploySetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).DeploySet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/DeploySet",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).DeploySet(ctx, req.(*DeploySetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Service_ProposeRollout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ProposeRolloutRequest)
 	if err := dec(in); err != nil {
@@ -807,6 +853,24 @@ func _Service_ProposeRollout_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceServer).ProposeRollout(ctx, req.(*ProposeRolloutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_ProposeSetRollout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProposeSetRolloutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).ProposeSetRollout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/ProposeSetRollout",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).ProposeSetRollout(ctx, req.(*ProposeSetRolloutRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1264,8 +1328,16 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Service_Deploy_Handler,
 		},
 		{
+			MethodName: "DeploySet",
+			Handler:    _Service_DeploySet_Handler,
+		},
+		{
 			MethodName: "ProposeRollout",
 			Handler:    _Service_ProposeRollout_Handler,
+		},
+		{
+			MethodName: "ProposeSetRollout",
+			Handler:    _Service_ProposeSetRollout_Handler,
 		},
 		{
 			MethodName: "ListProposals",

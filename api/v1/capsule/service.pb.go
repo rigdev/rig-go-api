@@ -2026,6 +2026,246 @@ func (x *DeployOutcome) GetKubernetesObjects() []*DeployOutcome_KubernetesObject
 	return nil
 }
 
+type DeploySetRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Capsule to deploy to.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Changes to include in the new rollout.
+	Changes []*Change `protobuf:"bytes,2,rep,name=changes,proto3" json:"changes,omitempty"`
+	// Force deploy, aborting existing rollouts if ongoing.
+	Force bool `protobuf:"varint,3,opt,name=force,proto3" json:"force,omitempty"`
+	// Project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Deploy message.
+	Message string `protobuf:"bytes,6,opt,name=message,proto3" json:"message,omitempty"`
+	// if true, the deploy will not be executed, but the request will return the
+	// rollout config.
+	DryRun bool `protobuf:"varint,7,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
+	// If present, maps from environment to expected current rollout within that
+	// environment. This will constrain the rollout only to be created if the
+	// currently running rollout matches this identifier. If this check fails, the
+	// request will return an `Aborted` error.
+	CurrentRolloutIds map[string]uint64 `protobuf:"bytes,8,rep,name=current_rollout_ids,json=currentRolloutIds,proto3" json:"current_rollout_ids,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"`
+	// If set, this will constrain the rollout only to be created if the current
+	// latest capsuleset fingerprint matches the given.
+	CurrentFingerprint *model.Fingerprint `protobuf:"bytes,9,opt,name=current_fingerprint,json=currentFingerprint,proto3" json:"current_fingerprint,omitempty"`
+	// If set, this will constrain the rollout only to be created if the current
+	// latest capsule fingerprint for each environment in the map matches the ones
+	// in the map. Cannot be used together with `current_rollout_ids`
+	CurrentEnvironmentFingerprints map[string]*model.Fingerprint `protobuf:"bytes,10,rep,name=current_environment_fingerprints,json=currentEnvironmentFingerprints,proto3" json:"current_environment_fingerprints,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Outcome                        *DeploySetOutcome             `protobuf:"bytes,11,opt,name=outcome,proto3" json:"outcome,omitempty"`
+}
+
+func (x *DeploySetRequest) Reset() {
+	*x = DeploySetRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_capsule_service_proto_msgTypes[28]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeploySetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeploySetRequest) ProtoMessage() {}
+
+func (x *DeploySetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_capsule_service_proto_msgTypes[28]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeploySetRequest.ProtoReflect.Descriptor instead.
+func (*DeploySetRequest) Descriptor() ([]byte, []int) {
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *DeploySetRequest) GetCapsuleId() string {
+	if x != nil {
+		return x.CapsuleId
+	}
+	return ""
+}
+
+func (x *DeploySetRequest) GetChanges() []*Change {
+	if x != nil {
+		return x.Changes
+	}
+	return nil
+}
+
+func (x *DeploySetRequest) GetForce() bool {
+	if x != nil {
+		return x.Force
+	}
+	return false
+}
+
+func (x *DeploySetRequest) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *DeploySetRequest) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *DeploySetRequest) GetDryRun() bool {
+	if x != nil {
+		return x.DryRun
+	}
+	return false
+}
+
+func (x *DeploySetRequest) GetCurrentRolloutIds() map[string]uint64 {
+	if x != nil {
+		return x.CurrentRolloutIds
+	}
+	return nil
+}
+
+func (x *DeploySetRequest) GetCurrentFingerprint() *model.Fingerprint {
+	if x != nil {
+		return x.CurrentFingerprint
+	}
+	return nil
+}
+
+func (x *DeploySetRequest) GetCurrentEnvironmentFingerprints() map[string]*model.Fingerprint {
+	if x != nil {
+		return x.CurrentEnvironmentFingerprints
+	}
+	return nil
+}
+
+func (x *DeploySetRequest) GetOutcome() *DeploySetOutcome {
+	if x != nil {
+		return x.Outcome
+	}
+	return nil
+}
+
+type DeploySetOutcome struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Environments map[string]*DeployOutcome `protobuf:"bytes,1,rep,name=environments,proto3" json:"environments,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *DeploySetOutcome) Reset() {
+	*x = DeploySetOutcome{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_capsule_service_proto_msgTypes[29]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeploySetOutcome) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeploySetOutcome) ProtoMessage() {}
+
+func (x *DeploySetOutcome) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_capsule_service_proto_msgTypes[29]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeploySetOutcome.ProtoReflect.Descriptor instead.
+func (*DeploySetOutcome) Descriptor() ([]byte, []int) {
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *DeploySetOutcome) GetEnvironments() map[string]*DeployOutcome {
+	if x != nil {
+		return x.Environments
+	}
+	return nil
+}
+
+type DeploySetResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The capsule revision created.
+	Revision *SetRevision `protobuf:"bytes,1,opt,name=revision,proto3" json:"revision,omitempty"`
+	// Breakdown of the changes that this deploy would make to the system.
+	// Only populated if dry-run is used.
+	Outcome *DeploySetOutcome `protobuf:"bytes,5,opt,name=outcome,proto3" json:"outcome,omitempty"`
+}
+
+func (x *DeploySetResponse) Reset() {
+	*x = DeploySetResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_capsule_service_proto_msgTypes[30]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeploySetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeploySetResponse) ProtoMessage() {}
+
+func (x *DeploySetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_capsule_service_proto_msgTypes[30]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeploySetResponse.ProtoReflect.Descriptor instead.
+func (*DeploySetResponse) Descriptor() ([]byte, []int) {
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *DeploySetResponse) GetRevision() *SetRevision {
+	if x != nil {
+		return x.Revision
+	}
+	return nil
+}
+
+func (x *DeploySetResponse) GetOutcome() *DeploySetOutcome {
+	if x != nil {
+		return x.Outcome
+	}
+	return nil
+}
+
 // Deploy request. This will deploy a number of changes which results in a new
 // rollout.
 type ProposeRolloutRequest struct {
@@ -2057,7 +2297,7 @@ type ProposeRolloutRequest struct {
 func (x *ProposeRolloutRequest) Reset() {
 	*x = ProposeRolloutRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[28]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[31]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2070,7 +2310,7 @@ func (x *ProposeRolloutRequest) String() string {
 func (*ProposeRolloutRequest) ProtoMessage() {}
 
 func (x *ProposeRolloutRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[28]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2083,7 +2323,7 @@ func (x *ProposeRolloutRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProposeRolloutRequest.ProtoReflect.Descriptor instead.
 func (*ProposeRolloutRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{28}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ProposeRolloutRequest) GetCapsuleId() string {
@@ -2148,7 +2388,7 @@ type ProposeRolloutResponse struct {
 func (x *ProposeRolloutResponse) Reset() {
 	*x = ProposeRolloutResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[29]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[32]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2161,7 +2401,7 @@ func (x *ProposeRolloutResponse) String() string {
 func (*ProposeRolloutResponse) ProtoMessage() {}
 
 func (x *ProposeRolloutResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[29]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[32]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2174,7 +2414,7 @@ func (x *ProposeRolloutResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProposeRolloutResponse.ProtoReflect.Descriptor instead.
 func (*ProposeRolloutResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{29}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *ProposeRolloutResponse) GetProposal() *Proposal {
@@ -2185,6 +2425,160 @@ func (x *ProposeRolloutResponse) GetProposal() *Proposal {
 }
 
 func (x *ProposeRolloutResponse) GetOutcome() *DeployOutcome {
+	if x != nil {
+		return x.Outcome
+	}
+	return nil
+}
+
+type ProposeSetRolloutRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Capsule to deploy to.
+	CapsuleId string `protobuf:"bytes,1,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
+	// Changes to include in the new rollout.
+	Changes []*Change `protobuf:"bytes,2,rep,name=changes,proto3" json:"changes,omitempty"`
+	// Project in which the capsule lives.
+	ProjectId string `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Deploy message.
+	Message string `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+	// By default, existing objects will be kept in favor of overriding them. To
+	// force the override of resources, set this flag to true. An example of this
+	// use-case is a migration step, where resource created by a previous
+	// toolchain e.g. based on Helm charts, are to be replaced and instead be
+	// created by the Rig operator.
+	// While the override is irreversible, this flag is not "sticky" and must be
+	// set by each deploy that should use this behavior.
+	ForceOverride bool   `protobuf:"varint,5,opt,name=force_override,json=forceOverride,proto3" json:"force_override,omitempty"`
+	BranchName    string `protobuf:"bytes,6,opt,name=branch_name,json=branchName,proto3" json:"branch_name,omitempty"`
+}
+
+func (x *ProposeSetRolloutRequest) Reset() {
+	*x = ProposeSetRolloutRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_capsule_service_proto_msgTypes[33]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ProposeSetRolloutRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProposeSetRolloutRequest) ProtoMessage() {}
+
+func (x *ProposeSetRolloutRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_capsule_service_proto_msgTypes[33]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProposeSetRolloutRequest.ProtoReflect.Descriptor instead.
+func (*ProposeSetRolloutRequest) Descriptor() ([]byte, []int) {
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *ProposeSetRolloutRequest) GetCapsuleId() string {
+	if x != nil {
+		return x.CapsuleId
+	}
+	return ""
+}
+
+func (x *ProposeSetRolloutRequest) GetChanges() []*Change {
+	if x != nil {
+		return x.Changes
+	}
+	return nil
+}
+
+func (x *ProposeSetRolloutRequest) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *ProposeSetRolloutRequest) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ProposeSetRolloutRequest) GetForceOverride() bool {
+	if x != nil {
+		return x.ForceOverride
+	}
+	return false
+}
+
+func (x *ProposeSetRolloutRequest) GetBranchName() string {
+	if x != nil {
+		return x.BranchName
+	}
+	return ""
+}
+
+type ProposeSetRolloutResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Proposal *SetProposal `protobuf:"bytes,1,opt,name=proposal,proto3" json:"proposal,omitempty"`
+	// Breakdown of the changes that this deploy would make to the system.
+	Outcome *DeploySetOutcome `protobuf:"bytes,2,opt,name=outcome,proto3" json:"outcome,omitempty"`
+}
+
+func (x *ProposeSetRolloutResponse) Reset() {
+	*x = ProposeSetRolloutResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_capsule_service_proto_msgTypes[34]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ProposeSetRolloutResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProposeSetRolloutResponse) ProtoMessage() {}
+
+func (x *ProposeSetRolloutResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_capsule_service_proto_msgTypes[34]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProposeSetRolloutResponse.ProtoReflect.Descriptor instead.
+func (*ProposeSetRolloutResponse) Descriptor() ([]byte, []int) {
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *ProposeSetRolloutResponse) GetProposal() *SetProposal {
+	if x != nil {
+		return x.Proposal
+	}
+	return nil
+}
+
+func (x *ProposeSetRolloutResponse) GetOutcome() *DeploySetOutcome {
 	if x != nil {
 		return x.Outcome
 	}
@@ -2205,7 +2599,7 @@ type ListProposalsRequest struct {
 func (x *ListProposalsRequest) Reset() {
 	*x = ListProposalsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[30]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[35]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2218,7 +2612,7 @@ func (x *ListProposalsRequest) String() string {
 func (*ListProposalsRequest) ProtoMessage() {}
 
 func (x *ListProposalsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[30]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2231,7 +2625,7 @@ func (x *ListProposalsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProposalsRequest.ProtoReflect.Descriptor instead.
 func (*ListProposalsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{30}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *ListProposalsRequest) GetProjectId() string {
@@ -2274,7 +2668,7 @@ type ListProposalsResponse struct {
 func (x *ListProposalsResponse) Reset() {
 	*x = ListProposalsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[31]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[36]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2287,7 +2681,7 @@ func (x *ListProposalsResponse) String() string {
 func (*ListProposalsResponse) ProtoMessage() {}
 
 func (x *ListProposalsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[31]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[36]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2300,7 +2694,7 @@ func (x *ListProposalsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProposalsResponse.ProtoReflect.Descriptor instead.
 func (*ListProposalsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{31}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *ListProposalsResponse) GetProposals() []*Proposal {
@@ -2340,7 +2734,7 @@ type ListInstancesRequest struct {
 func (x *ListInstancesRequest) Reset() {
 	*x = ListInstancesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[32]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[37]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2353,7 +2747,7 @@ func (x *ListInstancesRequest) String() string {
 func (*ListInstancesRequest) ProtoMessage() {}
 
 func (x *ListInstancesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[32]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[37]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2366,7 +2760,7 @@ func (x *ListInstancesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInstancesRequest.ProtoReflect.Descriptor instead.
 func (*ListInstancesRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{32}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *ListInstancesRequest) GetCapsuleId() string {
@@ -2426,7 +2820,7 @@ type ListInstancesResponse struct {
 func (x *ListInstancesResponse) Reset() {
 	*x = ListInstancesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[33]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[38]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2439,7 +2833,7 @@ func (x *ListInstancesResponse) String() string {
 func (*ListInstancesResponse) ProtoMessage() {}
 
 func (x *ListInstancesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[33]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[38]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2452,7 +2846,7 @@ func (x *ListInstancesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInstancesResponse.ProtoReflect.Descriptor instead.
 func (*ListInstancesResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{33}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *ListInstancesResponse) GetInstances() []*Instance {
@@ -2488,7 +2882,7 @@ type GetInstanceStatusRequest struct {
 func (x *GetInstanceStatusRequest) Reset() {
 	*x = GetInstanceStatusRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[34]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[39]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2501,7 +2895,7 @@ func (x *GetInstanceStatusRequest) String() string {
 func (*GetInstanceStatusRequest) ProtoMessage() {}
 
 func (x *GetInstanceStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[34]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[39]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2514,7 +2908,7 @@ func (x *GetInstanceStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetInstanceStatusRequest.ProtoReflect.Descriptor instead.
 func (*GetInstanceStatusRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{34}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *GetInstanceStatusRequest) GetCapsuleId() string {
@@ -2558,7 +2952,7 @@ type GetInstanceStatusResponse struct {
 func (x *GetInstanceStatusResponse) Reset() {
 	*x = GetInstanceStatusResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[35]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[40]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2571,7 +2965,7 @@ func (x *GetInstanceStatusResponse) String() string {
 func (*GetInstanceStatusResponse) ProtoMessage() {}
 
 func (x *GetInstanceStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[35]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[40]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2584,7 +2978,7 @@ func (x *GetInstanceStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetInstanceStatusResponse.ProtoReflect.Descriptor instead.
 func (*GetInstanceStatusResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{35}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *GetInstanceStatusResponse) GetStatus() *instance.Status {
@@ -2617,7 +3011,7 @@ type ListInstanceStatusesRequest struct {
 func (x *ListInstanceStatusesRequest) Reset() {
 	*x = ListInstanceStatusesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[36]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[41]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2630,7 +3024,7 @@ func (x *ListInstanceStatusesRequest) String() string {
 func (*ListInstanceStatusesRequest) ProtoMessage() {}
 
 func (x *ListInstanceStatusesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[36]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[41]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2643,7 +3037,7 @@ func (x *ListInstanceStatusesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInstanceStatusesRequest.ProtoReflect.Descriptor instead.
 func (*ListInstanceStatusesRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{36}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *ListInstanceStatusesRequest) GetCapsuleId() string {
@@ -2703,7 +3097,7 @@ type ListInstanceStatusesResponse struct {
 func (x *ListInstanceStatusesResponse) Reset() {
 	*x = ListInstanceStatusesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[37]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[42]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2716,7 +3110,7 @@ func (x *ListInstanceStatusesResponse) String() string {
 func (*ListInstanceStatusesResponse) ProtoMessage() {}
 
 func (x *ListInstanceStatusesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[37]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[42]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2729,7 +3123,7 @@ func (x *ListInstanceStatusesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInstanceStatusesResponse.ProtoReflect.Descriptor instead.
 func (*ListInstanceStatusesResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{37}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *ListInstanceStatusesResponse) GetInstances() []*instance.Status {
@@ -2765,7 +3159,7 @@ type RestartInstanceRequest struct {
 func (x *RestartInstanceRequest) Reset() {
 	*x = RestartInstanceRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[38]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[43]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2778,7 +3172,7 @@ func (x *RestartInstanceRequest) String() string {
 func (*RestartInstanceRequest) ProtoMessage() {}
 
 func (x *RestartInstanceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[38]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[43]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2791,7 +3185,7 @@ func (x *RestartInstanceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestartInstanceRequest.ProtoReflect.Descriptor instead.
 func (*RestartInstanceRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{38}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *RestartInstanceRequest) GetCapsuleId() string {
@@ -2832,7 +3226,7 @@ type RestartInstanceResponse struct {
 func (x *RestartInstanceResponse) Reset() {
 	*x = RestartInstanceResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[39]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[44]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2845,7 +3239,7 @@ func (x *RestartInstanceResponse) String() string {
 func (*RestartInstanceResponse) ProtoMessage() {}
 
 func (x *RestartInstanceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[39]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[44]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2858,7 +3252,7 @@ func (x *RestartInstanceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestartInstanceResponse.ProtoReflect.Descriptor instead.
 func (*RestartInstanceResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{39}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{44}
 }
 
 // ListRolloutsRequest lists rollouts for a capsule.
@@ -2880,7 +3274,7 @@ type ListRolloutsRequest struct {
 func (x *ListRolloutsRequest) Reset() {
 	*x = ListRolloutsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[40]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[45]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2893,7 +3287,7 @@ func (x *ListRolloutsRequest) String() string {
 func (*ListRolloutsRequest) ProtoMessage() {}
 
 func (x *ListRolloutsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[40]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[45]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2906,7 +3300,7 @@ func (x *ListRolloutsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRolloutsRequest.ProtoReflect.Descriptor instead.
 func (*ListRolloutsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{40}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *ListRolloutsRequest) GetCapsuleId() string {
@@ -2952,7 +3346,7 @@ type ListRolloutsResponse struct {
 func (x *ListRolloutsResponse) Reset() {
 	*x = ListRolloutsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[41]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[46]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2965,7 +3359,7 @@ func (x *ListRolloutsResponse) String() string {
 func (*ListRolloutsResponse) ProtoMessage() {}
 
 func (x *ListRolloutsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[41]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[46]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2978,7 +3372,7 @@ func (x *ListRolloutsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRolloutsResponse.ProtoReflect.Descriptor instead.
 func (*ListRolloutsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{41}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *ListRolloutsResponse) GetRollouts() []*Rollout {
@@ -3011,7 +3405,7 @@ type GetRolloutRequest struct {
 func (x *GetRolloutRequest) Reset() {
 	*x = GetRolloutRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[42]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[47]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3024,7 +3418,7 @@ func (x *GetRolloutRequest) String() string {
 func (*GetRolloutRequest) ProtoMessage() {}
 
 func (x *GetRolloutRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[42]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[47]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3037,7 +3431,7 @@ func (x *GetRolloutRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRolloutRequest.ProtoReflect.Descriptor instead.
 func (*GetRolloutRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{42}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *GetRolloutRequest) GetCapsuleId() string {
@@ -3075,7 +3469,7 @@ type GetRolloutResponse struct {
 func (x *GetRolloutResponse) Reset() {
 	*x = GetRolloutResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[43]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[48]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3088,7 +3482,7 @@ func (x *GetRolloutResponse) String() string {
 func (*GetRolloutResponse) ProtoMessage() {}
 
 func (x *GetRolloutResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[43]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[48]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3101,7 +3495,7 @@ func (x *GetRolloutResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRolloutResponse.ProtoReflect.Descriptor instead.
 func (*GetRolloutResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{43}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *GetRolloutResponse) GetRollout() *Rollout {
@@ -3128,7 +3522,7 @@ type AbortRolloutRequest struct {
 func (x *AbortRolloutRequest) Reset() {
 	*x = AbortRolloutRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[44]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[49]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3141,7 +3535,7 @@ func (x *AbortRolloutRequest) String() string {
 func (*AbortRolloutRequest) ProtoMessage() {}
 
 func (x *AbortRolloutRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[44]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[49]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3154,7 +3548,7 @@ func (x *AbortRolloutRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AbortRolloutRequest.ProtoReflect.Descriptor instead.
 func (*AbortRolloutRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{44}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *AbortRolloutRequest) GetCapsuleId() string {
@@ -3188,7 +3582,7 @@ type AbortRolloutResponse struct {
 func (x *AbortRolloutResponse) Reset() {
 	*x = AbortRolloutResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[45]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[50]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3201,7 +3595,7 @@ func (x *AbortRolloutResponse) String() string {
 func (*AbortRolloutResponse) ProtoMessage() {}
 
 func (x *AbortRolloutResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[45]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[50]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3214,7 +3608,7 @@ func (x *AbortRolloutResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AbortRolloutResponse.ProtoReflect.Descriptor instead.
 func (*AbortRolloutResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{45}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{50}
 }
 
 // StopRolloutRequest aborts a rollout.
@@ -3234,7 +3628,7 @@ type StopRolloutRequest struct {
 func (x *StopRolloutRequest) Reset() {
 	*x = StopRolloutRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[46]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[51]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3247,7 +3641,7 @@ func (x *StopRolloutRequest) String() string {
 func (*StopRolloutRequest) ProtoMessage() {}
 
 func (x *StopRolloutRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[46]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[51]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3260,7 +3654,7 @@ func (x *StopRolloutRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StopRolloutRequest.ProtoReflect.Descriptor instead.
 func (*StopRolloutRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{46}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *StopRolloutRequest) GetCapsuleId() string {
@@ -3294,7 +3688,7 @@ type StopRolloutResponse struct {
 func (x *StopRolloutResponse) Reset() {
 	*x = StopRolloutResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[47]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[52]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3307,7 +3701,7 @@ func (x *StopRolloutResponse) String() string {
 func (*StopRolloutResponse) ProtoMessage() {}
 
 func (x *StopRolloutResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[47]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[52]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3320,7 +3714,7 @@ func (x *StopRolloutResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StopRolloutResponse.ProtoReflect.Descriptor instead.
 func (*StopRolloutResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{47}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{52}
 }
 
 // ListEvents request for listing rollout events for a given rollout in a
@@ -3345,7 +3739,7 @@ type ListEventsRequest struct {
 func (x *ListEventsRequest) Reset() {
 	*x = ListEventsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[48]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[53]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3358,7 +3752,7 @@ func (x *ListEventsRequest) String() string {
 func (*ListEventsRequest) ProtoMessage() {}
 
 func (x *ListEventsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[48]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[53]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3371,7 +3765,7 @@ func (x *ListEventsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEventsRequest.ProtoReflect.Descriptor instead.
 func (*ListEventsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{48}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *ListEventsRequest) GetCapsuleId() string {
@@ -3424,7 +3818,7 @@ type ListEventsResponse struct {
 func (x *ListEventsResponse) Reset() {
 	*x = ListEventsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[49]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[54]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3437,7 +3831,7 @@ func (x *ListEventsResponse) String() string {
 func (*ListEventsResponse) ProtoMessage() {}
 
 func (x *ListEventsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[49]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[54]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3450,7 +3844,7 @@ func (x *ListEventsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEventsResponse.ProtoReflect.Descriptor instead.
 func (*ListEventsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{49}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *ListEventsResponse) GetEvents() []*Event {
@@ -3488,7 +3882,7 @@ type CapsuleMetricsRequest struct {
 func (x *CapsuleMetricsRequest) Reset() {
 	*x = CapsuleMetricsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[50]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[55]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3501,7 +3895,7 @@ func (x *CapsuleMetricsRequest) String() string {
 func (*CapsuleMetricsRequest) ProtoMessage() {}
 
 func (x *CapsuleMetricsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[50]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[55]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3514,7 +3908,7 @@ func (x *CapsuleMetricsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CapsuleMetricsRequest.ProtoReflect.Descriptor instead.
 func (*CapsuleMetricsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{50}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *CapsuleMetricsRequest) GetCapsuleId() string {
@@ -3565,7 +3959,7 @@ type CapsuleMetricsResponse struct {
 func (x *CapsuleMetricsResponse) Reset() {
 	*x = CapsuleMetricsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[51]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[56]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3578,7 +3972,7 @@ func (x *CapsuleMetricsResponse) String() string {
 func (*CapsuleMetricsResponse) ProtoMessage() {}
 
 func (x *CapsuleMetricsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[51]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[56]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3591,7 +3985,7 @@ func (x *CapsuleMetricsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CapsuleMetricsResponse.ProtoReflect.Descriptor instead.
 func (*CapsuleMetricsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{51}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *CapsuleMetricsResponse) GetInstanceMetrics() []*model.InstanceMetrics {
@@ -3618,7 +4012,7 @@ type GetCustomInstanceMetricsRequest struct {
 func (x *GetCustomInstanceMetricsRequest) Reset() {
 	*x = GetCustomInstanceMetricsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[52]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[57]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3631,7 +4025,7 @@ func (x *GetCustomInstanceMetricsRequest) String() string {
 func (*GetCustomInstanceMetricsRequest) ProtoMessage() {}
 
 func (x *GetCustomInstanceMetricsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[52]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[57]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3644,7 +4038,7 @@ func (x *GetCustomInstanceMetricsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCustomInstanceMetricsRequest.ProtoReflect.Descriptor instead.
 func (*GetCustomInstanceMetricsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{52}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *GetCustomInstanceMetricsRequest) GetCapsuleId() string {
@@ -3681,7 +4075,7 @@ type GetCustomInstanceMetricsResponse struct {
 func (x *GetCustomInstanceMetricsResponse) Reset() {
 	*x = GetCustomInstanceMetricsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[53]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[58]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3694,7 +4088,7 @@ func (x *GetCustomInstanceMetricsResponse) String() string {
 func (*GetCustomInstanceMetricsResponse) ProtoMessage() {}
 
 func (x *GetCustomInstanceMetricsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[53]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[58]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3707,7 +4101,7 @@ func (x *GetCustomInstanceMetricsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCustomInstanceMetricsResponse.ProtoReflect.Descriptor instead.
 func (*GetCustomInstanceMetricsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{53}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *GetCustomInstanceMetricsResponse) GetMetrics() []*model.Metric {
@@ -3744,7 +4138,7 @@ type GetJobExecutionsRequest struct {
 func (x *GetJobExecutionsRequest) Reset() {
 	*x = GetJobExecutionsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[54]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[59]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3757,7 +4151,7 @@ func (x *GetJobExecutionsRequest) String() string {
 func (*GetJobExecutionsRequest) ProtoMessage() {}
 
 func (x *GetJobExecutionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[54]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[59]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3770,7 +4164,7 @@ func (x *GetJobExecutionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetJobExecutionsRequest.ProtoReflect.Descriptor instead.
 func (*GetJobExecutionsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{54}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *GetJobExecutionsRequest) GetCapsuleId() string {
@@ -3844,7 +4238,7 @@ type GetJobExecutionsResponse struct {
 func (x *GetJobExecutionsResponse) Reset() {
 	*x = GetJobExecutionsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[55]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[60]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3857,7 +4251,7 @@ func (x *GetJobExecutionsResponse) String() string {
 func (*GetJobExecutionsResponse) ProtoMessage() {}
 
 func (x *GetJobExecutionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[55]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[60]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3870,7 +4264,7 @@ func (x *GetJobExecutionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetJobExecutionsResponse.ProtoReflect.Descriptor instead.
 func (*GetJobExecutionsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{55}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *GetJobExecutionsResponse) GetJobExecutions() []*JobExecution {
@@ -3901,7 +4295,7 @@ type GetRevisionRequest struct {
 func (x *GetRevisionRequest) Reset() {
 	*x = GetRevisionRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[56]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[61]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3914,7 +4308,7 @@ func (x *GetRevisionRequest) String() string {
 func (*GetRevisionRequest) ProtoMessage() {}
 
 func (x *GetRevisionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[56]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[61]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3927,7 +4321,7 @@ func (x *GetRevisionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRevisionRequest.ProtoReflect.Descriptor instead.
 func (*GetRevisionRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{56}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *GetRevisionRequest) GetProjectId() string {
@@ -3969,7 +4363,7 @@ type GetRevisionResponse struct {
 func (x *GetRevisionResponse) Reset() {
 	*x = GetRevisionResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[57]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[62]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3982,7 +4376,7 @@ func (x *GetRevisionResponse) String() string {
 func (*GetRevisionResponse) ProtoMessage() {}
 
 func (x *GetRevisionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[57]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[62]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3995,7 +4389,7 @@ func (x *GetRevisionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRevisionResponse.ProtoReflect.Descriptor instead.
 func (*GetRevisionResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{57}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *GetRevisionResponse) GetRevision() *Revision {
@@ -4019,7 +4413,7 @@ type GetRolloutOfRevisionsRequest struct {
 func (x *GetRolloutOfRevisionsRequest) Reset() {
 	*x = GetRolloutOfRevisionsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[58]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[63]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4032,7 +4426,7 @@ func (x *GetRolloutOfRevisionsRequest) String() string {
 func (*GetRolloutOfRevisionsRequest) ProtoMessage() {}
 
 func (x *GetRolloutOfRevisionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[58]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[63]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4045,7 +4439,7 @@ func (x *GetRolloutOfRevisionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRolloutOfRevisionsRequest.ProtoReflect.Descriptor instead.
 func (*GetRolloutOfRevisionsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{58}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *GetRolloutOfRevisionsRequest) GetProjectId() string {
@@ -4091,7 +4485,7 @@ type GetRolloutOfRevisionsResponse struct {
 func (x *GetRolloutOfRevisionsResponse) Reset() {
 	*x = GetRolloutOfRevisionsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[59]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[64]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4104,7 +4498,7 @@ func (x *GetRolloutOfRevisionsResponse) String() string {
 func (*GetRolloutOfRevisionsResponse) ProtoMessage() {}
 
 func (x *GetRolloutOfRevisionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[59]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[64]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4117,7 +4511,7 @@ func (x *GetRolloutOfRevisionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRolloutOfRevisionsResponse.ProtoReflect.Descriptor instead.
 func (*GetRolloutOfRevisionsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{59}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{64}
 }
 
 func (m *GetRolloutOfRevisionsResponse) GetKind() isGetRolloutOfRevisionsResponse_Kind {
@@ -4170,7 +4564,7 @@ type GetEffectiveGitSettingsRequest struct {
 func (x *GetEffectiveGitSettingsRequest) Reset() {
 	*x = GetEffectiveGitSettingsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[60]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[65]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4183,7 +4577,7 @@ func (x *GetEffectiveGitSettingsRequest) String() string {
 func (*GetEffectiveGitSettingsRequest) ProtoMessage() {}
 
 func (x *GetEffectiveGitSettingsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[60]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[65]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4196,7 +4590,7 @@ func (x *GetEffectiveGitSettingsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEffectiveGitSettingsRequest.ProtoReflect.Descriptor instead.
 func (*GetEffectiveGitSettingsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{60}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *GetEffectiveGitSettingsRequest) GetProjectId() string {
@@ -4232,7 +4626,7 @@ type GetEffectiveGitSettingsResponse struct {
 func (x *GetEffectiveGitSettingsResponse) Reset() {
 	*x = GetEffectiveGitSettingsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[61]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[66]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4245,7 +4639,7 @@ func (x *GetEffectiveGitSettingsResponse) String() string {
 func (*GetEffectiveGitSettingsResponse) ProtoMessage() {}
 
 func (x *GetEffectiveGitSettingsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[61]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[66]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4258,7 +4652,7 @@ func (x *GetEffectiveGitSettingsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEffectiveGitSettingsResponse.ProtoReflect.Descriptor instead.
 func (*GetEffectiveGitSettingsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{61}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *GetEffectiveGitSettingsResponse) GetGit() *model.GitStore {
@@ -4298,7 +4692,7 @@ type ExecuteRequest_Start struct {
 func (x *ExecuteRequest_Start) Reset() {
 	*x = ExecuteRequest_Start{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[62]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[67]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4311,7 +4705,7 @@ func (x *ExecuteRequest_Start) String() string {
 func (*ExecuteRequest_Start) ProtoMessage() {}
 
 func (x *ExecuteRequest_Start) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[62]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[67]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4384,7 +4778,7 @@ type ExecuteRequest_Resize struct {
 func (x *ExecuteRequest_Resize) Reset() {
 	*x = ExecuteRequest_Resize{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[63]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[68]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4397,7 +4791,7 @@ func (x *ExecuteRequest_Resize) String() string {
 func (*ExecuteRequest_Resize) ProtoMessage() {}
 
 func (x *ExecuteRequest_Resize) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[63]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[68]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4444,7 +4838,7 @@ type PortForwardRequest_Start struct {
 func (x *PortForwardRequest_Start) Reset() {
 	*x = PortForwardRequest_Start{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[64]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[69]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4457,7 +4851,7 @@ func (x *PortForwardRequest_Start) String() string {
 func (*PortForwardRequest_Start) ProtoMessage() {}
 
 func (x *PortForwardRequest_Start) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[64]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[69]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4517,7 +4911,7 @@ type PortForwardRequest_Close struct {
 func (x *PortForwardRequest_Close) Reset() {
 	*x = PortForwardRequest_Close{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[65]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[70]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4530,7 +4924,7 @@ func (x *PortForwardRequest_Close) String() string {
 func (*PortForwardRequest_Close) ProtoMessage() {}
 
 func (x *PortForwardRequest_Close) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[65]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[70]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4555,7 +4949,7 @@ type PortForwardResponse_Close struct {
 func (x *PortForwardResponse_Close) Reset() {
 	*x = PortForwardResponse_Close{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[66]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[71]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4568,7 +4962,7 @@ func (x *PortForwardResponse_Close) String() string {
 func (*PortForwardResponse_Close) ProtoMessage() {}
 
 func (x *PortForwardResponse_Close) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[66]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[71]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4596,7 +4990,7 @@ type DeployOutcome_PlatformObject struct {
 func (x *DeployOutcome_PlatformObject) Reset() {
 	*x = DeployOutcome_PlatformObject{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[69]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[74]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4609,7 +5003,7 @@ func (x *DeployOutcome_PlatformObject) String() string {
 func (*DeployOutcome_PlatformObject) ProtoMessage() {}
 
 func (x *DeployOutcome_PlatformObject) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[69]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[74]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4651,7 +5045,7 @@ type DeployOutcome_KubernetesObject struct {
 func (x *DeployOutcome_KubernetesObject) Reset() {
 	*x = DeployOutcome_KubernetesObject{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[70]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[75]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4664,7 +5058,7 @@ func (x *DeployOutcome_KubernetesObject) String() string {
 func (*DeployOutcome_KubernetesObject) ProtoMessage() {}
 
 func (x *DeployOutcome_KubernetesObject) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[70]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[75]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4716,7 +5110,7 @@ type GetRolloutOfRevisionsResponse_NoRollout struct {
 func (x *GetRolloutOfRevisionsResponse_NoRollout) Reset() {
 	*x = GetRolloutOfRevisionsResponse_NoRollout{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_capsule_service_proto_msgTypes[71]
+		mi := &file_api_v1_capsule_service_proto_msgTypes[79]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4729,7 +5123,7 @@ func (x *GetRolloutOfRevisionsResponse_NoRollout) String() string {
 func (*GetRolloutOfRevisionsResponse_NoRollout) ProtoMessage() {}
 
 func (x *GetRolloutOfRevisionsResponse_NoRollout) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_capsule_service_proto_msgTypes[71]
+	mi := &file_api_v1_capsule_service_proto_msgTypes[79]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4742,7 +5136,7 @@ func (x *GetRolloutOfRevisionsResponse_NoRollout) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use GetRolloutOfRevisionsResponse_NoRollout.ProtoReflect.Descriptor instead.
 func (*GetRolloutOfRevisionsResponse_NoRollout) Descriptor() ([]byte, []int) {
-	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{59, 0}
+	return file_api_v1_capsule_service_proto_rawDescGZIP(), []int{64, 0}
 }
 
 func (x *GetRolloutOfRevisionsResponse_NoRollout) GetProject() bool {
@@ -5116,31 +5510,124 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x21, 0x0a,
 	0x0c, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5f, 0x79, 0x61, 0x6d, 0x6c, 0x18, 0x02, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x0b, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x59, 0x61, 0x6d, 0x6c,
-	0x22, 0x90, 0x02, 0x0a, 0x15, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x6f, 0x6c, 0x6c,
-	0x6f, 0x75, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61,
-	0x70, 0x73, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
-	0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x30, 0x0a, 0x07, 0x63, 0x68, 0x61,
-	0x6e, 0x67, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x61, 0x70, 0x69,
-	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x68, 0x61, 0x6e,
-	0x67, 0x65, 0x52, 0x07, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x70,
-	0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x09, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x64, 0x12, 0x25, 0x0a, 0x0e, 0x65, 0x6e,
-	0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x0d, 0x65, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x49,
-	0x64, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x05, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x66,
-	0x6f, 0x72, 0x63, 0x65, 0x5f, 0x6f, 0x76, 0x65, 0x72, 0x72, 0x69, 0x64, 0x65, 0x18, 0x06, 0x20,
-	0x01, 0x28, 0x08, 0x52, 0x0d, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x4f, 0x76, 0x65, 0x72, 0x72, 0x69,
-	0x64, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x62, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x5f, 0x6e, 0x61, 0x6d,
-	0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x62, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x4e,
-	0x61, 0x6d, 0x65, 0x22, 0x87, 0x01, 0x0a, 0x16, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x52,
-	0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x34,
-	0x0a, 0x08, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
-	0x32, 0x18, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c,
-	0x65, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x52, 0x08, 0x70, 0x72, 0x6f, 0x70,
-	0x6f, 0x73, 0x61, 0x6c, 0x12, 0x37, 0x0a, 0x07, 0x6f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63,
-	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x4f, 0x75, 0x74,
+	0x22, 0xf3, 0x05, 0x0a, 0x10, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x53, 0x65, 0x74, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
+	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x61, 0x70, 0x73, 0x75,
+	0x6c, 0x65, 0x49, 0x64, 0x12, 0x30, 0x0a, 0x07, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x18,
+	0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63,
+	0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x07, 0x63,
+	0x68, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x12, 0x1d, 0x0a, 0x0a,
+	0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x09, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x6d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x64, 0x72, 0x79, 0x5f, 0x72, 0x75, 0x6e,
+	0x18, 0x07, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x64, 0x72, 0x79, 0x52, 0x75, 0x6e, 0x12, 0x67,
+	0x0a, 0x13, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x5f, 0x72, 0x6f, 0x6c, 0x6c, 0x6f, 0x75,
+	0x74, 0x5f, 0x69, 0x64, 0x73, 0x18, 0x08, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x37, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70,
+	0x6c, 0x6f, 0x79, 0x53, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x43, 0x75,
+	0x72, 0x72, 0x65, 0x6e, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x49, 0x64, 0x73, 0x45,
+	0x6e, 0x74, 0x72, 0x79, 0x52, 0x11, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x52, 0x6f, 0x6c,
+	0x6c, 0x6f, 0x75, 0x74, 0x49, 0x64, 0x73, 0x12, 0x43, 0x0a, 0x13, 0x63, 0x75, 0x72, 0x72, 0x65,
+	0x6e, 0x74, 0x5f, 0x66, 0x69, 0x6e, 0x67, 0x65, 0x72, 0x70, 0x72, 0x69, 0x6e, 0x74, 0x18, 0x09,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x46, 0x69, 0x6e,
+	0x67, 0x65, 0x72, 0x70, 0x72, 0x69, 0x6e, 0x74, 0x52, 0x12, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e,
+	0x74, 0x46, 0x69, 0x6e, 0x67, 0x65, 0x72, 0x70, 0x72, 0x69, 0x6e, 0x74, 0x12, 0x8e, 0x01, 0x0a,
+	0x20, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x5f, 0x65, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e,
+	0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x66, 0x69, 0x6e, 0x67, 0x65, 0x72, 0x70, 0x72, 0x69, 0x6e, 0x74,
+	0x73, 0x18, 0x0a, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x44, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31,
+	0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x53,
+	0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x43, 0x75, 0x72, 0x72, 0x65, 0x6e,
+	0x74, 0x45, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x46, 0x69, 0x6e, 0x67,
+	0x65, 0x72, 0x70, 0x72, 0x69, 0x6e, 0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x1e, 0x63,
+	0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x45, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e,
+	0x74, 0x46, 0x69, 0x6e, 0x67, 0x65, 0x72, 0x70, 0x72, 0x69, 0x6e, 0x74, 0x73, 0x12, 0x3a, 0x0a,
+	0x07, 0x6f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e,
+	0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x53, 0x65, 0x74, 0x4f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65,
+	0x52, 0x07, 0x6f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x1a, 0x44, 0x0a, 0x16, 0x43, 0x75, 0x72,
+	0x72, 0x65, 0x6e, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x49, 0x64, 0x73, 0x45, 0x6e,
+	0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x1a,
+	0x65, 0x0a, 0x23, 0x43, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x45, 0x6e, 0x76, 0x69, 0x72, 0x6f,
+	0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x46, 0x69, 0x6e, 0x67, 0x65, 0x72, 0x70, 0x72, 0x69, 0x6e, 0x74,
+	0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x28, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75,
+	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e,
+	0x46, 0x69, 0x6e, 0x67, 0x65, 0x72, 0x70, 0x72, 0x69, 0x6e, 0x74, 0x52, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xca, 0x01, 0x0a, 0x10, 0x44, 0x65, 0x70, 0x6c, 0x6f,
+	0x79, 0x53, 0x65, 0x74, 0x4f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x12, 0x56, 0x0a, 0x0c, 0x65,
+	0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x32, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75,
+	0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x53, 0x65, 0x74, 0x4f, 0x75, 0x74, 0x63,
+	0x6f, 0x6d, 0x65, 0x2e, 0x45, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x73,
+	0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x0c, 0x65, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65,
+	0x6e, 0x74, 0x73, 0x1a, 0x5e, 0x0a, 0x11, 0x45, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65,
+	0x6e, 0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x33, 0x0a, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x61, 0x70, 0x69, 0x2e,
+	0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f,
+	0x79, 0x4f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a,
+	0x02, 0x38, 0x01, 0x22, 0x88, 0x01, 0x0a, 0x11, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x53, 0x65,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x37, 0x0a, 0x08, 0x72, 0x65, 0x76,
+	0x69, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x53, 0x65, 0x74,
+	0x52, 0x65, 0x76, 0x69, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x08, 0x72, 0x65, 0x76, 0x69, 0x73, 0x69,
+	0x6f, 0x6e, 0x12, 0x3a, 0x0a, 0x07, 0x6f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x18, 0x05, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70,
+	0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x53, 0x65, 0x74, 0x4f, 0x75,
+	0x74, 0x63, 0x6f, 0x6d, 0x65, 0x52, 0x07, 0x6f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x22, 0x90,
+	0x02, 0x0a, 0x15, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75,
+	0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61, 0x70, 0x73,
+	0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x61,
+	0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x30, 0x0a, 0x07, 0x63, 0x68, 0x61, 0x6e, 0x67,
+	0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
+	0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65,
+	0x52, 0x07, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f,
+	0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70,
+	0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x64, 0x12, 0x25, 0x0a, 0x0e, 0x65, 0x6e, 0x76, 0x69,
+	0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x0d, 0x65, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12,
+	0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x66, 0x6f, 0x72,
+	0x63, 0x65, 0x5f, 0x6f, 0x76, 0x65, 0x72, 0x72, 0x69, 0x64, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28,
+	0x08, 0x52, 0x0d, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x4f, 0x76, 0x65, 0x72, 0x72, 0x69, 0x64, 0x65,
+	0x12, 0x1f, 0x0a, 0x0b, 0x62, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18,
+	0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x62, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x4e, 0x61, 0x6d,
+	0x65, 0x22, 0x87, 0x01, 0x0a, 0x16, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x6f, 0x6c,
+	0x6c, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x34, 0x0a, 0x08,
+	0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e,
+	0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x52, 0x08, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73,
+	0x61, 0x6c, 0x12, 0x37, 0x0a, 0x07, 0x6f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70,
+	0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x4f, 0x75, 0x74, 0x63, 0x6f,
+	0x6d, 0x65, 0x52, 0x07, 0x6f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x22, 0xec, 0x01, 0x0a, 0x18,
+	0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x53, 0x65, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75,
+	0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61, 0x70, 0x73,
+	0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x61,
+	0x70, 0x73, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x30, 0x0a, 0x07, 0x63, 0x68, 0x61, 0x6e, 0x67,
+	0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
+	0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65,
+	0x52, 0x07, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f,
+	0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70,
+	0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61,
+	0x67, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x5f, 0x6f, 0x76, 0x65, 0x72,
+	0x72, 0x69, 0x64, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0d, 0x66, 0x6f, 0x72, 0x63,
+	0x65, 0x4f, 0x76, 0x65, 0x72, 0x72, 0x69, 0x64, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x62, 0x72, 0x61,
+	0x6e, 0x63, 0x68, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a,
+	0x62, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0x90, 0x01, 0x0a, 0x19, 0x50,
+	0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x53, 0x65, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x37, 0x0a, 0x08, 0x70, 0x72, 0x6f, 0x70,
+	0x6f, 0x73, 0x61, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x61, 0x70, 0x69,
+	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x53, 0x65, 0x74, 0x50,
+	0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x52, 0x08, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61,
+	0x6c, 0x12, 0x3a, 0x0a, 0x07, 0x6f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x20, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73,
+	0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x53, 0x65, 0x74, 0x4f, 0x75, 0x74,
 	0x63, 0x6f, 0x6d, 0x65, 0x52, 0x07, 0x6f, 0x75, 0x74, 0x63, 0x6f, 0x6d, 0x65, 0x22, 0xae, 0x01,
 	0x0a, 0x14, 0x4c, 0x69, 0x73, 0x74, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x73, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63,
@@ -5425,7 +5912,7 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x03, 0x67, 0x69, 0x74, 0x12, 0x2f, 0x0a, 0x13, 0x65, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d,
 	0x65, 0x6e, 0x74, 0x5f, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x08, 0x52, 0x12, 0x65, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x45, 0x6e,
-	0x61, 0x62, 0x6c, 0x65, 0x64, 0x32, 0x88, 0x16, 0x0a, 0x07, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x61, 0x62, 0x6c, 0x65, 0x64, 0x32, 0xc8, 0x17, 0x0a, 0x07, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
 	0x65, 0x12, 0x49, 0x0a, 0x06, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x1d, 0x2e, 0x61, 0x70,
 	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x43, 0x72, 0x65,
 	0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x61, 0x70, 0x69,
@@ -5457,12 +5944,24 @@ var file_api_v1_capsule_service_proto_rawDesc = []byte{
 	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c,
 	0x6f, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x61, 0x70, 0x69, 0x2e,
 	0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f,
-	0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x61, 0x0a, 0x0e, 0x50,
-	0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x12, 0x25, 0x2e,
-	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x50,
-	0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61,
-	0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x6f, 0x6c,
+	0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x52, 0x0a, 0x09, 0x44,
+	0x65, 0x70, 0x6c, 0x6f, 0x79, 0x53, 0x65, 0x74, 0x12, 0x20, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
+	0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79,
+	0x53, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x61, 0x70, 0x69,
+	0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x44, 0x65, 0x70, 0x6c,
+	0x6f, 0x79, 0x53, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12,
+	0x61, 0x0a, 0x0e, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75,
+	0x74, 0x12, 0x25, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75,
+	0x6c, 0x65, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75,
+	0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
+	0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73,
+	0x65, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x00, 0x12, 0x6a, 0x0a, 0x11, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x53, 0x65, 0x74,
+	0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x12, 0x28, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31,
+	0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65,
+	0x53, 0x65, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x29, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75,
+	0x6c, 0x65, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x53, 0x65, 0x74, 0x52, 0x6f, 0x6c,
 	0x6c, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5e,
 	0x0a, 0x0d, 0x4c, 0x69, 0x73, 0x74, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x73, 0x12,
 	0x24, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
@@ -5628,7 +6127,7 @@ func file_api_v1_capsule_service_proto_rawDescGZIP() []byte {
 	return file_api_v1_capsule_service_proto_rawDescData
 }
 
-var file_api_v1_capsule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 72)
+var file_api_v1_capsule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 80)
 var file_api_v1_capsule_service_proto_goTypes = []interface{}{
 	(*WatchRolloutsRequest)(nil),                    // 0: api.v1.capsule.WatchRolloutsRequest
 	(*WatchRolloutsResponse)(nil),                   // 1: api.v1.capsule.WatchRolloutsResponse
@@ -5658,204 +6157,230 @@ var file_api_v1_capsule_service_proto_goTypes = []interface{}{
 	(*DeployRequest)(nil),                           // 25: api.v1.capsule.DeployRequest
 	(*DeployResponse)(nil),                          // 26: api.v1.capsule.DeployResponse
 	(*DeployOutcome)(nil),                           // 27: api.v1.capsule.DeployOutcome
-	(*ProposeRolloutRequest)(nil),                   // 28: api.v1.capsule.ProposeRolloutRequest
-	(*ProposeRolloutResponse)(nil),                  // 29: api.v1.capsule.ProposeRolloutResponse
-	(*ListProposalsRequest)(nil),                    // 30: api.v1.capsule.ListProposalsRequest
-	(*ListProposalsResponse)(nil),                   // 31: api.v1.capsule.ListProposalsResponse
-	(*ListInstancesRequest)(nil),                    // 32: api.v1.capsule.ListInstancesRequest
-	(*ListInstancesResponse)(nil),                   // 33: api.v1.capsule.ListInstancesResponse
-	(*GetInstanceStatusRequest)(nil),                // 34: api.v1.capsule.GetInstanceStatusRequest
-	(*GetInstanceStatusResponse)(nil),               // 35: api.v1.capsule.GetInstanceStatusResponse
-	(*ListInstanceStatusesRequest)(nil),             // 36: api.v1.capsule.ListInstanceStatusesRequest
-	(*ListInstanceStatusesResponse)(nil),            // 37: api.v1.capsule.ListInstanceStatusesResponse
-	(*RestartInstanceRequest)(nil),                  // 38: api.v1.capsule.RestartInstanceRequest
-	(*RestartInstanceResponse)(nil),                 // 39: api.v1.capsule.RestartInstanceResponse
-	(*ListRolloutsRequest)(nil),                     // 40: api.v1.capsule.ListRolloutsRequest
-	(*ListRolloutsResponse)(nil),                    // 41: api.v1.capsule.ListRolloutsResponse
-	(*GetRolloutRequest)(nil),                       // 42: api.v1.capsule.GetRolloutRequest
-	(*GetRolloutResponse)(nil),                      // 43: api.v1.capsule.GetRolloutResponse
-	(*AbortRolloutRequest)(nil),                     // 44: api.v1.capsule.AbortRolloutRequest
-	(*AbortRolloutResponse)(nil),                    // 45: api.v1.capsule.AbortRolloutResponse
-	(*StopRolloutRequest)(nil),                      // 46: api.v1.capsule.StopRolloutRequest
-	(*StopRolloutResponse)(nil),                     // 47: api.v1.capsule.StopRolloutResponse
-	(*ListEventsRequest)(nil),                       // 48: api.v1.capsule.ListEventsRequest
-	(*ListEventsResponse)(nil),                      // 49: api.v1.capsule.ListEventsResponse
-	(*CapsuleMetricsRequest)(nil),                   // 50: api.v1.capsule.CapsuleMetricsRequest
-	(*CapsuleMetricsResponse)(nil),                  // 51: api.v1.capsule.CapsuleMetricsResponse
-	(*GetCustomInstanceMetricsRequest)(nil),         // 52: api.v1.capsule.GetCustomInstanceMetricsRequest
-	(*GetCustomInstanceMetricsResponse)(nil),        // 53: api.v1.capsule.GetCustomInstanceMetricsResponse
-	(*GetJobExecutionsRequest)(nil),                 // 54: api.v1.capsule.GetJobExecutionsRequest
-	(*GetJobExecutionsResponse)(nil),                // 55: api.v1.capsule.GetJobExecutionsResponse
-	(*GetRevisionRequest)(nil),                      // 56: api.v1.capsule.GetRevisionRequest
-	(*GetRevisionResponse)(nil),                     // 57: api.v1.capsule.GetRevisionResponse
-	(*GetRolloutOfRevisionsRequest)(nil),            // 58: api.v1.capsule.GetRolloutOfRevisionsRequest
-	(*GetRolloutOfRevisionsResponse)(nil),           // 59: api.v1.capsule.GetRolloutOfRevisionsResponse
-	(*GetEffectiveGitSettingsRequest)(nil),          // 60: api.v1.capsule.GetEffectiveGitSettingsRequest
-	(*GetEffectiveGitSettingsResponse)(nil),         // 61: api.v1.capsule.GetEffectiveGitSettingsResponse
-	(*ExecuteRequest_Start)(nil),                    // 62: api.v1.capsule.ExecuteRequest.Start
-	(*ExecuteRequest_Resize)(nil),                   // 63: api.v1.capsule.ExecuteRequest.Resize
-	(*PortForwardRequest_Start)(nil),                // 64: api.v1.capsule.PortForwardRequest.Start
-	(*PortForwardRequest_Close)(nil),                // 65: api.v1.capsule.PortForwardRequest.Close
-	(*PortForwardResponse_Close)(nil),               // 66: api.v1.capsule.PortForwardResponse.Close
-	nil,                                             // 67: api.v1.capsule.GetResponse.EnvironmentRevisionsEntry
-	nil,                                             // 68: api.v1.capsule.DeployResponse.ResourceYamlEntry
-	(*DeployOutcome_PlatformObject)(nil),            // 69: api.v1.capsule.DeployOutcome.PlatformObject
-	(*DeployOutcome_KubernetesObject)(nil),          // 70: api.v1.capsule.DeployOutcome.KubernetesObject
-	(*GetRolloutOfRevisionsResponse_NoRollout)(nil), // 71: api.v1.capsule.GetRolloutOfRevisionsResponse.NoRollout
-	(*model.Pagination)(nil),                        // 72: model.Pagination
-	(*Rollout)(nil),                                 // 73: api.v1.capsule.Rollout
-	(*instance.Status)(nil),                         // 74: api.v1.capsule.instance.Status
-	(*Status)(nil),                                  // 75: api.v1.capsule.Status
-	(*Update)(nil),                                  // 76: api.v1.capsule.Update
-	(*Capsule)(nil),                                 // 77: api.v1.capsule.Capsule
-	(*SetRevision)(nil),                             // 78: api.v1.capsule.SetRevision
-	(*durationpb.Duration)(nil),                     // 79: google.protobuf.Duration
-	(*Log)(nil),                                     // 80: api.v1.capsule.Log
-	(*Change)(nil),                                  // 81: api.v1.capsule.Change
-	(*model.Fingerprint)(nil),                       // 82: model.Fingerprint
-	(*RolloutConfig)(nil),                           // 83: api.v1.capsule.RolloutConfig
-	(*Revision)(nil),                                // 84: api.v1.capsule.Revision
-	(*FieldChange)(nil),                             // 85: api.v1.capsule.FieldChange
-	(*Proposal)(nil),                                // 86: api.v1.capsule.Proposal
-	(*Instance)(nil),                                // 87: api.v1.capsule.Instance
-	(*Event)(nil),                                   // 88: api.v1.capsule.Event
-	(*timestamppb.Timestamp)(nil),                   // 89: google.protobuf.Timestamp
-	(*model.InstanceMetrics)(nil),                   // 90: model.InstanceMetrics
-	(*model.Metric)(nil),                            // 91: model.Metric
-	(JobState)(0),                                   // 92: api.v1.capsule.JobState
-	(*JobExecution)(nil),                            // 93: api.v1.capsule.JobExecution
-	(*model.Fingerprints)(nil),                      // 94: model.Fingerprints
-	(*model.GitStore)(nil),                          // 95: model.GitStore
+	(*DeploySetRequest)(nil),                        // 28: api.v1.capsule.DeploySetRequest
+	(*DeploySetOutcome)(nil),                        // 29: api.v1.capsule.DeploySetOutcome
+	(*DeploySetResponse)(nil),                       // 30: api.v1.capsule.DeploySetResponse
+	(*ProposeRolloutRequest)(nil),                   // 31: api.v1.capsule.ProposeRolloutRequest
+	(*ProposeRolloutResponse)(nil),                  // 32: api.v1.capsule.ProposeRolloutResponse
+	(*ProposeSetRolloutRequest)(nil),                // 33: api.v1.capsule.ProposeSetRolloutRequest
+	(*ProposeSetRolloutResponse)(nil),               // 34: api.v1.capsule.ProposeSetRolloutResponse
+	(*ListProposalsRequest)(nil),                    // 35: api.v1.capsule.ListProposalsRequest
+	(*ListProposalsResponse)(nil),                   // 36: api.v1.capsule.ListProposalsResponse
+	(*ListInstancesRequest)(nil),                    // 37: api.v1.capsule.ListInstancesRequest
+	(*ListInstancesResponse)(nil),                   // 38: api.v1.capsule.ListInstancesResponse
+	(*GetInstanceStatusRequest)(nil),                // 39: api.v1.capsule.GetInstanceStatusRequest
+	(*GetInstanceStatusResponse)(nil),               // 40: api.v1.capsule.GetInstanceStatusResponse
+	(*ListInstanceStatusesRequest)(nil),             // 41: api.v1.capsule.ListInstanceStatusesRequest
+	(*ListInstanceStatusesResponse)(nil),            // 42: api.v1.capsule.ListInstanceStatusesResponse
+	(*RestartInstanceRequest)(nil),                  // 43: api.v1.capsule.RestartInstanceRequest
+	(*RestartInstanceResponse)(nil),                 // 44: api.v1.capsule.RestartInstanceResponse
+	(*ListRolloutsRequest)(nil),                     // 45: api.v1.capsule.ListRolloutsRequest
+	(*ListRolloutsResponse)(nil),                    // 46: api.v1.capsule.ListRolloutsResponse
+	(*GetRolloutRequest)(nil),                       // 47: api.v1.capsule.GetRolloutRequest
+	(*GetRolloutResponse)(nil),                      // 48: api.v1.capsule.GetRolloutResponse
+	(*AbortRolloutRequest)(nil),                     // 49: api.v1.capsule.AbortRolloutRequest
+	(*AbortRolloutResponse)(nil),                    // 50: api.v1.capsule.AbortRolloutResponse
+	(*StopRolloutRequest)(nil),                      // 51: api.v1.capsule.StopRolloutRequest
+	(*StopRolloutResponse)(nil),                     // 52: api.v1.capsule.StopRolloutResponse
+	(*ListEventsRequest)(nil),                       // 53: api.v1.capsule.ListEventsRequest
+	(*ListEventsResponse)(nil),                      // 54: api.v1.capsule.ListEventsResponse
+	(*CapsuleMetricsRequest)(nil),                   // 55: api.v1.capsule.CapsuleMetricsRequest
+	(*CapsuleMetricsResponse)(nil),                  // 56: api.v1.capsule.CapsuleMetricsResponse
+	(*GetCustomInstanceMetricsRequest)(nil),         // 57: api.v1.capsule.GetCustomInstanceMetricsRequest
+	(*GetCustomInstanceMetricsResponse)(nil),        // 58: api.v1.capsule.GetCustomInstanceMetricsResponse
+	(*GetJobExecutionsRequest)(nil),                 // 59: api.v1.capsule.GetJobExecutionsRequest
+	(*GetJobExecutionsResponse)(nil),                // 60: api.v1.capsule.GetJobExecutionsResponse
+	(*GetRevisionRequest)(nil),                      // 61: api.v1.capsule.GetRevisionRequest
+	(*GetRevisionResponse)(nil),                     // 62: api.v1.capsule.GetRevisionResponse
+	(*GetRolloutOfRevisionsRequest)(nil),            // 63: api.v1.capsule.GetRolloutOfRevisionsRequest
+	(*GetRolloutOfRevisionsResponse)(nil),           // 64: api.v1.capsule.GetRolloutOfRevisionsResponse
+	(*GetEffectiveGitSettingsRequest)(nil),          // 65: api.v1.capsule.GetEffectiveGitSettingsRequest
+	(*GetEffectiveGitSettingsResponse)(nil),         // 66: api.v1.capsule.GetEffectiveGitSettingsResponse
+	(*ExecuteRequest_Start)(nil),                    // 67: api.v1.capsule.ExecuteRequest.Start
+	(*ExecuteRequest_Resize)(nil),                   // 68: api.v1.capsule.ExecuteRequest.Resize
+	(*PortForwardRequest_Start)(nil),                // 69: api.v1.capsule.PortForwardRequest.Start
+	(*PortForwardRequest_Close)(nil),                // 70: api.v1.capsule.PortForwardRequest.Close
+	(*PortForwardResponse_Close)(nil),               // 71: api.v1.capsule.PortForwardResponse.Close
+	nil,                                             // 72: api.v1.capsule.GetResponse.EnvironmentRevisionsEntry
+	nil,                                             // 73: api.v1.capsule.DeployResponse.ResourceYamlEntry
+	(*DeployOutcome_PlatformObject)(nil),            // 74: api.v1.capsule.DeployOutcome.PlatformObject
+	(*DeployOutcome_KubernetesObject)(nil),          // 75: api.v1.capsule.DeployOutcome.KubernetesObject
+	nil,                                             // 76: api.v1.capsule.DeploySetRequest.CurrentRolloutIdsEntry
+	nil,                                             // 77: api.v1.capsule.DeploySetRequest.CurrentEnvironmentFingerprintsEntry
+	nil,                                             // 78: api.v1.capsule.DeploySetOutcome.EnvironmentsEntry
+	(*GetRolloutOfRevisionsResponse_NoRollout)(nil), // 79: api.v1.capsule.GetRolloutOfRevisionsResponse.NoRollout
+	(*model.Pagination)(nil),                        // 80: model.Pagination
+	(*Rollout)(nil),                                 // 81: api.v1.capsule.Rollout
+	(*instance.Status)(nil),                         // 82: api.v1.capsule.instance.Status
+	(*Status)(nil),                                  // 83: api.v1.capsule.Status
+	(*Update)(nil),                                  // 84: api.v1.capsule.Update
+	(*Capsule)(nil),                                 // 85: api.v1.capsule.Capsule
+	(*SetRevision)(nil),                             // 86: api.v1.capsule.SetRevision
+	(*durationpb.Duration)(nil),                     // 87: google.protobuf.Duration
+	(*Log)(nil),                                     // 88: api.v1.capsule.Log
+	(*Change)(nil),                                  // 89: api.v1.capsule.Change
+	(*model.Fingerprint)(nil),                       // 90: model.Fingerprint
+	(*RolloutConfig)(nil),                           // 91: api.v1.capsule.RolloutConfig
+	(*Revision)(nil),                                // 92: api.v1.capsule.Revision
+	(*FieldChange)(nil),                             // 93: api.v1.capsule.FieldChange
+	(*Proposal)(nil),                                // 94: api.v1.capsule.Proposal
+	(*SetProposal)(nil),                             // 95: api.v1.capsule.SetProposal
+	(*Instance)(nil),                                // 96: api.v1.capsule.Instance
+	(*Event)(nil),                                   // 97: api.v1.capsule.Event
+	(*timestamppb.Timestamp)(nil),                   // 98: google.protobuf.Timestamp
+	(*model.InstanceMetrics)(nil),                   // 99: model.InstanceMetrics
+	(*model.Metric)(nil),                            // 100: model.Metric
+	(JobState)(0),                                   // 101: api.v1.capsule.JobState
+	(*JobExecution)(nil),                            // 102: api.v1.capsule.JobExecution
+	(*model.Fingerprints)(nil),                      // 103: model.Fingerprints
+	(*model.GitStore)(nil),                          // 104: model.GitStore
 }
 var file_api_v1_capsule_service_proto_depIdxs = []int32{
-	72, // 0: api.v1.capsule.WatchRolloutsRequest.pagination:type_name -> model.Pagination
-	73, // 1: api.v1.capsule.WatchRolloutsResponse.updated:type_name -> api.v1.capsule.Rollout
-	72, // 2: api.v1.capsule.WatchInstanceStatusesRequest.pagination:type_name -> model.Pagination
-	74, // 3: api.v1.capsule.WatchInstanceStatusesResponse.updated:type_name -> api.v1.capsule.instance.Status
-	75, // 4: api.v1.capsule.WatchStatusResponse.status:type_name -> api.v1.capsule.Status
-	75, // 5: api.v1.capsule.GetStatusResponse.status:type_name -> api.v1.capsule.Status
-	62, // 6: api.v1.capsule.ExecuteRequest.start:type_name -> api.v1.capsule.ExecuteRequest.Start
-	8,  // 7: api.v1.capsule.ExecuteRequest.stdin:type_name -> api.v1.capsule.StreamData
-	63, // 8: api.v1.capsule.ExecuteRequest.resize:type_name -> api.v1.capsule.ExecuteRequest.Resize
-	8,  // 9: api.v1.capsule.ExecuteResponse.stdout:type_name -> api.v1.capsule.StreamData
-	8,  // 10: api.v1.capsule.ExecuteResponse.stderr:type_name -> api.v1.capsule.StreamData
-	64, // 11: api.v1.capsule.PortForwardRequest.start:type_name -> api.v1.capsule.PortForwardRequest.Start
-	65, // 12: api.v1.capsule.PortForwardRequest.close:type_name -> api.v1.capsule.PortForwardRequest.Close
-	66, // 13: api.v1.capsule.PortForwardResponse.close:type_name -> api.v1.capsule.PortForwardResponse.Close
-	76, // 14: api.v1.capsule.CreateRequest.initializers:type_name -> api.v1.capsule.Update
-	77, // 15: api.v1.capsule.GetResponse.capsule:type_name -> api.v1.capsule.Capsule
-	78, // 16: api.v1.capsule.GetResponse.revision:type_name -> api.v1.capsule.SetRevision
-	67, // 17: api.v1.capsule.GetResponse.environment_revisions:type_name -> api.v1.capsule.GetResponse.EnvironmentRevisionsEntry
-	79, // 18: api.v1.capsule.LogsRequest.since:type_name -> google.protobuf.Duration
-	80, // 19: api.v1.capsule.LogsResponse.log:type_name -> api.v1.capsule.Log
-	76, // 20: api.v1.capsule.UpdateRequest.updates:type_name -> api.v1.capsule.Update
-	72, // 21: api.v1.capsule.ListRequest.pagination:type_name -> model.Pagination
-	77, // 22: api.v1.capsule.ListResponse.capsules:type_name -> api.v1.capsule.Capsule
-	81, // 23: api.v1.capsule.DeployRequest.changes:type_name -> api.v1.capsule.Change
-	82, // 24: api.v1.capsule.DeployRequest.current_fingerprint:type_name -> model.Fingerprint
-	68, // 25: api.v1.capsule.DeployResponse.resource_yaml:type_name -> api.v1.capsule.DeployResponse.ResourceYamlEntry
-	83, // 26: api.v1.capsule.DeployResponse.rollout_config:type_name -> api.v1.capsule.RolloutConfig
-	84, // 27: api.v1.capsule.DeployResponse.revision:type_name -> api.v1.capsule.Revision
-	27, // 28: api.v1.capsule.DeployResponse.outcome:type_name -> api.v1.capsule.DeployOutcome
-	85, // 29: api.v1.capsule.DeployOutcome.field_changes:type_name -> api.v1.capsule.FieldChange
-	69, // 30: api.v1.capsule.DeployOutcome.platform_objects:type_name -> api.v1.capsule.DeployOutcome.PlatformObject
-	70, // 31: api.v1.capsule.DeployOutcome.kubernetes_objects:type_name -> api.v1.capsule.DeployOutcome.KubernetesObject
-	81, // 32: api.v1.capsule.ProposeRolloutRequest.changes:type_name -> api.v1.capsule.Change
-	86, // 33: api.v1.capsule.ProposeRolloutResponse.proposal:type_name -> api.v1.capsule.Proposal
-	27, // 34: api.v1.capsule.ProposeRolloutResponse.outcome:type_name -> api.v1.capsule.DeployOutcome
-	72, // 35: api.v1.capsule.ListProposalsRequest.pagination:type_name -> model.Pagination
-	86, // 36: api.v1.capsule.ListProposalsResponse.proposals:type_name -> api.v1.capsule.Proposal
-	72, // 37: api.v1.capsule.ListInstancesRequest.pagination:type_name -> model.Pagination
-	87, // 38: api.v1.capsule.ListInstancesResponse.instances:type_name -> api.v1.capsule.Instance
-	74, // 39: api.v1.capsule.GetInstanceStatusResponse.status:type_name -> api.v1.capsule.instance.Status
-	72, // 40: api.v1.capsule.ListInstanceStatusesRequest.pagination:type_name -> model.Pagination
-	74, // 41: api.v1.capsule.ListInstanceStatusesResponse.instances:type_name -> api.v1.capsule.instance.Status
-	72, // 42: api.v1.capsule.ListRolloutsRequest.pagination:type_name -> model.Pagination
-	73, // 43: api.v1.capsule.ListRolloutsResponse.rollouts:type_name -> api.v1.capsule.Rollout
-	73, // 44: api.v1.capsule.GetRolloutResponse.rollout:type_name -> api.v1.capsule.Rollout
-	72, // 45: api.v1.capsule.ListEventsRequest.pagination:type_name -> model.Pagination
-	88, // 46: api.v1.capsule.ListEventsResponse.events:type_name -> api.v1.capsule.Event
-	89, // 47: api.v1.capsule.CapsuleMetricsRequest.since:type_name -> google.protobuf.Timestamp
-	90, // 48: api.v1.capsule.CapsuleMetricsResponse.instance_metrics:type_name -> model.InstanceMetrics
-	91, // 49: api.v1.capsule.GetCustomInstanceMetricsResponse.metrics:type_name -> model.Metric
-	92, // 50: api.v1.capsule.GetJobExecutionsRequest.states:type_name -> api.v1.capsule.JobState
-	89, // 51: api.v1.capsule.GetJobExecutionsRequest.created_from:type_name -> google.protobuf.Timestamp
-	89, // 52: api.v1.capsule.GetJobExecutionsRequest.created_to:type_name -> google.protobuf.Timestamp
-	72, // 53: api.v1.capsule.GetJobExecutionsRequest.pagination:type_name -> model.Pagination
-	93, // 54: api.v1.capsule.GetJobExecutionsResponse.job_executions:type_name -> api.v1.capsule.JobExecution
-	82, // 55: api.v1.capsule.GetRevisionRequest.fingerprint:type_name -> model.Fingerprint
-	84, // 56: api.v1.capsule.GetRevisionResponse.revision:type_name -> api.v1.capsule.Revision
-	94, // 57: api.v1.capsule.GetRolloutOfRevisionsRequest.fingerprints:type_name -> model.Fingerprints
-	71, // 58: api.v1.capsule.GetRolloutOfRevisionsResponse.no_rollout:type_name -> api.v1.capsule.GetRolloutOfRevisionsResponse.NoRollout
-	73, // 59: api.v1.capsule.GetRolloutOfRevisionsResponse.rollout:type_name -> api.v1.capsule.Rollout
-	95, // 60: api.v1.capsule.GetEffectiveGitSettingsResponse.git:type_name -> model.GitStore
-	63, // 61: api.v1.capsule.ExecuteRequest.Start.tty:type_name -> api.v1.capsule.ExecuteRequest.Resize
-	84, // 62: api.v1.capsule.GetResponse.EnvironmentRevisionsEntry.value:type_name -> api.v1.capsule.Revision
-	13, // 63: api.v1.capsule.Service.Create:input_type -> api.v1.capsule.CreateRequest
-	15, // 64: api.v1.capsule.Service.Get:input_type -> api.v1.capsule.GetRequest
-	17, // 65: api.v1.capsule.Service.Delete:input_type -> api.v1.capsule.DeleteRequest
-	19, // 66: api.v1.capsule.Service.Logs:input_type -> api.v1.capsule.LogsRequest
-	21, // 67: api.v1.capsule.Service.Update:input_type -> api.v1.capsule.UpdateRequest
-	23, // 68: api.v1.capsule.Service.List:input_type -> api.v1.capsule.ListRequest
-	25, // 69: api.v1.capsule.Service.Deploy:input_type -> api.v1.capsule.DeployRequest
-	28, // 70: api.v1.capsule.Service.ProposeRollout:input_type -> api.v1.capsule.ProposeRolloutRequest
-	30, // 71: api.v1.capsule.Service.ListProposals:input_type -> api.v1.capsule.ListProposalsRequest
-	32, // 72: api.v1.capsule.Service.ListInstances:input_type -> api.v1.capsule.ListInstancesRequest
-	38, // 73: api.v1.capsule.Service.RestartInstance:input_type -> api.v1.capsule.RestartInstanceRequest
-	42, // 74: api.v1.capsule.Service.GetRollout:input_type -> api.v1.capsule.GetRolloutRequest
-	40, // 75: api.v1.capsule.Service.ListRollouts:input_type -> api.v1.capsule.ListRolloutsRequest
-	0,  // 76: api.v1.capsule.Service.WatchRollouts:input_type -> api.v1.capsule.WatchRolloutsRequest
-	44, // 77: api.v1.capsule.Service.AbortRollout:input_type -> api.v1.capsule.AbortRolloutRequest
-	46, // 78: api.v1.capsule.Service.StopRollout:input_type -> api.v1.capsule.StopRolloutRequest
-	48, // 79: api.v1.capsule.Service.ListEvents:input_type -> api.v1.capsule.ListEventsRequest
-	50, // 80: api.v1.capsule.Service.CapsuleMetrics:input_type -> api.v1.capsule.CapsuleMetricsRequest
-	34, // 81: api.v1.capsule.Service.GetInstanceStatus:input_type -> api.v1.capsule.GetInstanceStatusRequest
-	36, // 82: api.v1.capsule.Service.ListInstanceStatuses:input_type -> api.v1.capsule.ListInstanceStatusesRequest
-	2,  // 83: api.v1.capsule.Service.WatchInstanceStatuses:input_type -> api.v1.capsule.WatchInstanceStatusesRequest
-	9,  // 84: api.v1.capsule.Service.Execute:input_type -> api.v1.capsule.ExecuteRequest
-	11, // 85: api.v1.capsule.Service.PortForward:input_type -> api.v1.capsule.PortForwardRequest
-	52, // 86: api.v1.capsule.Service.GetCustomInstanceMetrics:input_type -> api.v1.capsule.GetCustomInstanceMetricsRequest
-	54, // 87: api.v1.capsule.Service.GetJobExecutions:input_type -> api.v1.capsule.GetJobExecutionsRequest
-	6,  // 88: api.v1.capsule.Service.GetStatus:input_type -> api.v1.capsule.GetStatusRequest
-	56, // 89: api.v1.capsule.Service.GetRevision:input_type -> api.v1.capsule.GetRevisionRequest
-	58, // 90: api.v1.capsule.Service.GetRolloutOfRevisions:input_type -> api.v1.capsule.GetRolloutOfRevisionsRequest
-	4,  // 91: api.v1.capsule.Service.WatchStatus:input_type -> api.v1.capsule.WatchStatusRequest
-	60, // 92: api.v1.capsule.Service.GetEffectiveGitSettings:input_type -> api.v1.capsule.GetEffectiveGitSettingsRequest
-	14, // 93: api.v1.capsule.Service.Create:output_type -> api.v1.capsule.CreateResponse
-	16, // 94: api.v1.capsule.Service.Get:output_type -> api.v1.capsule.GetResponse
-	18, // 95: api.v1.capsule.Service.Delete:output_type -> api.v1.capsule.DeleteResponse
-	20, // 96: api.v1.capsule.Service.Logs:output_type -> api.v1.capsule.LogsResponse
-	22, // 97: api.v1.capsule.Service.Update:output_type -> api.v1.capsule.UpdateResponse
-	24, // 98: api.v1.capsule.Service.List:output_type -> api.v1.capsule.ListResponse
-	26, // 99: api.v1.capsule.Service.Deploy:output_type -> api.v1.capsule.DeployResponse
-	29, // 100: api.v1.capsule.Service.ProposeRollout:output_type -> api.v1.capsule.ProposeRolloutResponse
-	31, // 101: api.v1.capsule.Service.ListProposals:output_type -> api.v1.capsule.ListProposalsResponse
-	33, // 102: api.v1.capsule.Service.ListInstances:output_type -> api.v1.capsule.ListInstancesResponse
-	39, // 103: api.v1.capsule.Service.RestartInstance:output_type -> api.v1.capsule.RestartInstanceResponse
-	43, // 104: api.v1.capsule.Service.GetRollout:output_type -> api.v1.capsule.GetRolloutResponse
-	41, // 105: api.v1.capsule.Service.ListRollouts:output_type -> api.v1.capsule.ListRolloutsResponse
-	1,  // 106: api.v1.capsule.Service.WatchRollouts:output_type -> api.v1.capsule.WatchRolloutsResponse
-	45, // 107: api.v1.capsule.Service.AbortRollout:output_type -> api.v1.capsule.AbortRolloutResponse
-	47, // 108: api.v1.capsule.Service.StopRollout:output_type -> api.v1.capsule.StopRolloutResponse
-	49, // 109: api.v1.capsule.Service.ListEvents:output_type -> api.v1.capsule.ListEventsResponse
-	51, // 110: api.v1.capsule.Service.CapsuleMetrics:output_type -> api.v1.capsule.CapsuleMetricsResponse
-	35, // 111: api.v1.capsule.Service.GetInstanceStatus:output_type -> api.v1.capsule.GetInstanceStatusResponse
-	37, // 112: api.v1.capsule.Service.ListInstanceStatuses:output_type -> api.v1.capsule.ListInstanceStatusesResponse
-	3,  // 113: api.v1.capsule.Service.WatchInstanceStatuses:output_type -> api.v1.capsule.WatchInstanceStatusesResponse
-	10, // 114: api.v1.capsule.Service.Execute:output_type -> api.v1.capsule.ExecuteResponse
-	12, // 115: api.v1.capsule.Service.PortForward:output_type -> api.v1.capsule.PortForwardResponse
-	53, // 116: api.v1.capsule.Service.GetCustomInstanceMetrics:output_type -> api.v1.capsule.GetCustomInstanceMetricsResponse
-	55, // 117: api.v1.capsule.Service.GetJobExecutions:output_type -> api.v1.capsule.GetJobExecutionsResponse
-	7,  // 118: api.v1.capsule.Service.GetStatus:output_type -> api.v1.capsule.GetStatusResponse
-	57, // 119: api.v1.capsule.Service.GetRevision:output_type -> api.v1.capsule.GetRevisionResponse
-	59, // 120: api.v1.capsule.Service.GetRolloutOfRevisions:output_type -> api.v1.capsule.GetRolloutOfRevisionsResponse
-	5,  // 121: api.v1.capsule.Service.WatchStatus:output_type -> api.v1.capsule.WatchStatusResponse
-	61, // 122: api.v1.capsule.Service.GetEffectiveGitSettings:output_type -> api.v1.capsule.GetEffectiveGitSettingsResponse
-	93, // [93:123] is the sub-list for method output_type
-	63, // [63:93] is the sub-list for method input_type
-	63, // [63:63] is the sub-list for extension type_name
-	63, // [63:63] is the sub-list for extension extendee
-	0,  // [0:63] is the sub-list for field type_name
+	80,  // 0: api.v1.capsule.WatchRolloutsRequest.pagination:type_name -> model.Pagination
+	81,  // 1: api.v1.capsule.WatchRolloutsResponse.updated:type_name -> api.v1.capsule.Rollout
+	80,  // 2: api.v1.capsule.WatchInstanceStatusesRequest.pagination:type_name -> model.Pagination
+	82,  // 3: api.v1.capsule.WatchInstanceStatusesResponse.updated:type_name -> api.v1.capsule.instance.Status
+	83,  // 4: api.v1.capsule.WatchStatusResponse.status:type_name -> api.v1.capsule.Status
+	83,  // 5: api.v1.capsule.GetStatusResponse.status:type_name -> api.v1.capsule.Status
+	67,  // 6: api.v1.capsule.ExecuteRequest.start:type_name -> api.v1.capsule.ExecuteRequest.Start
+	8,   // 7: api.v1.capsule.ExecuteRequest.stdin:type_name -> api.v1.capsule.StreamData
+	68,  // 8: api.v1.capsule.ExecuteRequest.resize:type_name -> api.v1.capsule.ExecuteRequest.Resize
+	8,   // 9: api.v1.capsule.ExecuteResponse.stdout:type_name -> api.v1.capsule.StreamData
+	8,   // 10: api.v1.capsule.ExecuteResponse.stderr:type_name -> api.v1.capsule.StreamData
+	69,  // 11: api.v1.capsule.PortForwardRequest.start:type_name -> api.v1.capsule.PortForwardRequest.Start
+	70,  // 12: api.v1.capsule.PortForwardRequest.close:type_name -> api.v1.capsule.PortForwardRequest.Close
+	71,  // 13: api.v1.capsule.PortForwardResponse.close:type_name -> api.v1.capsule.PortForwardResponse.Close
+	84,  // 14: api.v1.capsule.CreateRequest.initializers:type_name -> api.v1.capsule.Update
+	85,  // 15: api.v1.capsule.GetResponse.capsule:type_name -> api.v1.capsule.Capsule
+	86,  // 16: api.v1.capsule.GetResponse.revision:type_name -> api.v1.capsule.SetRevision
+	72,  // 17: api.v1.capsule.GetResponse.environment_revisions:type_name -> api.v1.capsule.GetResponse.EnvironmentRevisionsEntry
+	87,  // 18: api.v1.capsule.LogsRequest.since:type_name -> google.protobuf.Duration
+	88,  // 19: api.v1.capsule.LogsResponse.log:type_name -> api.v1.capsule.Log
+	84,  // 20: api.v1.capsule.UpdateRequest.updates:type_name -> api.v1.capsule.Update
+	80,  // 21: api.v1.capsule.ListRequest.pagination:type_name -> model.Pagination
+	85,  // 22: api.v1.capsule.ListResponse.capsules:type_name -> api.v1.capsule.Capsule
+	89,  // 23: api.v1.capsule.DeployRequest.changes:type_name -> api.v1.capsule.Change
+	90,  // 24: api.v1.capsule.DeployRequest.current_fingerprint:type_name -> model.Fingerprint
+	73,  // 25: api.v1.capsule.DeployResponse.resource_yaml:type_name -> api.v1.capsule.DeployResponse.ResourceYamlEntry
+	91,  // 26: api.v1.capsule.DeployResponse.rollout_config:type_name -> api.v1.capsule.RolloutConfig
+	92,  // 27: api.v1.capsule.DeployResponse.revision:type_name -> api.v1.capsule.Revision
+	27,  // 28: api.v1.capsule.DeployResponse.outcome:type_name -> api.v1.capsule.DeployOutcome
+	93,  // 29: api.v1.capsule.DeployOutcome.field_changes:type_name -> api.v1.capsule.FieldChange
+	74,  // 30: api.v1.capsule.DeployOutcome.platform_objects:type_name -> api.v1.capsule.DeployOutcome.PlatformObject
+	75,  // 31: api.v1.capsule.DeployOutcome.kubernetes_objects:type_name -> api.v1.capsule.DeployOutcome.KubernetesObject
+	89,  // 32: api.v1.capsule.DeploySetRequest.changes:type_name -> api.v1.capsule.Change
+	76,  // 33: api.v1.capsule.DeploySetRequest.current_rollout_ids:type_name -> api.v1.capsule.DeploySetRequest.CurrentRolloutIdsEntry
+	90,  // 34: api.v1.capsule.DeploySetRequest.current_fingerprint:type_name -> model.Fingerprint
+	77,  // 35: api.v1.capsule.DeploySetRequest.current_environment_fingerprints:type_name -> api.v1.capsule.DeploySetRequest.CurrentEnvironmentFingerprintsEntry
+	29,  // 36: api.v1.capsule.DeploySetRequest.outcome:type_name -> api.v1.capsule.DeploySetOutcome
+	78,  // 37: api.v1.capsule.DeploySetOutcome.environments:type_name -> api.v1.capsule.DeploySetOutcome.EnvironmentsEntry
+	86,  // 38: api.v1.capsule.DeploySetResponse.revision:type_name -> api.v1.capsule.SetRevision
+	29,  // 39: api.v1.capsule.DeploySetResponse.outcome:type_name -> api.v1.capsule.DeploySetOutcome
+	89,  // 40: api.v1.capsule.ProposeRolloutRequest.changes:type_name -> api.v1.capsule.Change
+	94,  // 41: api.v1.capsule.ProposeRolloutResponse.proposal:type_name -> api.v1.capsule.Proposal
+	27,  // 42: api.v1.capsule.ProposeRolloutResponse.outcome:type_name -> api.v1.capsule.DeployOutcome
+	89,  // 43: api.v1.capsule.ProposeSetRolloutRequest.changes:type_name -> api.v1.capsule.Change
+	95,  // 44: api.v1.capsule.ProposeSetRolloutResponse.proposal:type_name -> api.v1.capsule.SetProposal
+	29,  // 45: api.v1.capsule.ProposeSetRolloutResponse.outcome:type_name -> api.v1.capsule.DeploySetOutcome
+	80,  // 46: api.v1.capsule.ListProposalsRequest.pagination:type_name -> model.Pagination
+	94,  // 47: api.v1.capsule.ListProposalsResponse.proposals:type_name -> api.v1.capsule.Proposal
+	80,  // 48: api.v1.capsule.ListInstancesRequest.pagination:type_name -> model.Pagination
+	96,  // 49: api.v1.capsule.ListInstancesResponse.instances:type_name -> api.v1.capsule.Instance
+	82,  // 50: api.v1.capsule.GetInstanceStatusResponse.status:type_name -> api.v1.capsule.instance.Status
+	80,  // 51: api.v1.capsule.ListInstanceStatusesRequest.pagination:type_name -> model.Pagination
+	82,  // 52: api.v1.capsule.ListInstanceStatusesResponse.instances:type_name -> api.v1.capsule.instance.Status
+	80,  // 53: api.v1.capsule.ListRolloutsRequest.pagination:type_name -> model.Pagination
+	81,  // 54: api.v1.capsule.ListRolloutsResponse.rollouts:type_name -> api.v1.capsule.Rollout
+	81,  // 55: api.v1.capsule.GetRolloutResponse.rollout:type_name -> api.v1.capsule.Rollout
+	80,  // 56: api.v1.capsule.ListEventsRequest.pagination:type_name -> model.Pagination
+	97,  // 57: api.v1.capsule.ListEventsResponse.events:type_name -> api.v1.capsule.Event
+	98,  // 58: api.v1.capsule.CapsuleMetricsRequest.since:type_name -> google.protobuf.Timestamp
+	99,  // 59: api.v1.capsule.CapsuleMetricsResponse.instance_metrics:type_name -> model.InstanceMetrics
+	100, // 60: api.v1.capsule.GetCustomInstanceMetricsResponse.metrics:type_name -> model.Metric
+	101, // 61: api.v1.capsule.GetJobExecutionsRequest.states:type_name -> api.v1.capsule.JobState
+	98,  // 62: api.v1.capsule.GetJobExecutionsRequest.created_from:type_name -> google.protobuf.Timestamp
+	98,  // 63: api.v1.capsule.GetJobExecutionsRequest.created_to:type_name -> google.protobuf.Timestamp
+	80,  // 64: api.v1.capsule.GetJobExecutionsRequest.pagination:type_name -> model.Pagination
+	102, // 65: api.v1.capsule.GetJobExecutionsResponse.job_executions:type_name -> api.v1.capsule.JobExecution
+	90,  // 66: api.v1.capsule.GetRevisionRequest.fingerprint:type_name -> model.Fingerprint
+	92,  // 67: api.v1.capsule.GetRevisionResponse.revision:type_name -> api.v1.capsule.Revision
+	103, // 68: api.v1.capsule.GetRolloutOfRevisionsRequest.fingerprints:type_name -> model.Fingerprints
+	79,  // 69: api.v1.capsule.GetRolloutOfRevisionsResponse.no_rollout:type_name -> api.v1.capsule.GetRolloutOfRevisionsResponse.NoRollout
+	81,  // 70: api.v1.capsule.GetRolloutOfRevisionsResponse.rollout:type_name -> api.v1.capsule.Rollout
+	104, // 71: api.v1.capsule.GetEffectiveGitSettingsResponse.git:type_name -> model.GitStore
+	68,  // 72: api.v1.capsule.ExecuteRequest.Start.tty:type_name -> api.v1.capsule.ExecuteRequest.Resize
+	92,  // 73: api.v1.capsule.GetResponse.EnvironmentRevisionsEntry.value:type_name -> api.v1.capsule.Revision
+	90,  // 74: api.v1.capsule.DeploySetRequest.CurrentEnvironmentFingerprintsEntry.value:type_name -> model.Fingerprint
+	27,  // 75: api.v1.capsule.DeploySetOutcome.EnvironmentsEntry.value:type_name -> api.v1.capsule.DeployOutcome
+	13,  // 76: api.v1.capsule.Service.Create:input_type -> api.v1.capsule.CreateRequest
+	15,  // 77: api.v1.capsule.Service.Get:input_type -> api.v1.capsule.GetRequest
+	17,  // 78: api.v1.capsule.Service.Delete:input_type -> api.v1.capsule.DeleteRequest
+	19,  // 79: api.v1.capsule.Service.Logs:input_type -> api.v1.capsule.LogsRequest
+	21,  // 80: api.v1.capsule.Service.Update:input_type -> api.v1.capsule.UpdateRequest
+	23,  // 81: api.v1.capsule.Service.List:input_type -> api.v1.capsule.ListRequest
+	25,  // 82: api.v1.capsule.Service.Deploy:input_type -> api.v1.capsule.DeployRequest
+	28,  // 83: api.v1.capsule.Service.DeploySet:input_type -> api.v1.capsule.DeploySetRequest
+	31,  // 84: api.v1.capsule.Service.ProposeRollout:input_type -> api.v1.capsule.ProposeRolloutRequest
+	33,  // 85: api.v1.capsule.Service.ProposeSetRollout:input_type -> api.v1.capsule.ProposeSetRolloutRequest
+	35,  // 86: api.v1.capsule.Service.ListProposals:input_type -> api.v1.capsule.ListProposalsRequest
+	37,  // 87: api.v1.capsule.Service.ListInstances:input_type -> api.v1.capsule.ListInstancesRequest
+	43,  // 88: api.v1.capsule.Service.RestartInstance:input_type -> api.v1.capsule.RestartInstanceRequest
+	47,  // 89: api.v1.capsule.Service.GetRollout:input_type -> api.v1.capsule.GetRolloutRequest
+	45,  // 90: api.v1.capsule.Service.ListRollouts:input_type -> api.v1.capsule.ListRolloutsRequest
+	0,   // 91: api.v1.capsule.Service.WatchRollouts:input_type -> api.v1.capsule.WatchRolloutsRequest
+	49,  // 92: api.v1.capsule.Service.AbortRollout:input_type -> api.v1.capsule.AbortRolloutRequest
+	51,  // 93: api.v1.capsule.Service.StopRollout:input_type -> api.v1.capsule.StopRolloutRequest
+	53,  // 94: api.v1.capsule.Service.ListEvents:input_type -> api.v1.capsule.ListEventsRequest
+	55,  // 95: api.v1.capsule.Service.CapsuleMetrics:input_type -> api.v1.capsule.CapsuleMetricsRequest
+	39,  // 96: api.v1.capsule.Service.GetInstanceStatus:input_type -> api.v1.capsule.GetInstanceStatusRequest
+	41,  // 97: api.v1.capsule.Service.ListInstanceStatuses:input_type -> api.v1.capsule.ListInstanceStatusesRequest
+	2,   // 98: api.v1.capsule.Service.WatchInstanceStatuses:input_type -> api.v1.capsule.WatchInstanceStatusesRequest
+	9,   // 99: api.v1.capsule.Service.Execute:input_type -> api.v1.capsule.ExecuteRequest
+	11,  // 100: api.v1.capsule.Service.PortForward:input_type -> api.v1.capsule.PortForwardRequest
+	57,  // 101: api.v1.capsule.Service.GetCustomInstanceMetrics:input_type -> api.v1.capsule.GetCustomInstanceMetricsRequest
+	59,  // 102: api.v1.capsule.Service.GetJobExecutions:input_type -> api.v1.capsule.GetJobExecutionsRequest
+	6,   // 103: api.v1.capsule.Service.GetStatus:input_type -> api.v1.capsule.GetStatusRequest
+	61,  // 104: api.v1.capsule.Service.GetRevision:input_type -> api.v1.capsule.GetRevisionRequest
+	63,  // 105: api.v1.capsule.Service.GetRolloutOfRevisions:input_type -> api.v1.capsule.GetRolloutOfRevisionsRequest
+	4,   // 106: api.v1.capsule.Service.WatchStatus:input_type -> api.v1.capsule.WatchStatusRequest
+	65,  // 107: api.v1.capsule.Service.GetEffectiveGitSettings:input_type -> api.v1.capsule.GetEffectiveGitSettingsRequest
+	14,  // 108: api.v1.capsule.Service.Create:output_type -> api.v1.capsule.CreateResponse
+	16,  // 109: api.v1.capsule.Service.Get:output_type -> api.v1.capsule.GetResponse
+	18,  // 110: api.v1.capsule.Service.Delete:output_type -> api.v1.capsule.DeleteResponse
+	20,  // 111: api.v1.capsule.Service.Logs:output_type -> api.v1.capsule.LogsResponse
+	22,  // 112: api.v1.capsule.Service.Update:output_type -> api.v1.capsule.UpdateResponse
+	24,  // 113: api.v1.capsule.Service.List:output_type -> api.v1.capsule.ListResponse
+	26,  // 114: api.v1.capsule.Service.Deploy:output_type -> api.v1.capsule.DeployResponse
+	30,  // 115: api.v1.capsule.Service.DeploySet:output_type -> api.v1.capsule.DeploySetResponse
+	32,  // 116: api.v1.capsule.Service.ProposeRollout:output_type -> api.v1.capsule.ProposeRolloutResponse
+	34,  // 117: api.v1.capsule.Service.ProposeSetRollout:output_type -> api.v1.capsule.ProposeSetRolloutResponse
+	36,  // 118: api.v1.capsule.Service.ListProposals:output_type -> api.v1.capsule.ListProposalsResponse
+	38,  // 119: api.v1.capsule.Service.ListInstances:output_type -> api.v1.capsule.ListInstancesResponse
+	44,  // 120: api.v1.capsule.Service.RestartInstance:output_type -> api.v1.capsule.RestartInstanceResponse
+	48,  // 121: api.v1.capsule.Service.GetRollout:output_type -> api.v1.capsule.GetRolloutResponse
+	46,  // 122: api.v1.capsule.Service.ListRollouts:output_type -> api.v1.capsule.ListRolloutsResponse
+	1,   // 123: api.v1.capsule.Service.WatchRollouts:output_type -> api.v1.capsule.WatchRolloutsResponse
+	50,  // 124: api.v1.capsule.Service.AbortRollout:output_type -> api.v1.capsule.AbortRolloutResponse
+	52,  // 125: api.v1.capsule.Service.StopRollout:output_type -> api.v1.capsule.StopRolloutResponse
+	54,  // 126: api.v1.capsule.Service.ListEvents:output_type -> api.v1.capsule.ListEventsResponse
+	56,  // 127: api.v1.capsule.Service.CapsuleMetrics:output_type -> api.v1.capsule.CapsuleMetricsResponse
+	40,  // 128: api.v1.capsule.Service.GetInstanceStatus:output_type -> api.v1.capsule.GetInstanceStatusResponse
+	42,  // 129: api.v1.capsule.Service.ListInstanceStatuses:output_type -> api.v1.capsule.ListInstanceStatusesResponse
+	3,   // 130: api.v1.capsule.Service.WatchInstanceStatuses:output_type -> api.v1.capsule.WatchInstanceStatusesResponse
+	10,  // 131: api.v1.capsule.Service.Execute:output_type -> api.v1.capsule.ExecuteResponse
+	12,  // 132: api.v1.capsule.Service.PortForward:output_type -> api.v1.capsule.PortForwardResponse
+	58,  // 133: api.v1.capsule.Service.GetCustomInstanceMetrics:output_type -> api.v1.capsule.GetCustomInstanceMetricsResponse
+	60,  // 134: api.v1.capsule.Service.GetJobExecutions:output_type -> api.v1.capsule.GetJobExecutionsResponse
+	7,   // 135: api.v1.capsule.Service.GetStatus:output_type -> api.v1.capsule.GetStatusResponse
+	62,  // 136: api.v1.capsule.Service.GetRevision:output_type -> api.v1.capsule.GetRevisionResponse
+	64,  // 137: api.v1.capsule.Service.GetRolloutOfRevisions:output_type -> api.v1.capsule.GetRolloutOfRevisionsResponse
+	5,   // 138: api.v1.capsule.Service.WatchStatus:output_type -> api.v1.capsule.WatchStatusResponse
+	66,  // 139: api.v1.capsule.Service.GetEffectiveGitSettings:output_type -> api.v1.capsule.GetEffectiveGitSettingsResponse
+	108, // [108:140] is the sub-list for method output_type
+	76,  // [76:108] is the sub-list for method input_type
+	76,  // [76:76] is the sub-list for extension type_name
+	76,  // [76:76] is the sub-list for extension extendee
+	0,   // [0:76] is the sub-list for field type_name
 }
 
 func init() { file_api_v1_capsule_service_proto_init() }
@@ -6211,7 +6736,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProposeRolloutRequest); i {
+			switch v := v.(*DeploySetRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6223,7 +6748,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProposeRolloutResponse); i {
+			switch v := v.(*DeploySetOutcome); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6235,7 +6760,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListProposalsRequest); i {
+			switch v := v.(*DeploySetResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6247,7 +6772,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListProposalsResponse); i {
+			switch v := v.(*ProposeRolloutRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6259,7 +6784,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListInstancesRequest); i {
+			switch v := v.(*ProposeRolloutResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6271,7 +6796,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListInstancesResponse); i {
+			switch v := v.(*ProposeSetRolloutRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6283,7 +6808,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetInstanceStatusRequest); i {
+			switch v := v.(*ProposeSetRolloutResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6295,7 +6820,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetInstanceStatusResponse); i {
+			switch v := v.(*ListProposalsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6307,7 +6832,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListInstanceStatusesRequest); i {
+			switch v := v.(*ListProposalsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6319,7 +6844,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[37].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListInstanceStatusesResponse); i {
+			switch v := v.(*ListInstancesRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6331,7 +6856,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RestartInstanceRequest); i {
+			switch v := v.(*ListInstancesResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6343,7 +6868,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[39].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RestartInstanceResponse); i {
+			switch v := v.(*GetInstanceStatusRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6355,7 +6880,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[40].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListRolloutsRequest); i {
+			switch v := v.(*GetInstanceStatusResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6367,7 +6892,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListRolloutsResponse); i {
+			switch v := v.(*ListInstanceStatusesRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6379,7 +6904,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetRolloutRequest); i {
+			switch v := v.(*ListInstanceStatusesResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6391,7 +6916,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[43].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetRolloutResponse); i {
+			switch v := v.(*RestartInstanceRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6403,7 +6928,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[44].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AbortRolloutRequest); i {
+			switch v := v.(*RestartInstanceResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6415,7 +6940,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[45].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AbortRolloutResponse); i {
+			switch v := v.(*ListRolloutsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6427,7 +6952,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[46].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StopRolloutRequest); i {
+			switch v := v.(*ListRolloutsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6439,7 +6964,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[47].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StopRolloutResponse); i {
+			switch v := v.(*GetRolloutRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6451,7 +6976,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[48].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListEventsRequest); i {
+			switch v := v.(*GetRolloutResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6463,7 +6988,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[49].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListEventsResponse); i {
+			switch v := v.(*AbortRolloutRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6475,7 +7000,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[50].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CapsuleMetricsRequest); i {
+			switch v := v.(*AbortRolloutResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6487,7 +7012,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[51].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CapsuleMetricsResponse); i {
+			switch v := v.(*StopRolloutRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6499,7 +7024,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[52].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetCustomInstanceMetricsRequest); i {
+			switch v := v.(*StopRolloutResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6511,7 +7036,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[53].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetCustomInstanceMetricsResponse); i {
+			switch v := v.(*ListEventsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6523,7 +7048,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[54].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetJobExecutionsRequest); i {
+			switch v := v.(*ListEventsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6535,7 +7060,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[55].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetJobExecutionsResponse); i {
+			switch v := v.(*CapsuleMetricsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6547,7 +7072,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[56].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetRevisionRequest); i {
+			switch v := v.(*CapsuleMetricsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6559,7 +7084,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[57].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetRevisionResponse); i {
+			switch v := v.(*GetCustomInstanceMetricsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6571,7 +7096,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[58].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetRolloutOfRevisionsRequest); i {
+			switch v := v.(*GetCustomInstanceMetricsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6583,7 +7108,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[59].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetRolloutOfRevisionsResponse); i {
+			switch v := v.(*GetJobExecutionsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6595,7 +7120,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[60].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetEffectiveGitSettingsRequest); i {
+			switch v := v.(*GetJobExecutionsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6607,7 +7132,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[61].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetEffectiveGitSettingsResponse); i {
+			switch v := v.(*GetRevisionRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6619,7 +7144,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[62].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ExecuteRequest_Start); i {
+			switch v := v.(*GetRevisionResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6631,7 +7156,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[63].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ExecuteRequest_Resize); i {
+			switch v := v.(*GetRolloutOfRevisionsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6643,7 +7168,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[64].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PortForwardRequest_Start); i {
+			switch v := v.(*GetRolloutOfRevisionsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6655,7 +7180,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[65].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PortForwardRequest_Close); i {
+			switch v := v.(*GetEffectiveGitSettingsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6667,7 +7192,31 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[66].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PortForwardResponse_Close); i {
+			switch v := v.(*GetEffectiveGitSettingsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_capsule_service_proto_msgTypes[67].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ExecuteRequest_Start); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_capsule_service_proto_msgTypes[68].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ExecuteRequest_Resize); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6679,7 +7228,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[69].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeployOutcome_PlatformObject); i {
+			switch v := v.(*PortForwardRequest_Start); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6691,7 +7240,7 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[70].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeployOutcome_KubernetesObject); i {
+			switch v := v.(*PortForwardRequest_Close); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6703,6 +7252,42 @@ func file_api_v1_capsule_service_proto_init() {
 			}
 		}
 		file_api_v1_capsule_service_proto_msgTypes[71].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PortForwardResponse_Close); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_capsule_service_proto_msgTypes[74].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeployOutcome_PlatformObject); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_capsule_service_proto_msgTypes[75].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeployOutcome_KubernetesObject); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_capsule_service_proto_msgTypes[79].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetRolloutOfRevisionsResponse_NoRollout); i {
 			case 0:
 				return &v.state
@@ -6738,7 +7323,7 @@ func file_api_v1_capsule_service_proto_init() {
 		(*PortForwardResponse_Data)(nil),
 		(*PortForwardResponse_Close_)(nil),
 	}
-	file_api_v1_capsule_service_proto_msgTypes[59].OneofWrappers = []interface{}{
+	file_api_v1_capsule_service_proto_msgTypes[64].OneofWrappers = []interface{}{
 		(*GetRolloutOfRevisionsResponse_NoRollout_)(nil),
 		(*GetRolloutOfRevisionsResponse_Rollout)(nil),
 	}
@@ -6748,7 +7333,7 @@ func file_api_v1_capsule_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_capsule_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   72,
+			NumMessages:   80,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
