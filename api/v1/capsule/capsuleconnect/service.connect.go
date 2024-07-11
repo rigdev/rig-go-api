@@ -100,8 +100,6 @@ const (
 	// ServiceGetEffectiveGitSettingsProcedure is the fully-qualified name of the Service's
 	// GetEffectiveGitSettings RPC.
 	ServiceGetEffectiveGitSettingsProcedure = "/api.v1.capsule.Service/GetEffectiveGitSettings"
-	// ServicePromoteProcedure is the fully-qualified name of the Service's Promote RPC.
-	ServicePromoteProcedure = "/api.v1.capsule.Service/Promote"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -137,7 +135,6 @@ var (
 	serviceGetRolloutOfRevisionsMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("GetRolloutOfRevisions")
 	serviceWatchStatusMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("WatchStatus")
 	serviceGetEffectiveGitSettingsMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetEffectiveGitSettings")
-	servicePromoteMethodDescriptor                  = serviceServiceDescriptor.Methods().ByName("Promote")
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -200,8 +197,6 @@ type ServiceClient interface {
 	// Stream the status of a capsule.
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest]) (*connect.ServerStreamForClient[capsule.WatchStatusResponse], error)
 	GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error)
-	// Experimental: Promote a capsule to the next environment in a pipeline.
-	Promote(context.Context, *connect.Request[capsule.PromoteRequest]) (*connect.Response[capsule.PromoteResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -394,12 +389,6 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetEffectiveGitSettingsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		promote: connect.NewClient[capsule.PromoteRequest, capsule.PromoteResponse](
-			httpClient,
-			baseURL+ServicePromoteProcedure,
-			connect.WithSchema(servicePromoteMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
 	}
 }
 
@@ -435,7 +424,6 @@ type serviceClient struct {
 	getRolloutOfRevisions    *connect.Client[capsule.GetRolloutOfRevisionsRequest, capsule.GetRolloutOfRevisionsResponse]
 	watchStatus              *connect.Client[capsule.WatchStatusRequest, capsule.WatchStatusResponse]
 	getEffectiveGitSettings  *connect.Client[capsule.GetEffectiveGitSettingsRequest, capsule.GetEffectiveGitSettingsResponse]
-	promote                  *connect.Client[capsule.PromoteRequest, capsule.PromoteResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -588,11 +576,6 @@ func (c *serviceClient) GetEffectiveGitSettings(ctx context.Context, req *connec
 	return c.getEffectiveGitSettings.CallUnary(ctx, req)
 }
 
-// Promote calls api.v1.capsule.Service.Promote.
-func (c *serviceClient) Promote(ctx context.Context, req *connect.Request[capsule.PromoteRequest]) (*connect.Response[capsule.PromoteResponse], error) {
-	return c.promote.CallUnary(ctx, req)
-}
-
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -653,8 +636,6 @@ type ServiceHandler interface {
 	// Stream the status of a capsule.
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest], *connect.ServerStream[capsule.WatchStatusResponse]) error
 	GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error)
-	// Experimental: Promote a capsule to the next environment in a pipeline.
-	Promote(context.Context, *connect.Request[capsule.PromoteRequest]) (*connect.Response[capsule.PromoteResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -843,12 +824,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetEffectiveGitSettingsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	servicePromoteHandler := connect.NewUnaryHandler(
-		ServicePromoteProcedure,
-		svc.Promote,
-		connect.WithSchema(servicePromoteMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -911,8 +886,6 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceWatchStatusHandler.ServeHTTP(w, r)
 		case ServiceGetEffectiveGitSettingsProcedure:
 			serviceGetEffectiveGitSettingsHandler.ServeHTTP(w, r)
-		case ServicePromoteProcedure:
-			servicePromoteHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -1040,8 +1013,4 @@ func (UnimplementedServiceHandler) WatchStatus(context.Context, *connect.Request
 
 func (UnimplementedServiceHandler) GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetEffectiveGitSettings is not implemented"))
-}
-
-func (UnimplementedServiceHandler) Promote(context.Context, *connect.Request[capsule.PromoteRequest]) (*connect.Response[capsule.PromoteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.Promote is not implemented"))
 }
