@@ -39,6 +39,7 @@ type ServiceClient interface {
 	ProposeRollout(ctx context.Context, in *ProposeRolloutRequest, opts ...grpc.CallOption) (*ProposeRolloutResponse, error)
 	ProposeSetRollout(ctx context.Context, in *ProposeSetRolloutRequest, opts ...grpc.CallOption) (*ProposeSetRolloutResponse, error)
 	ListProposals(ctx context.Context, in *ListProposalsRequest, opts ...grpc.CallOption) (*ListProposalsResponse, error)
+	ListSetProposals(ctx context.Context, in *ListSetProposalsRequest, opts ...grpc.CallOption) (*ListSetProposalsResponse, error)
 	// Lists all instances for the capsule.
 	ListInstances(ctx context.Context, in *ListInstancesRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error)
 	// Restart a single capsule instance.
@@ -204,6 +205,15 @@ func (c *serviceClient) ProposeSetRollout(ctx context.Context, in *ProposeSetRol
 func (c *serviceClient) ListProposals(ctx context.Context, in *ListProposalsRequest, opts ...grpc.CallOption) (*ListProposalsResponse, error) {
 	out := new(ListProposalsResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ListProposals", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) ListSetProposals(ctx context.Context, in *ListSetProposalsRequest, opts ...grpc.CallOption) (*ListSetProposalsResponse, error) {
+	out := new(ListSetProposalsResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ListSetProposals", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -537,6 +547,7 @@ type ServiceServer interface {
 	ProposeRollout(context.Context, *ProposeRolloutRequest) (*ProposeRolloutResponse, error)
 	ProposeSetRollout(context.Context, *ProposeSetRolloutRequest) (*ProposeSetRolloutResponse, error)
 	ListProposals(context.Context, *ListProposalsRequest) (*ListProposalsResponse, error)
+	ListSetProposals(context.Context, *ListSetProposalsRequest) (*ListSetProposalsResponse, error)
 	// Lists all instances for the capsule.
 	ListInstances(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error)
 	// Restart a single capsule instance.
@@ -615,6 +626,9 @@ func (UnimplementedServiceServer) ProposeSetRollout(context.Context, *ProposeSet
 }
 func (UnimplementedServiceServer) ListProposals(context.Context, *ListProposalsRequest) (*ListProposalsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProposals not implemented")
+}
+func (UnimplementedServiceServer) ListSetProposals(context.Context, *ListSetProposalsRequest) (*ListSetProposalsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSetProposals not implemented")
 }
 func (UnimplementedServiceServer) ListInstances(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListInstances not implemented")
@@ -889,6 +903,24 @@ func _Service_ListProposals_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceServer).ListProposals(ctx, req.(*ListProposalsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_ListSetProposals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSetProposalsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).ListSetProposals(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/ListSetProposals",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).ListSetProposals(ctx, req.(*ListSetProposalsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1342,6 +1374,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListProposals",
 			Handler:    _Service_ListProposals_Handler,
+		},
+		{
+			MethodName: "ListSetProposals",
+			Handler:    _Service_ListSetProposals_Handler,
 		},
 		{
 			MethodName: "ListInstances",
