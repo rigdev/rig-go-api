@@ -79,6 +79,16 @@ type ServiceClient interface {
 	// Stream the status of a capsule.
 	WatchStatus(ctx context.Context, in *WatchStatusRequest, opts ...grpc.CallOption) (Service_WatchStatusClient, error)
 	GetEffectiveGitSettings(ctx context.Context, in *GetEffectiveGitSettingsRequest, opts ...grpc.CallOption) (*GetEffectiveGitSettingsResponse, error)
+	// Will initiate the pipeline, from the initial environment and it's current
+	// rollout.
+	StartPipeline(ctx context.Context, in *StartPipelineRequest, opts ...grpc.CallOption) (*StartPipelineResponse, error)
+	GetPipelineStatus(ctx context.Context, in *GetPipelineStatusRequest, opts ...grpc.CallOption) (*GetPipelineStatusResponse, error)
+	// Progress the pipeline to the next environment.
+	ProgressPipeline(ctx context.Context, in *ProgressPipelineRequest, opts ...grpc.CallOption) (*ProgressPipelineResponse, error)
+	// Abort the pipeline execution. This will stop the pipeline from any further
+	// promotions.
+	AbortPipeline(ctx context.Context, in *AbortPipelineRequest, opts ...grpc.CallOption) (*AbortPipelineResponse, error)
+	ListPipelineStatuses(ctx context.Context, in *ListPipelineStatusesRequest, opts ...grpc.CallOption) (*ListPipelineStatusesResponse, error)
 }
 
 type serviceClient struct {
@@ -522,6 +532,51 @@ func (c *serviceClient) GetEffectiveGitSettings(ctx context.Context, in *GetEffe
 	return out, nil
 }
 
+func (c *serviceClient) StartPipeline(ctx context.Context, in *StartPipelineRequest, opts ...grpc.CallOption) (*StartPipelineResponse, error) {
+	out := new(StartPipelineResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/StartPipeline", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) GetPipelineStatus(ctx context.Context, in *GetPipelineStatusRequest, opts ...grpc.CallOption) (*GetPipelineStatusResponse, error) {
+	out := new(GetPipelineStatusResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/GetPipelineStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) ProgressPipeline(ctx context.Context, in *ProgressPipelineRequest, opts ...grpc.CallOption) (*ProgressPipelineResponse, error) {
+	out := new(ProgressPipelineResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ProgressPipeline", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) AbortPipeline(ctx context.Context, in *AbortPipelineRequest, opts ...grpc.CallOption) (*AbortPipelineResponse, error) {
+	out := new(AbortPipelineResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/AbortPipeline", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) ListPipelineStatuses(ctx context.Context, in *ListPipelineStatusesRequest, opts ...grpc.CallOption) (*ListPipelineStatusesResponse, error) {
+	out := new(ListPipelineStatusesResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ListPipelineStatuses", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -587,6 +642,16 @@ type ServiceServer interface {
 	// Stream the status of a capsule.
 	WatchStatus(*WatchStatusRequest, Service_WatchStatusServer) error
 	GetEffectiveGitSettings(context.Context, *GetEffectiveGitSettingsRequest) (*GetEffectiveGitSettingsResponse, error)
+	// Will initiate the pipeline, from the initial environment and it's current
+	// rollout.
+	StartPipeline(context.Context, *StartPipelineRequest) (*StartPipelineResponse, error)
+	GetPipelineStatus(context.Context, *GetPipelineStatusRequest) (*GetPipelineStatusResponse, error)
+	// Progress the pipeline to the next environment.
+	ProgressPipeline(context.Context, *ProgressPipelineRequest) (*ProgressPipelineResponse, error)
+	// Abort the pipeline execution. This will stop the pipeline from any further
+	// promotions.
+	AbortPipeline(context.Context, *AbortPipelineRequest) (*AbortPipelineResponse, error)
+	ListPipelineStatuses(context.Context, *ListPipelineStatusesRequest) (*ListPipelineStatusesResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -692,6 +757,21 @@ func (UnimplementedServiceServer) WatchStatus(*WatchStatusRequest, Service_Watch
 }
 func (UnimplementedServiceServer) GetEffectiveGitSettings(context.Context, *GetEffectiveGitSettingsRequest) (*GetEffectiveGitSettingsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEffectiveGitSettings not implemented")
+}
+func (UnimplementedServiceServer) StartPipeline(context.Context, *StartPipelineRequest) (*StartPipelineResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartPipeline not implemented")
+}
+func (UnimplementedServiceServer) GetPipelineStatus(context.Context, *GetPipelineStatusRequest) (*GetPipelineStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPipelineStatus not implemented")
+}
+func (UnimplementedServiceServer) ProgressPipeline(context.Context, *ProgressPipelineRequest) (*ProgressPipelineResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProgressPipeline not implemented")
+}
+func (UnimplementedServiceServer) AbortPipeline(context.Context, *AbortPipelineRequest) (*AbortPipelineResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AbortPipeline not implemented")
+}
+func (UnimplementedServiceServer) ListPipelineStatuses(context.Context, *ListPipelineStatusesRequest) (*ListPipelineStatusesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPipelineStatuses not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -1328,6 +1408,96 @@ func _Service_GetEffectiveGitSettings_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_StartPipeline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StartPipelineRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).StartPipeline(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/StartPipeline",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).StartPipeline(ctx, req.(*StartPipelineRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_GetPipelineStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPipelineStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetPipelineStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/GetPipelineStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetPipelineStatus(ctx, req.(*GetPipelineStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_ProgressPipeline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProgressPipelineRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).ProgressPipeline(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/ProgressPipeline",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).ProgressPipeline(ctx, req.(*ProgressPipelineRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_AbortPipeline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AbortPipelineRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).AbortPipeline(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/AbortPipeline",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).AbortPipeline(ctx, req.(*AbortPipelineRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_ListPipelineStatuses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPipelineStatusesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).ListPipelineStatuses(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/ListPipelineStatuses",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).ListPipelineStatuses(ctx, req.(*ListPipelineStatusesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1442,6 +1612,26 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetEffectiveGitSettings",
 			Handler:    _Service_GetEffectiveGitSettings_Handler,
+		},
+		{
+			MethodName: "StartPipeline",
+			Handler:    _Service_StartPipeline_Handler,
+		},
+		{
+			MethodName: "GetPipelineStatus",
+			Handler:    _Service_GetPipelineStatus_Handler,
+		},
+		{
+			MethodName: "ProgressPipeline",
+			Handler:    _Service_ProgressPipeline_Handler,
+		},
+		{
+			MethodName: "AbortPipeline",
+			Handler:    _Service_AbortPipeline_Handler,
+		},
+		{
+			MethodName: "ListPipelineStatuses",
+			Handler:    _Service_ListPipelineStatuses_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

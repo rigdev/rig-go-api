@@ -108,6 +108,19 @@ const (
 	// ServiceGetEffectiveGitSettingsProcedure is the fully-qualified name of the Service's
 	// GetEffectiveGitSettings RPC.
 	ServiceGetEffectiveGitSettingsProcedure = "/api.v1.capsule.Service/GetEffectiveGitSettings"
+	// ServiceStartPipelineProcedure is the fully-qualified name of the Service's StartPipeline RPC.
+	ServiceStartPipelineProcedure = "/api.v1.capsule.Service/StartPipeline"
+	// ServiceGetPipelineStatusProcedure is the fully-qualified name of the Service's GetPipelineStatus
+	// RPC.
+	ServiceGetPipelineStatusProcedure = "/api.v1.capsule.Service/GetPipelineStatus"
+	// ServiceProgressPipelineProcedure is the fully-qualified name of the Service's ProgressPipeline
+	// RPC.
+	ServiceProgressPipelineProcedure = "/api.v1.capsule.Service/ProgressPipeline"
+	// ServiceAbortPipelineProcedure is the fully-qualified name of the Service's AbortPipeline RPC.
+	ServiceAbortPipelineProcedure = "/api.v1.capsule.Service/AbortPipeline"
+	// ServiceListPipelineStatusesProcedure is the fully-qualified name of the Service's
+	// ListPipelineStatuses RPC.
+	ServiceListPipelineStatusesProcedure = "/api.v1.capsule.Service/ListPipelineStatuses"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -146,6 +159,11 @@ var (
 	serviceGetRolloutOfRevisionsMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("GetRolloutOfRevisions")
 	serviceWatchStatusMethodDescriptor              = serviceServiceDescriptor.Methods().ByName("WatchStatus")
 	serviceGetEffectiveGitSettingsMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetEffectiveGitSettings")
+	serviceStartPipelineMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("StartPipeline")
+	serviceGetPipelineStatusMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("GetPipelineStatus")
+	serviceProgressPipelineMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("ProgressPipeline")
+	serviceAbortPipelineMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("AbortPipeline")
+	serviceListPipelineStatusesMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("ListPipelineStatuses")
 )
 
 // ServiceClient is a client for the api.v1.capsule.Service service.
@@ -211,6 +229,16 @@ type ServiceClient interface {
 	// Stream the status of a capsule.
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest]) (*connect.ServerStreamForClient[capsule.WatchStatusResponse], error)
 	GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error)
+	// Will initiate the pipeline, from the initial environment and it's current
+	// rollout.
+	StartPipeline(context.Context, *connect.Request[capsule.StartPipelineRequest]) (*connect.Response[capsule.StartPipelineResponse], error)
+	GetPipelineStatus(context.Context, *connect.Request[capsule.GetPipelineStatusRequest]) (*connect.Response[capsule.GetPipelineStatusResponse], error)
+	// Progress the pipeline to the next environment.
+	ProgressPipeline(context.Context, *connect.Request[capsule.ProgressPipelineRequest]) (*connect.Response[capsule.ProgressPipelineResponse], error)
+	// Abort the pipeline execution. This will stop the pipeline from any further
+	// promotions.
+	AbortPipeline(context.Context, *connect.Request[capsule.AbortPipelineRequest]) (*connect.Response[capsule.AbortPipelineResponse], error)
+	ListPipelineStatuses(context.Context, *connect.Request[capsule.ListPipelineStatusesRequest]) (*connect.Response[capsule.ListPipelineStatusesResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.capsule.Service service. By default, it uses
@@ -421,6 +449,36 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetEffectiveGitSettingsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		startPipeline: connect.NewClient[capsule.StartPipelineRequest, capsule.StartPipelineResponse](
+			httpClient,
+			baseURL+ServiceStartPipelineProcedure,
+			connect.WithSchema(serviceStartPipelineMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		getPipelineStatus: connect.NewClient[capsule.GetPipelineStatusRequest, capsule.GetPipelineStatusResponse](
+			httpClient,
+			baseURL+ServiceGetPipelineStatusProcedure,
+			connect.WithSchema(serviceGetPipelineStatusMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		progressPipeline: connect.NewClient[capsule.ProgressPipelineRequest, capsule.ProgressPipelineResponse](
+			httpClient,
+			baseURL+ServiceProgressPipelineProcedure,
+			connect.WithSchema(serviceProgressPipelineMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		abortPipeline: connect.NewClient[capsule.AbortPipelineRequest, capsule.AbortPipelineResponse](
+			httpClient,
+			baseURL+ServiceAbortPipelineProcedure,
+			connect.WithSchema(serviceAbortPipelineMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		listPipelineStatuses: connect.NewClient[capsule.ListPipelineStatusesRequest, capsule.ListPipelineStatusesResponse](
+			httpClient,
+			baseURL+ServiceListPipelineStatusesProcedure,
+			connect.WithSchema(serviceListPipelineStatusesMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -459,6 +517,11 @@ type serviceClient struct {
 	getRolloutOfRevisions    *connect.Client[capsule.GetRolloutOfRevisionsRequest, capsule.GetRolloutOfRevisionsResponse]
 	watchStatus              *connect.Client[capsule.WatchStatusRequest, capsule.WatchStatusResponse]
 	getEffectiveGitSettings  *connect.Client[capsule.GetEffectiveGitSettingsRequest, capsule.GetEffectiveGitSettingsResponse]
+	startPipeline            *connect.Client[capsule.StartPipelineRequest, capsule.StartPipelineResponse]
+	getPipelineStatus        *connect.Client[capsule.GetPipelineStatusRequest, capsule.GetPipelineStatusResponse]
+	progressPipeline         *connect.Client[capsule.ProgressPipelineRequest, capsule.ProgressPipelineResponse]
+	abortPipeline            *connect.Client[capsule.AbortPipelineRequest, capsule.AbortPipelineResponse]
+	listPipelineStatuses     *connect.Client[capsule.ListPipelineStatusesRequest, capsule.ListPipelineStatusesResponse]
 }
 
 // Create calls api.v1.capsule.Service.Create.
@@ -626,6 +689,31 @@ func (c *serviceClient) GetEffectiveGitSettings(ctx context.Context, req *connec
 	return c.getEffectiveGitSettings.CallUnary(ctx, req)
 }
 
+// StartPipeline calls api.v1.capsule.Service.StartPipeline.
+func (c *serviceClient) StartPipeline(ctx context.Context, req *connect.Request[capsule.StartPipelineRequest]) (*connect.Response[capsule.StartPipelineResponse], error) {
+	return c.startPipeline.CallUnary(ctx, req)
+}
+
+// GetPipelineStatus calls api.v1.capsule.Service.GetPipelineStatus.
+func (c *serviceClient) GetPipelineStatus(ctx context.Context, req *connect.Request[capsule.GetPipelineStatusRequest]) (*connect.Response[capsule.GetPipelineStatusResponse], error) {
+	return c.getPipelineStatus.CallUnary(ctx, req)
+}
+
+// ProgressPipeline calls api.v1.capsule.Service.ProgressPipeline.
+func (c *serviceClient) ProgressPipeline(ctx context.Context, req *connect.Request[capsule.ProgressPipelineRequest]) (*connect.Response[capsule.ProgressPipelineResponse], error) {
+	return c.progressPipeline.CallUnary(ctx, req)
+}
+
+// AbortPipeline calls api.v1.capsule.Service.AbortPipeline.
+func (c *serviceClient) AbortPipeline(ctx context.Context, req *connect.Request[capsule.AbortPipelineRequest]) (*connect.Response[capsule.AbortPipelineResponse], error) {
+	return c.abortPipeline.CallUnary(ctx, req)
+}
+
+// ListPipelineStatuses calls api.v1.capsule.Service.ListPipelineStatuses.
+func (c *serviceClient) ListPipelineStatuses(ctx context.Context, req *connect.Request[capsule.ListPipelineStatusesRequest]) (*connect.Response[capsule.ListPipelineStatusesResponse], error) {
+	return c.listPipelineStatuses.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.capsule.Service service.
 type ServiceHandler interface {
 	// Create a new capsule.
@@ -689,6 +777,16 @@ type ServiceHandler interface {
 	// Stream the status of a capsule.
 	WatchStatus(context.Context, *connect.Request[capsule.WatchStatusRequest], *connect.ServerStream[capsule.WatchStatusResponse]) error
 	GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error)
+	// Will initiate the pipeline, from the initial environment and it's current
+	// rollout.
+	StartPipeline(context.Context, *connect.Request[capsule.StartPipelineRequest]) (*connect.Response[capsule.StartPipelineResponse], error)
+	GetPipelineStatus(context.Context, *connect.Request[capsule.GetPipelineStatusRequest]) (*connect.Response[capsule.GetPipelineStatusResponse], error)
+	// Progress the pipeline to the next environment.
+	ProgressPipeline(context.Context, *connect.Request[capsule.ProgressPipelineRequest]) (*connect.Response[capsule.ProgressPipelineResponse], error)
+	// Abort the pipeline execution. This will stop the pipeline from any further
+	// promotions.
+	AbortPipeline(context.Context, *connect.Request[capsule.AbortPipelineRequest]) (*connect.Response[capsule.AbortPipelineResponse], error)
+	ListPipelineStatuses(context.Context, *connect.Request[capsule.ListPipelineStatusesRequest]) (*connect.Response[capsule.ListPipelineStatusesResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -895,6 +993,36 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetEffectiveGitSettingsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceStartPipelineHandler := connect.NewUnaryHandler(
+		ServiceStartPipelineProcedure,
+		svc.StartPipeline,
+		connect.WithSchema(serviceStartPipelineMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceGetPipelineStatusHandler := connect.NewUnaryHandler(
+		ServiceGetPipelineStatusProcedure,
+		svc.GetPipelineStatus,
+		connect.WithSchema(serviceGetPipelineStatusMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceProgressPipelineHandler := connect.NewUnaryHandler(
+		ServiceProgressPipelineProcedure,
+		svc.ProgressPipeline,
+		connect.WithSchema(serviceProgressPipelineMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceAbortPipelineHandler := connect.NewUnaryHandler(
+		ServiceAbortPipelineProcedure,
+		svc.AbortPipeline,
+		connect.WithSchema(serviceAbortPipelineMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceListPipelineStatusesHandler := connect.NewUnaryHandler(
+		ServiceListPipelineStatusesProcedure,
+		svc.ListPipelineStatuses,
+		connect.WithSchema(serviceListPipelineStatusesMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.capsule.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -963,6 +1091,16 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceWatchStatusHandler.ServeHTTP(w, r)
 		case ServiceGetEffectiveGitSettingsProcedure:
 			serviceGetEffectiveGitSettingsHandler.ServeHTTP(w, r)
+		case ServiceStartPipelineProcedure:
+			serviceStartPipelineHandler.ServeHTTP(w, r)
+		case ServiceGetPipelineStatusProcedure:
+			serviceGetPipelineStatusHandler.ServeHTTP(w, r)
+		case ServiceProgressPipelineProcedure:
+			serviceProgressPipelineHandler.ServeHTTP(w, r)
+		case ServiceAbortPipelineProcedure:
+			serviceAbortPipelineHandler.ServeHTTP(w, r)
+		case ServiceListPipelineStatusesProcedure:
+			serviceListPipelineStatusesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -1102,4 +1240,24 @@ func (UnimplementedServiceHandler) WatchStatus(context.Context, *connect.Request
 
 func (UnimplementedServiceHandler) GetEffectiveGitSettings(context.Context, *connect.Request[capsule.GetEffectiveGitSettingsRequest]) (*connect.Response[capsule.GetEffectiveGitSettingsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetEffectiveGitSettings is not implemented"))
+}
+
+func (UnimplementedServiceHandler) StartPipeline(context.Context, *connect.Request[capsule.StartPipelineRequest]) (*connect.Response[capsule.StartPipelineResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.StartPipeline is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetPipelineStatus(context.Context, *connect.Request[capsule.GetPipelineStatusRequest]) (*connect.Response[capsule.GetPipelineStatusResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetPipelineStatus is not implemented"))
+}
+
+func (UnimplementedServiceHandler) ProgressPipeline(context.Context, *connect.Request[capsule.ProgressPipelineRequest]) (*connect.Response[capsule.ProgressPipelineResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ProgressPipeline is not implemented"))
+}
+
+func (UnimplementedServiceHandler) AbortPipeline(context.Context, *connect.Request[capsule.AbortPipelineRequest]) (*connect.Response[capsule.AbortPipelineResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.AbortPipeline is not implemented"))
+}
+
+func (UnimplementedServiceHandler) ListPipelineStatuses(context.Context, *connect.Request[capsule.ListPipelineStatusesRequest]) (*connect.Response[capsule.ListPipelineStatusesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListPipelineStatuses is not implemented"))
 }
