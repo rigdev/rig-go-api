@@ -57,21 +57,25 @@ const (
 	// ServiceGetEffectivePipelineSettingsProcedure is the fully-qualified name of the Service's
 	// GetEffectivePipelineSettings RPC.
 	ServiceGetEffectivePipelineSettingsProcedure = "/api.v1.project.Service/GetEffectivePipelineSettings"
+	// ServiceGetEffectiveNotificationSettingsProcedure is the fully-qualified name of the Service's
+	// GetEffectiveNotificationSettings RPC.
+	ServiceGetEffectiveNotificationSettingsProcedure = "/api.v1.project.Service/GetEffectiveNotificationSettings"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor                            = project.File_api_v1_project_service_proto.Services().ByName("Service")
-	serviceCreateMethodDescriptor                       = serviceServiceDescriptor.Methods().ByName("Create")
-	serviceDeleteMethodDescriptor                       = serviceServiceDescriptor.Methods().ByName("Delete")
-	serviceGetMethodDescriptor                          = serviceServiceDescriptor.Methods().ByName("Get")
-	serviceListMethodDescriptor                         = serviceServiceDescriptor.Methods().ByName("List")
-	serviceUpdateMethodDescriptor                       = serviceServiceDescriptor.Methods().ByName("Update")
-	servicePublicKeyMethodDescriptor                    = serviceServiceDescriptor.Methods().ByName("PublicKey")
-	serviceGetObjectsByKindMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("GetObjectsByKind")
-	serviceGetCustomObjectMetricsMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("GetCustomObjectMetrics")
-	serviceGetEffectiveGitSettingsMethodDescriptor      = serviceServiceDescriptor.Methods().ByName("GetEffectiveGitSettings")
-	serviceGetEffectivePipelineSettingsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetEffectivePipelineSettings")
+	serviceServiceDescriptor                                = project.File_api_v1_project_service_proto.Services().ByName("Service")
+	serviceCreateMethodDescriptor                           = serviceServiceDescriptor.Methods().ByName("Create")
+	serviceDeleteMethodDescriptor                           = serviceServiceDescriptor.Methods().ByName("Delete")
+	serviceGetMethodDescriptor                              = serviceServiceDescriptor.Methods().ByName("Get")
+	serviceListMethodDescriptor                             = serviceServiceDescriptor.Methods().ByName("List")
+	serviceUpdateMethodDescriptor                           = serviceServiceDescriptor.Methods().ByName("Update")
+	servicePublicKeyMethodDescriptor                        = serviceServiceDescriptor.Methods().ByName("PublicKey")
+	serviceGetObjectsByKindMethodDescriptor                 = serviceServiceDescriptor.Methods().ByName("GetObjectsByKind")
+	serviceGetCustomObjectMetricsMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("GetCustomObjectMetrics")
+	serviceGetEffectiveGitSettingsMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("GetEffectiveGitSettings")
+	serviceGetEffectivePipelineSettingsMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("GetEffectivePipelineSettings")
+	serviceGetEffectiveNotificationSettingsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetEffectiveNotificationSettings")
 )
 
 // ServiceClient is a client for the api.v1.project.Service service.
@@ -94,6 +98,7 @@ type ServiceClient interface {
 	GetCustomObjectMetrics(context.Context, *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error)
 	GetEffectiveGitSettings(context.Context, *connect.Request[project.GetEffectiveGitSettingsRequest]) (*connect.Response[project.GetEffectiveGitSettingsResponse], error)
 	GetEffectivePipelineSettings(context.Context, *connect.Request[project.GetEffectivePipelineSettingsRequest]) (*connect.Response[project.GetEffectivePipelineSettingsResponse], error)
+	GetEffectiveNotificationSettings(context.Context, *connect.Request[project.GetEffectiveNotificationSettingsRequest]) (*connect.Response[project.GetEffectiveNotificationSettingsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.project.Service service. By default, it uses
@@ -166,21 +171,28 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetEffectivePipelineSettingsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getEffectiveNotificationSettings: connect.NewClient[project.GetEffectiveNotificationSettingsRequest, project.GetEffectiveNotificationSettingsResponse](
+			httpClient,
+			baseURL+ServiceGetEffectiveNotificationSettingsProcedure,
+			connect.WithSchema(serviceGetEffectiveNotificationSettingsMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	create                       *connect.Client[project.CreateRequest, project.CreateResponse]
-	delete                       *connect.Client[project.DeleteRequest, project.DeleteResponse]
-	get                          *connect.Client[project.GetRequest, project.GetResponse]
-	list                         *connect.Client[project.ListRequest, project.ListResponse]
-	update                       *connect.Client[project.UpdateRequest, project.UpdateResponse]
-	publicKey                    *connect.Client[project.PublicKeyRequest, project.PublicKeyResponse]
-	getObjectsByKind             *connect.Client[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse]
-	getCustomObjectMetrics       *connect.Client[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse]
-	getEffectiveGitSettings      *connect.Client[project.GetEffectiveGitSettingsRequest, project.GetEffectiveGitSettingsResponse]
-	getEffectivePipelineSettings *connect.Client[project.GetEffectivePipelineSettingsRequest, project.GetEffectivePipelineSettingsResponse]
+	create                           *connect.Client[project.CreateRequest, project.CreateResponse]
+	delete                           *connect.Client[project.DeleteRequest, project.DeleteResponse]
+	get                              *connect.Client[project.GetRequest, project.GetResponse]
+	list                             *connect.Client[project.ListRequest, project.ListResponse]
+	update                           *connect.Client[project.UpdateRequest, project.UpdateResponse]
+	publicKey                        *connect.Client[project.PublicKeyRequest, project.PublicKeyResponse]
+	getObjectsByKind                 *connect.Client[project.GetObjectsByKindRequest, project.GetObjectsByKindResponse]
+	getCustomObjectMetrics           *connect.Client[project.GetCustomObjectMetricsRequest, project.GetCustomObjectMetricsResponse]
+	getEffectiveGitSettings          *connect.Client[project.GetEffectiveGitSettingsRequest, project.GetEffectiveGitSettingsResponse]
+	getEffectivePipelineSettings     *connect.Client[project.GetEffectivePipelineSettingsRequest, project.GetEffectivePipelineSettingsResponse]
+	getEffectiveNotificationSettings *connect.Client[project.GetEffectiveNotificationSettingsRequest, project.GetEffectiveNotificationSettingsResponse]
 }
 
 // Create calls api.v1.project.Service.Create.
@@ -233,6 +245,11 @@ func (c *serviceClient) GetEffectivePipelineSettings(ctx context.Context, req *c
 	return c.getEffectivePipelineSettings.CallUnary(ctx, req)
 }
 
+// GetEffectiveNotificationSettings calls api.v1.project.Service.GetEffectiveNotificationSettings.
+func (c *serviceClient) GetEffectiveNotificationSettings(ctx context.Context, req *connect.Request[project.GetEffectiveNotificationSettingsRequest]) (*connect.Response[project.GetEffectiveNotificationSettingsResponse], error) {
+	return c.getEffectiveNotificationSettings.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.project.Service service.
 type ServiceHandler interface {
 	// Create project.
@@ -253,6 +270,7 @@ type ServiceHandler interface {
 	GetCustomObjectMetrics(context.Context, *connect.Request[project.GetCustomObjectMetricsRequest]) (*connect.Response[project.GetCustomObjectMetricsResponse], error)
 	GetEffectiveGitSettings(context.Context, *connect.Request[project.GetEffectiveGitSettingsRequest]) (*connect.Response[project.GetEffectiveGitSettingsResponse], error)
 	GetEffectivePipelineSettings(context.Context, *connect.Request[project.GetEffectivePipelineSettingsRequest]) (*connect.Response[project.GetEffectivePipelineSettingsResponse], error)
+	GetEffectiveNotificationSettings(context.Context, *connect.Request[project.GetEffectiveNotificationSettingsRequest]) (*connect.Response[project.GetEffectiveNotificationSettingsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -321,6 +339,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetEffectivePipelineSettingsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetEffectiveNotificationSettingsHandler := connect.NewUnaryHandler(
+		ServiceGetEffectiveNotificationSettingsProcedure,
+		svc.GetEffectiveNotificationSettings,
+		connect.WithSchema(serviceGetEffectiveNotificationSettingsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.project.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -343,6 +367,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetEffectiveGitSettingsHandler.ServeHTTP(w, r)
 		case ServiceGetEffectivePipelineSettingsProcedure:
 			serviceGetEffectivePipelineSettingsHandler.ServeHTTP(w, r)
+		case ServiceGetEffectiveNotificationSettingsProcedure:
+			serviceGetEffectiveNotificationSettingsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -390,4 +416,8 @@ func (UnimplementedServiceHandler) GetEffectiveGitSettings(context.Context, *con
 
 func (UnimplementedServiceHandler) GetEffectivePipelineSettings(context.Context, *connect.Request[project.GetEffectivePipelineSettingsRequest]) (*connect.Response[project.GetEffectivePipelineSettingsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.GetEffectivePipelineSettings is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetEffectiveNotificationSettings(context.Context, *connect.Request[project.GetEffectiveNotificationSettingsRequest]) (*connect.Response[project.GetEffectiveNotificationSettingsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.project.Service.GetEffectiveNotificationSettings is not implemented"))
 }
