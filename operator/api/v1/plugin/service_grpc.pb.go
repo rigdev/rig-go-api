@@ -21,6 +21,7 @@ type PluginServiceClient interface {
 	Initialize(ctx context.Context, in *InitializeRequest, opts ...grpc.CallOption) (*InitializeResponse, error)
 	RunCapsule(ctx context.Context, in *RunCapsuleRequest, opts ...grpc.CallOption) (*RunCapsuleResponse, error)
 	WatchObjectStatus(ctx context.Context, in *WatchObjectStatusRequest, opts ...grpc.CallOption) (PluginService_WatchObjectStatusClient, error)
+	ComputeConfig(ctx context.Context, in *ComputeConfigRequest, opts ...grpc.CallOption) (*ComputeConfigResponse, error)
 }
 
 type pluginServiceClient struct {
@@ -81,6 +82,15 @@ func (x *pluginServiceWatchObjectStatusClient) Recv() (*WatchObjectStatusRespons
 	return m, nil
 }
 
+func (c *pluginServiceClient) ComputeConfig(ctx context.Context, in *ComputeConfigRequest, opts ...grpc.CallOption) (*ComputeConfigResponse, error) {
+	out := new(ComputeConfigResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.plugin.PluginService/ComputeConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PluginServiceServer is the server API for PluginService service.
 // All implementations must embed UnimplementedPluginServiceServer
 // for forward compatibility
@@ -88,6 +98,7 @@ type PluginServiceServer interface {
 	Initialize(context.Context, *InitializeRequest) (*InitializeResponse, error)
 	RunCapsule(context.Context, *RunCapsuleRequest) (*RunCapsuleResponse, error)
 	WatchObjectStatus(*WatchObjectStatusRequest, PluginService_WatchObjectStatusServer) error
+	ComputeConfig(context.Context, *ComputeConfigRequest) (*ComputeConfigResponse, error)
 	mustEmbedUnimplementedPluginServiceServer()
 }
 
@@ -103,6 +114,9 @@ func (UnimplementedPluginServiceServer) RunCapsule(context.Context, *RunCapsuleR
 }
 func (UnimplementedPluginServiceServer) WatchObjectStatus(*WatchObjectStatusRequest, PluginService_WatchObjectStatusServer) error {
 	return status.Errorf(codes.Unimplemented, "method WatchObjectStatus not implemented")
+}
+func (UnimplementedPluginServiceServer) ComputeConfig(context.Context, *ComputeConfigRequest) (*ComputeConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ComputeConfig not implemented")
 }
 func (UnimplementedPluginServiceServer) mustEmbedUnimplementedPluginServiceServer() {}
 
@@ -174,6 +188,24 @@ func (x *pluginServiceWatchObjectStatusServer) Send(m *WatchObjectStatusResponse
 	return x.ServerStream.SendMsg(m)
 }
 
+func _PluginService_ComputeConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ComputeConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PluginServiceServer).ComputeConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.plugin.PluginService/ComputeConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PluginServiceServer).ComputeConfig(ctx, req.(*ComputeConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PluginService_ServiceDesc is the grpc.ServiceDesc for PluginService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -188,6 +220,10 @@ var PluginService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RunCapsule",
 			Handler:    _PluginService_RunCapsule_Handler,
+		},
+		{
+			MethodName: "ComputeConfig",
+			Handler:    _PluginService_ComputeConfig_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

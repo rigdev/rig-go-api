@@ -44,6 +44,9 @@ const (
 	// PluginServiceWatchObjectStatusProcedure is the fully-qualified name of the PluginService's
 	// WatchObjectStatus RPC.
 	PluginServiceWatchObjectStatusProcedure = "/api.v1.plugin.PluginService/WatchObjectStatus"
+	// PluginServiceComputeConfigProcedure is the fully-qualified name of the PluginService's
+	// ComputeConfig RPC.
+	PluginServiceComputeConfigProcedure = "/api.v1.plugin.PluginService/ComputeConfig"
 	// RequestServiceGetObjectProcedure is the fully-qualified name of the RequestService's GetObject
 	// RPC.
 	RequestServiceGetObjectProcedure = "/api.v1.plugin.RequestService/GetObject"
@@ -67,6 +70,7 @@ var (
 	pluginServiceInitializeMethodDescriptor        = pluginServiceServiceDescriptor.Methods().ByName("Initialize")
 	pluginServiceRunCapsuleMethodDescriptor        = pluginServiceServiceDescriptor.Methods().ByName("RunCapsule")
 	pluginServiceWatchObjectStatusMethodDescriptor = pluginServiceServiceDescriptor.Methods().ByName("WatchObjectStatus")
+	pluginServiceComputeConfigMethodDescriptor     = pluginServiceServiceDescriptor.Methods().ByName("ComputeConfig")
 	requestServiceServiceDescriptor                = plugin.File_operator_api_v1_plugin_service_proto.Services().ByName("RequestService")
 	requestServiceGetObjectMethodDescriptor        = requestServiceServiceDescriptor.Methods().ByName("GetObject")
 	requestServiceSetObjectMethodDescriptor        = requestServiceServiceDescriptor.Methods().ByName("SetObject")
@@ -80,6 +84,7 @@ type PluginServiceClient interface {
 	Initialize(context.Context, *connect.Request[plugin.InitializeRequest]) (*connect.Response[plugin.InitializeResponse], error)
 	RunCapsule(context.Context, *connect.Request[plugin.RunCapsuleRequest]) (*connect.Response[plugin.RunCapsuleResponse], error)
 	WatchObjectStatus(context.Context, *connect.Request[plugin.WatchObjectStatusRequest]) (*connect.ServerStreamForClient[plugin.WatchObjectStatusResponse], error)
+	ComputeConfig(context.Context, *connect.Request[plugin.ComputeConfigRequest]) (*connect.Response[plugin.ComputeConfigResponse], error)
 }
 
 // NewPluginServiceClient constructs a client for the api.v1.plugin.PluginService service. By
@@ -110,6 +115,12 @@ func NewPluginServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(pluginServiceWatchObjectStatusMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		computeConfig: connect.NewClient[plugin.ComputeConfigRequest, plugin.ComputeConfigResponse](
+			httpClient,
+			baseURL+PluginServiceComputeConfigProcedure,
+			connect.WithSchema(pluginServiceComputeConfigMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -118,6 +129,7 @@ type pluginServiceClient struct {
 	initialize        *connect.Client[plugin.InitializeRequest, plugin.InitializeResponse]
 	runCapsule        *connect.Client[plugin.RunCapsuleRequest, plugin.RunCapsuleResponse]
 	watchObjectStatus *connect.Client[plugin.WatchObjectStatusRequest, plugin.WatchObjectStatusResponse]
+	computeConfig     *connect.Client[plugin.ComputeConfigRequest, plugin.ComputeConfigResponse]
 }
 
 // Initialize calls api.v1.plugin.PluginService.Initialize.
@@ -135,11 +147,17 @@ func (c *pluginServiceClient) WatchObjectStatus(ctx context.Context, req *connec
 	return c.watchObjectStatus.CallServerStream(ctx, req)
 }
 
+// ComputeConfig calls api.v1.plugin.PluginService.ComputeConfig.
+func (c *pluginServiceClient) ComputeConfig(ctx context.Context, req *connect.Request[plugin.ComputeConfigRequest]) (*connect.Response[plugin.ComputeConfigResponse], error) {
+	return c.computeConfig.CallUnary(ctx, req)
+}
+
 // PluginServiceHandler is an implementation of the api.v1.plugin.PluginService service.
 type PluginServiceHandler interface {
 	Initialize(context.Context, *connect.Request[plugin.InitializeRequest]) (*connect.Response[plugin.InitializeResponse], error)
 	RunCapsule(context.Context, *connect.Request[plugin.RunCapsuleRequest]) (*connect.Response[plugin.RunCapsuleResponse], error)
 	WatchObjectStatus(context.Context, *connect.Request[plugin.WatchObjectStatusRequest], *connect.ServerStream[plugin.WatchObjectStatusResponse]) error
+	ComputeConfig(context.Context, *connect.Request[plugin.ComputeConfigRequest]) (*connect.Response[plugin.ComputeConfigResponse], error)
 }
 
 // NewPluginServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -166,6 +184,12 @@ func NewPluginServiceHandler(svc PluginServiceHandler, opts ...connect.HandlerOp
 		connect.WithSchema(pluginServiceWatchObjectStatusMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	pluginServiceComputeConfigHandler := connect.NewUnaryHandler(
+		PluginServiceComputeConfigProcedure,
+		svc.ComputeConfig,
+		connect.WithSchema(pluginServiceComputeConfigMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.plugin.PluginService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PluginServiceInitializeProcedure:
@@ -174,6 +198,8 @@ func NewPluginServiceHandler(svc PluginServiceHandler, opts ...connect.HandlerOp
 			pluginServiceRunCapsuleHandler.ServeHTTP(w, r)
 		case PluginServiceWatchObjectStatusProcedure:
 			pluginServiceWatchObjectStatusHandler.ServeHTTP(w, r)
+		case PluginServiceComputeConfigProcedure:
+			pluginServiceComputeConfigHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -193,6 +219,10 @@ func (UnimplementedPluginServiceHandler) RunCapsule(context.Context, *connect.Re
 
 func (UnimplementedPluginServiceHandler) WatchObjectStatus(context.Context, *connect.Request[plugin.WatchObjectStatusRequest], *connect.ServerStream[plugin.WatchObjectStatusResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.plugin.PluginService.WatchObjectStatus is not implemented"))
+}
+
+func (UnimplementedPluginServiceHandler) ComputeConfig(context.Context, *connect.Request[plugin.ComputeConfigRequest]) (*connect.Response[plugin.ComputeConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.plugin.PluginService.ComputeConfig is not implemented"))
 }
 
 // RequestServiceClient is a client for the api.v1.plugin.RequestService service.

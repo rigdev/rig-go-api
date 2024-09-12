@@ -38,19 +38,24 @@ const (
 	ServiceWatchObjectStatusProcedure = "/api.v1.pipeline.Service/WatchObjectStatus"
 	// ServiceDryRunProcedure is the fully-qualified name of the Service's DryRun RPC.
 	ServiceDryRunProcedure = "/api.v1.pipeline.Service/DryRun"
+	// ServiceDryRunPluginConfigProcedure is the fully-qualified name of the Service's
+	// DryRunPluginConfig RPC.
+	ServiceDryRunPluginConfigProcedure = "/api.v1.pipeline.Service/DryRunPluginConfig"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor                 = pipeline.File_operator_api_v1_pipeline_service_proto.Services().ByName("Service")
-	serviceWatchObjectStatusMethodDescriptor = serviceServiceDescriptor.Methods().ByName("WatchObjectStatus")
-	serviceDryRunMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("DryRun")
+	serviceServiceDescriptor                  = pipeline.File_operator_api_v1_pipeline_service_proto.Services().ByName("Service")
+	serviceWatchObjectStatusMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("WatchObjectStatus")
+	serviceDryRunMethodDescriptor             = serviceServiceDescriptor.Methods().ByName("DryRun")
+	serviceDryRunPluginConfigMethodDescriptor = serviceServiceDescriptor.Methods().ByName("DryRunPluginConfig")
 )
 
 // ServiceClient is a client for the api.v1.pipeline.Service service.
 type ServiceClient interface {
 	WatchObjectStatus(context.Context, *connect.Request[pipeline.WatchObjectStatusRequest]) (*connect.ServerStreamForClient[pipeline.WatchObjectStatusResponse], error)
 	DryRun(context.Context, *connect.Request[pipeline.DryRunRequest]) (*connect.Response[pipeline.DryRunResponse], error)
+	DryRunPluginConfig(context.Context, *connect.Request[pipeline.DryRunPluginConfigRequest]) (*connect.Response[pipeline.DryRunPluginConfigResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.pipeline.Service service. By default, it uses
@@ -75,13 +80,20 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceDryRunMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		dryRunPluginConfig: connect.NewClient[pipeline.DryRunPluginConfigRequest, pipeline.DryRunPluginConfigResponse](
+			httpClient,
+			baseURL+ServiceDryRunPluginConfigProcedure,
+			connect.WithSchema(serviceDryRunPluginConfigMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	watchObjectStatus *connect.Client[pipeline.WatchObjectStatusRequest, pipeline.WatchObjectStatusResponse]
-	dryRun            *connect.Client[pipeline.DryRunRequest, pipeline.DryRunResponse]
+	watchObjectStatus  *connect.Client[pipeline.WatchObjectStatusRequest, pipeline.WatchObjectStatusResponse]
+	dryRun             *connect.Client[pipeline.DryRunRequest, pipeline.DryRunResponse]
+	dryRunPluginConfig *connect.Client[pipeline.DryRunPluginConfigRequest, pipeline.DryRunPluginConfigResponse]
 }
 
 // WatchObjectStatus calls api.v1.pipeline.Service.WatchObjectStatus.
@@ -94,10 +106,16 @@ func (c *serviceClient) DryRun(ctx context.Context, req *connect.Request[pipelin
 	return c.dryRun.CallUnary(ctx, req)
 }
 
+// DryRunPluginConfig calls api.v1.pipeline.Service.DryRunPluginConfig.
+func (c *serviceClient) DryRunPluginConfig(ctx context.Context, req *connect.Request[pipeline.DryRunPluginConfigRequest]) (*connect.Response[pipeline.DryRunPluginConfigResponse], error) {
+	return c.dryRunPluginConfig.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.pipeline.Service service.
 type ServiceHandler interface {
 	WatchObjectStatus(context.Context, *connect.Request[pipeline.WatchObjectStatusRequest], *connect.ServerStream[pipeline.WatchObjectStatusResponse]) error
 	DryRun(context.Context, *connect.Request[pipeline.DryRunRequest]) (*connect.Response[pipeline.DryRunResponse], error)
+	DryRunPluginConfig(context.Context, *connect.Request[pipeline.DryRunPluginConfigRequest]) (*connect.Response[pipeline.DryRunPluginConfigResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -118,12 +136,20 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceDryRunMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceDryRunPluginConfigHandler := connect.NewUnaryHandler(
+		ServiceDryRunPluginConfigProcedure,
+		svc.DryRunPluginConfig,
+		connect.WithSchema(serviceDryRunPluginConfigMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.pipeline.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceWatchObjectStatusProcedure:
 			serviceWatchObjectStatusHandler.ServeHTTP(w, r)
 		case ServiceDryRunProcedure:
 			serviceDryRunHandler.ServeHTTP(w, r)
+		case ServiceDryRunPluginConfigProcedure:
+			serviceDryRunPluginConfigHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -139,4 +165,8 @@ func (UnimplementedServiceHandler) WatchObjectStatus(context.Context, *connect.R
 
 func (UnimplementedServiceHandler) DryRun(context.Context, *connect.Request[pipeline.DryRunRequest]) (*connect.Response[pipeline.DryRunResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.pipeline.Service.DryRun is not implemented"))
+}
+
+func (UnimplementedServiceHandler) DryRunPluginConfig(context.Context, *connect.Request[pipeline.DryRunPluginConfigRequest]) (*connect.Response[pipeline.DryRunPluginConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.pipeline.Service.DryRunPluginConfig is not implemented"))
 }
