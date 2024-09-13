@@ -113,9 +113,8 @@ const (
 	// ServiceGetPipelineStatusProcedure is the fully-qualified name of the Service's GetPipelineStatus
 	// RPC.
 	ServiceGetPipelineStatusProcedure = "/api.v1.capsule.Service/GetPipelineStatus"
-	// ServiceProgressPipelineProcedure is the fully-qualified name of the Service's ProgressPipeline
-	// RPC.
-	ServiceProgressPipelineProcedure = "/api.v1.capsule.Service/ProgressPipeline"
+	// ServicePromotePipelineProcedure is the fully-qualified name of the Service's PromotePipeline RPC.
+	ServicePromotePipelineProcedure = "/api.v1.capsule.Service/PromotePipeline"
 	// ServiceAbortPipelineProcedure is the fully-qualified name of the Service's AbortPipeline RPC.
 	ServiceAbortPipelineProcedure = "/api.v1.capsule.Service/AbortPipeline"
 	// ServiceListPipelineStatusesProcedure is the fully-qualified name of the Service's
@@ -161,7 +160,7 @@ var (
 	serviceGetEffectiveGitSettingsMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetEffectiveGitSettings")
 	serviceStartPipelineMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("StartPipeline")
 	serviceGetPipelineStatusMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("GetPipelineStatus")
-	serviceProgressPipelineMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("ProgressPipeline")
+	servicePromotePipelineMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("PromotePipeline")
 	serviceAbortPipelineMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("AbortPipeline")
 	serviceListPipelineStatusesMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("ListPipelineStatuses")
 )
@@ -234,7 +233,7 @@ type ServiceClient interface {
 	StartPipeline(context.Context, *connect.Request[capsule.StartPipelineRequest]) (*connect.Response[capsule.StartPipelineResponse], error)
 	GetPipelineStatus(context.Context, *connect.Request[capsule.GetPipelineStatusRequest]) (*connect.Response[capsule.GetPipelineStatusResponse], error)
 	// Progress the pipeline to the next environment.
-	ProgressPipeline(context.Context, *connect.Request[capsule.ProgressPipelineRequest]) (*connect.Response[capsule.ProgressPipelineResponse], error)
+	PromotePipeline(context.Context, *connect.Request[capsule.PromotePipelineRequest]) (*connect.Response[capsule.PromotePipelineResponse], error)
 	// Abort the pipeline execution. This will stop the pipeline from any further
 	// promotions.
 	AbortPipeline(context.Context, *connect.Request[capsule.AbortPipelineRequest]) (*connect.Response[capsule.AbortPipelineResponse], error)
@@ -461,10 +460,10 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetPipelineStatusMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		progressPipeline: connect.NewClient[capsule.ProgressPipelineRequest, capsule.ProgressPipelineResponse](
+		promotePipeline: connect.NewClient[capsule.PromotePipelineRequest, capsule.PromotePipelineResponse](
 			httpClient,
-			baseURL+ServiceProgressPipelineProcedure,
-			connect.WithSchema(serviceProgressPipelineMethodDescriptor),
+			baseURL+ServicePromotePipelineProcedure,
+			connect.WithSchema(servicePromotePipelineMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		abortPipeline: connect.NewClient[capsule.AbortPipelineRequest, capsule.AbortPipelineResponse](
@@ -519,7 +518,7 @@ type serviceClient struct {
 	getEffectiveGitSettings  *connect.Client[capsule.GetEffectiveGitSettingsRequest, capsule.GetEffectiveGitSettingsResponse]
 	startPipeline            *connect.Client[capsule.StartPipelineRequest, capsule.StartPipelineResponse]
 	getPipelineStatus        *connect.Client[capsule.GetPipelineStatusRequest, capsule.GetPipelineStatusResponse]
-	progressPipeline         *connect.Client[capsule.ProgressPipelineRequest, capsule.ProgressPipelineResponse]
+	promotePipeline          *connect.Client[capsule.PromotePipelineRequest, capsule.PromotePipelineResponse]
 	abortPipeline            *connect.Client[capsule.AbortPipelineRequest, capsule.AbortPipelineResponse]
 	listPipelineStatuses     *connect.Client[capsule.ListPipelineStatusesRequest, capsule.ListPipelineStatusesResponse]
 }
@@ -699,9 +698,9 @@ func (c *serviceClient) GetPipelineStatus(ctx context.Context, req *connect.Requ
 	return c.getPipelineStatus.CallUnary(ctx, req)
 }
 
-// ProgressPipeline calls api.v1.capsule.Service.ProgressPipeline.
-func (c *serviceClient) ProgressPipeline(ctx context.Context, req *connect.Request[capsule.ProgressPipelineRequest]) (*connect.Response[capsule.ProgressPipelineResponse], error) {
-	return c.progressPipeline.CallUnary(ctx, req)
+// PromotePipeline calls api.v1.capsule.Service.PromotePipeline.
+func (c *serviceClient) PromotePipeline(ctx context.Context, req *connect.Request[capsule.PromotePipelineRequest]) (*connect.Response[capsule.PromotePipelineResponse], error) {
+	return c.promotePipeline.CallUnary(ctx, req)
 }
 
 // AbortPipeline calls api.v1.capsule.Service.AbortPipeline.
@@ -782,7 +781,7 @@ type ServiceHandler interface {
 	StartPipeline(context.Context, *connect.Request[capsule.StartPipelineRequest]) (*connect.Response[capsule.StartPipelineResponse], error)
 	GetPipelineStatus(context.Context, *connect.Request[capsule.GetPipelineStatusRequest]) (*connect.Response[capsule.GetPipelineStatusResponse], error)
 	// Progress the pipeline to the next environment.
-	ProgressPipeline(context.Context, *connect.Request[capsule.ProgressPipelineRequest]) (*connect.Response[capsule.ProgressPipelineResponse], error)
+	PromotePipeline(context.Context, *connect.Request[capsule.PromotePipelineRequest]) (*connect.Response[capsule.PromotePipelineResponse], error)
 	// Abort the pipeline execution. This will stop the pipeline from any further
 	// promotions.
 	AbortPipeline(context.Context, *connect.Request[capsule.AbortPipelineRequest]) (*connect.Response[capsule.AbortPipelineResponse], error)
@@ -1005,10 +1004,10 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetPipelineStatusMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	serviceProgressPipelineHandler := connect.NewUnaryHandler(
-		ServiceProgressPipelineProcedure,
-		svc.ProgressPipeline,
-		connect.WithSchema(serviceProgressPipelineMethodDescriptor),
+	servicePromotePipelineHandler := connect.NewUnaryHandler(
+		ServicePromotePipelineProcedure,
+		svc.PromotePipeline,
+		connect.WithSchema(servicePromotePipelineMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	serviceAbortPipelineHandler := connect.NewUnaryHandler(
@@ -1095,8 +1094,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceStartPipelineHandler.ServeHTTP(w, r)
 		case ServiceGetPipelineStatusProcedure:
 			serviceGetPipelineStatusHandler.ServeHTTP(w, r)
-		case ServiceProgressPipelineProcedure:
-			serviceProgressPipelineHandler.ServeHTTP(w, r)
+		case ServicePromotePipelineProcedure:
+			servicePromotePipelineHandler.ServeHTTP(w, r)
 		case ServiceAbortPipelineProcedure:
 			serviceAbortPipelineHandler.ServeHTTP(w, r)
 		case ServiceListPipelineStatusesProcedure:
@@ -1250,8 +1249,8 @@ func (UnimplementedServiceHandler) GetPipelineStatus(context.Context, *connect.R
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetPipelineStatus is not implemented"))
 }
 
-func (UnimplementedServiceHandler) ProgressPipeline(context.Context, *connect.Request[capsule.ProgressPipelineRequest]) (*connect.Response[capsule.ProgressPipelineResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ProgressPipeline is not implemented"))
+func (UnimplementedServiceHandler) PromotePipeline(context.Context, *connect.Request[capsule.PromotePipelineRequest]) (*connect.Response[capsule.PromotePipelineResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.PromotePipeline is not implemented"))
 }
 
 func (UnimplementedServiceHandler) AbortPipeline(context.Context, *connect.Request[capsule.AbortPipelineRequest]) (*connect.Response[capsule.AbortPipelineResponse], error) {

@@ -84,7 +84,7 @@ type ServiceClient interface {
 	StartPipeline(ctx context.Context, in *StartPipelineRequest, opts ...grpc.CallOption) (*StartPipelineResponse, error)
 	GetPipelineStatus(ctx context.Context, in *GetPipelineStatusRequest, opts ...grpc.CallOption) (*GetPipelineStatusResponse, error)
 	// Progress the pipeline to the next environment.
-	ProgressPipeline(ctx context.Context, in *ProgressPipelineRequest, opts ...grpc.CallOption) (*ProgressPipelineResponse, error)
+	PromotePipeline(ctx context.Context, in *PromotePipelineRequest, opts ...grpc.CallOption) (*PromotePipelineResponse, error)
 	// Abort the pipeline execution. This will stop the pipeline from any further
 	// promotions.
 	AbortPipeline(ctx context.Context, in *AbortPipelineRequest, opts ...grpc.CallOption) (*AbortPipelineResponse, error)
@@ -550,9 +550,9 @@ func (c *serviceClient) GetPipelineStatus(ctx context.Context, in *GetPipelineSt
 	return out, nil
 }
 
-func (c *serviceClient) ProgressPipeline(ctx context.Context, in *ProgressPipelineRequest, opts ...grpc.CallOption) (*ProgressPipelineResponse, error) {
-	out := new(ProgressPipelineResponse)
-	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ProgressPipeline", in, out, opts...)
+func (c *serviceClient) PromotePipeline(ctx context.Context, in *PromotePipelineRequest, opts ...grpc.CallOption) (*PromotePipelineResponse, error) {
+	out := new(PromotePipelineResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/PromotePipeline", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -647,7 +647,7 @@ type ServiceServer interface {
 	StartPipeline(context.Context, *StartPipelineRequest) (*StartPipelineResponse, error)
 	GetPipelineStatus(context.Context, *GetPipelineStatusRequest) (*GetPipelineStatusResponse, error)
 	// Progress the pipeline to the next environment.
-	ProgressPipeline(context.Context, *ProgressPipelineRequest) (*ProgressPipelineResponse, error)
+	PromotePipeline(context.Context, *PromotePipelineRequest) (*PromotePipelineResponse, error)
 	// Abort the pipeline execution. This will stop the pipeline from any further
 	// promotions.
 	AbortPipeline(context.Context, *AbortPipelineRequest) (*AbortPipelineResponse, error)
@@ -764,8 +764,8 @@ func (UnimplementedServiceServer) StartPipeline(context.Context, *StartPipelineR
 func (UnimplementedServiceServer) GetPipelineStatus(context.Context, *GetPipelineStatusRequest) (*GetPipelineStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPipelineStatus not implemented")
 }
-func (UnimplementedServiceServer) ProgressPipeline(context.Context, *ProgressPipelineRequest) (*ProgressPipelineResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ProgressPipeline not implemented")
+func (UnimplementedServiceServer) PromotePipeline(context.Context, *PromotePipelineRequest) (*PromotePipelineResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PromotePipeline not implemented")
 }
 func (UnimplementedServiceServer) AbortPipeline(context.Context, *AbortPipelineRequest) (*AbortPipelineResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AbortPipeline not implemented")
@@ -1444,20 +1444,20 @@ func _Service_GetPipelineStatus_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Service_ProgressPipeline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProgressPipelineRequest)
+func _Service_PromotePipeline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PromotePipelineRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ServiceServer).ProgressPipeline(ctx, in)
+		return srv.(ServiceServer).PromotePipeline(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.v1.capsule.Service/ProgressPipeline",
+		FullMethod: "/api.v1.capsule.Service/PromotePipeline",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServiceServer).ProgressPipeline(ctx, req.(*ProgressPipelineRequest))
+		return srv.(ServiceServer).PromotePipeline(ctx, req.(*PromotePipelineRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1622,8 +1622,8 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Service_GetPipelineStatus_Handler,
 		},
 		{
-			MethodName: "ProgressPipeline",
-			Handler:    _Service_ProgressPipeline_Handler,
+			MethodName: "PromotePipeline",
+			Handler:    _Service_PromotePipeline_Handler,
 		},
 		{
 			MethodName: "AbortPipeline",
