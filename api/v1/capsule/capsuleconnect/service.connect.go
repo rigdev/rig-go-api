@@ -59,6 +59,9 @@ const (
 	// ServiceListSetProposalsProcedure is the fully-qualified name of the Service's ListSetProposals
 	// RPC.
 	ServiceListSetProposalsProcedure = "/api.v1.capsule.Service/ListSetProposals"
+	// ServiceGetProposalsEnabledProcedure is the fully-qualified name of the Service's
+	// GetProposalsEnabled RPC.
+	ServiceGetProposalsEnabledProcedure = "/api.v1.capsule.Service/GetProposalsEnabled"
 	// ServiceListInstancesProcedure is the fully-qualified name of the Service's ListInstances RPC.
 	ServiceListInstancesProcedure = "/api.v1.capsule.Service/ListInstances"
 	// ServiceRestartInstanceProcedure is the fully-qualified name of the Service's RestartInstance RPC.
@@ -137,6 +140,7 @@ var (
 	serviceProposeSetRolloutMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("ProposeSetRollout")
 	serviceListProposalsMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ListProposals")
 	serviceListSetProposalsMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("ListSetProposals")
+	serviceGetProposalsEnabledMethodDescriptor      = serviceServiceDescriptor.Methods().ByName("GetProposalsEnabled")
 	serviceListInstancesMethodDescriptor            = serviceServiceDescriptor.Methods().ByName("ListInstances")
 	serviceRestartInstanceMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("RestartInstance")
 	serviceGetRolloutMethodDescriptor               = serviceServiceDescriptor.Methods().ByName("GetRollout")
@@ -189,6 +193,7 @@ type ServiceClient interface {
 	ProposeSetRollout(context.Context, *connect.Request[capsule.ProposeSetRolloutRequest]) (*connect.Response[capsule.ProposeSetRolloutResponse], error)
 	ListProposals(context.Context, *connect.Request[capsule.ListProposalsRequest]) (*connect.Response[capsule.ListProposalsResponse], error)
 	ListSetProposals(context.Context, *connect.Request[capsule.ListSetProposalsRequest]) (*connect.Response[capsule.ListSetProposalsResponse], error)
+	GetProposalsEnabled(context.Context, *connect.Request[capsule.GetProposalsEnabledRequest]) (*connect.Response[capsule.GetProposalsEnabledResponse], error)
 	// Lists all instances for the capsule.
 	ListInstances(context.Context, *connect.Request[capsule.ListInstancesRequest]) (*connect.Response[capsule.ListInstancesResponse], error)
 	// Restart a single capsule instance.
@@ -320,6 +325,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			httpClient,
 			baseURL+ServiceListSetProposalsProcedure,
 			connect.WithSchema(serviceListSetProposalsMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		getProposalsEnabled: connect.NewClient[capsule.GetProposalsEnabledRequest, capsule.GetProposalsEnabledResponse](
+			httpClient,
+			baseURL+ServiceGetProposalsEnabledProcedure,
+			connect.WithSchema(serviceGetProposalsEnabledMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		listInstances: connect.NewClient[capsule.ListInstancesRequest, capsule.ListInstancesResponse](
@@ -495,6 +506,7 @@ type serviceClient struct {
 	proposeSetRollout        *connect.Client[capsule.ProposeSetRolloutRequest, capsule.ProposeSetRolloutResponse]
 	listProposals            *connect.Client[capsule.ListProposalsRequest, capsule.ListProposalsResponse]
 	listSetProposals         *connect.Client[capsule.ListSetProposalsRequest, capsule.ListSetProposalsResponse]
+	getProposalsEnabled      *connect.Client[capsule.GetProposalsEnabledRequest, capsule.GetProposalsEnabledResponse]
 	listInstances            *connect.Client[capsule.ListInstancesRequest, capsule.ListInstancesResponse]
 	restartInstance          *connect.Client[capsule.RestartInstanceRequest, capsule.RestartInstanceResponse]
 	getRollout               *connect.Client[capsule.GetRolloutRequest, capsule.GetRolloutResponse]
@@ -581,6 +593,11 @@ func (c *serviceClient) ListProposals(ctx context.Context, req *connect.Request[
 // ListSetProposals calls api.v1.capsule.Service.ListSetProposals.
 func (c *serviceClient) ListSetProposals(ctx context.Context, req *connect.Request[capsule.ListSetProposalsRequest]) (*connect.Response[capsule.ListSetProposalsResponse], error) {
 	return c.listSetProposals.CallUnary(ctx, req)
+}
+
+// GetProposalsEnabled calls api.v1.capsule.Service.GetProposalsEnabled.
+func (c *serviceClient) GetProposalsEnabled(ctx context.Context, req *connect.Request[capsule.GetProposalsEnabledRequest]) (*connect.Response[capsule.GetProposalsEnabledResponse], error) {
+	return c.getProposalsEnabled.CallUnary(ctx, req)
 }
 
 // ListInstances calls api.v1.capsule.Service.ListInstances.
@@ -737,6 +754,7 @@ type ServiceHandler interface {
 	ProposeSetRollout(context.Context, *connect.Request[capsule.ProposeSetRolloutRequest]) (*connect.Response[capsule.ProposeSetRolloutResponse], error)
 	ListProposals(context.Context, *connect.Request[capsule.ListProposalsRequest]) (*connect.Response[capsule.ListProposalsResponse], error)
 	ListSetProposals(context.Context, *connect.Request[capsule.ListSetProposalsRequest]) (*connect.Response[capsule.ListSetProposalsResponse], error)
+	GetProposalsEnabled(context.Context, *connect.Request[capsule.GetProposalsEnabledRequest]) (*connect.Response[capsule.GetProposalsEnabledResponse], error)
 	// Lists all instances for the capsule.
 	ListInstances(context.Context, *connect.Request[capsule.ListInstancesRequest]) (*connect.Response[capsule.ListInstancesResponse], error)
 	// Restart a single capsule instance.
@@ -864,6 +882,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		ServiceListSetProposalsProcedure,
 		svc.ListSetProposals,
 		connect.WithSchema(serviceListSetProposalsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceGetProposalsEnabledHandler := connect.NewUnaryHandler(
+		ServiceGetProposalsEnabledProcedure,
+		svc.GetProposalsEnabled,
+		connect.WithSchema(serviceGetProposalsEnabledMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	serviceListInstancesHandler := connect.NewUnaryHandler(
@@ -1048,6 +1072,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceListProposalsHandler.ServeHTTP(w, r)
 		case ServiceListSetProposalsProcedure:
 			serviceListSetProposalsHandler.ServeHTTP(w, r)
+		case ServiceGetProposalsEnabledProcedure:
+			serviceGetProposalsEnabledHandler.ServeHTTP(w, r)
 		case ServiceListInstancesProcedure:
 			serviceListInstancesHandler.ServeHTTP(w, r)
 		case ServiceRestartInstanceProcedure:
@@ -1155,6 +1181,10 @@ func (UnimplementedServiceHandler) ListProposals(context.Context, *connect.Reque
 
 func (UnimplementedServiceHandler) ListSetProposals(context.Context, *connect.Request[capsule.ListSetProposalsRequest]) (*connect.Response[capsule.ListSetProposalsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.ListSetProposals is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetProposalsEnabled(context.Context, *connect.Request[capsule.GetProposalsEnabledRequest]) (*connect.Response[capsule.GetProposalsEnabledResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capsule.Service.GetProposalsEnabled is not implemented"))
 }
 
 func (UnimplementedServiceHandler) ListInstances(context.Context, *connect.Request[capsule.ListInstancesRequest]) (*connect.Response[capsule.ListInstancesResponse], error) {

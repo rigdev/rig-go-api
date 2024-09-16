@@ -40,6 +40,7 @@ type ServiceClient interface {
 	ProposeSetRollout(ctx context.Context, in *ProposeSetRolloutRequest, opts ...grpc.CallOption) (*ProposeSetRolloutResponse, error)
 	ListProposals(ctx context.Context, in *ListProposalsRequest, opts ...grpc.CallOption) (*ListProposalsResponse, error)
 	ListSetProposals(ctx context.Context, in *ListSetProposalsRequest, opts ...grpc.CallOption) (*ListSetProposalsResponse, error)
+	GetProposalsEnabled(ctx context.Context, in *GetProposalsEnabledRequest, opts ...grpc.CallOption) (*GetProposalsEnabledResponse, error)
 	// Lists all instances for the capsule.
 	ListInstances(ctx context.Context, in *ListInstancesRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error)
 	// Restart a single capsule instance.
@@ -224,6 +225,15 @@ func (c *serviceClient) ListProposals(ctx context.Context, in *ListProposalsRequ
 func (c *serviceClient) ListSetProposals(ctx context.Context, in *ListSetProposalsRequest, opts ...grpc.CallOption) (*ListSetProposalsResponse, error) {
 	out := new(ListSetProposalsResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/ListSetProposals", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) GetProposalsEnabled(ctx context.Context, in *GetProposalsEnabledRequest, opts ...grpc.CallOption) (*GetProposalsEnabledResponse, error) {
+	out := new(GetProposalsEnabledResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.capsule.Service/GetProposalsEnabled", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -603,6 +613,7 @@ type ServiceServer interface {
 	ProposeSetRollout(context.Context, *ProposeSetRolloutRequest) (*ProposeSetRolloutResponse, error)
 	ListProposals(context.Context, *ListProposalsRequest) (*ListProposalsResponse, error)
 	ListSetProposals(context.Context, *ListSetProposalsRequest) (*ListSetProposalsResponse, error)
+	GetProposalsEnabled(context.Context, *GetProposalsEnabledRequest) (*GetProposalsEnabledResponse, error)
 	// Lists all instances for the capsule.
 	ListInstances(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error)
 	// Restart a single capsule instance.
@@ -694,6 +705,9 @@ func (UnimplementedServiceServer) ListProposals(context.Context, *ListProposalsR
 }
 func (UnimplementedServiceServer) ListSetProposals(context.Context, *ListSetProposalsRequest) (*ListSetProposalsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSetProposals not implemented")
+}
+func (UnimplementedServiceServer) GetProposalsEnabled(context.Context, *GetProposalsEnabledRequest) (*GetProposalsEnabledResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProposalsEnabled not implemented")
 }
 func (UnimplementedServiceServer) ListInstances(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListInstances not implemented")
@@ -1001,6 +1015,24 @@ func _Service_ListSetProposals_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServiceServer).ListSetProposals(ctx, req.(*ListSetProposalsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_GetProposalsEnabled_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProposalsEnabledRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetProposalsEnabled(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.capsule.Service/GetProposalsEnabled",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetProposalsEnabled(ctx, req.(*GetProposalsEnabledRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1548,6 +1580,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSetProposals",
 			Handler:    _Service_ListSetProposals_Handler,
+		},
+		{
+			MethodName: "GetProposalsEnabled",
+			Handler:    _Service_GetProposalsEnabled_Handler,
 		},
 		{
 			MethodName: "ListInstances",
