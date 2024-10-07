@@ -1034,6 +1034,9 @@ type GetEffectivePipelineSettingsRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// If set, the response will contain information as to whether the pipeline is
+	// already running for that capsule.
+	CapsuleId string `protobuf:"bytes,2,opt,name=capsule_id,json=capsuleId,proto3" json:"capsule_id,omitempty"`
 }
 
 func (x *GetEffectivePipelineSettingsRequest) Reset() {
@@ -1075,12 +1078,19 @@ func (x *GetEffectivePipelineSettingsRequest) GetProjectId() string {
 	return ""
 }
 
+func (x *GetEffectivePipelineSettingsRequest) GetCapsuleId() string {
+	if x != nil {
+		return x.CapsuleId
+	}
+	return ""
+}
+
 type GetEffectivePipelineSettingsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Pipelines []*model.Pipeline `protobuf:"bytes,1,rep,name=pipelines,proto3" json:"pipelines,omitempty"`
+	Pipelines []*GetEffectivePipelineSettingsResponse_Pipeline `protobuf:"bytes,1,rep,name=pipelines,proto3" json:"pipelines,omitempty"`
 }
 
 func (x *GetEffectivePipelineSettingsResponse) Reset() {
@@ -1115,7 +1125,7 @@ func (*GetEffectivePipelineSettingsResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_project_service_proto_rawDescGZIP(), []int{20}
 }
 
-func (x *GetEffectivePipelineSettingsResponse) GetPipelines() []*model.Pipeline {
+func (x *GetEffectivePipelineSettingsResponse) GetPipelines() []*GetEffectivePipelineSettingsResponse_Pipeline {
 	if x != nil {
 		return x.Pipelines
 	}
@@ -1214,6 +1224,61 @@ func (x *GetEffectiveNotificationSettingsResponse) GetNotifiers() []*model.Notif
 		return x.Notifiers
 	}
 	return nil
+}
+
+type GetEffectivePipelineSettingsResponse_Pipeline struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Pipeline       *model.Pipeline `protobuf:"bytes,1,opt,name=pipeline,proto3" json:"pipeline,omitempty"`
+	AlreadyRunning bool            `protobuf:"varint,2,opt,name=already_running,json=alreadyRunning,proto3" json:"already_running,omitempty"`
+}
+
+func (x *GetEffectivePipelineSettingsResponse_Pipeline) Reset() {
+	*x = GetEffectivePipelineSettingsResponse_Pipeline{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_project_service_proto_msgTypes[23]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetEffectivePipelineSettingsResponse_Pipeline) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetEffectivePipelineSettingsResponse_Pipeline) ProtoMessage() {}
+
+func (x *GetEffectivePipelineSettingsResponse_Pipeline) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_project_service_proto_msgTypes[23]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetEffectivePipelineSettingsResponse_Pipeline.ProtoReflect.Descriptor instead.
+func (*GetEffectivePipelineSettingsResponse_Pipeline) Descriptor() ([]byte, []int) {
+	return file_api_v1_project_service_proto_rawDescGZIP(), []int{20, 0}
+}
+
+func (x *GetEffectivePipelineSettingsResponse_Pipeline) GetPipeline() *model.Pipeline {
+	if x != nil {
+		return x.Pipeline
+	}
+	return nil
+}
+
+func (x *GetEffectivePipelineSettingsResponse_Pipeline) GetAlreadyRunning() bool {
+	if x != nil {
+		return x.AlreadyRunning
+	}
+	return false
 }
 
 var File_api_v1_project_service_proto protoreflect.FileDescriptor
@@ -1323,16 +1388,27 @@ var file_api_v1_project_service_proto_rawDesc = []byte{
 	0x69, 0x6e, 0x67, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x21, 0x0a, 0x03,
 	0x67, 0x69, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x6d, 0x6f, 0x64, 0x65,
 	0x6c, 0x2e, 0x47, 0x69, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x52, 0x03, 0x67, 0x69, 0x74, 0x22,
-	0x44, 0x0a, 0x23, 0x47, 0x65, 0x74, 0x45, 0x66, 0x66, 0x65, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50,
+	0x63, 0x0a, 0x23, 0x47, 0x65, 0x74, 0x45, 0x66, 0x66, 0x65, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50,
 	0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63,
 	0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x6a,
-	0x65, 0x63, 0x74, 0x49, 0x64, 0x22, 0x55, 0x0a, 0x24, 0x47, 0x65, 0x74, 0x45, 0x66, 0x66, 0x65,
+	0x65, 0x63, 0x74, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x61, 0x70, 0x73, 0x75, 0x6c, 0x65,
+	0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x61, 0x70, 0x73, 0x75,
+	0x6c, 0x65, 0x49, 0x64, 0x22, 0xe5, 0x01, 0x0a, 0x24, 0x47, 0x65, 0x74, 0x45, 0x66, 0x66, 0x65,
 	0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x53, 0x65, 0x74,
-	0x74, 0x69, 0x6e, 0x67, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2d, 0x0a,
+	0x74, 0x69, 0x6e, 0x67, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5b, 0x0a,
 	0x09, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
-	0x32, 0x0f, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e,
-	0x65, 0x52, 0x09, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x22, 0x48, 0x0a, 0x27,
+	0x32, 0x3d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63,
+	0x74, 0x2e, 0x47, 0x65, 0x74, 0x45, 0x66, 0x66, 0x65, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x69,
+	0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x52,
+	0x09, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x1a, 0x60, 0x0a, 0x08, 0x50, 0x69,
+	0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x12, 0x2b, 0x0a, 0x08, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69,
+	0x6e, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c,
+	0x2e, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x52, 0x08, 0x70, 0x69, 0x70, 0x65, 0x6c,
+	0x69, 0x6e, 0x65, 0x12, 0x27, 0x0a, 0x0f, 0x61, 0x6c, 0x72, 0x65, 0x61, 0x64, 0x79, 0x5f, 0x72,
+	0x75, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0e, 0x61, 0x6c,
+	0x72, 0x65, 0x61, 0x64, 0x79, 0x52, 0x75, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x22, 0x48, 0x0a, 0x27,
 	0x47, 0x65, 0x74, 0x45, 0x66, 0x66, 0x65, 0x63, 0x74, 0x69, 0x76, 0x65, 0x4e, 0x6f, 0x74, 0x69,
 	0x66, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73,
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6a, 0x65,
@@ -1439,80 +1515,82 @@ func file_api_v1_project_service_proto_rawDescGZIP() []byte {
 	return file_api_v1_project_service_proto_rawDescData
 }
 
-var file_api_v1_project_service_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_api_v1_project_service_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_api_v1_project_service_proto_goTypes = []any{
-	(*CreateRequest)(nil),                            // 0: api.v1.project.CreateRequest
-	(*CreateResponse)(nil),                           // 1: api.v1.project.CreateResponse
-	(*DeleteRequest)(nil),                            // 2: api.v1.project.DeleteRequest
-	(*DeleteResponse)(nil),                           // 3: api.v1.project.DeleteResponse
-	(*UpdateRequest)(nil),                            // 4: api.v1.project.UpdateRequest
-	(*UpdateResponse)(nil),                           // 5: api.v1.project.UpdateResponse
-	(*GetRequest)(nil),                               // 6: api.v1.project.GetRequest
-	(*GetResponse)(nil),                              // 7: api.v1.project.GetResponse
-	(*ListRequest)(nil),                              // 8: api.v1.project.ListRequest
-	(*ListResponse)(nil),                             // 9: api.v1.project.ListResponse
-	(*PublicKeyRequest)(nil),                         // 10: api.v1.project.PublicKeyRequest
-	(*PublicKeyResponse)(nil),                        // 11: api.v1.project.PublicKeyResponse
-	(*GetCustomObjectMetricsRequest)(nil),            // 12: api.v1.project.GetCustomObjectMetricsRequest
-	(*GetCustomObjectMetricsResponse)(nil),           // 13: api.v1.project.GetCustomObjectMetricsResponse
-	(*KubernetesObject)(nil),                         // 14: api.v1.project.KubernetesObject
-	(*GetObjectsByKindRequest)(nil),                  // 15: api.v1.project.GetObjectsByKindRequest
-	(*GetObjectsByKindResponse)(nil),                 // 16: api.v1.project.GetObjectsByKindResponse
-	(*GetEffectiveGitSettingsRequest)(nil),           // 17: api.v1.project.GetEffectiveGitSettingsRequest
-	(*GetEffectiveGitSettingsResponse)(nil),          // 18: api.v1.project.GetEffectiveGitSettingsResponse
-	(*GetEffectivePipelineSettingsRequest)(nil),      // 19: api.v1.project.GetEffectivePipelineSettingsRequest
-	(*GetEffectivePipelineSettingsResponse)(nil),     // 20: api.v1.project.GetEffectivePipelineSettingsResponse
-	(*GetEffectiveNotificationSettingsRequest)(nil),  // 21: api.v1.project.GetEffectiveNotificationSettingsRequest
-	(*GetEffectiveNotificationSettingsResponse)(nil), // 22: api.v1.project.GetEffectiveNotificationSettingsResponse
-	(*Update)(nil),                                   // 23: api.v1.project.Update
-	(*Project)(nil),                                  // 24: api.v1.project.Project
-	(*model.Pagination)(nil),                         // 25: model.Pagination
-	(*model.ObjectReference)(nil),                    // 26: model.ObjectReference
-	(*model.Metric)(nil),                             // 27: model.Metric
-	(*model.GitStore)(nil),                           // 28: model.GitStore
-	(*model.Pipeline)(nil),                           // 29: model.Pipeline
-	(*model.NotificationNotifier)(nil),               // 30: model.NotificationNotifier
+	(*CreateRequest)(nil),                                 // 0: api.v1.project.CreateRequest
+	(*CreateResponse)(nil),                                // 1: api.v1.project.CreateResponse
+	(*DeleteRequest)(nil),                                 // 2: api.v1.project.DeleteRequest
+	(*DeleteResponse)(nil),                                // 3: api.v1.project.DeleteResponse
+	(*UpdateRequest)(nil),                                 // 4: api.v1.project.UpdateRequest
+	(*UpdateResponse)(nil),                                // 5: api.v1.project.UpdateResponse
+	(*GetRequest)(nil),                                    // 6: api.v1.project.GetRequest
+	(*GetResponse)(nil),                                   // 7: api.v1.project.GetResponse
+	(*ListRequest)(nil),                                   // 8: api.v1.project.ListRequest
+	(*ListResponse)(nil),                                  // 9: api.v1.project.ListResponse
+	(*PublicKeyRequest)(nil),                              // 10: api.v1.project.PublicKeyRequest
+	(*PublicKeyResponse)(nil),                             // 11: api.v1.project.PublicKeyResponse
+	(*GetCustomObjectMetricsRequest)(nil),                 // 12: api.v1.project.GetCustomObjectMetricsRequest
+	(*GetCustomObjectMetricsResponse)(nil),                // 13: api.v1.project.GetCustomObjectMetricsResponse
+	(*KubernetesObject)(nil),                              // 14: api.v1.project.KubernetesObject
+	(*GetObjectsByKindRequest)(nil),                       // 15: api.v1.project.GetObjectsByKindRequest
+	(*GetObjectsByKindResponse)(nil),                      // 16: api.v1.project.GetObjectsByKindResponse
+	(*GetEffectiveGitSettingsRequest)(nil),                // 17: api.v1.project.GetEffectiveGitSettingsRequest
+	(*GetEffectiveGitSettingsResponse)(nil),               // 18: api.v1.project.GetEffectiveGitSettingsResponse
+	(*GetEffectivePipelineSettingsRequest)(nil),           // 19: api.v1.project.GetEffectivePipelineSettingsRequest
+	(*GetEffectivePipelineSettingsResponse)(nil),          // 20: api.v1.project.GetEffectivePipelineSettingsResponse
+	(*GetEffectiveNotificationSettingsRequest)(nil),       // 21: api.v1.project.GetEffectiveNotificationSettingsRequest
+	(*GetEffectiveNotificationSettingsResponse)(nil),      // 22: api.v1.project.GetEffectiveNotificationSettingsResponse
+	(*GetEffectivePipelineSettingsResponse_Pipeline)(nil), // 23: api.v1.project.GetEffectivePipelineSettingsResponse.Pipeline
+	(*Update)(nil),                                        // 24: api.v1.project.Update
+	(*Project)(nil),                                       // 25: api.v1.project.Project
+	(*model.Pagination)(nil),                              // 26: model.Pagination
+	(*model.ObjectReference)(nil),                         // 27: model.ObjectReference
+	(*model.Metric)(nil),                                  // 28: model.Metric
+	(*model.GitStore)(nil),                                // 29: model.GitStore
+	(*model.NotificationNotifier)(nil),                    // 30: model.NotificationNotifier
+	(*model.Pipeline)(nil),                                // 31: model.Pipeline
 }
 var file_api_v1_project_service_proto_depIdxs = []int32{
-	23, // 0: api.v1.project.CreateRequest.initializers:type_name -> api.v1.project.Update
-	24, // 1: api.v1.project.CreateResponse.project:type_name -> api.v1.project.Project
-	23, // 2: api.v1.project.UpdateRequest.updates:type_name -> api.v1.project.Update
-	24, // 3: api.v1.project.GetResponse.project:type_name -> api.v1.project.Project
-	25, // 4: api.v1.project.ListRequest.pagination:type_name -> model.Pagination
-	24, // 5: api.v1.project.ListResponse.projects:type_name -> api.v1.project.Project
-	26, // 6: api.v1.project.GetCustomObjectMetricsRequest.object_reference:type_name -> model.ObjectReference
-	27, // 7: api.v1.project.GetCustomObjectMetricsResponse.metrics:type_name -> model.Metric
+	24, // 0: api.v1.project.CreateRequest.initializers:type_name -> api.v1.project.Update
+	25, // 1: api.v1.project.CreateResponse.project:type_name -> api.v1.project.Project
+	24, // 2: api.v1.project.UpdateRequest.updates:type_name -> api.v1.project.Update
+	25, // 3: api.v1.project.GetResponse.project:type_name -> api.v1.project.Project
+	26, // 4: api.v1.project.ListRequest.pagination:type_name -> model.Pagination
+	25, // 5: api.v1.project.ListResponse.projects:type_name -> api.v1.project.Project
+	27, // 6: api.v1.project.GetCustomObjectMetricsRequest.object_reference:type_name -> model.ObjectReference
+	28, // 7: api.v1.project.GetCustomObjectMetricsResponse.metrics:type_name -> model.Metric
 	14, // 8: api.v1.project.GetObjectsByKindResponse.objects:type_name -> api.v1.project.KubernetesObject
-	28, // 9: api.v1.project.GetEffectiveGitSettingsResponse.git:type_name -> model.GitStore
-	29, // 10: api.v1.project.GetEffectivePipelineSettingsResponse.pipelines:type_name -> model.Pipeline
+	29, // 9: api.v1.project.GetEffectiveGitSettingsResponse.git:type_name -> model.GitStore
+	23, // 10: api.v1.project.GetEffectivePipelineSettingsResponse.pipelines:type_name -> api.v1.project.GetEffectivePipelineSettingsResponse.Pipeline
 	30, // 11: api.v1.project.GetEffectiveNotificationSettingsResponse.notifiers:type_name -> model.NotificationNotifier
-	0,  // 12: api.v1.project.Service.Create:input_type -> api.v1.project.CreateRequest
-	2,  // 13: api.v1.project.Service.Delete:input_type -> api.v1.project.DeleteRequest
-	6,  // 14: api.v1.project.Service.Get:input_type -> api.v1.project.GetRequest
-	8,  // 15: api.v1.project.Service.List:input_type -> api.v1.project.ListRequest
-	4,  // 16: api.v1.project.Service.Update:input_type -> api.v1.project.UpdateRequest
-	10, // 17: api.v1.project.Service.PublicKey:input_type -> api.v1.project.PublicKeyRequest
-	15, // 18: api.v1.project.Service.GetObjectsByKind:input_type -> api.v1.project.GetObjectsByKindRequest
-	12, // 19: api.v1.project.Service.GetCustomObjectMetrics:input_type -> api.v1.project.GetCustomObjectMetricsRequest
-	17, // 20: api.v1.project.Service.GetEffectiveGitSettings:input_type -> api.v1.project.GetEffectiveGitSettingsRequest
-	19, // 21: api.v1.project.Service.GetEffectivePipelineSettings:input_type -> api.v1.project.GetEffectivePipelineSettingsRequest
-	21, // 22: api.v1.project.Service.GetEffectiveNotificationSettings:input_type -> api.v1.project.GetEffectiveNotificationSettingsRequest
-	1,  // 23: api.v1.project.Service.Create:output_type -> api.v1.project.CreateResponse
-	3,  // 24: api.v1.project.Service.Delete:output_type -> api.v1.project.DeleteResponse
-	7,  // 25: api.v1.project.Service.Get:output_type -> api.v1.project.GetResponse
-	9,  // 26: api.v1.project.Service.List:output_type -> api.v1.project.ListResponse
-	5,  // 27: api.v1.project.Service.Update:output_type -> api.v1.project.UpdateResponse
-	11, // 28: api.v1.project.Service.PublicKey:output_type -> api.v1.project.PublicKeyResponse
-	16, // 29: api.v1.project.Service.GetObjectsByKind:output_type -> api.v1.project.GetObjectsByKindResponse
-	13, // 30: api.v1.project.Service.GetCustomObjectMetrics:output_type -> api.v1.project.GetCustomObjectMetricsResponse
-	18, // 31: api.v1.project.Service.GetEffectiveGitSettings:output_type -> api.v1.project.GetEffectiveGitSettingsResponse
-	20, // 32: api.v1.project.Service.GetEffectivePipelineSettings:output_type -> api.v1.project.GetEffectivePipelineSettingsResponse
-	22, // 33: api.v1.project.Service.GetEffectiveNotificationSettings:output_type -> api.v1.project.GetEffectiveNotificationSettingsResponse
-	23, // [23:34] is the sub-list for method output_type
-	12, // [12:23] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	31, // 12: api.v1.project.GetEffectivePipelineSettingsResponse.Pipeline.pipeline:type_name -> model.Pipeline
+	0,  // 13: api.v1.project.Service.Create:input_type -> api.v1.project.CreateRequest
+	2,  // 14: api.v1.project.Service.Delete:input_type -> api.v1.project.DeleteRequest
+	6,  // 15: api.v1.project.Service.Get:input_type -> api.v1.project.GetRequest
+	8,  // 16: api.v1.project.Service.List:input_type -> api.v1.project.ListRequest
+	4,  // 17: api.v1.project.Service.Update:input_type -> api.v1.project.UpdateRequest
+	10, // 18: api.v1.project.Service.PublicKey:input_type -> api.v1.project.PublicKeyRequest
+	15, // 19: api.v1.project.Service.GetObjectsByKind:input_type -> api.v1.project.GetObjectsByKindRequest
+	12, // 20: api.v1.project.Service.GetCustomObjectMetrics:input_type -> api.v1.project.GetCustomObjectMetricsRequest
+	17, // 21: api.v1.project.Service.GetEffectiveGitSettings:input_type -> api.v1.project.GetEffectiveGitSettingsRequest
+	19, // 22: api.v1.project.Service.GetEffectivePipelineSettings:input_type -> api.v1.project.GetEffectivePipelineSettingsRequest
+	21, // 23: api.v1.project.Service.GetEffectiveNotificationSettings:input_type -> api.v1.project.GetEffectiveNotificationSettingsRequest
+	1,  // 24: api.v1.project.Service.Create:output_type -> api.v1.project.CreateResponse
+	3,  // 25: api.v1.project.Service.Delete:output_type -> api.v1.project.DeleteResponse
+	7,  // 26: api.v1.project.Service.Get:output_type -> api.v1.project.GetResponse
+	9,  // 27: api.v1.project.Service.List:output_type -> api.v1.project.ListResponse
+	5,  // 28: api.v1.project.Service.Update:output_type -> api.v1.project.UpdateResponse
+	11, // 29: api.v1.project.Service.PublicKey:output_type -> api.v1.project.PublicKeyResponse
+	16, // 30: api.v1.project.Service.GetObjectsByKind:output_type -> api.v1.project.GetObjectsByKindResponse
+	13, // 31: api.v1.project.Service.GetCustomObjectMetrics:output_type -> api.v1.project.GetCustomObjectMetricsResponse
+	18, // 32: api.v1.project.Service.GetEffectiveGitSettings:output_type -> api.v1.project.GetEffectiveGitSettingsResponse
+	20, // 33: api.v1.project.Service.GetEffectivePipelineSettings:output_type -> api.v1.project.GetEffectivePipelineSettingsResponse
+	22, // 34: api.v1.project.Service.GetEffectiveNotificationSettings:output_type -> api.v1.project.GetEffectiveNotificationSettingsResponse
+	24, // [24:35] is the sub-list for method output_type
+	13, // [13:24] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_api_v1_project_service_proto_init() }
@@ -1798,6 +1876,18 @@ func file_api_v1_project_service_proto_init() {
 				return nil
 			}
 		}
+		file_api_v1_project_service_proto_msgTypes[23].Exporter = func(v any, i int) any {
+			switch v := v.(*GetEffectivePipelineSettingsResponse_Pipeline); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1805,7 +1895,7 @@ func file_api_v1_project_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_project_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   23,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
