@@ -37,13 +37,17 @@ const (
 	ServiceGetMetricsProcedure = "/api.v1.metrics.Service/GetMetrics"
 	// ServiceGetMetricsManyProcedure is the fully-qualified name of the Service's GetMetricsMany RPC.
 	ServiceGetMetricsManyProcedure = "/api.v1.metrics.Service/GetMetricsMany"
+	// ServiceGetMetricsExpressionProcedure is the fully-qualified name of the Service's
+	// GetMetricsExpression RPC.
+	ServiceGetMetricsExpressionProcedure = "/api.v1.metrics.Service/GetMetricsExpression"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor              = metrics.File_api_v1_metrics_service_proto.Services().ByName("Service")
-	serviceGetMetricsMethodDescriptor     = serviceServiceDescriptor.Methods().ByName("GetMetrics")
-	serviceGetMetricsManyMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetMetricsMany")
+	serviceServiceDescriptor                    = metrics.File_api_v1_metrics_service_proto.Services().ByName("Service")
+	serviceGetMetricsMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("GetMetrics")
+	serviceGetMetricsManyMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("GetMetricsMany")
+	serviceGetMetricsExpressionMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetMetricsExpression")
 )
 
 // ServiceClient is a client for the api.v1.metrics.Service service.
@@ -55,6 +59,7 @@ type ServiceClient interface {
 	// Retrive metrics for multiple sets of tags at a time. Metrics within the
 	// same set of tags will be in ascending order of timestamp.
 	GetMetricsMany(context.Context, *connect.Request[metrics.GetMetricsManyRequest]) (*connect.Response[metrics.GetMetricsManyResponse], error)
+	GetMetricsExpression(context.Context, *connect.Request[metrics.GetMetricsExpressionRequest]) (*connect.Response[metrics.GetMetricsExpressionResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.metrics.Service service. By default, it uses
@@ -79,13 +84,20 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetMetricsManyMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		getMetricsExpression: connect.NewClient[metrics.GetMetricsExpressionRequest, metrics.GetMetricsExpressionResponse](
+			httpClient,
+			baseURL+ServiceGetMetricsExpressionProcedure,
+			connect.WithSchema(serviceGetMetricsExpressionMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	getMetrics     *connect.Client[metrics.GetMetricsRequest, metrics.GetMetricsResponse]
-	getMetricsMany *connect.Client[metrics.GetMetricsManyRequest, metrics.GetMetricsManyResponse]
+	getMetrics           *connect.Client[metrics.GetMetricsRequest, metrics.GetMetricsResponse]
+	getMetricsMany       *connect.Client[metrics.GetMetricsManyRequest, metrics.GetMetricsManyResponse]
+	getMetricsExpression *connect.Client[metrics.GetMetricsExpressionRequest, metrics.GetMetricsExpressionResponse]
 }
 
 // GetMetrics calls api.v1.metrics.Service.GetMetrics.
@@ -98,6 +110,11 @@ func (c *serviceClient) GetMetricsMany(ctx context.Context, req *connect.Request
 	return c.getMetricsMany.CallUnary(ctx, req)
 }
 
+// GetMetricsExpression calls api.v1.metrics.Service.GetMetricsExpression.
+func (c *serviceClient) GetMetricsExpression(ctx context.Context, req *connect.Request[metrics.GetMetricsExpressionRequest]) (*connect.Response[metrics.GetMetricsExpressionResponse], error) {
+	return c.getMetricsExpression.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.metrics.Service service.
 type ServiceHandler interface {
 	// Retrieve metrics. metric_type is mandatory, while the rest of the fields
@@ -107,6 +124,7 @@ type ServiceHandler interface {
 	// Retrive metrics for multiple sets of tags at a time. Metrics within the
 	// same set of tags will be in ascending order of timestamp.
 	GetMetricsMany(context.Context, *connect.Request[metrics.GetMetricsManyRequest]) (*connect.Response[metrics.GetMetricsManyResponse], error)
+	GetMetricsExpression(context.Context, *connect.Request[metrics.GetMetricsExpressionRequest]) (*connect.Response[metrics.GetMetricsExpressionResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -127,12 +145,20 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetMetricsManyMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetMetricsExpressionHandler := connect.NewUnaryHandler(
+		ServiceGetMetricsExpressionProcedure,
+		svc.GetMetricsExpression,
+		connect.WithSchema(serviceGetMetricsExpressionMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.metrics.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceGetMetricsProcedure:
 			serviceGetMetricsHandler.ServeHTTP(w, r)
 		case ServiceGetMetricsManyProcedure:
 			serviceGetMetricsManyHandler.ServeHTTP(w, r)
+		case ServiceGetMetricsExpressionProcedure:
+			serviceGetMetricsExpressionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -148,4 +174,8 @@ func (UnimplementedServiceHandler) GetMetrics(context.Context, *connect.Request[
 
 func (UnimplementedServiceHandler) GetMetricsMany(context.Context, *connect.Request[metrics.GetMetricsManyRequest]) (*connect.Response[metrics.GetMetricsManyResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.metrics.Service.GetMetricsMany is not implemented"))
+}
+
+func (UnimplementedServiceHandler) GetMetricsExpression(context.Context, *connect.Request[metrics.GetMetricsExpressionRequest]) (*connect.Response[metrics.GetMetricsExpressionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.metrics.Service.GetMetricsExpression is not implemented"))
 }

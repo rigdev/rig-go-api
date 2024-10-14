@@ -25,6 +25,7 @@ type ServiceClient interface {
 	// Retrive metrics for multiple sets of tags at a time. Metrics within the
 	// same set of tags will be in ascending order of timestamp.
 	GetMetricsMany(ctx context.Context, in *GetMetricsManyRequest, opts ...grpc.CallOption) (*GetMetricsManyResponse, error)
+	GetMetricsExpression(ctx context.Context, in *GetMetricsExpressionRequest, opts ...grpc.CallOption) (*GetMetricsExpressionResponse, error)
 }
 
 type serviceClient struct {
@@ -53,6 +54,15 @@ func (c *serviceClient) GetMetricsMany(ctx context.Context, in *GetMetricsManyRe
 	return out, nil
 }
 
+func (c *serviceClient) GetMetricsExpression(ctx context.Context, in *GetMetricsExpressionRequest, opts ...grpc.CallOption) (*GetMetricsExpressionResponse, error) {
+	out := new(GetMetricsExpressionResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.metrics.Service/GetMetricsExpression", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -64,6 +74,7 @@ type ServiceServer interface {
 	// Retrive metrics for multiple sets of tags at a time. Metrics within the
 	// same set of tags will be in ascending order of timestamp.
 	GetMetricsMany(context.Context, *GetMetricsManyRequest) (*GetMetricsManyResponse, error)
+	GetMetricsExpression(context.Context, *GetMetricsExpressionRequest) (*GetMetricsExpressionResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -76,6 +87,9 @@ func (UnimplementedServiceServer) GetMetrics(context.Context, *GetMetricsRequest
 }
 func (UnimplementedServiceServer) GetMetricsMany(context.Context, *GetMetricsManyRequest) (*GetMetricsManyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMetricsMany not implemented")
+}
+func (UnimplementedServiceServer) GetMetricsExpression(context.Context, *GetMetricsExpressionRequest) (*GetMetricsExpressionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMetricsExpression not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -126,6 +140,24 @@ func _Service_GetMetricsMany_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_GetMetricsExpression_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMetricsExpressionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetMetricsExpression(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.metrics.Service/GetMetricsExpression",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetMetricsExpression(ctx, req.(*GetMetricsExpressionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -140,6 +172,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMetricsMany",
 			Handler:    _Service_GetMetricsMany_Handler,
+		},
+		{
+			MethodName: "GetMetricsExpression",
+			Handler:    _Service_GetMetricsExpression_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
