@@ -43,6 +43,8 @@ const (
 	ServiceListProcedure = "/api.v1.environment.Service/List"
 	// ServiceGetNamespacesProcedure is the fully-qualified name of the Service's GetNamespaces RPC.
 	ServiceGetNamespacesProcedure = "/api.v1.environment.Service/GetNamespaces"
+	// ServiceGetProcedure is the fully-qualified name of the Service's Get RPC.
+	ServiceGetProcedure = "/api.v1.environment.Service/Get"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -53,6 +55,7 @@ var (
 	serviceDeleteMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Delete")
 	serviceListMethodDescriptor          = serviceServiceDescriptor.Methods().ByName("List")
 	serviceGetNamespacesMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetNamespaces")
+	serviceGetMethodDescriptor           = serviceServiceDescriptor.Methods().ByName("Get")
 )
 
 // ServiceClient is a client for the api.v1.environment.Service service.
@@ -63,6 +66,7 @@ type ServiceClient interface {
 	// List available environments.
 	List(context.Context, *connect.Request[environment.ListRequest]) (*connect.Response[environment.ListResponse], error)
 	GetNamespaces(context.Context, *connect.Request[environment.GetNamespacesRequest]) (*connect.Response[environment.GetNamespacesResponse], error)
+	Get(context.Context, *connect.Request[environment.GetRequest]) (*connect.Response[environment.GetResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.environment.Service service. By default, it
@@ -105,6 +109,12 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetNamespacesMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		get: connect.NewClient[environment.GetRequest, environment.GetResponse](
+			httpClient,
+			baseURL+ServiceGetProcedure,
+			connect.WithSchema(serviceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -115,6 +125,7 @@ type serviceClient struct {
 	delete        *connect.Client[environment.DeleteRequest, environment.DeleteResponse]
 	list          *connect.Client[environment.ListRequest, environment.ListResponse]
 	getNamespaces *connect.Client[environment.GetNamespacesRequest, environment.GetNamespacesResponse]
+	get           *connect.Client[environment.GetRequest, environment.GetResponse]
 }
 
 // Create calls api.v1.environment.Service.Create.
@@ -142,6 +153,11 @@ func (c *serviceClient) GetNamespaces(ctx context.Context, req *connect.Request[
 	return c.getNamespaces.CallUnary(ctx, req)
 }
 
+// Get calls api.v1.environment.Service.Get.
+func (c *serviceClient) Get(ctx context.Context, req *connect.Request[environment.GetRequest]) (*connect.Response[environment.GetResponse], error) {
+	return c.get.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.environment.Service service.
 type ServiceHandler interface {
 	Create(context.Context, *connect.Request[environment.CreateRequest]) (*connect.Response[environment.CreateResponse], error)
@@ -150,6 +166,7 @@ type ServiceHandler interface {
 	// List available environments.
 	List(context.Context, *connect.Request[environment.ListRequest]) (*connect.Response[environment.ListResponse], error)
 	GetNamespaces(context.Context, *connect.Request[environment.GetNamespacesRequest]) (*connect.Response[environment.GetNamespacesResponse], error)
+	Get(context.Context, *connect.Request[environment.GetRequest]) (*connect.Response[environment.GetResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -188,6 +205,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetNamespacesMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceGetHandler := connect.NewUnaryHandler(
+		ServiceGetProcedure,
+		svc.Get,
+		connect.WithSchema(serviceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.environment.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceCreateProcedure:
@@ -200,6 +223,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceListHandler.ServeHTTP(w, r)
 		case ServiceGetNamespacesProcedure:
 			serviceGetNamespacesHandler.ServeHTTP(w, r)
+		case ServiceGetProcedure:
+			serviceGetHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -227,4 +252,8 @@ func (UnimplementedServiceHandler) List(context.Context, *connect.Request[enviro
 
 func (UnimplementedServiceHandler) GetNamespaces(context.Context, *connect.Request[environment.GetNamespacesRequest]) (*connect.Response[environment.GetNamespacesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.environment.Service.GetNamespaces is not implemented"))
+}
+
+func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[environment.GetRequest]) (*connect.Response[environment.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.environment.Service.Get is not implemented"))
 }
