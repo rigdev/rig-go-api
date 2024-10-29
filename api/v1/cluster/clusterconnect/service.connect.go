@@ -39,14 +39,17 @@ const (
 	ServiceGetConfigProcedure = "/api.v1.cluster.Service/GetConfig"
 	// ServiceGetConfigsProcedure is the fully-qualified name of the Service's GetConfigs RPC.
 	ServiceGetConfigsProcedure = "/api.v1.cluster.Service/GetConfigs"
+	// ServiceListNodePodsProcedure is the fully-qualified name of the Service's ListNodePods RPC.
+	ServiceListNodePodsProcedure = "/api.v1.cluster.Service/ListNodePods"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serviceServiceDescriptor          = cluster.File_api_v1_cluster_service_proto.Services().ByName("Service")
-	serviceListMethodDescriptor       = serviceServiceDescriptor.Methods().ByName("List")
-	serviceGetConfigMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetConfig")
-	serviceGetConfigsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetConfigs")
+	serviceServiceDescriptor            = cluster.File_api_v1_cluster_service_proto.Services().ByName("Service")
+	serviceListMethodDescriptor         = serviceServiceDescriptor.Methods().ByName("List")
+	serviceGetConfigMethodDescriptor    = serviceServiceDescriptor.Methods().ByName("GetConfig")
+	serviceGetConfigsMethodDescriptor   = serviceServiceDescriptor.Methods().ByName("GetConfigs")
+	serviceListNodePodsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("ListNodePods")
 )
 
 // ServiceClient is a client for the api.v1.cluster.Service service.
@@ -56,6 +59,7 @@ type ServiceClient interface {
 	GetConfig(context.Context, *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error)
 	// GetConfigs returns the configs for all clusters.
 	GetConfigs(context.Context, *connect.Request[cluster.GetConfigsRequest]) (*connect.Response[cluster.GetConfigsResponse], error)
+	ListNodePods(context.Context, *connect.Request[cluster.ListNodePodsRequest]) (*connect.Response[cluster.ListNodePodsResponse], error)
 }
 
 // NewServiceClient constructs a client for the api.v1.cluster.Service service. By default, it uses
@@ -86,14 +90,21 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 			connect.WithSchema(serviceGetConfigsMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		listNodePods: connect.NewClient[cluster.ListNodePodsRequest, cluster.ListNodePodsResponse](
+			httpClient,
+			baseURL+ServiceListNodePodsProcedure,
+			connect.WithSchema(serviceListNodePodsMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	list       *connect.Client[cluster.ListRequest, cluster.ListResponse]
-	getConfig  *connect.Client[cluster.GetConfigRequest, cluster.GetConfigResponse]
-	getConfigs *connect.Client[cluster.GetConfigsRequest, cluster.GetConfigsResponse]
+	list         *connect.Client[cluster.ListRequest, cluster.ListResponse]
+	getConfig    *connect.Client[cluster.GetConfigRequest, cluster.GetConfigResponse]
+	getConfigs   *connect.Client[cluster.GetConfigsRequest, cluster.GetConfigsResponse]
+	listNodePods *connect.Client[cluster.ListNodePodsRequest, cluster.ListNodePodsResponse]
 }
 
 // List calls api.v1.cluster.Service.List.
@@ -111,6 +122,11 @@ func (c *serviceClient) GetConfigs(ctx context.Context, req *connect.Request[clu
 	return c.getConfigs.CallUnary(ctx, req)
 }
 
+// ListNodePods calls api.v1.cluster.Service.ListNodePods.
+func (c *serviceClient) ListNodePods(ctx context.Context, req *connect.Request[cluster.ListNodePodsRequest]) (*connect.Response[cluster.ListNodePodsResponse], error) {
+	return c.listNodePods.CallUnary(ctx, req)
+}
+
 // ServiceHandler is an implementation of the api.v1.cluster.Service service.
 type ServiceHandler interface {
 	List(context.Context, *connect.Request[cluster.ListRequest]) (*connect.Response[cluster.ListResponse], error)
@@ -118,6 +134,7 @@ type ServiceHandler interface {
 	GetConfig(context.Context, *connect.Request[cluster.GetConfigRequest]) (*connect.Response[cluster.GetConfigResponse], error)
 	// GetConfigs returns the configs for all clusters.
 	GetConfigs(context.Context, *connect.Request[cluster.GetConfigsRequest]) (*connect.Response[cluster.GetConfigsResponse], error)
+	ListNodePods(context.Context, *connect.Request[cluster.ListNodePodsRequest]) (*connect.Response[cluster.ListNodePodsResponse], error)
 }
 
 // NewServiceHandler builds an HTTP handler from the service implementation. It returns the path on
@@ -144,6 +161,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(serviceGetConfigsMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	serviceListNodePodsHandler := connect.NewUnaryHandler(
+		ServiceListNodePodsProcedure,
+		svc.ListNodePods,
+		connect.WithSchema(serviceListNodePodsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/api.v1.cluster.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ServiceListProcedure:
@@ -152,6 +175,8 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 			serviceGetConfigHandler.ServeHTTP(w, r)
 		case ServiceGetConfigsProcedure:
 			serviceGetConfigsHandler.ServeHTTP(w, r)
+		case ServiceListNodePodsProcedure:
+			serviceListNodePodsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -171,4 +196,8 @@ func (UnimplementedServiceHandler) GetConfig(context.Context, *connect.Request[c
 
 func (UnimplementedServiceHandler) GetConfigs(context.Context, *connect.Request[cluster.GetConfigsRequest]) (*connect.Response[cluster.GetConfigsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.cluster.Service.GetConfigs is not implemented"))
+}
+
+func (UnimplementedServiceHandler) ListNodePods(context.Context, *connect.Request[cluster.ListNodePodsRequest]) (*connect.Response[cluster.ListNodePodsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.cluster.Service.ListNodePods is not implemented"))
 }
