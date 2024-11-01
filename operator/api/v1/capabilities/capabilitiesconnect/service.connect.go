@@ -33,10 +33,10 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// ServiceGetProcedure is the fully-qualified name of the Service's Get RPC.
-	ServiceGetProcedure = "/api.v1.capabilities.Service/Get"
 	// ServiceGetConfigProcedure is the fully-qualified name of the Service's GetConfig RPC.
 	ServiceGetConfigProcedure = "/api.v1.capabilities.Service/GetConfig"
+	// ServiceGetProcedure is the fully-qualified name of the Service's Get RPC.
+	ServiceGetProcedure = "/api.v1.capabilities.Service/Get"
 	// ServiceGetPluginsProcedure is the fully-qualified name of the Service's GetPlugins RPC.
 	ServiceGetPluginsProcedure = "/api.v1.capabilities.Service/GetPlugins"
 )
@@ -44,15 +44,15 @@ const (
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
 	serviceServiceDescriptor          = capabilities.File_operator_api_v1_capabilities_service_proto.Services().ByName("Service")
-	serviceGetMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Get")
 	serviceGetConfigMethodDescriptor  = serviceServiceDescriptor.Methods().ByName("GetConfig")
+	serviceGetMethodDescriptor        = serviceServiceDescriptor.Methods().ByName("Get")
 	serviceGetPluginsMethodDescriptor = serviceServiceDescriptor.Methods().ByName("GetPlugins")
 )
 
 // ServiceClient is a client for the api.v1.capabilities.Service service.
 type ServiceClient interface {
-	Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error)
 	GetConfig(context.Context, *connect.Request[capabilities.GetConfigRequest]) (*connect.Response[capabilities.GetConfigResponse], error)
+	Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error)
 	GetPlugins(context.Context, *connect.Request[capabilities.GetPluginsRequest]) (*connect.Response[capabilities.GetPluginsResponse], error)
 }
 
@@ -66,16 +66,16 @@ type ServiceClient interface {
 func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &serviceClient{
-		get: connect.NewClient[capabilities.GetRequest, capabilities.GetResponse](
-			httpClient,
-			baseURL+ServiceGetProcedure,
-			connect.WithSchema(serviceGetMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
 		getConfig: connect.NewClient[capabilities.GetConfigRequest, capabilities.GetConfigResponse](
 			httpClient,
 			baseURL+ServiceGetConfigProcedure,
 			connect.WithSchema(serviceGetConfigMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		get: connect.NewClient[capabilities.GetRequest, capabilities.GetResponse](
+			httpClient,
+			baseURL+ServiceGetProcedure,
+			connect.WithSchema(serviceGetMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		getPlugins: connect.NewClient[capabilities.GetPluginsRequest, capabilities.GetPluginsResponse](
@@ -89,19 +89,19 @@ func NewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...con
 
 // serviceClient implements ServiceClient.
 type serviceClient struct {
-	get        *connect.Client[capabilities.GetRequest, capabilities.GetResponse]
 	getConfig  *connect.Client[capabilities.GetConfigRequest, capabilities.GetConfigResponse]
+	get        *connect.Client[capabilities.GetRequest, capabilities.GetResponse]
 	getPlugins *connect.Client[capabilities.GetPluginsRequest, capabilities.GetPluginsResponse]
-}
-
-// Get calls api.v1.capabilities.Service.Get.
-func (c *serviceClient) Get(ctx context.Context, req *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error) {
-	return c.get.CallUnary(ctx, req)
 }
 
 // GetConfig calls api.v1.capabilities.Service.GetConfig.
 func (c *serviceClient) GetConfig(ctx context.Context, req *connect.Request[capabilities.GetConfigRequest]) (*connect.Response[capabilities.GetConfigResponse], error) {
 	return c.getConfig.CallUnary(ctx, req)
+}
+
+// Get calls api.v1.capabilities.Service.Get.
+func (c *serviceClient) Get(ctx context.Context, req *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error) {
+	return c.get.CallUnary(ctx, req)
 }
 
 // GetPlugins calls api.v1.capabilities.Service.GetPlugins.
@@ -111,8 +111,8 @@ func (c *serviceClient) GetPlugins(ctx context.Context, req *connect.Request[cap
 
 // ServiceHandler is an implementation of the api.v1.capabilities.Service service.
 type ServiceHandler interface {
-	Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error)
 	GetConfig(context.Context, *connect.Request[capabilities.GetConfigRequest]) (*connect.Response[capabilities.GetConfigResponse], error)
+	Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error)
 	GetPlugins(context.Context, *connect.Request[capabilities.GetPluginsRequest]) (*connect.Response[capabilities.GetPluginsResponse], error)
 }
 
@@ -122,16 +122,16 @@ type ServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	serviceGetHandler := connect.NewUnaryHandler(
-		ServiceGetProcedure,
-		svc.Get,
-		connect.WithSchema(serviceGetMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
 	serviceGetConfigHandler := connect.NewUnaryHandler(
 		ServiceGetConfigProcedure,
 		svc.GetConfig,
 		connect.WithSchema(serviceGetConfigMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	serviceGetHandler := connect.NewUnaryHandler(
+		ServiceGetProcedure,
+		svc.Get,
+		connect.WithSchema(serviceGetMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	serviceGetPluginsHandler := connect.NewUnaryHandler(
@@ -142,10 +142,10 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 	)
 	return "/api.v1.capabilities.Service/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case ServiceGetProcedure:
-			serviceGetHandler.ServeHTTP(w, r)
 		case ServiceGetConfigProcedure:
 			serviceGetConfigHandler.ServeHTTP(w, r)
+		case ServiceGetProcedure:
+			serviceGetHandler.ServeHTTP(w, r)
 		case ServiceGetPluginsProcedure:
 			serviceGetPluginsHandler.ServeHTTP(w, r)
 		default:
@@ -157,12 +157,12 @@ func NewServiceHandler(svc ServiceHandler, opts ...connect.HandlerOption) (strin
 // UnimplementedServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedServiceHandler struct{}
 
-func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capabilities.Service.Get is not implemented"))
-}
-
 func (UnimplementedServiceHandler) GetConfig(context.Context, *connect.Request[capabilities.GetConfigRequest]) (*connect.Response[capabilities.GetConfigResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capabilities.Service.GetConfig is not implemented"))
+}
+
+func (UnimplementedServiceHandler) Get(context.Context, *connect.Request[capabilities.GetRequest]) (*connect.Response[capabilities.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("api.v1.capabilities.Service.Get is not implemented"))
 }
 
 func (UnimplementedServiceHandler) GetPlugins(context.Context, *connect.Request[capabilities.GetPluginsRequest]) (*connect.Response[capabilities.GetPluginsResponse], error) {
